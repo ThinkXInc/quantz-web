@@ -1,0 +1,290 @@
+{
+    "LastNameFirstNamePage__TextField__first_name__title": {
+        "en": "Enter First Name",
+        "ja": "名",
+        "zh": "名字",
+        "fr": "Entrez le prénom",
+        "es": "Introduzca el nombre",
+        "ar": "أدخل الاسم الأول",
+        "ru": "Введите имя"
+    },
+    "LastNameFirstNamePage__TextField__first_name__placeholder": {
+        "en": "First Name",
+        "ja": "名を入力",
+        "zh": "输入名字",
+        "fr": "Prénom",
+        "es": "Nombre",
+        "ar": "الاسم الأول",
+        "ru": "Имя"
+    },
+    "LastNameFirstNamePage__TextField__last_name__title": {
+        "en": "Enter Last Name",
+        "ja": "姓",
+        "zh": "姓氏",
+        "fr": "Entrez le nom de famille",
+        "es": "Introduzca los apellidos",
+        "ar": "أدخل الاسم الأخير",
+        "ru": "Введите фамилию"
+    },
+    "LastNameFirstNamePage__TextField__last_name__placeholder": {
+        "en": "Last Name",
+        "ja": "姓を入力",
+        "zh": "输入姓氏",
+        "fr": "Nom de famille",
+        "es": "Apellidos",
+        "ar": "الاسم الأخير",
+        "ru": "Фамилия"
+    },
+    "LastNameFirstNamePage__Title__title": {
+        "en": "Your Name",
+        "ja": "氏名",
+        "zh": "姓名信息",
+        "fr": "Votre nom",
+        "es": "Su nombre",
+        "ar": "اسمك",
+        "ru": "Ваше имя"
+    },
+    "LastNameFirstNamePage__BackButton__title": {
+        "en": "Back",
+        "ja": "戻る",
+        "zh": "返回",
+        "fr": "Retour",
+        "es": "Volver",
+        "ar": "رجوع",
+        "ru": "Назад"
+    },
+    "LastNameFirstNamePage__NextButton__title": {
+        "en": "Next",
+        "ja": "次へ",
+        "zh": "下一步",
+        "fr": "Suivant",
+        "es": "Siguiente",
+        "ar": "التالى",
+        "ru": "Далее"
+    },
+    "EmailPage__Title__title": {
+        "en": "Email",
+        "ja": "メール",
+        "zh": "电子邮件",
+        "fr": "Email",
+        "es": "Correo electrónico",
+        "ar": "البريد الإلكتروني",
+        "ru": "Электронная почта"
+    },
+    "EmailPage__TextField__email__title": {
+        "en": "Email",
+        "ja": "メール",
+        "zh": "电子邮件",
+        "fr": "Email",
+        "es": "Correo electrónico",
+        "ar": "البريد الإلكتروني",
+        "ru": "Электронная почта"
+    },
+    "EmailPage__TextField__email__placeholder": {
+        "en": "Email",
+        "ja": "メールアドレスを入力",
+        "zh": "输入电子邮件",
+        "fr": "Email",
+        "es": "Correo electrónico",
+        "ar": "البريد الإلكتروني",
+        "ru": "Электронная почта"
+    },
+    "EmailPage__BackButton__title": {
+        "en": "Back",
+        "ja": "戻る",
+        "zh": "返回",
+        "fr": "Retour",
+        "es": "Volver",
+        "ar": "رجوع",
+        "ru": "Назад"
+    },
+    "EmailPage__NextButton__title": {
+        "en": "Next",
+        "ja": "次へ",
+        "zh": "下一步",
+        "fr": "Suivant",
+        "es": "Siguiente",
+        "ar": "التالى",
+        "ru": "Далее"
+    },
+    "TelPage__Title__title": {
+        "en": "Telephone",
+        "ja": "電話",
+        "zh": "电话",
+        "fr": "Téléphone",
+        "es": "Teléfono",
+        "ar": "هاتف",
+        "ru": "Телефон"
+    },
+    "TelPage__TextField__tel__title": {
+        "en": "Telephone",
+        "ja": "電話",
+        "zh": "电话",
+        "fr": "Téléphone",
+        "es": "Teléfono",
+        "ar": "هاتف",
+        "ru": "Телефон"
+    },
+    "TelPage__TextField__tel__placeholder": {
+        "en": "Enter Your Telephone Number",
+        "ja": "電話番号を入力",
+        "zh": "输入电话",
+        "fr": "Entrez votre numéro de téléphone",
+        "es": "Ingrese su número de teléfono",
+        "ar": "ادخل رقم هاتفك",
+        "ru": "Введите ваш номер телефона"
+    },
+    "TelPage__BackButton__title": {
+        "en": "Back",
+        "ja": "戻る",
+        "zh": "返回",
+        "fr": "Retour",
+        "es": "Volver",
+        "ar": "رجوع",
+        "ru": "Назад"
+    },
+    "TelPage__NextButton__title": {
+        "en": "Next",
+        "ja": "次へ",
+        "zh": "下一步",
+        "fr": "Suivant",
+        "es": "Siguiente",
+        "ar": "التالى",
+        "ru": "Далее"
+    },
+    "JobTitlePage__Title__title": {
+        "en": "Please enter your job title.",
+        "ja": "あなたの職名を入力してください。",
+        "zh": "请输入您的职务。",
+        "fr": "Veuillez entrer votre poste.",
+        "es": "Por favor, ingrese su puesto de trabajo.",
+        "ar": "الرجاء إدخال المسمى الوظيفي الخاص بك.",
+        "ru": "Пожалуйста, введите вашу должность."
+    },
+    "JobTitlePage__TextField__job_title__title": {
+        "en": "Job Title",
+        "ja": "職名",
+        "zh": "职务",
+        "fr": "Poste",
+        "es": "Puesto de trabajo",
+        "ar": "المسمى الوظيفي",
+        "ru": "Должность"
+    },
+    "JobTitlePage__TextField__job_title__placeholder": {
+        "en": "Enter Job Title",
+        "ja": "職名を入力",
+        "zh": "输入职务",
+        "fr": "Entrez le poste",
+        "es": "Introduzca el puesto de trabajo",
+        "ar": "أدخل المسمى الوظيفي",
+        "ru": "Введите должность"
+    },
+    "JobTitlePage__BackButton__title": {
+        "en": "Back",
+        "ja": "戻る",
+        "zh": "返回",
+        "fr": "Retour",
+        "es": "Volver",
+        "ar": "رجوع",
+        "ru": "Назад"
+    },
+    "JobTitlePage__NextButton__title": {
+        "en": "Next",
+        "ja": "次へ",
+        "zh": "下一步",
+        "fr": "Suivant",
+        "es": "Siguiente",
+        "ar": "التالى",
+        "ru": "Далее"
+    },
+    "CompanyNamePage__Title__title": {
+        "en": "Please enter your company name.",
+        "ja": "あなたの会社名を入力してください。",
+        "zh": "请输入您的公司名字。",
+        "fr": "Veuillez entrer le nom de votre entreprise.",
+        "es": "Por favor, ingrese el nombre de su empresa.",
+        "ar": "الرجاء إدخال اسم شركتك.",
+        "ru": "Пожалуйста, введите название вашей компании."
+    },
+    "CompanyNamePage__TextField__company_name__title": {
+        "en": "Company Name",
+        "ja": "会社名",
+        "zh": "公司名字",
+        "fr": "Nom de l'entreprise",
+        "es": "Nombre de la empresa",
+        "ar": "اسم الشركة",
+        "ru": "Название компании"
+    },
+    "CompanyNamePage__TextField__company_name__placeholder": {
+        "en": "Company Name",
+        "ja": "会社名を入力",
+        "zh": "输入公司名字",
+        "fr": "Nom de l'entreprise",
+        "es": "Nombre de la empresa",
+        "ar": "اسم الشركة",
+        "ru": "Название компании"
+    },
+    "CompanyNamePage__BackButton__title": {
+        "en": "Back",
+        "ja": "戻る",
+        "zh": "返回",
+        "fr": "Retour",
+        "es": "Volver",
+        "ar": "رجوع",
+        "ru": "Назад"
+    },
+    "CompanyNamePage__NextButton__title": {
+        "en": "Next",
+        "ja": "次へ",
+        "zh": "下一步",
+        "fr": "Suivant",
+        "es": "Siguiente",
+        "ar": "التالى",
+        "ru": "Далее"
+    },
+    "MessagePage__TextField__message__title": {
+        "en": "Message",
+        "ja": "メッセージ",
+        "zh": "信息",
+        "fr": "Message",
+        "es": "Mensaje",
+        "ar": "رسالة",
+        "ru": "Сообщение"
+    },
+    "MessagePage__Title__title": {
+        "en": "Please enter your message.",
+        "ja": "あなたのメッセージを入力してください。",
+        "zh": "请输入您的信息。",
+        "fr": "Veuillez entrer votre message.",
+        "es": "Por favor, ingrese su mensaje.",
+        "ar": "الرجاء إدخال رسالتك.",
+        "ru": "Пожалуйста, введите ваше сообщение."
+    },
+    "MessagePage__TextField__message__placeholder": {
+        "en": "How can we assist you?",
+        "ja": "メッセージを入力",
+        "zh": "输入信息",
+        "fr": "Comment pouvons-nous vous aider?",
+        "es": "¿Cómo podemos asistirle?",
+        "ar": "كيف يمكننا مساعدتك؟",
+        "ru": "Как мы можем вам помочь?"
+    },
+    "MessagePage__BackButton__title": {
+        "en": "Back",
+        "ja": "戻る",
+        "zh": "返回",
+        "fr": "Retour",
+        "es": "Volver",
+        "ar": "رجوع",
+        "ru": "Назад"
+    },
+    "MessagePage__NextButton__title": {
+        "en": "Next",
+        "ja": "次へ",
+        "zh": "下一步",
+        "fr": "Suivant",
+        "es": "Siguiente",
+        "ar": "التالى",
+        "ru": "Далее"
+    }
+}

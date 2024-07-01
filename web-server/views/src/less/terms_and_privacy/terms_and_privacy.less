@@ -1,0 +1,122 @@
+@tablet-width: 768px;
+@smartphone-width: 480px;
+
+#terms, #privacy {
+    height: 100%;
+    overflow-y: scroll;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    padding: 40px 50px;
+    background-color: #fbfbfb;
+
+    h1, h2, h3, h4, p, span, li {
+        margin: 0;
+    }
+
+    div.main {
+        h1.title {
+          font-size: 1em;
+          color: #333;
+        }
+
+        p.updated {
+            font-size: 0.9em;
+            font-weight: 500;
+            color: #333;
+            padding: 20px 0 0px 19px;
+        }
+    
+        p.introduction, p.agreement-notice {
+            font-size: 0.9em;
+            font-weight: 500;
+            color: #333;
+            padding: 20px 0 0px 19px;
+        }
+
+        p.agreement-notice {
+            margin-bottom: 30px;
+        }
+    
+        address {
+          font-style: normal;
+          padding: 20px 30px 20px 30px;
+        }
+
+        ul.section-list {
+            li {
+                color: #232323;
+            }
+            padding: 0 0px 0px 40px;
+            list-style-type: decimal;
+            font-size: 0.9em;
+            margin-bottom: 0;
+        }
+    
+        h2.subtitle {
+            font-size: 1em;
+            font-weight: 500;
+            padding: 0;
+            margin: 0;
+        }
+
+   
+        h3.section-title {
+            font-size: 1em;
+            font-weight: 500;
+            margin-bottom: 22px;
+            margin-top: 28px;
+            padding: 0 22px 6px 18px;
+            border-bottom: 1px solid #d7d7d7;
+        }
+    
+        h4 {
+            padding: 0 0 30px 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        p {
+            padding-left: 40px;
+            margin-bottom: 20px;
+        }
+    
+    }
+}
+
+#terms {
+    div.main {
+        p.updated {
+            margin-bottom: 0;
+        }
+    }
+}
+
+#privacy {
+    div.main {
+        h2.subtitle {
+            font-size: 1.1em;
+            padding: 0 0 15px 0 !important;
+        }
+        p.thirdparty {
+            margin-bottom: 30px;
+        }
+        h3.section-title {
+            margin-top: 14px;
+        }
+    }
+}
+
+ 
+  
+@media (max-width: @smartphone-width) {
+    #terms, #privacy {
+        padding: 40px 40px;
+        div.main {
+            p {
+                padding-left: 20px;
+            }
+        }
+        ul.section-list {
+            padding: 0 0px 0px 20px;
+        }
+    }
+}

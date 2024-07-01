@@ -1,0 +1,453 @@
+{
+    "signup_email_title": {
+        "en": "Sign up",
+        "ja": "サインアップ",
+        "zh": "注册",
+        "fr": "Inscription",
+        "es": "Registro",
+        "ar": "تسجيل",
+        "ru": "Регистрация"
+    },
+    "signin_email_title": {
+        "en": "Sign In",
+        "ja": "ログイン",
+        "zh": "登录",
+        "fr": "Connexion",
+        "es": "Iniciar sesión",
+        "ar": "تسجيل الدخول",
+        "ru": "Вход"
+    },
+    "accounts_email_subtitle": {
+        "en": "Log in with your Google account or enter your email address.",
+        "ja": "Googleアカウントでログインするかメールアドレスを入力してください。",
+        "zh": "使用您的 Google 账户登录或输入您的电子邮件地址。",
+        "fr": "Connectez-vous avec votre compte Google ou entrez votre adresse e-mail.",
+        "es": "Inicie sesión con su cuenta de Google o introduzca su dirección de correo electrónico.",
+        "ar": "تسجيل الدخول باستخدام حساب جوجل الخاص بك أو إدخال بريدك الإلكتروني.",
+        "ru": "Войдите с помощью вашего аккаунта Google или введите ваш адрес электронной почты."
+    },
+    "accounts_email_separator_or": {
+        "en": "or",
+        "ja": "または",
+        "zh": "或者",
+        "fr": "ou",
+        "es": "o",
+        "ar": "أو",
+        "ru": "или"
+    },
+    "accounts_email_form_title": {
+        "en": "Email",
+        "ja": "メールアドレス",
+        "zh": "电子邮件",
+        "fr": "Email",
+        "es": "Correo electrónico",
+        "ar": "البريد الإلكتروني",
+        "ru": "Электронная почта"
+    },
+    "accounts_email_form_placeholder": {
+        "en": "eg. you@email.com",
+        "ja": "例 you@email.com",
+        "zh": "例如 you@email.com",
+        "fr": "ex. you@email.com",
+        "es": "ej. you@email.com",
+        "ar": "مثال. you@email.com",
+        "ru": "напр. you@email.com"
+    },
+    "accounts_password_form_title": {
+        "en": "Password",
+        "ja": "パスワード",
+        "zh": "密码",
+        "fr": "Mot de passe",
+        "es": "Contraseña",
+        "ar": "كلمة السر",
+        "ru": "Пароль"
+    },
+    "accounts_password_form_placeholder": {
+        "en": "Enter your password",
+        "ja": "パスワードを入力してください",
+        "zh": "输入您的密码",
+        "fr": "Entrez votre mot de passe",
+        "es": "Introduce tu contraseña",
+        "ar": "أدخل كلمة المرور",
+        "ru": "Введите ваш пароль"
+    },
+    "accounts_password_confirm_form_title": {
+        "en": "Confirm Password",
+        "ja": "パスワード (確認)",
+        "zh": "确认密码",
+        "fr": "Confirmez le mot de passe",
+        "es": "Confirmar contraseña",
+        "ar": "تأكيد كلمة السر",
+        "ru": "Подтвердите пароль"
+    },
+    "accounts_password_confirm_form_placeholder": {
+        "en": "Re-enter your password",
+        "ja": "パスワードを再入力してください",
+        "zh": "重新输入您的密码",
+        "fr": "Ressaisissez votre mot de passe",
+        "es": "Vuelve a introducir tu contraseña",
+        "ar": "أعد إدخال كلمة المرور",
+        "ru": "Введите ваш пароль ещё раз"
+    },
+
+    "signup_verify_code_title": {
+        "en": "Enter Verification Code",
+        "ja": "認証コードの入力",
+        "zh": "输入验证码",
+        "fr": "Entrer le code de vérification",
+        "es": "Ingrese el código de verificación",
+        "ar": "أدخل رمز التحقق",
+        "ru": "Введите код подтверждения"
+    },
+    "signup_verify_code_subtitle": {
+        "en": "Please enter the verification code sent to your email.",
+        "ja": "メールに記載された認証コードを入力してください。",
+        "zh": "请输入发送到您电子邮件的验证码。",
+        "fr": "Veuillez entrer le code de vérification envoyé à votre e-mail.",
+        "es": "Por favor, introduzca el código de verificación enviado a su correo electrónico.",
+        "ar": "يرجى إدخال رمز التحقق الذي تم إرساله إلى بريدك الإلكتروني.",
+        "ru": "Пожалуйста, введите код подтверждения, отправленный на вашу электронную почту."
+    },
+    "signup_verify_code_unfilled": {
+        "en": "Please enter all 4 digits.",
+        "ja": "4桁の数字をすべて入力してください。",
+        "zh": "请输入全部4位数字。",
+        "fr": "Veuillez entrer les 4 chiffres.",
+        "es": "Por favor, introduzca los 4 dígitos.",
+        "ar": "الرجاء إدخال الأربعة أرقام.",
+        "ru": "Пожалуйста, введите все 4 цифры."
+    },
+    "signup_verified_message": {
+        "en": "Verification completed successfully.",
+        "ja": "認証に成功しました。",
+        "zh": "验证成功完成。",
+        "fr": "La vérification a été complétée avec succès.",
+        "es": "La verificación se completó con éxito.",
+        "ar": "تم إكمال التحقق بنجاح.",
+        "ru": "Проверка успешно завершена."
+    },
+    "signup_verified_present_highlight": {
+        "en": "50 free call credits*",
+        "ja": "1ヶ月使用できる無料の50回分*",
+        "zh": "您现在有50次免费通话，有效期为一个月*",
+        "fr": "Vous disposez maintenant de 50 appels gratuits valables un mois*",
+        "es": "Ahora tienes 50 llamadas gratis válidas por un mes*",
+        "ar": "لديك الآن 50 مكالمة مجانية صالحة لمدة شهر*",
+        "ru": "У вас теперь есть 50 бесплатных звонков, действительных на один месяц*"
+    },
+    "signup_verified_present_unhighlight": {
+        "en": "have been added to your account as a welcome gift!",
+        "ja": "が付与されました。",
+        "zh": "已被记入您的账户。",
+        "fr": "ont été crédités sur votre compte.",
+        "es": "han sido acreditadas a tu cuenta.",
+        "ar": "تم تحويلها إلى حسابك.",
+        "ru": "были начислены на ваш счет."
+    },
+    "signup_verified_present_sub": {
+        "en": "*valid for 30 days. 1 free call = 10 exchanges max",
+        "ja": "*1回のやりとりは最大10往復です。",
+        "zh": "*每次互动最多可包含10次交换。",
+        "fr": "*Chaque interaction peut comporter jusqu'à 10 échanges.",
+        "es": "*Cada interacción puede consistir en hasta 10 intercambios.",
+        "ar": "*يمكن أن تتكون كل تفاعل من ما يصل إلى 10 تبادلات.",
+        "ru": "*Каждое взаимодействие может состоять из не более чем 10 обменов."
+    },
+    "signup_origin_form_title": {
+        "en": "Site Domain or Page URL",
+        "ja": "サイトのドメインまたはページURL",
+        "zh": "网站域名或页面URL",
+        "fr": "Domaine du site ou URL de la page",
+        "es": "Dominio del sitio o URL de la página",
+        "ar": "نطاق الموقع أو URL الصفحة",
+        "ru": "Домен сайта или URL страницы"
+    },
+    "signup_origin_form_placeholder": {
+        "en": "e.g., xxx.com, xxx.com/page",
+        "ja": "例) xxx.com, xxx.com/page",
+        "zh": "例如：xxx.com, xxx.com/page",
+        "fr": "par exemple, xxx.com, xxx.com/page",
+        "es": "por ejemplo, xxx.com, xxx.com/página",
+        "ar": "مثال: xxx.com, xxx.com/page",
+        "ru": "например, xxx.com, xxx.com/page"
+    },
+    "signup_origin_explanation_default": {
+        "en": "Enter the domain of the registered email address or a specific page URL without 'https://'.",
+        "ja": "登録メールアドレスのドメイン、または特定のページのURLをhttps://なしで入力します。",
+        "zh": "输入注册电子邮件地址的域名或特定页面的 URL，不要包含'https://'。",
+        "fr": "Entrez le domaine de l'adresse e-mail enregistrée ou l'URL d'une page spécifique sans 'https://'.",
+        "es": "Introduce el dominio de la dirección de correo electrónico registrada o la URL de una página específica sin 'https://'.",
+        "ar": "أدخل نطاق عنوان البريد الإلكتروني المسجل أو URL لصفحة محددة بدون 'https://'.",
+        "ru": "Введите домен зарегистрированного адреса электронной почты или URL конкретной страницы без 'https://'."
+    },
+    "signup_origin_explanation_original_domain": {
+        "en": "You can install it anywhere on the site provided with this domain.",
+        "ja": "このドメインで提供されるサイトのどこにでも設置できます。",
+        "zh": "您可以在此域名提供的任何地方安装它。",
+        "fr": "Vous pouvez l'installer n'importe où sur le site associé à ce domaine.",
+        "es": "Puedes instalarlo en cualquier lugar del sitio proporcionado con este dominio.",
+        "ar": "يمكنك تثبيته في أي مكان على الموقع الذي يتوفر عليه هذا النطاق.",
+        "ru": "Вы можете установить его в любом месте сайта, предоставленного с этим доменом."
+    },
+    "signup_origin_explanation_public_domain": {
+        "en": "You can only install it on the page of this URL.",
+        "ja": "このURLのページにのみ設置できます。",
+        "zh": "您只能在此URL的页面上安装它。",
+        "fr": "Vous pouvez l'installer uniquement sur la page de cette URL.",
+        "es": "Solo puedes instalarlo en la página de esta URL.",
+        "ar": "يمكنك تثبيته فقط على صفحة هذا الURL.",
+        "ru": "Вы можете установить его только на странице этого URL."
+    },
+    "signup_origin_explanation_others_domain": {
+        "en": "Does not match the domain of the registered email address.",
+        "ja": "登録メールアドレスのドメインと一致していません。",
+        "zh": "与注册电子邮件地址的域名不匹配。",
+        "fr": "Ne correspond pas au domaine de l'adresse e-mail enregistrée.",
+        "es": "No coincide con el dominio de la dirección de correo electrónico registrada.",
+        "ar": "لا يتطابق مع نطاق عنوان البريد الإلكتروني المسجل.",
+        "ru": "Не совпадает с доменом зарегистрированного адреса электронной почты."
+    },
+    "signup_origin_title": {
+        "en": "Website to Install the Button",
+        "ja": "ボタンを設置するサイト",
+        "zh": "安装按钮的网站",
+        "fr": "Site pour installer le bouton",
+        "es": "Sitio web para instalar el botón",
+        "ar": "الموقع لتثبيت الزر",
+        "ru": "Сайт для установки кнопки"
+    },
+    "signup_origin_subtitle": {
+        "en": "Please enter the domain of the site where the Quantz button will be installed (e.g., xxx.com or xxx.com/page).",
+        "ja": "Quantzボタンを設置するサイトのドメイン (xxx.com または xxx.com/page) を入力してください。",
+        "zh": "请输入安装Quantz按钮的网站域名（例如，xxx.com或xxx.com/page）。",
+        "fr": "Veuillez saisir le domaine du site où le bouton Quantz sera installé (par exemple, xxx.com ou xxx.com/page).",
+        "es": "Por favor, introduzca el dominio del sitio donde se instalará el botón de Quantz (por ejemplo, xxx.com o xxx.com/página).",
+        "ar": "يرجى إدخال نطاق الموقع الذي سيتم تثبيت زر Quantz فيه (مثل xxx.com أو xxx.com/page).",
+        "ru": "Пожалуйста, введите домен сайта, где будет установлена кнопка Quantz (например, xxx.com или xxx.com/page)."
+    },
+    "signup_card_title": {
+        "en": "Payment Method",
+        "ja": "クレジットカード",
+        "zh": "信用卡",
+        "fr": "Carte de Crédit",
+        "es": "Tarjeta de Crédito",
+        "ar": "بطاقة ائتمان",
+        "ru": "Кредитная карта"
+    },
+    "signup_card_subtitle": {
+        "en": "Please add a valid payment method for future payments. You will not be charged until you confirm monthly usage limits.",
+        "ja": "クレジットカード情報を登録してください。",
+        "zh": "请注册您的信用卡信息。",
+        "fr": "Veuillez enregistrer vos informations de carte de crédit.",
+        "es": "Por favor, registre su información de tarjeta de crédito.",
+        "ar": "يرجى تسجيل معلومات بطاقتك الائتمانية.",
+        "ru": "Пожалуйста, зарегистрируйте информацию вашей кредитной карты."
+    },
+    "signup_limit_title": {
+        "en": "Monthly Usage Limit",
+        "ja": "１ヶ月あたりの利用上限",
+        "zh": "每月使用限额",
+        "fr": "Limite d'utilisation mensuelle",
+        "es": "Límite de uso mensual",
+        "ar": "الحد الأقصى للاستخدام الشهري",
+        "ru": "Месячный лимит использования"
+    },
+    "signup_limit_subtitle": {
+        "en": "Stay within your budget by setting a limit for the number of calls you will be accepting via the Quantz button every month.",
+        "ja": "最大利用回数を設定することで、月毎の請求に上限を設けることができます。",
+        "zh": "设定最大使用次数以限制每月账单。",
+        "fr": "Définissez un nombre maximal d'utilisations pour limiter votre facturation mensuelle.",
+        "es": "Establezca un número máximo de usos para limitar su facturación mensual.",
+        "ar": "اضبط الحد الأقصى لعدد الاستخدامات لتحديد فاتورتك الشهرية.",
+        "ru": "Установите максимальное количество использований, чтобы ограничить ваш ежемесячный счет."
+    },
+    "signup_limit_max": {
+        "en": "Maximum",
+        "ja": "最大",
+        "zh": "最大",
+        "fr": "Maximum",
+        "es": "Máximo",
+        "ar": "الحد الأقصى",
+        "ru": "Максимально"
+    },
+    "signup_limit_max_description": {
+        "en": "calls per month*",
+        "ja": "回/月",
+        "zh": "次/月",
+        "fr": "fois par mois",
+        "es": "veces al mes",
+        "ar": "مرات في الشهر",
+        "ru": "раз в месяц"
+    },
+    "signup_limit_max_charge": {
+        "en": "Monthly Maximum Charge Amount",
+        "ja": "１ヶ月あたりの請求上限金額",
+        "zh": "每月最大收费额",
+        "fr": "Montant maximum de la charge mensuelle",
+        "es": "Monto máximo de carga mensual",
+        "ar": "الحد الأقصى لمبلغ الشحن الشهري",
+        "ru": "Максимальная сумма ежемесячного платежа"
+    },
+    "signup_limit_max_charge_price": {
+        "en": "$$0 /month",
+        "ja": "$$0 /月",
+        "zh": "$$0 /月",
+        "fr": "$$0 /mois",
+        "es": "$$0 /mes",
+        "ar": "$$0 /شهر",
+        "ru": "$$0 /месяц"
+    },
+    "signup_limit_note1": {
+        "en": "*Doesn’t include 50 free calls credited as a welcome gift.",
+        "ja": "*初月は$0回分が無料で付与されます。",
+        "zh": "*首月包含$0次免费使用。",
+        "fr": "*Le premier mois inclut $0 utilisations gratuites.",
+        "es": "*El primer mes incluye $0 usos gratuitos.",
+        "ar": "*الشهر الأول يشمل $0 استخدامًا مجانيًا.",
+        "ru": "*В первый месяц входит $0 бесплатных использований."
+    },
+    "signup_limit_note2": {
+        "en": "*You will be charged based on the number of calls, 1 call = $0",
+        "ja": "*上限に達するまで$$0/回の従量課金が適用されます。",
+        "zh": "*达到上限前，每次使用将收费$$0。",
+        "fr": "*L'utilisation jusqu'à la limite sera facturée $$0 par occurrence.",
+        "es": "*El uso hasta el límite se cobrará a $$0 por cada vez.",
+        "ar": "*الاستخدام حتى الحد الأقصى سيتم تحصيله بسعر $$0 لكل مرة.",
+        "ru": "*Использование до лимита будет стоить $$0 за каждый раз."
+    },
+    "signup_limit_note3": {
+        "en": "(each up to $0 exchanges), until you reach the set limit.",
+        "ja": "*1回のやりとりは最大$0往復です。",
+        "zh": "*每次交互最多$0往返。",
+        "fr": "*Chaque interaction est limitée à un maximum de $0 allers-retours.",
+        "es": "*Cada interacción está limitada a un máximo de $0 idas y vueltas.",
+        "ar": "*كل تفاعل محدود بحد أقصى $0 رحلات ذهاب وإياب.",
+        "ru": "*Каждое взаимодействие ограничено максимумом $0 поездок туда и обратно."
+    },
+    "signup_terms_title": {
+        "ja": "Quantzサービス利用規約",
+        "en": "Quantz Service Terms of Use",
+        "zh": "Quantz服务使用条款",
+        "fr": "Conditions d'utilisation du service Quantz",
+        "es": "Términos de Uso del Servicio Quantz",
+        "ar": "شروط استخدام خدمة Quantz",
+        "ru": "Условия использования сервиса Quantz"
+    },
+    "signup_terms_next_button": {
+        "ja": "同意して進む",
+        "en": "Agree and Proceed",
+        "zh": "同意并继续",
+        "fr": "Accepter et continuer",
+        "es": "Aceptar y continuar",
+        "ar": "الموافقة والمتابعة",
+        "ru": "Согласиться и продолжить"
+    },
+    "signup_complete_message": {
+        "ja": "セットアップが完了しました。",
+        "en": "Setup is completed",
+        "zh": "设置已完成。",
+        "fr": "L'installation est terminée.",
+        "es": "La configuración está completa.",
+        "ar": "اكتمل الإعداد.",
+        "ru": "Настройка завершена."
+    },
+    "signup_complete_sub_message": {
+        "ja": "登録情報は設定メニューから変更できます。",
+        "en": "You can always update your details in the Settings menu.",
+        "zh": "您可以从设置菜单更改您的注册信息。",
+        "fr": "Vous pouvez modifier vos informations d'enregistrement depuis le menu des paramètres.",
+        "es": "Puedes cambiar tu información de registro desde el menú de configuración.",
+        "ar": "يمكنك تغيير معلومات التسجيل الخاصة بك من قائمة الإعدادات.",
+        "ru": "Вы можете изменить информацию о регистрации в меню настроек."
+    },
+    "signup_complete_sub_message2": {
+        "ja": "次はQuantzにあなたのサービスについて教え、ボタンを作成しましょう。",
+        "en": "Next, let’s personalize your Quantz button.",
+        "zh": "接下来，让我们告诉 Quantz 您的服务信息并创建一个按钮。",
+        "fr": "Ensuite, parlons de votre service à Quantz et créons un bouton.",
+        "es": "A continuación, cuéntale a Quantz sobre tu servicio y creemos un botón.",
+        "ar": "التالي، دعنا نخبر Quantz عن خدمتك ونقوم بإنشاء زر.",
+        "ru": "Далее, давайте расскажем Quantz о вашей службе и создадим кнопку."
+    },
+    "nextbutton": {
+        "en": "Next",
+        "ja": "次へ",
+        "zh": "下一步",
+        "fr": "Suivant",
+        "es": "Siguiente",
+        "ar": "التالي",
+        "ru": "Далее"
+    },
+    "completebutton": {
+        "en": "Create Quantz Button",
+        "ja": "Quantzボタンの作成を開始",
+        "zh": "开始创建Quantz按钮",
+        "fr": "Commencer la création du bouton Quantz",
+        "es": "Comenzar a crear el botón Quantz",
+        "ar": "ابدأ في إنشاء زر Quantz",
+        "ru": "Начать создание кнопки Quantz"
+    },
+    "sendbutton": {
+        "en": "Send",
+        "ja": "送信",
+        "zh": "发送",
+        "fr": "Envoyer",
+        "es": "Enviar",
+        "ar": "إرسال",
+        "ru": "Отправить"
+    },
+    "signin_password_forgot_link": {
+        "en": "Forgot password?",
+        "ja": "パスワードをお忘れの場合",
+        "zh": "忘记密码？",
+        "fr": "Mot de passe oublié ?",
+        "es": "¿Olvidaste tu contraseña?",
+        "ar": "نسيت كلمة المرور؟",
+        "ru": "Забыли пароль?"
+    },
+    "signin_forgot_title": {
+        "en": "Password Reset",
+        "ja": "パスワード再設定",
+        "zh": "密码重置",
+        "fr": "Réinitialisation du mot de passe",
+        "es": "Restablecimiento de contraseña",
+        "ar": "إعادة تعيين كلمة المرور",
+        "ru": "Сброс пароля"
+    },
+    "signin_forgot_subtitle": {
+        "en": "We will send an email to reset your password.",
+        "ja": "パスワード再設定用のメールを送信します。",
+        "zh": "我们将发送一封电子邮件来重置您的密码。",
+        "fr": "Nous vous enverrons un email pour réinitialiser votre mot de passe.",
+        "es": "Te enviaremos un correo electrónico para restablecer tu contraseña.",
+        "ar": "سنرسل لك بريدًا إلكترونيًا لإعادة تعيين كلمة المرور.",
+        "ru": "Мы отправим вам письмо для сброса пароля."
+    },
+    "signin_reset_title": {
+        "en": "Password Reset",
+        "ja": "パスワードの再設定",
+        "zh": "重置密码",
+        "fr": "Réinitialisation du mot de passe",
+        "es": "Restablecimiento de contraseña",
+        "ar": "إعادة تعيين كلمة المرور",
+        "ru": "Сброс пароля"
+    },
+    "signin_reset_subtitle": {
+        "en": "Please enter your new password.",
+        "ja": "新しいパスワードを入力してください。",
+        "zh": "请输入您的新密码。",
+        "fr": "Veuillez entrer votre nouveau mot de passe.",
+        "es": "Por favor, introduce tu nueva contraseña.",
+        "ar": "الرجاء إدخال كلمة المرور الجديدة.",
+        "ru": "Пожалуйста, введите ваш новый пароль."
+    },
+    "invalid_password_reset_url": {
+        "en": "Invalid reset link. Please try requesting a reset again.",
+        "ja": "不正なリセットリンクです。再度再設定のリクエストをお試しください。",
+        "zh": "无效的重置链接。请再次尝试请求重置。",
+        "fr": "Lien de réinitialisation invalide. Veuillez essayer de demander à nouveau une réinitialisation.",
+        "es": "Enlace de restablecimiento inválido. Por favor, intente solicitar un restablecimiento nuevamente.",
+        "ar": "رابط إعادة التعيين غير صالح. يرجى محاولة طلب إعادة تعيين مرة أخرى.",
+        "ru": "Недействительная ссылка сброса. Пожалуйста, попробуйте запросить сброс снова."
+    }
+}

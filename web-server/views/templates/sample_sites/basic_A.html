@@ -1,0 +1,111 @@
+{%extends "general/base.html" %}
+
+{% block head %}
+<link rel=stylesheet href=/css/main.css>
+{% endblock %}
+
+{% block content %}
+<script>
+{
+    const lang = "{{ lang }}"
+    const langName = "{{ lang_name }}"
+
+    window.lang = lang;
+    window.langName = langName;
+}
+</script>
+
+<section id="basicDemoA">
+    <div clss="top-bg">
+        <svg class="cloud-pattern" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+            <defs>
+                <radialGradient id="cloudGradient1" cx="50%" cy="50%" r="30%" fx="50%" fy="50%">
+                  <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.5"></stop>
+                  <stop offset="100%" stop-color="#D0F0FF" stop-opacity="0.5"></stop>
+                </radialGradient>
+                <radialGradient id="cloudGradient2" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                  <stop offset="0%" stop-color="#fff" stop-opacity="0.6"></stop>
+                  <stop offset="100%" stop-color="#D0F0FF" stop-opacity="0.6"></stop>
+                </radialGradient>
+              </defs>
+            <rect width="100%" height="100%" fill="url(#cloudGradient1)"></rect>
+            <rect width="100%" height="100%" fill="url(#cloudGradient2)"></rect>
+        </svg>
+        <div class="waves-container">
+            <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                 viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+              <defs>
+                <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+              </defs>
+              <g class="parallax">
+                <use xlink:href="#gentle-wave" x="48" y="7" fill="rgba(255, 255, 255, 0.6)" />
+                <use xlink:href="#gentle-wave" x="48" y="7" fill="rgba(255, 255, 255, 0.3)" />
+              </g>
+            </svg>
+        </div>
+    </div>
+
+    <div class="basicDemoA">
+        <div class="btnMain">
+            <script src="https://quantz.thinkxinc.com/js/dist/quantz-button-v6-dev.js"></script>
+            <div id="QBTN-664ae7647fe8b2ca687d7fab" class="QBTN-quantz-button-loader" data-button-id="QBTN-664ae7647fe8b2ca687d7fab" data-quantz-config="{&quot;buttonType&quot;:&quot;A&quot;,&quot;iconSize&quot;:30,&quot;fontSize&quot;:13,&quot;buttonWidth&quot;:260,&quot;buttonHeight&quot;:44,&quot;buttonColor&quot;:&quot;#b80613&quot;,&quot;borderRadius&quot;:20,&quot;displayLocale&quot;:true,&quot;balloonRectWidth&quot;:&quot;35vw&quot;,&quot;balloonRectHeight&quot;:&quot;30vh&quot;,&quot;defaultLang&quot;:&quot;en&quot;}"></div>
+        </div>
+    </div>
+</section>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const gradients = [
+            document.getElementById('cloudGradient1'),
+            document.getElementById('cloudGradient2'),
+        ];
+    
+        // Define initial radii, positions, and directions
+        let initialRadii = [20, 25]; // more varied initial radii
+        let maxRadii = [80, 90];     // more varied max radii limits
+        let minRadii = [5, 5];      // more varied min radii limits
+        let speedFactors = [0.02, 0.01]; // more varied speed factor
+        let directions = [1, 1, 1, 1, 1];
+        let positions = [
+            { cx: 50, cy: 50 },
+            { cx: 60, cy: 40 },
+        ];
+        let moveSpeeds = [
+        { x: 0.02, y: 0.01 },
+        { x: 0.01, y: -0.02 },
+    ];
+    
+        function animateGradient() {
+            gradients.forEach((gradient, index) => {
+                // Radius change logic
+                let radius = parseFloat(gradient.getAttribute('r').replace('%', ''));
+                radius += speedFactors[index] * directions[index];
+                if (radius >= maxRadii[index] || radius <= minRadii[index]) {
+                    directions[index] *= -1;
+                }
+                gradient.setAttribute('r', `${radius}%`);
+    
+                // Position change logic
+                positions[index].cx += moveSpeeds[index].x;
+                positions[index].cy += moveSpeeds[index].y;
+                // Ensure the clouds wrap around the SVG bounds
+                if (positions[index].cx > 100) positions[index].cx -= 100;
+                else if (positions[index].cx < 0) positions[index].cx += 100;
+                if (positions[index].cy > 100) positions[index].cy -= 100;
+                else if (positions[index].cy < 0) positions[index].cy += 100;
+    
+                gradient.setAttribute('cx', `${positions[index].cx}%`);
+                gradient.setAttribute('cy', `${positions[index].cy}%`);
+            });
+    
+            requestAnimationFrame(animateGradient);
+        }
+    
+        animateGradient();
+    });
+</script>
+
+
+{% endblock %}
+
+{% block foot %}
+{% endblock %}

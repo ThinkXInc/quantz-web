@@ -1,0 +1,41 @@
+{%extends "general/base.html" %}
+
+{% block head %}
+<link rel=stylesheet href=/css/main.css>
+{% endblock %}
+
+{% block content %}
+<script>
+{
+    const lang = "{{ lang }}"
+    const langName = "{{ lang_name }}"
+
+    window.lang = lang;
+    window.langName = langName;
+}
+</script>
+
+<section id="sample-techschool">
+    <header>
+        <nav>
+       </nav>
+    </header>
+    <div class="main">
+        <section class="left">
+            <img class="logo" src="/img/sample_sites/techschool/logo@2x.png" />
+            <img class="basic" src="/img/sample_sites/techschool/basic_target_title@2x.png"/>
+            <img class="robot" src="/img/sample_sites/techschool/robot_target_title@2x.png"/>
+            <img class="advanced" src="/img/sample_sites/techschool/advanced_target_title@2x.png"/>
+        </section>
+        
+        <section class="right">
+            <script src="https://quantz.thinkxinc.com/js/dist/quantz-button-v6-dev.js"></script>
+            <div id="QBTN-664ae7647fe8b2ca687d7fab" class="QBTN-quantz-button-loader" data-button-id="QBTN-664ae7647fe8b2ca687d7fab" data-quantz-config="{&quot;buttonType&quot;:&quot;A&quot;,&quot;iconSize&quot;:30,&quot;fontSize&quot;:13,&quot;buttonWidth&quot;:260,&quot;buttonHeight&quot;:50,&quot;buttonColor&quot;:&quot;#0067FF&quot;,&quot;borderRadius&quot;:20,&quot;displayLocale&quot;:true,&quot;balloonRectWidth&quot;:&quot;35vw&quot;,&quot;balloonRectHeight&quot;:&quot;30vh&quot;,&quot;defaultLang&quot;:&quot;en&quot;}"></div>
+        </section>
+    </div>
+
+</section>
+{% endblock %}
+
+{% block foot %}
+{% endblock %}   

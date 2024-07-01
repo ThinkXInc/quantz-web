@@ -1,0 +1,219 @@
+{
+    "settings_menu_title": {
+        "en": "Settings",
+        "ja": "設定",
+        "zh": "设置",
+        "fr": "Paramètres",
+        "es": "Configuración",
+        "ar": "الإعدادات",
+        "ru": "Настройки"
+    },
+    "logout_menu_title": {
+        "en": "Log out",
+        "ja": "ログアウト",
+        "zh": "登出",
+        "fr": "Déconnexion",
+        "es": "Cerrar sesión",
+        "ar": "تسجيل الخروج",
+        "ru": "Выйти"
+    },
+    "MaterialList_header_title": {
+        "en": "Quantz's Knowledge Base",
+        "ja": "Quantz's Knowledge Base",
+        "zh": "Quantz的知识库",
+        "fr": "Base de connaissances de Quantz",
+        "es": "Base de Conocimientos de Quantz",
+        "ar": "قاعدة معرفة كوانتز",
+        "ru": "База знаний Quantz"
+    },
+    "MaterialList_count_singular": {
+        "en": "Item",
+        "ja": "ノート",
+        "zh": "项",
+        "fr": "Élément",
+        "es": "Ítem",
+        "ar": "عنصر",
+        "ru": "Элемент"
+    },
+    "MaterialList_count_plural": {
+        "en": "Items",
+        "ja": "ノート",
+        "zh": "项",
+        "fr": "Éléments",
+        "es": "Ítems",
+        "ar": "عناصر",
+        "ru": "Элементы"
+    },
+    "MaterialList_add_new_button_title": {
+        "en": "Add new entry",
+        "ja": "新規追加",
+        "zh": "添加新条目",
+        "fr": "Ajouter une nouvelle entrée",
+        "es": "Agregar nueva entrada",
+        "ar": "أضف مدخل جديد",
+        "ru": "Добавить новую запись"
+    },
+    "MaterialDeleteModalView_title": {
+        "en": "Delete document?",
+        "ja": "ドキュメントを削除しますか？",
+        "zh": "删除文件？",
+        "fr": "Supprimer le document ?",
+        "es": "¿Eliminar documento?",
+        "ar": "حذف الوثيقة؟",
+        "ru": "Удалить документ?"
+    }
+    ,
+    "MaterialDeleteModalView_text": {
+        "en": "This will delete ",
+        "ja": "ドキュメントを削除します: ",
+        "zh": "这将删除",
+        "fr": "Cela supprimera",
+        "es": "Esto eliminará",
+        "ar": "سيتم حذف هذا",
+        "ru": "Это удалит"
+    },
+    "MaterialDeleteModalView_cancel": {
+        "en": "Cancel",
+        "ja": "キャンセル",
+        "zh": "取消",
+        "fr": "Annuler",
+        "es": "Cancelar",
+        "ar": "إلغاء",
+        "ru": "Отмена"
+    },
+    "MaterialDeleteModalView_done": {
+        "en": "Delete",
+        "ja": "削除",
+        "zh": "删除",
+        "fr": "Supprimer",
+        "es": "Eliminar",
+        "ar": "حذف",
+        "ru": "Удалить"
+    },
+    "MaterialTitleField__text__placeholder": {
+        "en": "Input title.",
+        "ja": "タイトルを入力",
+        "zh": "输入标题。",
+        "fr": "Entrez un titre.",
+        "es": "Ingresa un título.",
+        "ar": "أدخل عنوانًا.",
+        "ru": "Введите заголовок."
+    },
+    "MaterialTextField__text__placeholder": {
+        "en": "Type or paste anything that will help Quantz learn more about your business.",
+        "ja": "テキストを入力するかペーストし、Quantzにあなたの製品やサービスの知識を教える。",
+        "zh": "键入或粘贴任何有助于Quantz了解您的业务的内容。",
+        "fr": "Tapez ou collez tout ce qui aidera Quantz à en savoir plus sur votre entreprise.",
+        "es": "Escribe o pega cualquier cosa que ayude a Quantz a aprender más sobre tu negocio.",
+        "ar": "اكتب أو الصق أي شيء سيساعد Quantz على معرفة المزيد عن عملك.",
+        "ru": "Введите или вставьте что-нибудь, что поможет Quantz узнать больше о вашем бизнесе."
+    },
+    "MaterialTextField__enterButton__press": {
+        "en": "press",
+        "ja": "キー",
+        "zh": "按",
+        "fr": "appuyez",
+        "es": "pulsa",
+        "ar": "اضغط",
+        "ru": "нажмите"
+    },
+    "MaterialTextField__enterButton__enter": {
+        "en": "Enter ↵",
+        "ja": "決定 ↵",
+        "zh": "输入 ↵",
+        "fr": "Entrée ↵",
+        "es": "Entrar ↵",
+        "ar": "أدخل ↵",
+        "ru": "Ввод ↵"
+    },
+    "MaterialTextField__splitNotice": {
+        "en": "This document is split into $0 materials.",
+        "ja": "このドキュメントは$0個の資料に分割されます。",
+        "zh": "此文档分为$0个材料。",
+        "fr": "Ce document est divisé en $0 matériaux.",
+        "es": "Este documento se divide en $0 materiales.",
+        "ar": "تم تقسيم هذا المستند إلى $0 مواد.",
+        "ru": "Этот документ разделен на $0 материалов."
+    },
+    "MaterialKeywordsField__text__placeholder": {
+        "en": "Add keyword",
+        "ja": "キーワードを追加",
+        "zh": "添加关键词",
+        "fr": "Ajouter un mot-clé",
+        "es": "Agregar palabra clave",
+        "ar": "أضف كلمة مفتاحية",
+        "ru": "Добавить ключевое слово"
+    },
+    "MaterialKeywordsField__press": {
+        "en": "press",
+        "ja": "キー",
+        "zh": "按",
+        "fr": "appuyez",
+        "es": "pulsa",
+        "ar": "اضغط",
+        "ru": "нажмите"
+    },
+    "MaterialKeywordsField__enter": {
+        "en": "Enter ↵",
+        "ja": "決定 ↵",
+        "zh": "输入 ↵",
+        "fr": "Entrée ↵",
+        "es": "Entrar ↵",
+        "ar": "أدخل ↵",
+        "ru": "Ввод ↵"
+    },
+    "MaterialSampleQuestionField__title": {
+        "en": "System Test",
+        "ja": "テスト",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "MaterialSampleQuestionField__text__placeholder": {
+        "en": "Write a question to test the system.",
+        "ja": "このドキュメントに関連する質問や会話を入力",
+        "zh": "编写与此材料相关的示例问题。",
+        "fr": "Écrivez une question exemple liée à ce matériau.",
+        "es": "Escribe una pregunta de ejemplo relacionada con este material.",
+        "ar": "اكتب سؤالًا نموذجيًا يتعلق بهذه المادة.",
+        "ru": "Напишите примерный вопрос, связанный с этим материалом."
+    },
+    "MaterialSampleQuestionField__press": {
+        "en": "press",
+        "ja": "キー",
+        "zh": "按",
+        "fr": "appuyez",
+        "es": "pulsa",
+        "ar": "اضغط",
+        "ru": "нажмите"
+    },
+    "MaterialSampleQuestionField__enter": {
+        "en": "Enter ↵",
+        "ja": "決定 ↵",
+        "zh": "输入 ↵",
+        "fr": "Entrée ↵",
+        "es": "Entrar ↵",
+        "ar": "أدخل ↵",
+        "ru": "Ввод ↵"
+    },
+    "MaterialSampleAnswerView__answer__title": {
+        "en": "Sample Answer",
+        "ja": "返答例",
+        "zh": "样本答案",
+        "fr": "Réponse exemple",
+        "es": "Respuesta de ejemplo",
+        "ar": "إجابة نموذجية",
+        "ru": "Пример ответа"
+    },
+    "MaterialSampleAnswerView__review__title": {
+        "en": "Review",
+        "ja": "ドキュメントの改善レビュー",
+        "zh": "审查",
+        "fr": "Révision",
+        "es": "Revisión",
+        "ar": "مراجعة",
+        "ru": "Обзор"
+    }
+}

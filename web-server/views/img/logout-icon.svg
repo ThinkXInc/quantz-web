@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 27.5.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="logout" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 60 60" style="enable-background:new 0 0 60 60;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#fff;stroke-width:6;stroke-linecap:round;stroke-miterlimit:10;}
+</style>
+<g id="logout_00000051380075136233857940000006992121176033048724_">
+	<g id="arrow">
+		<line class="st0" x1="23.4" y1="29.9" x2="50.8" y2="29.9"/>
+		<line class="st0" x1="50.8" y1="29.8" x2="41.1" y2="19.2"/>
+		<line class="st0" x1="50.8" y1="30.6" x2="41.1" y2="41.1"/>
+	</g>
+	<path id="door" class="st0" d="M34.8,3.9H12.9c0,0-3.7-0.3-3.7,4s0,43.5,0,43.5s-0.4,5.1,3.7,5.1s23.1,0,23.1,0"/>
+</g>
+</svg>

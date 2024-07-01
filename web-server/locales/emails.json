@@ -1,0 +1,245 @@
+{
+    "team": {
+        "en": "Quantz Team",
+        "ja": "Quantz チーム",
+        "zh": "Quantz 团队",
+        "fr": "L'équipe Quantz",
+        "es": "El equipo de Quantz",
+        "ar": "فريق Quantz",
+        "ru": "Команда Quantz"
+    },
+    "welcome_subject": {
+        "en": "Quantz Verification Code",
+        "ja": "Quantzへようこそ",
+        "zh": "欢迎来到Quantz",
+        "fr": "Bienvenue chez Quantz",
+        "es": "Bienvenido a Quantz",
+        "ar": "مرحبا بك في Quantz",
+        "ru": "Добро пожаловать в Quantz"
+    },
+    "welcome_to_quantz": {
+        "en": "Welcome to Quantz",
+        "ja": "Quantzへようこそ",
+        "zh": "欢迎来到Quantz",
+        "fr": "Bienvenue chez Quantz",
+        "es": "Bienvenido a Quantz",
+        "ar": "مرحبا بك في Quantz",
+        "ru": "Добро пожаловать в Quantz"
+    },
+    "welcome_body2": {
+        "ja": "認証コードは以下の通りです。",
+        "en": "Your verification code is",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "welcome_enter_this_code": {
+        "en": "Please enter the code on the sign-up page to verify your email and continue setting up your Quantz account.",
+        "ja": "ユーザー登録画面にこのコードを入力し、次に進んでください。",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "verification_subject": {
+        "ja": "認証コードの送付",
+        "en": "Verification Code Sent",
+        "zh": "验证码已发送",
+        "fr": "Code de vérification envoyé",
+        "es": "Código de verificación enviado",
+        "ar": "تم إرسال رمز التحقق",
+        "ru": "Код подтверждения отправлен"
+    },
+    "verification_body1": {
+        "ja": "認証コードは以下の通りです。",
+        "en": "Your verification code is",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "verification_body2": {
+        "ja": "画面にこのコードを入力し、メールアドレスを認証してください。",
+        "en": "Please enter this code on the screen to verify your email address.",
+        "zh": "请在屏幕上输入此代码以验证您的电子邮件地址。",
+        "fr": "Veuillez saisir ce code à l'écran pour vérifier votre adresse e-mail.",
+        "es": "Por favor, introduzca este código en la pantalla para verificar su dirección de correo electrónico.",
+        "ar": "يرجى إدخال هذا الكود على الشاشة للتحقق من عنوان بريدك الإلكتروني.",
+        "ru": "Пожалуйста, введите этот код на экране для подтверждения вашего адреса электронной почты."
+    },
+    "password_reset_subject": {
+        "en": "Reset Your Password",
+        "ja": "パスワードをリセット",
+        "zh": "重置您的密码",
+        "fr": "Réinitialisez votre mot de passe",
+        "es": "Restablece tu contraseña",
+        "ar": "إعادة تعيين كلمة المرور",
+        "ru": "Сбросить пароль"
+    },
+    "password_reset_body1": {
+        "en": "To reset your password, please click the link below:",
+        "ja": "パスワードをリセットするには、以下のリンクをクリックしてください。",
+        "zh": "要重置您的密码，请点击下面的链接：",
+        "fr": "Pour réinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous :",
+        "es": "Para restablecer tu contraseña, haz clic en el enlace a continuación:",
+        "ar": "لإعادة تعيين كلمة المرور، الرجاء النقر على الرابط أدناه:",
+        "ru": "Чтобы сбросить пароль, пожалуйста, нажмите на ссылку ниже:"
+    },
+    "password_reset_link_text": {
+        "en": "Reset Password",
+        "ja": "パスワードをリセット",
+        "zh": "重置密码",
+        "fr": "Réinitialiser le mot de passe",
+        "es": "Restablecer contraseña",
+        "ar": "إعادة تعيين كلمة المرور",
+        "ru": "Сбросить пароль"
+    },
+    "password_reset_body2": {
+        "en": "This link is valid until $0. After that, you will need to request a new link.",
+        "ja": "このリンクは$0まで有効です。 さらに時間が必要な場合は、もう一度再設定をリクエストしてください。",
+        "zh": "此链接有效期至$0。如果您需要更多时间，请再次请求重置。",
+        "fr": "Ce lien est valide jusqu'à $0. Si vous avez besoin de plus de temps, veuillez demander une réinitialisation à nouveau.",
+        "es": "Este enlace es válido hasta $0. Si necesitas más tiempo, por favor solicita el restablecimiento nuevamente.",
+        "ar": "هذا الرابط صالح حتى $0. إذا كنت بحاجة إلى مزيد من الوقت، يرجى طلب إعادة تعيين مرة أخرى.",
+        "ru": "Эта ссылка будет действительна до $0. Если вам нужно больше времени, пожалуйста, запросите сброс снова."
+    },
+    "password_reset_body3": {
+        "en": "If you didn’t make the request, you can ignore this email.",
+        "ja": "問題が発生した場合やリクエストした覚えがない場合は、support@quantz.thinkxinc.com までサポートチームにお問い合わせください。",
+        "zh": "如果您遇到任何问题或不记得发出此请求，请通过 support@quantz.thinkxinc.com 联系我们的支持团队。",
+        "fr": "Si vous rencontrez des problèmes ou si vous ne vous souvenez pas avoir fait cette demande, veuillez contacter notre équipe de support à support@quantz.thinkxinc.com.",
+        "es": "Si encuentras algún problema o no recuerdas haber realizado esta solicitud, por favor contacta a nuestro equipo de soporte en support@quantz.thinkxinc.com.",
+        "ar": "إذا واجهت أي مشاكل أو لم تتذكر طلب هذا، يرجى التواصل مع فريق الدعم لدينا عبر support@quantz.thinkxinc.com.",
+        "ru": "Если у вас возникли проблемы или вы не помните, чтобы вы делали этот запрос, пожалуйста, свяжитесь с нашей службой поддержки по адресу support@quantz.thinkxinc.com."
+    },
+    "password_reset_sent_message": {
+        "en": "A password reset email has been sent.",
+        "ja": "パスワード再設定メールを送信しました。",
+        "zh": "已发送密码重置邮件。",
+        "fr": "Un email de réinitialisation de mot de passe a été envoyé.",
+        "es": "Se ha enviado un correo electrónico para restablecer la contraseña.",
+        "ar": "تم إرسال بريد إلكتروني لإعادة تعيين كلمة المرور.",
+        "ru": "Письмо для сброса пароля было отправлено."
+    },
+    "password_reset_sent_sub_message": {
+        "en": "Please check your mailbox. The reset link is valid for 24 hours.",
+        "ja": "メールボックスをご確認ください。再設定の有効期限は24時間です。",
+        "zh": "请检查您的邮箱。重置链接有效期为24小时。",
+        "fr": "Veuillez vérifier votre boîte de réception. Le lien de réinitialisation est valide pendant 24 heures.",
+        "es": "Por favor, revisa tu correo electrónico. El enlace de restablecimiento es válido durante 24 horas.",
+        "ar": "يرجى التحقق من صندوق بريدك. رابط إعادة التعيين صالح لمدة 24 ساعة.",
+        "ru": "Пожалуйста, проверьте вашу почту. Ссылка для сброса будет действительна в течение 24 часов."
+    },
+    "notify_card_issue_subject": {
+        "en": "Urgent: Payment Failed",
+        "ja": "(至急) ご登録のクレジットカードの確認",
+        "zh": "紧急：信用卡问题警报",
+        "fr": "Urgent : Alerte problème de carte",
+        "es": "Urgente: Alerta de problema con la tarjeta",
+        "ar": "تنبيه عاجل: مشكلة في البطاقة",
+        "ru": "Срочно: Оповещение о проблеме с картой"
+    },
+    "notify_card_issue_body1": {
+        "en": "We’ve encountered an issue with the card currently linked to your account and couldn’t charge the amount due. To continue using Quantz without interruption, please update your payment details as soon as possible:",
+        "ja": "現在ご登録のクレジットカードに問題が発生しています。サービスの利用を継続するために、できるだけ早くクレジットカード情報を更新してください。",
+        "zh": "我们发现您帐户上的信用卡存在问题。为了继续不间断地使用我们的服务，请尽快更新您的信用卡信息。",
+        "fr": "Nous avons rencontré un problème avec la carte de crédit enregistrée sur votre compte. Pour continuer à utiliser nos services sans interruption, veuillez mettre à jour vos informations de carte de crédit dès que possible.",
+        "es": "Hemos encontrado un problema con la tarjeta de crédito registrada en su cuenta. Para continuar utilizando nuestros servicios sin interrupciones, actualice la información de su tarjeta de crédito lo antes posible.",
+        "ar": "لقد واجهنا مشكلة في بطاقة الائتمان المسجلة لحسابك. لمواصلة استخدام خدماتنا بدون انقطاع، يرجى تحديث معلومات بطاقة الائتمان الخاصة بك في أقرب وقت ممكن.",
+        "ru": "Мы столкнулись с проблемой с кредитной картой, зарегистрированной на вашем аккаунте. Чтобы продолжить использование наших услуг без перерывов, пожалуйста, обновите информацию о вашей кредитной карте как можно скорее."
+    },
+    "notify_card_issue_click": {
+        "en": "Update Card Details",
+        "ja": "クリックしてカードを更新",
+        "zh": "点击此处更新您的卡信息",
+        "fr": "Cliquez ici pour mettre à jour votre carte",
+        "es": "Haga clic aquí para actualizar su tarjeta",
+        "ar": "اضغط هنا لتحديث بطاقتك",
+        "ru": "Нажмите здесь, чтобы обновить вашу карту"
+    },
+    "notify_card_issue_body2": {
+        "en": "Until a valid payment method is added, your Quantz button will be temporarily deactivated.",
+        "ja": "有効なカードが登録されるまで、システムの使用は一時的に停止されます。この件に迅速に対応していただき、サービスを中断することなく引き続きご利用いただけることを願っています。",
+        "zh": "在注册有效卡之前，您的系统使用将暂时被挂起。我们感谢您对此事的立即关注，以继续享受不间断的服务。",
+        "fr": "Jusqu'à ce qu'une carte valide soit enregistrée, votre utilisation du système sera temporairement suspendue. Nous apprécions votre attention immédiate à ce sujet pour continuer à profiter des services sans interruption.",
+        "es": "Hasta que se registre una tarjeta válida, el uso de su sistema será suspendido temporalmente. Agradecemos su atención inmediata a este asunto para continuar disfrutando de los servicios sin interrupciones.",
+        "ar": "حتى يتم تسجيل بطاقة صالحة، سيتم تعليق استخدام النظام مؤقتًا. نقدر اهتمامكم الفوري بهذه القضية لمواصلة الاستمتاع بالخدمات دون انقطاع.",
+        "ru": "До регистрации действующей карты использование системы будет временно приостановлено. Мы ценим ваше немедленное внимание к этому вопросу, чтобы вы могли продолжать наслаждаться нашими услугами без перерывов."
+    },
+    "free_call_given_subject": {
+        "en": "You Got $0 Free Quantz Credits!",
+        "ja": "$0回分($1ドル分)の無料のクレジットが付与されました",
+        "zh": "已授予免费额度",
+        "fr": "Crédit gratuit accordé",
+        "es": "Crédito gratuito concedido",
+        "ar": "تم منحك رصيد مجاني",
+        "ru": "Бесплатные кредиты предоставлены"
+    },
+    "free_call_given_body1": {
+        "en": "We hope you’ve been enjoying Quantz so far!",
+        "ja": "Quantzをご利用いただきありがとうございます。",
+        "zh": "尊敬的Quantz用户，",
+        "fr": "Chers utilisateurs de Quantz,",
+        "es": "Queridos usuarios de Quantz,",
+        "ar": "أعزائي مستخدمي Quantz،.",
+        "ru": "Уважаемые пользователи Quantz,"
+    },
+    "free_call_given_body2": {
+        "en": "To thank you for being our customer, we sent you $0 free credits - you have a whole month to use them.",
+        "ja": "おめでとうございます🎉一ヶ月間使える無料のクレジット$0回分($1ドル分)が付与されました。",
+        "zh": "恭喜您🎉您已获得$0免费信用额，可用于一个月。",
+        "fr": "Félicitations🎉 Vous avez reçu un crédit gratuit de $0 à utiliser pendant un mois.",
+        "es": "¡Felicidades🎉 Se te han acreditado $0 créditos gratuitos para usar durante un mes.",
+        "ar": "تهانينا🎉 لقد تم إضافة اعتمادات مجانية بقيمة $0 لاستخدامها لمدة شهر.",
+        "ru": "Поздравляем🎉 Вам начислено $0 бесплатных кредитов на использование в течение месяца."
+    },
+    "free_call_given_body3": {
+        "en": "Let’s keep your users happy.",
+        "ja": "今後ともQuantzをよろしくお願い致します。",
+        "zh": "感谢您继续使用Quantz。",
+        "fr": "Merci de continuer à utiliser Quantz.",
+        "es": "Gracias por continuar utilizando Quantz.",
+        "ar": "شكرًا لاستمرارك في استخدام Quantz.",
+        "ru": "Спасибо, что продолжаете пользоваться Quantz."
+    },
+    "chatdata_report_subject": {
+        "ja": "ユーザーとのセッションが行われました",
+        "en": "",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "chatdata_report_time_label": {
+        "ja": "セッション時刻",
+        "en": "",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "chatdata_user_label": {
+        "ja": "ユーザー",
+        "en": "User",
+        "zh": "用户",
+        "fr": "Utilisateur",
+        "es": "Usuario",
+        "ar": "المستخدم",
+        "ru": "Пользователь"
+    },
+    "chatdata_assistant_label": {
+        "ja": "オペレーター",
+        "en": "Operator",
+        "zh": "操作员",
+        "es": "Operador",
+        "fr": "Opérateur",
+        "ar": "المشغل",
+        "ru": "Оператор"
+    }
+}

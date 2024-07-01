@@ -1,0 +1,69 @@
+{%extends "general/base.html" %}
+
+{% block head %}
+<link rel=stylesheet href=/css/main.css>
+<script src="/js/simplicity/dist/simplicity.js"></script>
+{% endblock %}
+
+{% block content %}
+{% include 'common/header.html' %}
+
+<div id="transaction-info" style="padding: 50px;">
+    <h1 style="font-size: 19px; font-weight: 400;">特定商取引法に基づく表記</h1>
+    <table bgcolor="#999999" border="0" cellpadding="9" cellspacing="1" style="font-size:13px;text-align:left">
+        <tr>
+            <th bgcolor="#f2f7fa">販売業者の名称</th>
+            <td bgcolor="#FFFFFF">ThinkX株式会社</td>
+        </tr>
+        <tr>
+            <th bgcolor="#f2f7fa">所在地</th>
+            <td bgcolor="#FFFFFF">東京都港区六本木７−７−７　Ｔｒｉ－Ｓｅｖｅｎ　Ｒｏｐｐｏｎｇｉ　８Ｆ</td>
+        </tr>
+        <tr>
+            <th bgcolor="#f2f7fa">電話番号</th>
+            <td bgcolor="#FFFFFF">050-5534-5893</td>
+        </tr>
+        <tr>
+            <th bgcolor="#f2f7fa">メールアドレス</th>
+            <td bgcolor="#FFFFFF">{{ mail_support }}</td>
+        </tr>
+        <tr>
+            <th bgcolor="#f2f7fa">運営統括責任者</th>
+            <td bgcolor="#FFFFFF">大塚一輝</td>
+        </tr>
+        <tr>
+            <th bgcolor="#f2f7fa">追加手数料等の追加料金</th>
+            <td bgcolor="#FFFFFF">なし</td>
+        </tr>
+        <tr>
+            <th bgcolor="#f2f7fa">交換および返品（返金ポリシー）</th>
+            <td bgcolor="#FFFFFF">
+                <p>＜お客様都合の返品・交換の場合＞</p>
+                <p>お客様都合の返品は致しかねますのでご了承ください。</p>
+                <p>＜商品に不備がある場合＞</p>
+                <p>何らかの不備が生じた場合は調査の上、返金等の処理を行います。まずはお客様サポートセンターまでご連絡ください。</p>
+            </td>
+        </tr>
+        <tr>
+            <th bgcolor="#f2f7fa">引渡時期</th>
+            <td bgcolor="#FFFFFF">-</td>
+        </tr>
+        <tr>
+            <th bgcolor="#f2f7fa">受け付け可能な決済手段</th>
+            <td bgcolor="#FFFFFF">クレジットカード</td>
+        </tr>
+        <tr>
+            <th bgcolor="#f2f7fa">決済期間</th>
+            <td bgcolor="#FFFFFF">ご登録から一ヶ月おきの請求サイクルごとに使用量に応じてご登録のクレジットカードへ請求され、決済はただちに処理されます。</td>
+        </tr>
+        <tr>
+            <th bgcolor="#f2f7fa">販売価格</th>
+            <td bgcolor="#FFFFFF">サイトトップまたは設定ページ等に記載の金額</td>
+        </tr>
+    </table>
+</div>
+{% include 'common/footer.html' %}
+{% endblock %}
+
+{% block foot %}
+{% endblock %}

@@ -1,0 +1,132 @@
+div.MaterialSampleAnswerView {
+
+    @answer-title: #328eb0;
+    @answer-text: #cbcbcb;
+    @review-title: #328eb0;
+    @review-text: #9aa4a6;
+    @review-bg: #31373b;
+    @loader-bg: #ececec;
+
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+
+    div.mainContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        padding-bottom: 200px;
+
+        div.answerContainer {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+
+            div.answerTitleWrapper {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: start;
+
+                img.answerIcon {
+                }
+                h6.title {
+                    color: @answer-title;
+                }
+            }
+            p.answerContent {
+                color: @answer-text;
+                padding: 20px 0 20px 0;
+                font-size: 0.9rem;
+                span.visible {
+                    opacity: 1;
+                    transition: opacity 30ms linear;
+                }
+                span.invisible {
+                    visibility: hidden;
+                }
+                span.fadein {
+                    opacity: 0;  /* Initially set to 0 */
+                    transition: opacity 30ms linear;  /* Define the transition */
+                }
+            }
+            div.gradientViewIndicator {
+                width: 100%;
+                margin-top: 10px;
+                div.indicator-container {
+                    div.indicator-wrapper {
+                        padding: 6px 0 6px 0;  // this value should be correspond with the inputOuter display height
+                    }
+                    svg {
+                    }
+                }
+            }
+        }
+        div.reviewContainer {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            margin-top: 20px;
+
+            div.reviewTitleWrapper {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: start;
+
+                img.reviewIcon {
+                }
+                h6.title {
+                    color: @review-title;
+                }
+            }
+            p.reviewContent {
+                color: @review-text;
+                background-color: @review-bg;
+                padding: 11px 15px 10px 14px;
+                font-size: 0.9rem;
+                margin-top: 20px;
+                border-radius: 4px;
+                span.visible {
+                    opacity: 1;
+                    transition: opacity 10ms linear;
+                }
+                span.invisible {
+                    visibility: hidden;
+                }
+                span.fadein {
+                    opacity: 0;  /* Initially set to 0 */
+                    transition: opacity 10ms linear;  /* Define the transition */
+                }
+ 
+            }
+            div.gradientViewIndicator {
+                width: 100%;
+                margin-top: 10px;
+                div.indicator-container {
+                    div.indicator-wrapper {
+                        padding: 6px 0 6px 0;  // this value should be correspond with the inputOuter display height
+                    }
+                    svg {
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Visibility toggling
+div.MaterialSampleAnswerView.visible {
+    @visible-bg: #282828;
+ 
+    background-color: @visible-bg;
+}
+div.MaterialSampleAnswerView.hidden {
+    @hidden-bg: #fff;
+
+    background-color: @hidden-bg;
+}
+

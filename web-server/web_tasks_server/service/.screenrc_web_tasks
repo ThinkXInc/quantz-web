@@ -1,0 +1,36 @@
+# Turn off the startup message
+startup_message off
+
+# Setup automatic window splitting for four logs
+layout new logs
+
+# Create 3 splits, which with the initial window, makes 4 areas
+split -v
+focus
+split -v
+focus
+split -v
+focus
+
+# Setup each window to run a journalctl command
+select 0
+screen -t "Transcribe Worker"
+stuff "journalctl -fu transcribe_worker.service --output cat^M"
+
+focus
+select 1
+screen -t "Process Transcript"
+stuff "journalctl -fu process_transcript_worker.service --output cat^M"
+
+focus
+select 2
+screen -t "Handle LLM Outputs"
+stuff "journalctl -fu handle_llm_outputs.worker.service --output cat^M"
+
+focus
+select 3
+screen -t "Respond Worker"
+stuff "journalctl -fu respond_worker.service --output cat^M"
+
+# Select the first window for convenience
+select 0

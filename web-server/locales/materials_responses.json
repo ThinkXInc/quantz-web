@@ -1,0 +1,299 @@
+{
+    "material_list_success": {
+        "en": "Successfully got material list.",
+        "ja": "正常にドキュメントリストを取得しました。",
+        "zh": "成功获取材料列表。",
+        "fr": "Liste de matériaux obtenue avec succès.",
+        "es": "Lista de materiales obtenida con éxito.",
+        "ar": "تم الحصول على قائمة المواد بنجاح.",
+        "ru": "Список материалов успешно получен."
+    },
+    "material_list_failed": {
+        "en": "Failed to get material list.",
+        "ja": "ドキュメントリストの取得に失敗しました。",
+        "zh": "获取材料列表失败。",
+        "fr": "Échec de l'obtention de la liste des matériaux.",
+        "es": "Fallo al obtener la lista de materiales.",
+        "ar": "فشل في الحصول على قائمة المواد.",
+        "ru": "Не удалось получить список материалов."
+    },
+    "material_single_success": {
+        "en": "Successfully got single material.",
+        "ja": "正常にドキュメントを取得しました。",
+        "zh": "成功获取单个材料。",
+        "fr": "Matériel unique obtenu avec succès.",
+        "es": "Material individual obtenido con éxito.",
+        "ar": "تم الحصول على مادة فردية بنجاح.",
+        "ru": "Успешно получен один материал."
+    },
+    "material_delete_success": {
+        "en": "Successfully delete material.",
+        "ja": "正常にドキュメントを削除しました。",
+        "zh": "成功删除材料。",
+        "fr": "Matériel supprimé avec succès.",
+        "es": "Material eliminado con éxito.",
+        "ar": "تم حذف المادة بنجاح.",
+        "ru": "Материал успешно удален."
+    },
+    "material_single_failed": {
+        "en": "Failed to get single material.",
+        "ja": "ドキュメントの取得に失敗しました。",
+        "zh": "获取单个材料失败。",
+        "fr": "Échec de l'obtention du matériel unique.",
+        "es": "Fallo al obtener material individual.",
+        "ar": "فشل في الحصول على مادة فردية.",
+        "ru": "Не удалось получить один материал."
+    },
+    "material_save_error": {
+        "en": "Falied to save new material.",
+        "ja": "ドキュメントの保存に失敗しました。",
+        "zh": "保存新材料失败。",
+        "fr": "Échec de l'enregistrement du nouveau matériel.",
+        "es": "Fallo al guardar el nuevo material.",
+        "ar": "فشل في حفظ المادة الجديدة.",
+        "ru": "Не удалось сохранить новый материал."
+    },
+    "material_vectordb_save_error": {
+        "en": "Falied to save new material vector db.",
+        "ja": "ドキュメントベクターの保存に失敗しました。",
+        "zh": "保存新材料向量数据库失败。",
+        "fr": "Échec de l'enregistrement de la nouvelle base de données vectorielle de matériaux.",
+        "es": "Fallo al guardar la nueva base de datos vectorial de material.",
+        "ar": "فشل في حفظ قاعدة بيانات الناقل الجديدة للمادة.",
+        "ru": "Не удалось сохранить новую векторную базу данных материалов."
+    },
+    "material_update_error": {
+        "en": "Falied to update material.",
+        "ja": "ドキュメントの更新に失敗しました。",
+        "zh": "更新材料失败。",
+        "fr": "Échec de la mise à jour du matériel.",
+        "es": "Fallo al actualizar el material.",
+        "ar": "فشل في تحديث المادة.",
+        "ru": "Не удалось обновить материал."
+    },
+    "material_vectordb_update_error": {
+        "en": "Falied to update material vectordb.",
+        "ja": "マテリアベクターの更新に失敗しました。",
+        "zh": "更新材料向量数据库失败。",
+        "fr": "Échec de la mise à jour de la base de données vectorielle des matériaux.",
+        "es": "Fallo al actualizar la base de datos vectorial del material.",
+        "ar": "فشل في تحديث قاعدة بيانات الناقل للمادة.",
+        "ru": "Не удалось обновить векторную базу данных материалов."
+    },
+    "material_delete_failed": {
+        "en": "Failed to delete material by id $0.",
+        "ja": "ドキュメントの削除に失敗しました。 (id=$0)",
+        "zh": "删除材料失败，材料ID为$0。",
+        "fr": "Échec de la suppression du matériel avec l'ID $0.",
+        "es": "No se pudo eliminar el material con identificación $0.",
+        "ar": "فشل في حذف المادة بالمعرف $0.",
+        "ru": "Не удалось удалить материал с идентификатором $0."
+    },
+    "material_vectordb_delete_failed": {
+        "en": "Failed to delete material vectordb by id $0.",
+        "ja": "ドキュメントベクターの削除に失敗しました。 (id=$0)",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "material_not_found": {
+        "en": "Falied not found by id $0.",
+        "ja": "ドキュメントが見つかりません。 (id=$0)",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "material_process_started": {
+        "en": "material start processing.",
+        "ja": "ドキュメントの処理を開始",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "material_still_processing": {
+        "en": "Still processing material ...",
+        "ja": "ドキュメントの処理中..",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "material_process_failed": {
+        "en": "Failed to process material.",
+        "ja": "ドキュメントの処理に失敗しました。文章を変えて再度お試しください。",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "material_process_unexpected_result": {
+        "en": "Material processed. But the result is unexpected.",
+        "ja": "ドキュメントの処理が完了しましたが予期せぬ結果が起こりました。",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "answer_started": {
+        "en": "start creating test answer.",
+        "ja": "テスト回答の生成を開始",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "answer_still_processing": {
+        "en": "Still creating test answer ...",
+        "ja": "テスト回答を生成中..",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "answer_failed": {
+        "en": "Failed to generate test answer",
+        "ja": "サンプル回答の生成に失敗しました。時間を置いて再度お試しください。",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "answer_unexpected_result": {
+        "en": "Test answer generated. But unexpected results occured.",
+        "ja": "サンプル回答の生成が完了しましたが予期せぬ結果が起こりました。",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "answer_saved": {
+        "en": "Test answer generated saved.",
+        "ja": "サンプル回答を保存しました。",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "review_started": {
+        "en": "start creating review.",
+        "ja": "レビューの生成を開始",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "review_still_processing": {
+        "en": "Still creating review ...",
+        "ja": "レビューを生成中..",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "review_failed": {
+        "en": "Failed to generate review",
+        "ja": "レビューの生成に失敗しました。時間を置いて再度お試しください。",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "review_unexpected_result": {
+        "en": "Review generated. But unexpected results occured.",
+        "ja": "レビューの生成が完了しましたが予期せぬ結果が起こりました。",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "review_saved": {
+        "en": "Review generated and saved.",
+        "ja": "レビューを保存しました。",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "material_created": {
+        "en": "material $0 are saved.",
+        "ja": "ドキュメント$0が作成されました。",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "material_updated": {
+        "en": "\"$0\" are updated.",
+        "ja": "\"$0\"が正常に更新されました。",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "material_update_failed": {
+        "en": "Failed to update material.",
+        "ja": "ドキュメントの更新に失敗しました。",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "title_updated": {
+        "en": "The title successfully updated.",
+        "ja": "タイトルが正常に更新されました。",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "text_updated": {
+        "en": "The text successfully updated.",
+        "ja": "ドキュメントが正常に更新されました。",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "keywords_updated": {
+        "en": "The keywords successfully updated.",
+        "ja": "キーワードが正常に更新されました。",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "question_saved": {
+        "en": "The question successfully saved.",
+        "ja": "質問例が正常に保存されました。",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    }
+}

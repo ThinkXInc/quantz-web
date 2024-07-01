@@ -1,0 +1,7 @@
+# Configurations for screen
+hardstatus alwayslastline I%wI
+vbell off
+zombie "^d^r"
+
+# Start the first window for uWSGI log
+screen -t "uWSGI Log" 0 journalctl --output=cat -u uwsgi.service -f

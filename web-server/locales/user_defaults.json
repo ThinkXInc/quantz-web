@@ -1,0 +1,16 @@
+{
+    "operator_name_default": {
+        "ja": "クオンツ",
+        "en": "Quantz",
+
+    },
+    "first_message_default": {
+        "en": "Connection established. Please tell us what you would like to know while pressing the button.",
+        "ja": "接続しました。ボタンを押しながらサービスについて知りたいことを話してください。",
+        "zh": "已连接。请按下按钮的同时告诉我们您想了解的服务信息。",
+        "fr": "Connexion établie. Veuillez nous indiquer ce que vous souhaitez savoir en appuyant sur le bouton.",
+        "es": "Conexión establecida. Por favor, infórmenos qué le gustaría saber mientras presiona el botón.",
+        "ar": "تم الاتصال. الرجاء إخبارنا بما ترغب في معرفته أثناء الضغط على الزر.",
+        "ru": "Соединение установлено. Пожалуйста, скажите нам, что вы хотели бы узнать, нажимая на кнопку."
+    }
+}

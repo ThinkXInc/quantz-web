@@ -1,0 +1,265 @@
+{%extends "general/base.html" %}
+
+{% block head %}
+<link rel=stylesheet href=/css/main.css>
+{% endblock %}
+
+{% block content %}
+<script>
+{
+    const lang = "{{ lang }}"
+    const langName = "{{ lang_name }}"
+
+    window.lang = lang;
+    window.langName = langName;
+}
+</script>
+
+<section id="sample-6thmobile">
+<header>
+    <img class="logo" src="/img/sample_sites/6thmobile/logo.png"/>
+    <nav>
+        <ul>
+            <li><a href="#products">Products</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#pricing">Price</a></li>
+            <li><a href="#network">Network</a></li>
+            <li><a href="#support">Support</a></li>
+            <li><a href="#points">Points</a></li>
+            <li><a href="#campaign">Campaign</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="top-view">
+    <!--<img src="header-image.jpg" alt="Boundless Mobile World" />-->
+    <h1>Your Connection to a Boundless Mobile World</h1>
+    <p>Explore the limitless possibilities with 6thMobile's state-of-the-art network solutions.</p>
+</section>
+
+<div class="main">
+    <!--
+    <section class="welcome">
+        <h2>Welcome to 6thMobile</h2>
+        <p>where we combine unbeatable data packages with an array of rewards to make your mobile experience simply exceptional!</p>
+    </section>
+-->
+    <section class="plan-offerings">
+        <h2>Diverse Plans to Suit Every User</h2>
+        <!--<p>Plan Offerings at 6thMobile:</p>-->
+        <ul>
+            <li>
+                <h3>Light Plan</h3>
+                <p>Designed for the occasional user, the Light Plan offers an economical solution to mobile connectivity. For a monthly fee of $25 (excluding tax), subscribers receive a bundle of 30 minutes of talk time. This plan is ideal for those who prioritize texting and light calling over data usage. Additional usage rates apply at 26 cents per 30-second increment.</p>
+            </li>
+            <li>
+                <h3>Basic Plan</h3>
+                <p>Tailored for moderate users, the Basic Plan provides an extended talk time of 60 minutes for a monthly charge of $35 (excluding tax). This plan suits subscribers who enjoy keeping in touch via calls without the need for extensive data services. Beyond the included minutes, calls are billed at 26 cents per 30-second segment.</p>
+            </li>
+            <li>
+                <h3>Plus Plan</h3>
+                <p>The Plus Plan is perfect for users seeking more from their mobile experience. At $45 per month (excluding tax), this plan includes 90 minutes of call time and rewards subscribers with 500MB of bonus data for on-the-go internet access. Calls beyond the allotted minutes are priced at 24 cents per 30 seconds, providing a balance between affordability and utility.</p>
+            </li>
+            <li>
+                <h3>Premium Plan</h3>
+                <p>For the most demanding mobile users, the Premium Plan offers a comprehensive package. Priced at $55 monthly (excluding tax), customers enjoy 120 minutes of talk time along with 1GB of data, ideal for browsing, streaming, and staying connected. Additional talk time is charged at a reduced rate of 22 cents per 30 seconds, making this plan a leading choice for heavy users who require both extensive talk time and data access.</p>
+            </li>
+        </ul>
+        <p>Each of these plans is designed to cater to different user needs, from basic calling facilities to more robust packages combining talk time with data perks. Subscribers can choose a plan that best fits their lifestyle and usage patterns, ensuring they always have the right amount of talk time and data at their fingertips. Moreover, all plan holders can take advantage of our various add-ons and features, such as data top-ups, international calling packages, and exclusive member discounts, further enhancing their mobile experience with 6thMobile.</p>
+    </section>
+ 
+    <section class="plans">
+        <h2>Unlimited Possibilities</h2>
+        <p>For just 24 cents per 30 seconds and a monthly base fee of $65 (excluding tax), our Family Trio Plan offers uninterrupted services when you subscribe to 6thMobile Broadband or Air and choose to pay with the 6thPay card. Once you join, enjoy the perks month after month, with a tax-inclusive fee of $71 per month, per person.</p>
+        <ul>
+            <li>Subscription to 6thMobile Broadband Family incurs a monthly basic fee of $57, plus selected add-ons starting from $5 monthly. Opt-out requires a cancellation fee of $57 if discontinued outside the contract renewal months, following our two-year auto-renewal agreement.</li>
+        </ul>
+        <p>Rich Rewards with Every Purchase Earn plentiful 6thPay points on your purchases, maximizing your savings and enjoyment!</p>
+    </section>
+
+   
+    <section class="discounts-special-offers">
+        <h2>Discounts and Special Offers</h2>
+        <ul>
+            <li><strong>Family Discount:</strong> Save up to $11 monthly when adding family members.</li>
+            <li><strong>Home Discount Set:</strong> Enjoy a $10 discount monthly when combined with 6thMobile Broadband.</li>
+        </ul>
+    </section>
+    
+    <section class="billing-management">
+        <h2>Flexible Billing and Easy Management</h2>
+        <p>View and manage your plans, change or purchase options, and simulate potential bills through our user-friendly online platform. This streamlined process ensures you can easily keep track of your expenses and adjust your services as needed, all from the comfort of your home or on the go.</p>
+        <div class="image-container">
+            <img src="/img/sample_sites/6thmobile/billing_en.png" alt="無限のモバイルワールド" />
+        </div>
+    </section>
+    
+    <section class="tailored-calling-options">
+        <h2>Tailored Calling Options at 6thMobile</h2>
+        <ul>
+            <li>
+                <h3>Starter Call Option+</h3>
+                <p>For individuals who engage in brief, frequent calls, our Starter Call Option+ is an economical choice. At a monthly rate of $8 (excluding tax, $8.80 including tax), this option offers the convenience of free calls that last up to 5 minutes each. It's perfect for quick check-ins or short conversations, ensuring that you stay connected without unnecessary expenses.</p>
+            </li>
+            <li>
+                <h3>Extended Call Option+</h3>
+                <p>Aimed at users who require extended call durations, the Extended Call Option+ ensures that every conversation can be as long as needed. For $18 per month (excluding tax, $19.80 including tax), subscribers enjoy unlimited call time to any domestic number at any time of day. This option is ideal for professionals and individuals who frequently use their phones for longer discussions.</p>
+            </li>
+            <li>
+                <h3>Flexible Call Bundle+</h3>
+                <p>The Flexible Call Bundle+ adapts to your usage each month. For $12 monthly (excluding tax, $13.20 with tax), it includes up to 40 minutes of call time. If your usage exceeds this limit, the plan automatically adjusts to provide an additional 20 minutes for $5 more, ensuring you always have enough minutes without paying for unnecessary extras.</p>
+            </li>
+            <li>
+                <h3>Family Call Pack+</h3>
+                <p>Specifically designed for families, this option allows all registered family members under the same plan to make unlimited calls to each other for a flat fee of $15 per month (excluding tax, $16.50 including tax). It's a cost-effective way for families to stay connected without worrying about individual call charges.</p>
+            </li>
+        </ul>
+        <p>Each of these options includes features such as voicemail Plus, call waiting, group calling, and a spend cap service, which prevents unexpected high bills by setting a limit on the maximum call charges per month. Subscribers can easily add or modify these options through their online account management portal, providing flexibility and control over their mobile services. This structured approach to call options ensures that all 6thMobile customers can tailor their phone usage to their specific needs, combining both flexibility and cost-efficiency.</p>
+    </section>
+
+    <section class="customize-mobile">
+        <h2>Customize Your Mobile Experience with 6thMobile Options</h2>
+        <p>At 6thMobile, we understand that everyone uses their mobile device differently. That’s why we offer a range of customizable options to enhance your mobile plan according to your specific needs. Whether you’re looking to save unused data, get discounts for family and home services, or protect your device, we have the right option for you. Explore our initial offerings and stay tuned as we add more ways to tailor your mobile experience!</p>
+    </section>
+    
+    <section class="service-options">
+        <h2>Explore Our Extensive Range of Service Options at 6thMobile</h2>
+        <p>At 6thMobile, we pride ourselves on offering a broad spectrum of mobile services tailored to every conceivable need. From enhanced security to entertainment and practical tools, our options ensure that every customer finds precisely what they're looking for. Dive into our expansive list of service options, each designed to enrich your mobile experience:</p>
+    </section>
+
+    <section class="security-protection">
+        <h2>Security and Protection</h2>
+        <ul>
+            <li><strong>Tablet Security Pack:</strong> Comprehensive security for your tablet, including malware protection and data breach alerts.</li>
+            <li><strong>Tablet Security Pack Plus:</strong> Advanced protection with additional features like lost device location and remote data wipe.</li>
+            <li><strong>Smartphone Basic Pack:</strong> Essential tools and settings to optimize your smartphone experience.</li>
+            <li><strong>Smartphone Security Pack:</strong> Protects your phone from viruses, malware, and other threats.</li>
+            <li><strong>Smartphone Security Pack Plus:</strong> Premium security offering encryption, anti-theft, and web protection.</li>
+            <li><strong>Remote Lock Security:</strong> Secure your device remotely to protect your personal information in case of loss or theft.</li>
+            <li><strong>Comprehensive Security Set:</strong> A full suite of security tools covering everything from antivirus to secure VPN.</li>
+            <li><strong>Data Safe Box:</strong> Safely store and back up your personal data in an encrypted, cloud-based vault.</li>
+        </ul>
+    </section>
+    
+    <section class="financial-services">
+        <h2>Financial and Transactional Services</h2>
+        <ul>
+            <li><strong>Assist Guide:</strong> Navigate your phone’s features and services with an interactive guide.</li>
+            <li><strong>App Store & iTunes Gift Cards:</strong> Purchase and send gift cards directly from your device.</li>
+            <li><strong>Unified Payments for App Store and Apple Music:</strong> Manage and pay for all your subscriptions in one place.</li>
+            <li><strong>Entertainment Bonuses:</strong> Access special discounts and free trials from leading entertainment providers.</li>
+        </ul>
+    </section>
+    
+    <section class="family-personal-safety">
+        <h2>Family and Personal Safety</h2>
+        <ul>
+            <li><strong>Family Mobile App:</strong> Keep your family connected with location sharing and safety alerts.</li>
+            <li><strong>Family Basic Mobile Pack:</strong> Essential services for family phones, including monitoring and controls.</li>
+            <li><strong>Navigation Assist:</strong> Turn-by-turn GPS navigation to keep you on the right path.</li>
+            <li><strong>Notification Services:</strong> Get alerts about usage, bills, and important updates directly on your phone.</li>
+        </ul>
+    </section>
+    
+    <section class="advanced-connectivity">
+        <h2>Advanced Connectivity Options</h2>
+        <ul>
+            <li><strong>Web Safety Services:</strong> Stay safe online with enhanced browsing protection.</li>
+            <li><strong>AI Smart Coach:</strong> Personalized usage tips and optimization strategies powered by AI.</li>
+            <li><strong>Email Anywhere Access:</strong> Access and manage your email from any device, with additional features for exporting contacts.</li>
+            <li><strong>Premium Loyalty Program (LYP Premium):</strong> Rewarding loyal customers with exclusive offers and benefits.</li>
+        </ul>
+    </section>
+    
+    <section class="travel-international">
+        <h2>Travel and International</h2>
+        <ul>
+            <li><strong>Remote Initialization Service:</strong> Remotely reset your device to factory settings when traveling or changing devices.</li>
+            <li><strong>International Simple Unlimited:</strong> Enjoy unlimited data and calls when traveling in select countries.</li>
+            <li><strong>Overseas Packet Freedom:</strong> No data limits or excessive charges while abroad.</li>
+            <li><strong>Travel Insurance:</strong> Comprehensive travel coverage for peace of mind during your journeys.</li>
+        </ul>
+    </section>
+    
+    <section class="community-emergency-services">
+        <h2>Community and Emergency Services</h2>
+        <ul>
+            <li><strong>Emergency Message Board:</strong> Leave and retrieve messages during disasters or emergencies.</li>
+            <li><strong>Fraud Protection Wall:</strong> Advanced technology to protect against scams and fraudulent activities.</li>
+            <li><strong>Community Alert Services:</strong> Receive immediate alerts about local emergencies, weather, and safety advisories.</li>
+        </ul>
+    </section>
+    
+    <section class="additional-utilities">
+        <h2>Additional Utilities</h2>
+        <ul>
+            <li><span class="title">Smart Customization</span> Customize your phone's interface and functionality to suit your preferences.</li>
+            <li><span class="title">Smart Login</span> Secure and simplified login process for all your mobile apps and services.</li>
+            <li><span class="title">Smartphone First-Time Guide</span> Step-by-step support for new smartphone users, making the transition smooth and stress-free.</li>
+        </ul>
+    </section>
+    
+
+    <section class="additional-services">
+        <h2>Additional Services</h2>
+        <ol>
+            <li><span class="title">Data Roll-Over Plus</span> Allows unused data to be carried over to the next month, maximizing your data plan.</li>
+            <li><span class="title">6th Family Discount</span> Offers discounted plan rates when multiple family members join under one account.</li>
+            <li><span class="title">Home Combo Discount</span> Provides a monthly discount for users who combine their mobile plan with 6thMobile’s home internet service.</li>
+            <li><span class="title">Security Pack Basic</span> Offers basic security features including malware protection and secure browsing.</li>
+            <li><span class="title">Security Pack Advanced</span> Includes comprehensive security measures such as advanced malware protection, anti-theft features, and secure Wi-Fi connections.</li>
+            <li><span class="title">Smartphone Basic Pack</span> A starter kit for new smartphone users, including essential apps and data management tools.</li>
+            <li><span class="title">Tethering Option</span> Allows your phone to be used as a Wi-Fi hotspot, sharing your data allowance with other devices.</li>
+            <li><span class="title">International Roaming Pack</span> Enables affordable data and call rates while traveling abroad.</li>
+            <li><span class="title">Call Filter Service</span> Blocks unwanted calls and messages, enhancing privacy and reducing spam.</li>
+            <li><span class="title">Premium Voicemail Services</span> Offers enhanced voicemail features, such as transcriptions and increased storage.</li>
+            <li><span class="title">Group Call Add-on</span> Allows multiple users to participate in a single call, ideal for family or team meetings.</li>
+            <li><span class="title">Entertainment Pack</span> Provides access to premium streaming services and exclusive digital content.</li>
+            <li><span class="title">Device Insurance Plus</span> Comprehensive insurance covering loss, theft, and damage of your mobile device.</li>
+            <li><span class="title">Emergency Alert Service</span> Sends alerts and updates during emergencies and natural disasters.</li>
+            <li><span class="title">Backup and Sync Service</span> Automatically backs up data like contacts, photos, and documents to the cloud.</li>
+            <li><span class="title">Device Upgrade Program</span> Enables customers to upgrade their device to the latest model at a discounted rate.</li>
+            <li><span class="title">Data Boost Option</span> Purchase additional data at competitive rates whenever needed.</li>
+            <li><span class="title">Family Locator Service</span> Keep track of family members’ locations for safety and coordination.</li>
+            <li><span class="title">Parental Control Suite</span> Provides tools for parents to manage and monitor their children's mobile usage.</li>
+            <li><span class="title">Music Freedom Pack</span> Stream music from popular services without using your data allowance.</li>
+            <li><span class="title">Smart Home Integration</span> Manage smart home devices directly from your smartphone.</li>
+            <li><span class="title">Financial Services Pack</span> Access to mobile banking, transaction alerts, and financial management tools.</li>
+            <li><span class="title">Health and Wellness Hub</span> Features health tracking, virtual doctor visits, and wellness tips.</li>
+            <li><span class="title">Eco-Friendly Options</span> Incentives for using environmentally friendly mobile practices.</li>
+            <li><span class="title">Gaming Enhancer Pack</span> Optimize your mobile device for a better gaming experience with lower latency and exclusive content.</li>
+            <li><span class="title">Travel Assist Plan</span> Get real-time travel information, translation help, and emergency services while traveling.</li>
+            <li><span class="title">Business Toolkit</span> Access to business-grade services, including virtual meeting tools and mobile office applications.</li>
+            <li><span class="title">Content Creation Kit</span> Tools and apps designed for enhancing mobile photography, video production, and social media posting.</li>
+            <li><span class="title">Sports and Fitness Tracker</span> Integration with popular fitness apps and exclusive sports content.</li>
+            <li><span class="title">Youth Plan Benefits</span> Special plans and features tailored for teenagers, including social media bundles and study aids.</li>
+            <li><span class="title">Streaming Data Saver</span> Reduces data usage while streaming videos and music.</li>
+            <li><span class="title">International Calling Pack</span> Affordable rates for international calls.</li>
+            <li><span class="title">Cloud Storage Expansion</span> Extra cloud storage for photos, videos, and documents.</li>
+            <li><span class="title">Device Health Check</span> Regular device health diagnostics and maintenance tips.</li>
+            <li><span class="title">Enhanced Privacy Settings</span> Advanced privacy features for secure communication.</li>
+            <li><span class="title">Mobile Wallet Integration</span> Seamless integration with popular mobile payment platforms.</li>
+            <li><span class="title">Language Translation Service</span> Real-time language translation for calls and texts.</li>
+            <li><span class="title">Roaming Data Saver</span> Automatically adjusts settings to reduce data usage while roaming.</li>
+            <li><span class="title">Mobile Hotspot Booster</span> Enhances your mobile hotspot's performance.</li>
+            <li><span class="title">Advanced Call Forwarding</span> Customizable call forwarding options.</li>
+            <li><span class="title">Voice Command Integration</span> Integration with voice assistants for hands-free operation.</li>
+            <li><span class="title">Enhanced Messaging Features</span> Extra features for messaging apps, such as scheduled messages.</li>
+            <li><span class="title">Battery Saver Mode</span> Optimizes battery usage for longer device life.</li>
+            <li><span class="title">Social Media Booster</span> Enhanced features for social media apps.</li>
+            <li><span class="title">24/7 Customer Support</span> Round-the-clock support for any issues or questions.</li>
+            <li><span class="title">Exclusive App Discounts</span> Discounts on popular apps and subscriptions.</li>
+            <li><span class="title">Travel Data Pack</span> Additional data for international travel.</li>
+            <li><span class="title">Emergency SOS Service</span> Immediate assistance in emergencies.</li>
+            <li><span class="title">Mobile Security Alerts</span> Real-time alerts for mobile security threats.</li>
+            <li><span class="title">Data Usage Insights</span> Detailed insights and analytics on your data usage.</li>
+        </ol>
+    </section>
+    
+
+
+</section>
+{% endblock %}
+
+{% block foot %}
+{% endblock %}   

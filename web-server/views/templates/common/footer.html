@@ -1,0 +1,15 @@
+<div class="footer quantz-basic-footer">
+    <div class="footer-content">
+        <div class="footer-links">
+            <a href="/{{ lang }}/terms" class="footer-link">{{ locale_dict["footer_links_terms"][lang] }}</a>
+            <a href="/{{ lang }}/privacy" class="footer-link">{{ locale_dict["footer_links_privacy"][lang] }}</a>
+            <a href="https://thinkxinc.com" class="footer-link">{{ locale_dict["footer_links_company"][lang] }}</a>
+            {% if lang == "ja" %}
+              <a href="/transaction_info" class="footer-link">特定商取引法に基づく表記</a>
+            {% endif %}
+       </div>
+        <div class="footer-rights">
+            © ThinkX Inc. all rights reserved, 2024
+        </div>
+    </div>
+  </div>

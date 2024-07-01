@@ -1,0 +1,14 @@
+[Unit]
+Description=Celery Worker for Process Chatdata Tasks
+After=network.target
+
+[Service]
+Type=simple
+User=kaz
+Environment="WORKER_TYPE=process_chatdata"
+WorkingDirectory=/src/quantz/web-server
+ExecStart=/src/quantz/web-server/venv/bin/celery -A web_tasks_server.run:celery_app worker -l warning --concurrency=1 -Q process_chatdata --hostname=process_chatdata_worker_1
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

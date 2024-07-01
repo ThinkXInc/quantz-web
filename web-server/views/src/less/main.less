@@ -1,0 +1,72 @@
+@charset 'UTF-8';
+// main.less
+
+// general
+@import 'general/mixin.less';
+@import 'general/effects.less';
+@import 'general/colorscheme.less';
+@import 'tools/ripple_button.less';
+
+// common
+@import 'common/header.less';
+@import 'common/footer.less';
+@import 'common/lang_selector.less';
+
+// top
+@import 'top/top.less';
+
+// terms ans privacy
+@import 'terms_and_privacy/terms_and_privacy.less';
+
+// errors
+@import 'errors/error_pages.less';
+
+// app views
+@import 'views/vertical_header.less';
+@import 'views/accounts.less';
+@import 'views/materials.less';
+@import 'views/settings.less';
+
+// sample_sites
+@import 'sample_sites/sample_sites.less';
+
+@font-face {
+  font-family: "GeosansLight";
+  src: url('/fonts/GeosansLight.ttf?-b7qzp2') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+.cf:before,
+.cf:after {
+    content: " ";
+    display: table;
+}
+.cf:after {
+    clear: both;
+}
+.cf {
+    *zoom: 1;
+}
+
+::-webkit-scrollbar {
+    width: @scrollbar-width;
+}
+  
+::-webkit-scrollbar-button {
+  background-color: #525252;
+}
+ 
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: none;
+  background-color: @scrollbar-track;
+}
+ 
+::-webkit-scrollbar-thumb {
+  background-color: @scrollbar-thumb;
+}
+
+// ----- body
+body {
+  font-family: sans-serif, 'Roboto';
+  margin: 0;
+}

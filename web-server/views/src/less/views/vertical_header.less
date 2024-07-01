@@ -1,0 +1,98 @@
+//@vertical-header-bg: #1b2837; //#0d1c2d;
+@vertical-header-bg: #2d2d2d; //#0d1c2d;
+
+#VerticalHeader {
+    width: 60px;
+    height: 100vh;
+    background-color: @vertical-header-bg;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;//space-between;
+  
+    img.logo {
+        cursor: pointer;
+        margin-top: 8px; // adjust this value as needed
+        width: 75%; // adjust this value between 80% and 90% as needed
+    }
+
+    ul.menu {
+        width: 100%;
+        margin-top: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+
+        li.item {
+            cursor: pointer;
+            width: 100%;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center; // Center the item horizontally
+            position: relative; /* Position relative for the tooltip */
+            img.icon {
+                width: 22px;
+            }
+            span.tooltip {
+                position: absolute;
+                top: 50%;
+                left: 100%; /* Positioning tooltip to the right of the item */
+                font-size: 0.9em;
+                transform: translateY(-50%);
+                background-color: black;
+                color: white;
+                padding: 5px 10px;
+                white-space: nowrap;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.3s ease, visibility 0.3s ease;
+                border-radius: 3px; /* Optional: Adds rounded corners to the tooltip */
+                box-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* Optional: Adds a slight shadow for better visibility */
+            }
+        }
+        li.item:hover {
+            span.tooltip {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+        li.logout {
+            img.logoutIcon {
+            }
+        }
+        li.settings {
+            img.settingsIcon {
+
+            }
+        }
+    }
+}
+
+@media (max-width: @smartphone-width) {
+    #VerticalHeader {
+        width: 100%;
+        height: 50px;
+        flex-direction: row;
+        padding: 3px 10px;
+        position: fixed;
+        z-index: 2;
+        box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.1);
+        img.logo {
+            width: 32px;
+            margin-top: 0;
+        }
+        ul.menu {
+            flex-direction: row;
+            margin-bottom: 0;
+            justify-content: flex-end;
+            li.item {
+                width: 40px;
+            }
+            li.item.logout {
+                margin-right: 8px;
+            }
+        }
+    }
+}

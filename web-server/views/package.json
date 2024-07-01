@@ -1,0 +1,27 @@
+{
+  "name": "quantz",
+  "version": "1.0.0",
+  "scripts": {
+    "copy:simplicity:js": "cpx \"src/js/simplicity/dist/simplicity.js\" \"js/simplicity/dist/\" --watch",
+    "copy:simplicity:css": "cpx \"src/js/simplicity/dist/simplicity_default.css\" \"js/simplicity/dist/\" --watch",
+    "compile:views:js": "npx babel src/js --out-dir js --ignore 'src/js/simplicity/node_modules/**' --watch",
+    "compile:views:css": "less-watch-compiler './src/less' './css' main.less",
+    "watch": "npm-run-all --parallel copy:simplicity:js copy:simplicity:css compile:views:js compile:views:css"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.14.3",
+    "@babel/core": "^7.14.3",
+    "@babel/preset-env": "^7.14.4",
+    "babel-loader": "^9.1.3",
+    "cpx": "^1.5.0",
+    "less": "^4.1.1",
+    "less-watch-compiler": "^1.15.2",
+    "npm-run-all": "^4.1.5"
+  },
+  "dependencies": {
+    "js-cookie": "^3.0.5",
+    "onchange": "^7.1.0",
+    "sticky-js": "^1.3.0",
+    "watch": "^0.13.0"
+  }
+}

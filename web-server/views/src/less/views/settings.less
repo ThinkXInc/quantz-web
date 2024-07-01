@@ -1,0 +1,1307 @@
+@tablet-width: 768px;
+@smartphone-width: 480px;
+
+#SettingsModalView {
+    div.bg {
+        background-color: rgba(0, 0, 0, 0.5) !important;
+        //background-color: rgba(255, 255, 255, 0.65) !important;
+    }
+    div.window {
+        width: 75%;
+        max-width: 800px;
+        div.contentWrapper {
+            height: 80vh;
+            background-color: #2e2e2e;
+            border-bottom: 1px solid #4f4f4f;
+            overflow-y: scroll;
+            h3.ModalViewTitle {
+                font-size: 1em;
+                color: #fff;
+            }
+            p.mainContent {
+            }
+        }
+        div.footer {
+            background-color: #2e2e2e;
+            button.cancelButton {
+                border: 1px solid #656565;
+                font-size: 0.9em;
+                padding: 8px 10px;
+            }
+            button.doneButton {
+                display: none;
+            }
+        }
+    }
+}
+
+@alert-red: #c97c7c;
+
+#SettingsModalViewMainContent {
+    div.PageView {
+        box-shadow: none;
+        position: relative;
+        top: initial;
+        left: initial;
+        transform: initial;
+
+        div.PageViewContainer {
+            h3.title {
+                font-size: 1em;
+                color: #fff;
+                margin-bottom: 7px;
+                padding: 0 0 2px 9px;
+                border-bottom: 1px solid #515151;
+            }
+            div.container {
+                div.TextField {
+                    div.inputOuter {
+                        border: none;
+                        h6.title {
+
+                        }
+                        div.inputWrapper {
+                            input {
+                                max-width: 35%;
+                                background-color: #fff;
+                                font-size: 1em;
+                                margin: 0;
+                                border: 1px solid #bdbdbd;
+                                padding: 8px;
+                                border-radius: 4px;
+                            }
+                            input::placeholder {
+                                font-size: 0.9em;
+                                color: #b7b7b7;
+                            }
+                            div.inputAfter {
+                                margin-left: 20px;
+                            }
+                        }
+                        div.footer {
+                            div.left {
+
+                            }
+                            div.middle {
+
+                            }
+                            div.right {
+
+                            }
+                            p.alertMessage {
+                                font-size: 0.8em;
+                            }
+                        }
+                    }
+                }
+                div.TextField.alert{
+                    div.inputOuter {
+                        h6.title {
+                            color: @alert-red !important;
+                        }
+                        div.inputWrapper {
+                            input {
+                                border: 1px solid @alert-red !important;
+                            }
+                        }
+                        div.inputAfter {
+
+                        }
+                        div.footer {
+                            div.left {
+                                p.alertMessage {
+                                    color: @alert-red !important;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Basic Settings
+#SettingsModalViewMainContent {
+    div.PageView {
+        div.PageViewContainer.BasicPage {
+            div.OriginForm, div.EmailForm {
+                div.inputOuter {
+                    border: none;
+                
+                    h6.title {
+                        color: #fff;
+                        font-size: 0.8em;
+                    }
+                    div.inputWrapper {
+                        display: flex;
+                        align-items: center;
+                        flex-direction: row;
+                        justify-content: flex-start;
+                        margin-top: 11px;
+                    }
+                    input[type=text] {
+                        font-size: 1em;
+                        margin: 0 6px 0 0;
+                        border: 1px solid #999;
+                        border-radius: 2px;
+                        padding: 10px 10px 10px 12px;
+                        width: 271px;
+                    }
+                    div.inputAfter {
+                        display: flex;
+                        align-items: center;
+                        img.VerifiedIcon {
+                            width: 24px;
+                            flex-shrink: 0;
+                        }
+                        span.pending {
+                            display: flex;
+                            align-items: center;
+                            color: @alert-red;
+                            font-size: 0.8em;
+                            font-weight: 700;
+                            flex-shrink: 0;
+                        }
+                        button.SubmitButton, button.ResendButton {
+                            background: transparent;
+                            border: 1px solid #7e7e7e;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            border-radius: 2px;
+                            cursor: pointer;
+                            margin-left: 8px;
+                            color: #fff;
+                            font-size: 0.7em;
+                            flex-shrink: 0;
+                            transition: 
+                                box-shadow 0.3s @ease,
+                                background-color 0.2s @ease;
+                        }
+                        button.SubmitButton {
+                            background: #373737;
+                            border: 1px solid #ccc;
+                            width: 49px;
+                            height: 26px;
+                        }
+                        button.ResendButton.LoadButton {
+                            margin-left: 25px;
+                            width: 117px;
+                            height: 34px;
+                            span.LoadButtonLabel {
+                                width: 100px;
+                            }
+                        }
+                        button.ResendButton:hover {
+                            background: #5a5a5a; /* Darker gray on hover */
+                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+                        }
+                        button.SubmitButton:hover {
+                            background: #5a5a5a; /* Darker gray on hover */
+                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+                        }
+                        span.explanation {
+                            color: #fff;
+                            display: flex;
+                            align-items: center;
+                            font-size: 0.7em;
+                            margin-left: 22px;
+                        }
+                    }
+                    div.footer {
+                        justify-content: flex-start !important;
+                        padding: 5px 0px 0 0 !important;
+                        font-size: 0.8em;
+                        height: 20px;
+                        div.left {
+                            p.alertMessage {
+                                font-size: 0.7em;
+                                color: @alert-red;
+                            }
+                        }
+                    }
+                }
+            }
+
+            div.OriginForm.pending, div.EmailForm.pending {
+                div.inputOuter {
+                    h6.title {
+                        color: @alert-red;
+                    }
+                }
+            }
+
+            div.OriginForm.alert, div.EmailForm.alert {
+                margin-top: 0;
+                div.inputOuter {
+                    input {
+                        border: 1px solid #8c1111;
+                    }
+                }
+            }
+
+            div.OriginForm {
+                div.inputOuter {
+                    div.inputAfter {
+                        button.SubmitButton {
+                            margin-left: 18px;
+                        }
+                    }
+                }
+            }
+
+            div.VerifyContainer {
+                padding: 0 0 0 14px;
+                h5 {
+                    color: #a4a4a4;
+                    font-size: 0.8em;
+                    margin-bottom: 10px;
+                }
+                div.VerifyCodeForm {
+                    background-color: #3e3e3e;
+                    width: 291px;
+                    padding: 10px 15px;
+                    margin-bottom: 20px;
+                    //div.verifyCodeFormContainer {
+                    //    width: 19vw !important;
+                    //    min-width: 195px !important;
+                    //    input.verifyInput {
+                    //        width: 35px !important;
+                    //        height: 35px !important;
+                    //    }
+                    //}
+                }
+            }
+
+        }
+    }
+}
+
+// Billing Settings
+#SettingsModalViewMainContent {
+    div.PageView {
+        div.PageViewContainer.BillingPage {
+            div.container, div.CardInputViewContainer {
+                button.LoadButton {
+                    height: 37px;
+                    border-radius: 4px;
+                    background-color: transparent;
+                    color: #fff;
+                    flex-shrink: 0;
+                    transition: 
+                        box-shadow 0.3s @ease,
+                        border 0.2s @ease,
+                        background-color 0.2s @ease;
+
+                    span.LoadButtonLabel {
+                        width: max-content;
+                        font-size: 0.7em;
+                    }
+                }
+                button.LoadButton:hover {
+                    background: #b1b1b1;
+                    border: 1px solid #202020;
+                }
+            }
+            div.container {
+                padding: 14px 14px 0 14px;
+                h4.subtitle {
+                    color: #fff;
+                    font-size: 0.8em;
+                    font-weight: 400;
+                    margin: 2px 0 14px 3px;
+                    -webkit-font-smoothing: antialiased;
+                }
+                div.wrapper {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    button.UpdateCardButton {
+                        margin-right: 20px;
+                    }
+                    .CardLoader {
+                        //max-width: 225px;
+                        //width: 50% !important;
+                        max-width: 180px !important;
+                    }
+                    img.CardLogo {
+                        width: 29px;
+                    }
+                    span.Last4 {
+                        color: #fff;
+                        font-size: 0.8em;
+                        font-weight: 100;
+                        margin-left: 13px;
+                        margin-right: 13px;
+                    }
+                    p.message {
+                        font-size: 0.8em;
+                        color: #fff;
+                    }
+                    p.message.alert {
+                        color: @alert-red;
+                    }
+                }
+            }
+            div.CardInputViewContainer {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                background-color: #454545;
+                max-width: 378px;
+                margin-top: 18px;
+                border-radius: 3px;
+                padding: 0 20px 20px 20px;
+                div.CardInputView {
+                    margin-top: 20px;
+                    img.loading {
+                        svg circle {
+                            fill: #ff4500; /* Changes fill color to orange-red, for example */
+                        }
+
+                    }
+                }
+                button.SubmitCardButton {
+                    margin-top: 13px;
+                }
+                p.CardInputViewAlert {
+                    font-size: 0.8em;
+                    color: @alert-red;
+                }
+            }
+            div.LimitContainer {
+                margin-top: 17px;
+                h4.subtitle {
+                    color: #fff;
+                    margin: 2px 0 7px 0px;
+                }
+                div.LimitLine1 {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    padding-left: 5px;
+                    span.max {
+                        margin-right: 11px;
+                        min-width: 33px;
+                        text-align: center;
+                        font-size: 0.9em;
+                        color: #bababa;
+                    }
+                    div.LimitForm {
+                        width: max-content;
+                        margin-right: 10px;
+                        div.inputOuter {
+                            padding: 0;
+                            div.inputWrapper {
+                                width: 102px;
+                                border: 1px solid #989898;
+                                border-radius: 4px;
+                                box-shadow: 0 1px 3px #393939;
+                                input {
+                                    height: 41px;
+                                    border: none;
+                                    font-size: 1em;
+                                    margin: 0;
+                                    max-width: max-content;
+                                    border: none;
+                                    border-radius: 0;
+                                }
+                            }
+                            div.inputAfter {
+                                margin-left: 0 !important;
+                                div.incrementButton {
+                                    width: 28px;
+                                    button {
+                                        img {
+                                            width: 13px;
+                                        }
+                                    }
+                                }
+                            }
+                            div.footer {
+                                padding: 4px 0 0 0;
+                                font-size: 0.9em;
+                                display: block;
+                                p.alertMessage {
+                                    font-size: 0.75em;
+                                }
+                            }
+                        }
+                    }
+                    div.LimitForm.alert {
+                        div.inputOuter {
+                            div.inputWrapper {
+                                border: 1px solid @alert-red;
+                                input {
+                                    border: none !important;
+                                }
+                            }
+                        }
+                    }
+                    span.maxDesc {
+                        min-width: 44px;
+                        text-align: center;
+                        font-size: 0.8em;
+                        color: #bababa;
+                        margin-right: 23px;
+                    }
+                    span.maxCharge {
+                        color: #fff;
+                        font-size: 0.8em;
+                        margin-right: 24px;
+                    }
+                    span.maxChargePrice {
+                        font-size: 1em;
+                        font-weight: 500;
+                        color: #208ab4;
+                        font-size: 1em;
+                    }
+                }
+                div.line2 {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                    width: 100%;
+                    margin-top: 25px;
+                    background-color: #fafafa;
+                    padding: 12px 18px;
+                    border-radius: 5px;
+
+                }
+                div.LimitLine2 {
+                    span.maxCharge {
+
+                    }
+                    span.maxChargePrice {
+
+                    }
+                }
+                p.LmitAlert {
+                }
+            }
+        }
+    }
+}
+
+
+// Customize Container
+#SettingsModalViewMainContent {
+    div.PageView {
+        div.PageViewContainer.CustomizePage {
+            margin-top: 46px;
+            h3.title {
+            }
+            div.container.CustomizeContainer {
+                display: flex;
+                flex-direction: row;
+                align-items: flex-start;
+            }
+        }
+    }
+}
+
+// Customize Items
+#SettingsModalViewMainContent {
+    div.PageView {
+        div.PageViewContainer.CustomizePage {
+            h3.title {
+            }
+            div.container.CustomizeContainer {
+                div.CustomizeItems {
+                    p.alertMessage {
+                        font-size: 0.8em;
+                        color: @alert-red;
+                        padding: 8px 0 0 16px;
+                    }
+                    div.TextField {
+                        div.inputOuter {
+                            overflow: visible;
+                            overflow-y: visible;
+                            h6.title {
+
+                            }
+                            div.inputWrapper {
+
+                            }
+                            div.footer {
+                                height: 20px;
+                                max-width: 100px;
+                                p.alertMessage {
+                                    font-size: 0.75em;
+                                    padding: 0;
+                                }
+                            }
+                        }
+                    }
+                    div.TextField.Incrementer {
+                        width: max-content;
+                        margin-right: 10px;
+                        div.inputOuter {
+                            padding: 0;
+                            h6.title {
+                                color: #fff;
+                                font-size: 0.8em;
+                            }
+                            div.inputWrapper {
+                                width: 98px;
+                                border: 1px solid #989898;
+                                border-radius: 4px;
+                                box-shadow: 0 1px 3px #393939;
+                                input {
+                                    height: 41px;
+                                    border: none;
+                                    font-size: 1em;
+                                    margin: 0;
+                                    max-width: max-content;
+                                    border: none;
+                                    border-radius: 0;
+                                }
+                            }
+                            div.inputAfter {
+                                margin-left: 0 !important;
+                                div.incrementButton {
+                                    width: 28px;
+                                    button {
+                                        img {
+                                            width: 13px;
+                                        }
+                                    }
+                                }
+                            }
+                            div.footer {
+                                padding: 4px 0 0 0;
+                                font-size: 0.9em;
+                                display: block;
+                                p.alertMessage {
+                                    font-size: 0.75em;
+                                }
+                            }
+                        }
+                    }
+                    div.TextField.Incrementer.alert {
+                        div.inputOuter {
+                            div.inputWrapper {
+                                border: 1px solid @alert-red;
+                                input {
+                                    border: none !important;
+                                }
+                            }
+                        }
+                    }
+                    div.RadioButton.ButtonType {
+                        padding: 14px 14px 0 14px;
+                        padding-bottom: 14px;
+                        width: max-content;
+                        div.inputOuter {
+                            h6.title {
+                                -webkit-font-smoothing: antialiased;
+                                color: #fff;
+                                font-size: 0.8em;
+                                margin-bottom: 10px;
+                            }
+                            div.inputWrapper {
+                                display: flex;
+                                flex-direction: row;
+                                align-items: center;
+                                padding-left: 7px;
+                                div.item {
+                                    cursor: pointer;
+                                    display: flex;
+                                    flex-direction: row;
+                                    align-items: center;
+                                    margin-right: 20px;
+                                    input[type=radio] {
+                                        cursor: pointer;
+                                    }
+                                    span.checkbox {
+                                        display: block;
+                                        width: 20px;
+                                        height: 20px;
+                                        background-color: #505050;
+                                        border-radius: 10px;
+                                        margin-right: 6px;
+                                        transition: background-color 0.2s @ease;
+                                    }
+                                    label {
+                                        cursor: pointer;
+                                        color: #fff;
+                                    }
+                                }
+                                div.item.checked {
+                                    span.checkbox {
+                                        background-color: #005275;
+                                        border: 1px solid #2b89ae;
+                                    }
+                                }
+                                div.item:not(.checked):hover {
+                                    span.checkbox {
+                                        background-color: #ababab;
+                                    }
+
+                                }
+                                div.inputAfter {
+
+                                }
+                            }
+                            div.footer {
+                                padding: 0;
+                                p.alertMessage {
+                                    font-size: 0.75em;
+                                }
+                            }
+                        }
+
+                    }
+                    div.CustomizeItemWrapper {
+                        padding: 14px 14px 0px 14px;
+                        h4.subtitle {
+                            color: #fff;
+                            font-size: 0.8em;
+                            margin-bottom: 10px;
+                        }
+                    }
+
+                    // ButtonSize, BalloonSize
+                    div.ButtonSizeWrapper, div.BalloonSizeWrapper {
+                        h4.subtitle {
+                        }
+                        div.ButtonSizeForms, div.BalloonSizeForms {
+                            display: flex;
+                            flex-direction: row;
+                            align-items: center;
+                            width: max-content;
+                            padding-left: 5px;
+                            div.ButtonWidthForm, div.ButtonHeightForm, div.BalloonWidthForm, div.BalloonHeightForm {
+                                position: relative;
+                                div.inputOuter {
+                                    h6.title {
+                                        margin-bottom: 11px;
+                                    }
+                                    div.inputWrapper {
+                                        input {
+
+                                        }
+                                        div.inputAfter {
+                                            div.incrementButton {
+                                                button {
+
+                                                }
+                                            }
+                                        }
+                                    }
+                                    div.footer {
+
+                                    }
+                                    span.unit {
+                                        position: absolute;
+                                        top: 46px;
+                                        left: 107px;
+                                        color: #fff;
+                                        font-size: 0.8em;
+                                    }
+
+                                }
+                            }
+                            div.ButtonWidthForm, div.BalloonWidthForm {
+                                margin-right: 40px;
+                            }
+                        }
+                    }
+                    // ButtonColor
+                    div.ButtonColorWrapper {
+                        padding-bottom: 14px;
+                        h4.subtitle {
+
+                        }
+                        div.ButtonColorPicker {
+                            padding-left: 7px;
+                            div.ButtonColorPickerDisplay {
+                                border: 3px solid #5b5b5b;
+                                border-radius: 15px;
+                            }
+                            input {
+
+                            }
+                        }
+                    }
+                    // ButtonFontSize
+                    div.ButtonFontSizeWrapper {
+                        div.FontSizeForm {
+                            div.inputOuter {
+                                padding: 0;
+                                overflow-y: visible;
+                                h6.title {
+                                    color: #fff;
+                                    font-size: 0.8em;
+                                    margin: 0 0 10px 0;
+                                }
+                                div.inputWrapper {
+                                    width: max-content;
+                                    padding-left: 7px;
+                                    input {
+                                        max-width: none;
+                                        width: 60px;
+                                        margin-right: 10px;
+                                    }
+                                    div.inputAfter {
+                                        margin-left: 0px;
+                                        span.unit {
+                                            color: #fff;
+                                            font-size: 0.8em;
+                                        }
+                                    }
+                                }
+                                div.footer {
+                                    justify-content: start;
+                                    padding: 5px 0;
+                                    max-width: 230px;
+                                    gap: 0;
+                                    padding: 0;
+                                    p.alertMessage {
+                                        padding-left: 7px;
+                                        padding-top: 2px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Customize Preview
+#SettingsModalViewMainContent {
+    div.PageView {
+        div.PageViewContainer.CustomizePage {
+            div.CustomizePreview {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                min-width: 300px;
+                width: 100%;
+                min-height: 300px;
+                padding: 20px 0 0 0;
+                div.PreviewWrapper {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    background-color: #494949;
+                    border-radius: 1px;
+                    min-width: 300px;
+                    //width: 300px;
+                    //min-height: 300px;
+                    width: 80%;
+                    padding: 50px 0 50px 0;
+                    margin-bottom: 25px;
+                    div.QBTN-quantz-button-loader {
+                        min-height: 41px;
+                    }
+                }
+                div.CodeViewWrapper {
+                    width: 80%;
+                    min-width: 300px;
+                    pre.CodeView {
+                        position: relative;
+                        background-color: #d5d5d5;
+                        //padding: 8px;
+                        white-space: pre-wrap;
+                        word-break: break-all;
+                        font-family: 'Consolas', 'Monaco', monospace;
+                        font-size: 0.8em;
+                        border-radius: 3px;
+                        .hljs-tag { // < >
+                            color:  #f1f1f1;
+                        }
+                        .hljs-name { // div, span
+                            color: #2c89ae;//#588796;//#77aaba;
+                        }
+                        .hljs-attr { // id
+                            color: #cfcfcf;// #a1b77d;
+                        }
+                        .hljs-string {
+                            color: #7b7b7b;//#647982;
+
+                        }
+                        code {
+                            background-color: #383838; //#d5d5d5;
+                           // background-color: #eee;
+                            padding: 33px 28px 33px 28px;
+                        }
+                        img.CopyButton {
+                            position: absolute;
+                            width: 16px;
+                            top: 10px;
+                            right: 10px;
+                            color: #333;
+                            border: none;
+                            cursor: pointer;
+                        }
+                        span.tooltip {
+                            position: absolute;
+                            top: 0px; /* Adjust based on your layout */
+                            left: 50%;
+                            font-size: 0.9em;
+                            transform: translateX(-0%);
+                            background-color: black;
+                            color: white;
+                            padding: 5px 10px;
+                            white-space: nowrap;
+                            opacity: 0;
+                            visibility: hidden;
+                            transition: visibility 0s linear 0.3s, opacity 0.3s @ease;
+                            border-radius: 3px; /* Optional: Adds rounded corners to the tooltip */
+                            box-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* Optional: Adds a slight shadow for better visibility */
+                        }
+                        span.tooltip.copied {
+                            transform: translateX(-23%);
+                        }
+                        @keyframes fadeIn {
+                            from { opacity: 0; }
+                            to { opacity: 1; }
+                        }
+                        
+                        @keyframes fadeOut {
+                            from { opacity: 1; }
+                            to { opacity: 0; }
+                        }
+                        span.tooltip.visible {
+                            visibility: visible;
+                            animation: fadeIn 0.3s @ease forwards; /* Smooth fade-in effect */
+                        }
+                        span.tooltip.fade-out {
+                            animation: fadeOut 0.5s @ease forwards; /* Smooth fade-out effect */
+                            transition: visibility 0s linear 0.3s; /* Delay hiding the tooltip until fade-out completes */
+                        }
+                        img.CopyButton:hover + span.tooltip {
+                                opacity: 1;
+                                visibility: visible;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: @tablet-width) {
+}
+
+@media (max-width: @smartphone-width) {
+    #SettingsModalView {
+        div.bg {
+        }
+        div.window {
+            width: 94%;
+            div.contentWrapper {
+                h3.ModalViewTitle {
+                }
+                p.mainContent {
+                }
+            }
+            div.footer {
+                button.cancelButton {
+                }
+                button.doneButton {
+                }
+            }
+        }
+    }
+
+
+    // Basic
+    #SettingsModalViewMainContent {
+        div.PageView {
+            div.PageViewContainer {
+                h3.title {
+                }
+                div.container {
+                    padding: 17px 0;
+                    div.TextField {
+                        div.inputOuter {
+                            padding: 10px 10px 5px 10px;
+                            h6.title {
+    
+                            }
+                            div.inputWrapper {
+                                input {
+                                    max-width: 65%;
+                                }
+                                input::placeholder {
+                                }
+                                div.inputAfter {
+                                    margin-left: 11px;
+                                    span.explanation {
+                                        margin-left: 11px;
+                                    }
+                                }
+                            }
+                            div.footer {
+                                div.left {
+    
+                                }
+                                div.middle {
+    
+                                }
+                                div.right {
+    
+                                }
+                                p.alertMessage {
+                                }
+                            }
+                        }
+                    }
+                    div.TextField.alert{
+                        div.inputOuter {
+                            h6.title {
+                            }
+                            div.inputWrapper {
+                                input {
+                                }
+                            }
+                            div.inputAfter {
+    
+                            }
+                            div.footer {
+                                div.left {
+                                    p.alertMessage {
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Billing
+    #SettingsModalViewMainContent {
+        div.PageView {
+            div.PageViewContainer.BillingPage {
+                div.container, div.CardInputViewContainer {
+                    button.LoadButton {
+                       span.LoadButtonLabel {
+                        }
+                    }
+                    button.LoadButton:hover {
+                    }
+                }
+                div.container {
+                    padding: 20px 10px 0 10px;
+                    h4.subtitle {
+                    }
+                    div.wrapper {
+                        button.UpdateCardButton {
+                        }
+                        .CardLoader {
+                        }
+                        img.CardLogo {
+                        }
+                        span.Last4 {
+                            margin-right: 0;
+                        }
+                        p.message {
+                        }
+                        p.message.alert {
+                        }
+                    }
+                }
+                div.CardInputViewContainer {
+                    div.CardInputView {
+                        img.loading {
+                            svg circle {
+                            }
+    
+                        }
+                    }
+                    button.SubmitCardButton {
+                    }
+                    p.CardInputViewAlert {
+                    }
+                }
+                div.LimitContainer {
+                    padding: 14px 10px 0 10px;
+                    h4.subtitle {
+                    }
+                    div.LimitLine1 {
+                        padding-left: 0;
+                        margin-top: 22px;
+                        span.max {
+                            margin-right: 5px;
+                            font-size: 0.8em;
+                        }
+                        div.LimitForm {
+                            margin-right: 0;
+                            div.inputOuter {
+                                div.inputWrapper {
+                                    input {
+                                    }
+                                }
+                                div.inputAfter {
+                                    div.incrementButton {
+                                        button {
+                                            img {
+                                            }
+                                        }
+                                    }
+                                }
+                                div.footer {
+                                    p.alertMessage {
+                                    }
+                                }
+                            }
+                        }
+                        div.LimitForm.alert {
+                            div.inputOuter {
+                                div.inputWrapper {
+                                    input {
+                                    }
+                                }
+                            }
+                        }
+                        span.maxDesc {
+                            margin-right: 0;
+                        }
+                        span.maxCharge {
+                            font-size: 0.6em;
+                            margin-right: 2px;
+                        }
+                        span.maxChargePrice {
+                       }
+                    }
+                    div.line2 {
+                    }
+                    div.LimitLine2 {
+                        span.maxCharge {
+    
+                        }
+                        span.maxChargePrice {
+    
+                        }
+                    }
+                    p.LmitAlert {
+                    }
+                }
+            }
+        }
+    }
+
+    // Customize Container
+    #SettingsModalViewMainContent {
+        div.PageView {
+            div.PageViewContainer.CustomizePage {
+                h3.title {
+                }
+                div.container.CustomizeContainer {
+                    flex-direction: column;
+                }
+            }
+        }
+    }
+
+    // Customize Items
+    #SettingsModalViewMainContent {
+        div.PageView {
+            div.PageViewContainer.CustomizePage {
+                h3.title {
+                }
+                div.container.CustomizeContainer {
+                    div.CustomizeItems {
+                        p.alertMessage {
+                        }
+                        div.TextField {
+                            div.inputOuter {
+                                h6.title {
+                                }
+                                div.inputWrapper {
+                                }
+                                div.footer {
+                                    p.alertMessage {
+                                    }
+                                }
+                            }
+                        }
+                        div.TextField.Incrementer {
+                            div.inputOuter {
+                                h6.title {
+                                }
+                                div.inputWrapper {
+                                    input {
+                                    }
+                                }
+                                div.inputAfter {
+                                    div.incrementButton {
+                                        button {
+                                            img {
+                                            }
+                                        }
+                                    }
+                                }
+                                div.footer {
+                                    p.alertMessage {
+                                    }
+                                }
+                            }
+                        }
+                        div.TextField.Incrementer.alert {
+                            div.inputOuter {
+                                div.inputWrapper {
+                                    input {
+                                    }
+                                }
+                            }
+                        }
+                        div.RadioButton.ButtonType {
+                            padding: 14px 10px 14px 10px;
+                            div.inputOuter {
+                                h6.title {
+                                }
+                                div.inputWrapper {
+                                    div.item {
+                                        input[type=radio] {
+                                        }
+                                        span.checkbox {
+                                        }
+                                        label {
+                                        }
+                                    }
+                                    div.item.checked {
+                                        span.checkbox {
+                                        }
+                                    }
+                                    div.item:not(.checked):hover {
+                                        span.checkbox {
+                                        }
+                                    }
+                                    div.inputAfter {
+
+                                    }
+                                }
+                                div.footer {
+                                    p.alertMessage {
+                                    }
+                                }
+                            }
+
+                        }
+                        div.CustomizeItemWrapper {
+                            padding: 14px 10px 0px 10px;
+                            h4.subtitle {
+                            }
+                        }
+
+                        // ButtonSize, BalloonSize
+                        div.ButtonSizeWrapper, div.BalloonSizeWrapper {
+                            h4.subtitle {
+                            }
+                            div.ButtonSizeForms, div.BalloonSizeForms {
+                                div.ButtonWidthForm, div.ButtonHeightForm, div.BalloonWidthForm, div.BalloonHeightForm {
+                                    div.inputOuter {
+                                        h6.title {
+                                        }
+                                        div.inputWrapper {
+                                            input {
+                                            }
+                                            div.inputAfter {
+                                                div.incrementButton {
+                                                    button {
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        div.footer {
+                                        }
+                                        span.unit {
+                                       }
+
+                                    }
+                                }
+                                div.ButtonWidthForm, div.BalloonWidthForm {
+                                }
+                            }
+                        }
+                        // ButtonColor
+                        div.ButtonColorWrapper {
+                            padding-left: 10px;
+                            padding-right: 10px;
+                            h4.subtitle {
+
+                            }
+                            div.ButtonColorPicker {
+                                div.ButtonColorPickerDisplay {
+                                }
+                                input {
+
+                                }
+                            }
+                        }
+                        // ButtonFontSize
+                        div.ButtonFontSizeWrapper {
+                            padding-left: 10px;
+                            padding-right: 10px;
+                            div.FontSizeForm {
+                                div.inputOuter {
+                                    h6.title {
+                                    }
+                                    div.inputWrapper {
+                                        input {
+                                        }
+                                        div.inputAfter {
+                                            span.unit {
+                                            }
+                                        }
+                                    }
+                                    div.footer {
+                                        p.alertMessage {
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Customize Preview
+    #SettingsModalViewMainContent {
+        div.PageView {
+            div.PageViewContainer.CustomizePage {
+                div.CustomizePreview {
+                    div.PreviewWrapper {
+                        min-width: 106%;
+                        padding: 20px 10px;
+                        div.QBTN-quantz-button-loader {
+                        }
+                    }
+                    div.CodeViewWrapper {
+                        pre.CodeView {
+                            code {
+                                padding: 28px 24px;
+                            }
+                            img.CopyButton {
+                            }
+                            span.tooltip {
+                            }
+                            span.tooltip.copied {
+                            }
+                            span.tooltip.visible {
+                            }
+                            span.tooltip.fade-out {
+                            }
+                            img.CopyButton:hover + span.tooltip {
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+ 

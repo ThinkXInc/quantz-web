@@ -1,0 +1,204 @@
+div.MaterialSampleQuestionField {
+    // title
+    @title: #7fc0e4;
+    // input outer
+    @input-outer-border-disable: #6decff;
+    // input
+    @input-field-bg: none;
+    @input-field-text: #7fc0e4; //#e8e8e8;
+    @input-field-text-disable: #7fc0e4; //#e8e8e8;
+    @input-field-placeholder: #6f6f6f;
+    @input-field-caret: #69d7ff;
+    @input-bottom-border-unfocus: #676767;
+    @input-bottom-border-focus: #6d868a;
+    // submit button
+    @submit-button-arrow-disable: #7fc0e4; //#e8e8e8;
+    // icon
+    @icon: #7fc0e4;
+    @icon-hover: #5b97b7;
+    // message
+    @input-field-message-notice: #7390B5;
+    @input-field-message: #fff;
+    // press enter
+    @input-field-press-label: #fff;
+    // alert
+    @alert-red: #c88f8f;
+
+    width: 100%;
+
+    div.inputOuter {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        border: none;
+        //border-bottom: 1px solid #8d8d8d;
+
+        div.inputWrapper {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            h6.title {
+                color: @title;
+                width: 73px;
+            }
+            input.questionform {
+                //flex: 1 0 70%;
+                //font-weight: 600;
+                color: @input-field-text;
+                margin: 0;
+                font-size: 1rem;
+                caret-color: @input-field-caret;
+                border-bottom: 1px solid @input-bottom-border-unfocus;
+                margin-top: 0;
+                height: 30px;
+                .transition(border-bottom);
+            }
+            input.questionform:focus {
+                outline: 2px solid transparent;
+                outline-offset: 2px;
+                border-bottom: 1px solid @input-bottom-border-focus;
+            }
+            ::placeholder {
+                font-weight: 100;
+                color: @input-field-placeholder;
+            }
+            div.inputAfter {
+                button.doneButton {
+                    .transitionAll(1.0s);
+
+                    svg {
+                        width: 21px;
+                        height: 21px;
+                        .plane {
+                            .transitionAll();
+                            fill: @icon;
+                        }
+                    }
+                    svg:hover {
+                        .plane {
+                            fill: @icon-hover;
+                        }
+                    }
+                }
+                button.doneButton.clicked {
+                    .scale(0.80);
+                }
+            }
+        }
+
+        div.footer {
+            width: 100%;
+            display: flex;
+            padding-top: 5px;
+            margin-left: 139px;
+            p.alertMessage {
+                color: @alert-red;
+                font-size: 0.8rem;
+            }
+        }
+    }
+
+    div.gradientViewIndicator {
+        div.indicator-container {
+            div.indicator-wrapper {
+                padding: 6px 0 6px 0;  // this value should be correspond with the inputOuter display height
+                svg {
+
+                }
+            }
+        }
+
+    }
+}
+div.MaterialSampleQuestionField.edited {
+    @input-field-text-edited: #a6a587;
+    @input-bottom-border-edited: #a6a587;
+    div.inputOuter {
+        div.inputWrapper {
+            h6.title {
+            }
+            input.questionform {
+                color: @input-field-text-edited;
+                border-bottom: 1px solid @input-bottom-border-edited;
+            }
+            input.questionform:focus {
+                border-bottom: 1px solid @input-bottom-border-edited;
+            }
+        }
+    }
+}
+div.MaterialSampleQuestionField.visible {
+    height: auto;  /* Final height */
+    margin-top: 60px;  /* Final margin-top */
+}
+div.MaterialSampleQuestionField.hidden {
+    height: 0;  /* Initial height */
+    margin-top: 0;  /* Initial margin-top */
+}
+div.MaterialSampleQuestionField.onDisplay {
+    div.iconBox {
+        button.editButton {
+            display: inline-block;
+        }
+        button.doneButton {
+            display: none;
+        }
+        button.cancelButton {
+            display: none;
+        }
+    }
+}
+div.MaterialSampleQuestionField.onEdit {
+    @input-field-bg-edit: #373737;
+
+    div.inputOuter {
+        background-color: @input-field-bg-edit;
+        div.iconBox {
+            button.editButton {
+                display: none;
+            }
+            button.doneButton {
+                display: inline-block;
+            }
+            button.cancelButton {
+                display: inline-block;
+            }
+        }
+    }
+}
+div.MaterialSampleQuestionField.onDisable {
+    @icon-disable: #cacaca;
+
+    div.inputOuter {
+        input.titleform {
+            pointer-events: none;  // Prevents all interactions with the element
+            opacity: 0.6;
+        }
+        div.iconBox {
+            button.editButton, button.doneButton, button.cancelButton {
+                pointer-events: none;  // Prevents all interactions with the button
+                opacity: 0.6;
+                svg.editIconSVG:hover, svg.doneIconSVG:hover, svg.cancelIconSVG:hover {
+                    .cls-1, .cls-2 {
+                        stroke: @icon-disable;
+                    }
+                }
+            }
+        }
+    }
+}
+
+div.TextField.alert {
+    @alert-red: #c88f8f;
+
+    div.inputOuter {
+        div.footer {
+            div.right {
+                span.counter {
+                    color: @alert-red;
+               }
+            }
+        }
+    }
+}
+

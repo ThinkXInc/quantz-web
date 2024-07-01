@@ -1,0 +1,198 @@
+div.MaterialTextField {
+
+    @input-field-bg: #282828;
+    @input-field-text: #c2c2c2;
+    @input-field-placeholder: #6d6d6d;
+    @input-field-caret: #69d7ff;
+    @counter-text-notice: #69d7ff;
+    @counter-text: #9cbabb;
+    @input-field-message-notice: #7390B5;
+    @input-field-message: #fff;
+    @input-field-press-label: #fff;
+    @enterbutton-bg: #2fbaed;//#00829c;
+    @enterbutton-arrow: #282828;
+    @input-outer-border: #6b6b6b;
+    @input-outer-border-disable: #282828;
+    @input-outer-border-focus: #858585;
+    @input-field-text-disable: #707070;
+    @enterbutton-bg-disable: #304543;
+    @enterbutton-arrow-disable: #282828;
+    @alert-red: #8c1111;
+
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    width: 100%;
+    .border-radius(@radius: 5px);
+
+    div.inputOuter {
+        display: flex;
+        flex-direction: column;
+        background: @input-field-bg;
+        overflow-y: hidden;
+        border: 1px solid @input-outer-border;
+        .transitionAll();
+
+        textarea.textform {
+            height: 377px;
+            color: @input-field-text;
+            padding: 16px 16px 48px;
+            line-height: 1.5rem;
+            caret-color: @input-field-caret;
+        }
+        textarea.textform:focus {
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+        }
+        ::placeholder {
+            font-weight: 100;
+            color: @input-field-placeholder;
+        }
+
+        div.footer {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+
+            div.left {
+                flex-grow: 2; /* This will push the middle div closer to the right div */
+                span.indicator {
+                    // Styles for indicator here
+                }
+            }
+
+            div.middle {
+                span.message {
+                    font-size: 0.9em;
+                    margin: 0 0 0 10px;
+                    &.notice {
+                        color: @input-field-message-notice;
+                    }
+                    &:not(.notice) {
+                        color: @input-field-message;
+                    }
+                }
+                span.message.alertMessage {
+                    color: @alert-red;
+                }
+            }
+
+            div.right {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+
+                span.counter {
+                    font-size: 0.9em;
+                    margin: 0 0 0 10px;
+                    &.notice {
+                        color: @counter-text-notice;
+                    }
+                    &:not(.notice) {
+                        color: @counter-text;
+                    }
+                }
+
+                button.enterButton {
+                    width: 54px;  /* Example width; adjust as needed */
+                    height: 54px; /* Example height; adjust as needed */
+                  	background-color: transparent;
+                    position: relative;
+                    opacity: 0.9;
+
+                    .transitionAll(1.0s);
+
+                    .enterButtonSVG {
+                        width: 100%; /* Make the SVG take full width of the button */
+                        height: 100%; /* Make the SVG take full height of the button */
+                        display: block; /* Ensure the SVG is block-level within the button */
+                        .arrow {
+                            fill: @enterbutton-arrow;
+                            stroke: @enterbutton-arrow;
+                        }
+                        .bg {
+                            fill: @enterbutton-bg;
+                            stroke: @enterbutton-bg;
+                        }
+                    }
+                }
+
+                button.enterButton:hover {
+                    opacity: 0.7;
+                    //transform: rotate(-90deg); // TODO: scale
+                }
+
+                button.enterButton.clicked {
+                    .scale(0.80);
+                }
+
+                p.press {
+                    font-size: 0.8em;
+                    color: @input-field-press-label;
+                }
+                p.press strong {
+                    margin-left: 5px;
+                }
+            }
+        }
+    }
+
+    // onDisable
+    &.onDisable {
+        div.inputOuter {
+            border: 1px solid @input-outer-border-disable;
+            textarea.textform {
+                color: @input-field-text-disable;
+            }
+            div.footer {
+                div.right {
+                    button.enterButton {
+                        pointer-events: none;
+                        cursor: not-allowed;
+                        svg.enterButtonSVG {
+                            .arrow {
+                                fill: @enterbutton-arrow-disable;
+                                stroke: @enterbutton-arrow-disable;
+                            }
+                            .bg {
+                                fill: @enterbutton-bg-disable;
+                                stroke: @enterbutton-bg-disable
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // onFocus
+    &.focus {
+        div.inputOuter {
+            border: 1px solid @input-outer-border-focus;
+            .box-shadow();
+        }
+
+    }
+
+    // alert
+    &.alert {
+        div.inputOuter {
+            div.footer {
+                div.middle {
+                    span.message {
+                        display: none;
+                    }
+                    p.alertMessage {
+                        color: @alert-red;
+                    }
+                }
+                div.right {
+                    span.counter {
+                        color: @alert-red;
+                   }
+                }
+            }
+        }
+    }
+}

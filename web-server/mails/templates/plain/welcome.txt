@@ -1,0 +1,5 @@
+{{ welcome_to_quantz }}
+
+{{ verification_code }}
+
+{{ enter_this_code }}

@@ -1,0 +1,288 @@
+{%extends "general/base.html" %}
+
+{% block head %}
+<link rel=stylesheet href=/css/main.css>
+<script src="/js/simplicity/dist/simplicity.js"></script>
+{% endblock %}
+
+{% block content %}
+<script>
+{
+    const lang = "{{ lang }}"
+    const langName = "{{ lang_name }}"
+
+    const freeCall = "{{ free_call }}"
+    const unitPrice = "{{ unit_price }}"
+
+    const localeDict = {{ locale_json | safe }};
+    if (!localeDict) {
+        console.error('locale_json not received.');
+    }
+    const locale = new Locale(localeDict);
+
+    console.log(locale);
+
+    window.locale = locale;
+    window.lang = lang;
+    window.langName = langName;
+
+    window.freeCall = freeCall;
+    window.unitPrice = unitPrice;
+
+    function redirectToSignup() {
+      // Build the URL dynamically based on whether a language is set
+      const signupUrl = lang ? `/v1/${lang}/signup` : '/v1/signup';
+      window.location.href = signupUrl;
+  }
+}
+</script>
+
+
+<section id="top">
+  <div class="header">
+    <div class="left">
+      <a href="/{{ lang }}/"><img class="logo" src="/img/logo/horizontal-whitefont_200_60@2x.png" alt="Quantz Logo"></a>
+      <h3 class="header-copy">{{ locale_dict["top_header_catchcopy"][lang] }}</h3>
+    </div>
+      <!--
+      <h5 class="sales-catch">Now you can get {{ free_call }} free trials for a month!</h5>
+      -->
+    <div class="right">
+      <button class="try-button" onclick="redirectToSignup()">{{ locale_dict["top_header_try_button"][lang] }}</button>
+      <div class="locale">
+          {% include 'common/lang_selector.html' %} 
+      </div>
+    </div>
+  </div>
+  <div class="main-container">
+    <div id="main-bg" class="main-bg">
+    </div>
+    <div class="main-content">
+      <div class="left">
+          <div class="main-copy">
+            <!--
+              <h3 class="smallcopy">Are you still missing out on prospects?</h2>
+              <h3 class="smallcopy">Still spending time on inquiries?</h2>
+            -->
+              <h1 class="title">{{ locale_dict["top_main_title"][lang] }}</h1>
+              <h2 class="subtitle">{{ locale_dict["top_main_subtitle"][lang] }}</h2>
+              <p class="try-button-label">{{ locale_dict["top_main_try_label"][lang].format(free_call) }}</p>
+              <button class="try-button" onclick="redirectToSignup()">{{ locale_dict["top_main_try_button"][lang] }}</button>
+          </div>
+          <div class="three-step">
+            <div class="step-wrapper">
+              <h2 class="step-title">{{ locale_dict["top_step_title"][lang] }}</h2>
+              <div class="step">
+                <div class="step-desc">
+                  <h3>{{ locale_dict["top_step_1"][lang] }}</h3>
+                  <p>{{ locale_dict["top_step_1_desc"][lang] }}</p>
+                  <span class="time">{{ locale_dict["top_step_1_time"][lang] }}</span>
+                </div>
+                <div class="step-image cards">
+                  <img class="cardbrand" src="/img/cardbrand/visa.svg" alt="Visa">
+                  <img class="cardbrand" src="/img/cardbrand/mastercard.svg" alt="MasterCard">
+                  <img class="cardbrand" src="/img/cardbrand/amex.svg" alt="American Express">
+                  <img class="cardbrand" src="/img/cardbrand/unionpay.svg" alt="UnionPay">
+                  <img class="cardbrand" src="/img/cardbrand/diners.svg" alt="Diners Club">
+                  <img class="cardbrand" src="/img/cardbrand/discover.svg" alt="Discover">
+                  <img class="cardbrand" src="/img/cardbrand/jcb.svg" alt="JCB">
+                </div>
+              </div>
+              <div class="step">
+                <div class="step-desc">
+                  <h3>{{ locale_dict["top_step_2"][lang] }}</h3>
+                  <p>{{ locale_dict["top_step_2_desc"][lang] }}</p>
+                  <span class="time">{{ locale_dict["top_step_2_time"][lang] }}</span>
+                </div>
+                <div class="step-image">
+                  <img src="/img/top/step2@2x.png" alt="Notebook Example">
+                </div>
+              </div>
+              <div class="step">
+                <div class="step-desc">
+                  <h3>{{ locale_dict["top_step_3"][lang] }}</h3>
+                  <p>{{ locale_dict["top_step_3_desc"][lang] }}</p>
+                  <span class="time">{{ locale_dict["top_step_3_time"][lang] }}</span>
+                </div>
+                <div class="step-image">
+                  <img src="/img/top/step3@2x.png" alt="HTML Code Example">
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div id="demoView" class="demo">
+        <div class="demo-container">
+          <div class="demo-top">
+            <div class="demo-top-container">
+              <p class="click-text">{{ locale_dict["top_demo_experience_1"][lang] }}<br>{{ locale_dict["top_demo_experience_2"][lang] }}</p>
+              <div class="chalk-arrow">
+                <img src="/img/top/chalk-arrow@2x.png" alt="Click the button for demo"/>
+              </div>
+            </div>
+          </div>
+          <div id="demoViewInterface" class="demo-view-interface">
+            <div class="btn-main">
+                <script src="https://quantz.thinkxinc.com/js/dist/quantz-button.min.js"></script>
+                <div id="QBTN-demo-button" class="QBTN-demo-button">
+                </div>
+                <!--<div id="QBTN-top" class="QBTN-quantz-button-loader" data-button-id="QBTN-top" data-quantz-config="{&quot;buttonType&quot;:&quot;A&quot;,&quot;iconSize&quot;:25,&quot;fontSize&quot;:13,&quot;buttonWidth&quot;:200,&quot;buttonHeight&quot;:44,&quot;buttonColor&quot;:&quot;#b80613&quot;,&quot;borderRadius&quot;:20,&quot;displayLocale&quot;:true,&quot;balloonRectWidth&quot;:&quot;19vw&quot;,&quot;balloonRectHeight&quot;:&quot;20vh&quot;,&quot;defaultLang&quot;:&quot;en&quot;}"></div>-->
+            </div>
+          </div>
+          <div class="demo-side">
+            <div class="demo-side-container">
+              <p class="click-text">{{ locale_dict["top_demo_experience_1"][lang] }}<br>{{ locale_dict["top_demo_experience_2"][lang] }}</p>
+              <div class="chalk-arrow">
+                <img src="/img/top/chalk-arrow@2x.png" alt="Click the button for demo"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <div>
+
+  <div class="features-section">
+    <h3 class="features-title">What Makes Quantz Different</h3>
+    <ul class="features-list">
+      <li class="feature">
+        <img src="/img/top/verified-icon.svg" class="verified-icon">
+        <div>
+          <h4>Simple Pricing Model</h4>
+          <p><b>$0.05 per user request</b> (up to 10 exchanges). <b>Set monthly usage limits</b> to stay within your budget.</p>
+        </div>
+      </li>
+      <li class="feature">
+          <img src="/img/top/verified-icon.svg" class="verified-icon">
+          <div>
+            <h4>Fastest Response Time</h4>
+            <p>Our proprietary voice AI engine Quantz Voice-AI OS delivers <b>the world’s fastest "actual" response time of just 800ms</b>.  It means instantaneous answers, no matter how long (> 30 words) and complex the answer (patent pending).</p>
+          </div>
+      </li>
+      <li class="feature">
+          <img src="/img/top/verified-icon.svg" class="verified-icon">
+          <div>
+            <h4>No Waiting Time</h4>
+            <p>Your customers will benefit from a simple click-to-call button and <B>fast resolution of their queries</B>. Prepare to see your CSAT (and sales) skyrocket.</p>
+          </div>
+      </li>
+      <li class="feature">
+          <img src="/img/top/verified-icon.svg" class="verified-icon">
+          <div>
+            <h4>Secure Interactions</h4>
+            <p>Quantz runs on our own servers and <b>doesn’t use any third-party APIs</b>. This ensures <b>the highest level of user data privacy</b>.</p>
+          </div>
+      </li>
+      <li class="feature">
+          <img src="/img/top/verified-icon.svg" class="verified-icon">
+          <div>
+            <h4>Transparent Payments</h4>
+            <p>Once a month, your selected payment method will be <b>charged according to the previous month’s usage</b>. <b>Cancel anytime</b>.</p>
+          </div>
+      </li>
+    </ul>
+
+    <!--
+    <div class="pricing">
+        <h3>Price</h3>
+        <ul>
+            <li><B>$0.05 / flat fee per use</B></li>
+            <li>Up to 10 round-trip exchanges per use</li>
+            <li>A Simplest pricing!</li>
+        </ul>
+    </div>
+    <div class="features">
+        <h3>Feature</h3>
+        <p><B>All models are in our own high-performance servers</B> and any external APIs are not used.</p>
+        <p>QuantzStream, <B>our proprietary ultra-fast parallel voice AI engine</B>, delivers <B>a world's fastest response time of 800ms, even for a long 30 > words sentence</B>. A stress-free response that answers immediately (patent pending).</p>
+        <p>Your customers need no waiting, no typing anymore, just press a button and talk to resolve questions quickly. This experience increases their satisfaction. <B>Better understanding of your services will increase purchase.</B></p>
+        <p>It is a most secure and safe AI call center because <B>it does not use external APIs, so no important data goes out to external servers.</B></p>
+    </div>
+    <div class="payment-method">
+        <h3>Payment Method</h3>
+        <p><B>The number of times used per month will be totaled</B> and charged to your registered credit card.</p>
+        <p><B>You can set the usage limit</B> to avoid overpaying. Of course, <B>you can cancel at any time</B>.</p>
+    </div>
+    -->
+  </div>
+
+  <div class="promo-section">
+    <h2 class="heading">Save time for more important tasks.</h2>
+    <h2 class="heading last">You focus on your business needs. Quantz will take care of the customers needs.</h2>
+    <video class="promo-video" autoplay loop muted playsinline>
+      <source src="/video/QuantzTop.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <p class="try-button-label">Try it now for free!</p>
+    <button class="try-button large" onclick="redirectToSignup()">Get {{ free_call }} Free Trials</button>
+  </div>
+
+  <!--
+  <div class="logo-scroll">
+    <div class="logo-wrapper">
+    </div>
+  </div>
+  -->
+
+  <div class="interface-section">
+    <h2 class="heading">Making Quantz learn everything about your business is</h2>
+    <h2 class="heading last">as simple as copying and pasting text.</h2>
+    <!--<h2 class="heading last">As if you had hired 100 support staff, for only $1/h. Growth your business.</h2>-->
+    <video class="interface-video" autoplay loop muted playsinline>
+        <source src="/video/quantz-interface.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <!--
+    <p class="try-button-label">Now you can get 50 free trials for a month!</p>
+    <button class="try-button large">Try it now for free!</button>
+    -->
+  </div>
+
+  <div class="custom-section">
+    <h2 class="heading">Customize the Quantz button to match your brand</h2>
+    <h2 class="heading last">guidelines and ensure a seamless user experience.</h2>
+    <video class="custom-video" autoplay loop muted playsinline>
+        <source src="/video/quantz-customize.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <!--
+    <p class="try-button-label">Now you can get 50 free trials for a month!</p>
+    <button class="try-button large">Try it now for free!</button>
+    -->
+  </div>
+
+  <div class="response-section">
+    <h2 class="heading">Respond to customer queries with conversational speed. </h2>
+    <h2 class="heading last"> The world’s fastest AI voice engine generates responses without noticeable delay.</h2>
+    <video class="response-video" autoplay loop muted playsinline>
+        <source src="/video/quantz-response.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <p class="try-button-label">Sign up now and get 50 free credits!</p>
+    <button class="try-button large" onclick="redirectToSignup()">Start Free Trial</button>
+  </div>
+
+  <div class="footer">
+    <div class="footer-content">
+        <div class="footer-links">
+            <a href="/{{ lang }}/terms" class="footer-link">{{ locale_dict["footer_links_terms"][lang] }}</a>
+            <a href="/{{ lang }}/privacy" class="footer-link">{{ locale_dict["footer_links_privacy"][lang] }}</a>
+            <a href="https://thinkxinc.com" class="footer-link">{{ locale_dict["footer_links_company"][lang] }}</a>
+            {% if lang == "ja" %}
+              <a href="/transaction_info" class="footer-link">特定商取引法に基づく表記</a>
+            {% endif %}
+        </div>
+        <div class="footer-rights">
+            © ThinkX Inc. all rights reserved, 2024
+        </div>
+    </div>
+  </div>
+
+
+
+</section>
+{% endblock %}
+
+{% block foot %}
+<script src=/js/top/top.js></script>
+{% endblock %}

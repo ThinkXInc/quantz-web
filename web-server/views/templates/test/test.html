@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    ul {
+      list-style-type: none;
+      padding: 0;
+      width: 200px;
+  }
+  
+  li {
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      margin: 0;
+      padding: 10px;
+      opacity: 1;
+      transform: translateX(0);
+      transition: opacity 0.4s ease, transform 0.4s ease, max-height 0.4s ease, padding 0.4s ease;
+      max-height: 50px;
+      overflow: hidden;
+  }
+  
+  .hidden {
+      max-height: 0;
+      opacity: 0;
+      padding: 0;
+      transform: translateX(-20px);
+  }
+  </style>
+
+</head>
+
+<body>
+  <button id="addButton">Add Item</button>
+<button id="removeButton">Remove Last Item</button>
+
+<ul>
+    <li>Item 1</li>
+    <li>Item 2</li>
+    <li>Item 3</li>
+</ul>
+
+
+  <script>
+    document.querySelector("#addButton").addEventListener("click", function() {
+      const ul = document.querySelector("ul");
+      const li = document.createElement("li");
+      li.innerHTML = "New Beautiful Item";
+      li.classList.add("hidden");
+      
+      if (ul.firstChild) {
+          ul.insertBefore(li, ul.firstChild); // Adds to the top
+      } else {
+          ul.appendChild(li);  // In case the list is empty
+      }
+      
+      setTimeout(() => {
+          li.classList.remove('hidden'); // Smoothly slides the new item into view
+      }, 10); // Tiny delay to ensure it's added to the DOM before the transition starts
+  });
+  
+  document.querySelector("#removeButton").addEventListener("click", function() {
+      const ul = document.querySelector("ul");
+      const firstItem = ul.firstElementChild;
+  
+      if (firstItem) {
+          firstItem.classList.add('hidden');
+          firstItem.addEventListener('transitionend', function() {
+              ul.removeChild(firstItem); // Ensures top item is removed after the transition finishes
+          });
+      }
+  });
+
+  </script>
+</body>
+</html>

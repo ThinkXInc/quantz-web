@@ -1,0 +1,44 @@
+{%extends "general/base.html" %}
+
+{% block head %}
+<link rel=stylesheet href=/css/main.css>
+{% endblock %}
+
+{% block content %}
+<script>
+{
+    const lang = "{{ lang }}"
+    const langName = "{{ lang_name }}"
+
+    window.lang = lang;
+    window.langName = langName;
+}
+</script>
+
+<section id="sushi" class="jp">
+    <nav class="navbar">
+        <img src="/img/sample_sites/sushi/logo_jp@2x.png" alt="Sushi Universe Logo" class="logo">
+
+        <div class="right">
+            <div class="phone-number">(123) 456-7890</div>
+        </div>
+    </nav>
+    
+    <header class="header">
+        <img src="/img/sample_sites/sushi/main.jpg" alt="Sushi Universe">
+        {#<div class="main-copy">すし六にようこそ</div>#}
+    </header>
+    
+    <div class="main-view">
+        <h3>町で最高の寿司を体験</h3>
+        <h4>新鮮な食材</h4>
+        <h4>熟練のシェフ</h4>
+        <h4>忘れられない味</h4>
+    </div>
+    
+
+</section>
+{% endblock %}
+
+{% block foot %}
+{% endblock %}

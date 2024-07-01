@@ -1,0 +1,112 @@
+@black: #000000;
+@white: #FFF;
+
+@alert-red: #8c1111;
+
+@header-bg: #1b1e42;
+@try-button: #0079ef;
+@try-button-hover: #0059b0;
+
+@tablet-width: 768px;
+@smartphone-width: 480px;
+
+div.quantz-basic-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: @header-bg;
+    padding: 10px 20px;
+    color: @white;
+
+    font-family: 'Helvetica', 'Arial', sans-serif;
+
+    button.try-button {
+        background-color: @try-button;
+        color: @white;
+        border: none;
+        border-radius: 6px;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        
+        &:hover {
+            background-color: @try-button-hover;
+        }
+    }
+    button.try-button.large {
+        padding: 21px 33px;
+        font-size: 1.2em;
+    }
+
+    div.left {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        img.logo {
+            height: 50px; // Logo height
+            margin-right: 10px;
+        }
+
+        h3.header-copy {
+            color: white;
+            margin: 0;
+            font-size: 0.9em;
+            font-weight: 200;
+            display: block;
+            padding-top: 0.5em;
+        }
+    }
+    div.right {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        h5.sales-catch {
+            display: none;
+            color: #a0a0ad;
+            margin: 0;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        button.try-button {
+            display: block;
+        }
+
+        .locale {
+            // written in lang_selector.less
+        }
+    }
+}
+
+@media (min-width: @tablet-width) {
+    div.quantz-basic-header {
+        div.left {
+            h3.header-copy {
+                margin-right: 10px;
+            }
+        }
+        div.right {
+
+        }
+    }
+}
+
+@media (max-width: @smartphone-width) {
+    div.quantz-basic-header {
+        div.left {
+            h3.header-copy {
+                display: none;
+            }
+            h5.sales-catch {
+                display: none;
+            }
+        }
+        div.right {
+            button.try-button {
+                display: none;
+            }
+        }
+    }
+}

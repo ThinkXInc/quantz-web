@@ -1,0 +1,45 @@
+{%extends "general/base.html" %}
+
+{% block head %}
+<link rel=stylesheet href=/css/main.css>
+{% endblock %}
+
+{% block content %}
+<script>
+{
+    const lang = "{{ lang }}"
+    const langName = "{{ lang_name }}"
+
+    window.lang = lang;
+    window.langName = langName;
+}
+</script>
+
+<section id="sushi" class="jp">
+    <nav class="navbar">
+        <img src="/img/sample_sites/sushi/logo_jp@2x.png" alt="Sushi Universe Logo" class="logo">
+
+        <div class="right">
+            <script src="https://quantz.thinkxinc.com/js/dist/quantz-button-v6-dev.js"></script>
+            <div id="QBTN-664ae7647fe8b2ca687d7fab" class="QBTN-quantz-button-loader" data-button-id="QBTN-664ae7647fe8b2ca687d7fab" data-quantz-config="{&quot;buttonType&quot;:&quot;B&quot;,&quot;iconSize&quot;:30,&quot;fontSize&quot;:13,&quot;buttonWidth&quot;:260,&quot;buttonHeight&quot;:44,&quot;buttonColor&quot;:&quot;#b80613&quot;,&quot;borderRadius&quot;:20,&quot;displayLocale&quot;:true,&quot;balloonRectWidth&quot;:&quot;35vw&quot;,&quot;balloonRectHeight&quot;:&quot;30vh&quot;,&quot;defaultLang&quot;:&quot;en&quot;}"></div>
+            <div class="phone-number">(123) 456-7890</div>
+        </div>
+    </nav>
+    
+    <header class="header">
+        <img src="/img/sample_sites/sushi/main.jpg" alt="Sushi Universe">
+        {#<div class="main-copy">すし六にようこそ</div>#}
+    </header>
+    
+    <div class="main-view">
+        <h3>町で最高の寿司を体験</h3>
+        <h4>新鮮な食材</h4>
+        <h4>熟練のシェフ</h4>
+        <h4>忘れられない味</h4>
+    </div>
+
+</section>
+{% endblock %}
+
+{% block foot %}
+{% endblock %}

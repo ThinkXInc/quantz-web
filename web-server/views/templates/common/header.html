@@ -1,0 +1,15 @@
+<div class="header quantz-basic-header">
+    <div class="left">
+      <a href="/{{ lang }}/"><img class="logo" src="/img/logo/horizontal-whitefont_200_60@2x.png" alt="Quantz Logo"></a>
+      <h3 class="header-copy">{{ locale_dict["top_header_catchcopy"][lang] }}</h3>
+    </div>
+      <!--
+      <h5 class="sales-catch">Now you can get {{ free_call }} free trials for a month!</h5>
+      -->
+    <div class="right">
+      <button class="try-button" onclick="redirectToSignup()">{{ locale_dict["top_header_try_button"][lang] }}</button>
+      <div class="locale">
+          {% include 'common/lang_selector.html' %} 
+      </div>
+    </div>
+  </div>

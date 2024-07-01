@@ -1,0 +1,7 @@
+# Configurations for screen
+hardstatus alwayslastline I%wI
+vbell off
+zombie "^d^r"
+
+# Create the third window for MongoDB Log
+screen -t "MongoDB Log" 0 journalctl --output=cat -u mongodb.service -f

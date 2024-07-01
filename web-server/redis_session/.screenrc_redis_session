@@ -1,0 +1,7 @@
+# Configurations for screen
+hardstatus alwayslastline I%wI
+vbell off
+zombie "^d^r"
+
+# Create the second window for Redis Session Log
+screen -t "Redis Session Log" 1 journalctl --output=cat -u redis_session.service -f

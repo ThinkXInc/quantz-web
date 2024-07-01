@@ -1,0 +1,21 @@
+{% extends "html/base.html" %}
+
+{% block content %}
+<section style="color: #333; margin-bottom: 20px; padding: 6px 20px;">
+  <h2 class="title" style="color: #4e4e4e; font-size: 1.7em; font-weight: 300;">
+    {{ welcome_to_quantz }}
+  </h2>
+  <div class="main" style="color: #3c3c3c;">
+    {{ body2 }}
+  </div>
+  <div class="verification_code" style="text-align: center; font-size: 2em; font-weight: 300; color: #000; margin-top: 20px; margin-bottom: 20px;">
+    {{ verification_code }}
+  </div>
+  <div class="main" style="color: #3c3c3c;">
+    {{ enter_this_code }}
+  </div>
+  <div style="margin-top: 37px; font-weight: 700;" clas="team">
+    {{ team }}
+  </div>
+</section>
+{% endblock %}

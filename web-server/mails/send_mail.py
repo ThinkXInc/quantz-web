@@ -1,0 +1,424 @@
+from datetime import datetime
+from os.path import dirname, abspath
+from flask import Flask, render_template
+from models.data.user import User
+
+# Config
+from config import Config, check_config
+REQUIRED_KEYS_IN_CONFIG = [
+    'HOST_URL',
+    'MAIL_NOREPLY',
+    'MAIL_SUPPORT',
+    'MAIL_SYSTEM',
+    'AWS_ACCESS_KEY_ID',
+    'AWS_SECRET_ACCESS_KEY',
+    'AWS_DEFAULT_REGION',
+    'UNIT_PRICE_USD'
+]
+check_config(Config, REQUIRED_KEYS_IN_CONFIG)
+
+HOST_URL = Config.HOST_URL
+MAIL_NOREPLY = Config.MAIL_NOREPLY
+MAIL_SUPPORT = Config.MAIL_SUPPORT
+MAIL_SYSTEM = Config.MAIL_SYSTEM
+SENDER = MAIL_NOREPLY
+REPLY_TO = MAIL_SUPPORT
+UNIT_PRICE_USD = Config.UNIT_PRICE_USD
+
+# Set logger
+from libcommon.logger import Logger
+logger = Logger()
+logger.setLevel(logger.DEBUG)
+from libcommon.color import *
+
+# Local
+from libcommon.locale import Locale
+LOCALES_ROOT = Config.LOCALES_ROOT
+EMAILS_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/emails.json'
+locale = Locale([EMAILS_LOCALE_FILE_PATH])
+
+# Email
+from libcommon.mail import Mail, MailSendError
+mail = Mail(
+    aws_access_key_id=Config.AWS_ACCESS_KEY_ID,
+    aws_secret_access_key=Config.AWS_SECRET_ACCESS_KEY,
+    region_name=Config.AWS_DEFAULT_REGION)
+
+# NOTE:
+# In main.py, template root folder is added as:
+# app.jinja_loader = ChoiceLoader([
+#     FileSystemLoader(['views/templates', 'mails/templates']),
+# ])
+# then, proj_root/mails/templates/html/page.html can be specified as 'html/page.html'
+
+# Basic test
+try:
+    response = mail.send(
+        sender=SENDER,
+        reply_to=REPLY_TO,
+        recipient='quantzdev@gmail.com',
+        subject='Mail Client Test 1',
+        text='This is a SES mail client test.',
+        html='<body>This is a SES mail client test.</body>',
+    )
+    logger.info(f"Send Mail Test: success - {response}")
+except Exception as e:
+    logger.error(red(f"Send Mail Test: An error occurred: {e}"))
+
+
+# Test outside flask (celery worker)
+try:
+    flask_app = Flask(__name__, template_folder='templates')
+    with flask_app.app_context(): # celery worker process needs context
+        html = render_template(
+            'html/notify_card_issue.html',
+            body1="Test", url=f"https://quantz.thinkxinc.com", click="Click", body2="Test", team="Quantz Team")
+        response = mail.send(
+            sender=SENDER,
+            reply_to=REPLY_TO,
+            recipient='quantzdev@gmail.com',
+            subject='Mail Client Test 2',
+            text='This is a SES mail client test.',
+            html=html
+        )
+except Exception as e:
+    logger.error(red(f"Send Mail Test: An error occurred: {e}"))
+
+# send mails
+def send_welcome_email(
+    lang,
+    user: User,
+    verification_code: str):
+
+    subject = locale.get('welcome_subject', lang)
+    html_content = render_template(
+        'html/welcome.html',
+        welcome_to_quantz=locale.get('welcome_to_quantz', lang),
+        body2=locale.get('welcome_body2', lang),
+        verification_code=verification_code,
+        enter_this_code=locale.get('welcome_enter_this_code', lang),
+        team=locale.get('team', lang)
+        )
+    text_content = render_template(
+        'plain/welcome.txt',
+        welcome_to_quantz=locale.get('welcome_to_quantz', lang),
+        body2=locale.get('welcome_body2', lang),
+        verification_code=verification_code,
+        enter_this_code=locale.get('welcome_enter_this_code', lang),
+        team=locale.get('team', lang)
+        )
+
+    try:
+        mail.send(
+            sender=SENDER,
+            reply_to=REPLY_TO,
+            recipient=user.email if user.email else user.suspended_email,
+            subject=subject,
+            text=text_content,
+            html=html_content,
+            bcc=[MAIL_SYSTEM]
+        )
+        logger.info(light_green(f'Email "{subject}" sent to {user.email}'))
+    except MailSendError as e:
+        raise MailSendError
+
+def send_verification_email(
+    lang,
+    user: User,
+    verification_code: str):
+
+    subject = locale.get('verification_subject', lang)
+
+    html_content = render_template(
+        'html/verification.html',
+        body1=locale.get('verification_body1', lang),
+        body2=locale.get('verification_body2', lang),
+        verification_code=verification_code,
+        team=locale.get('team', lang)
+    )
+    text_content = render_template(
+        'plain/verification.txt',
+        body1=locale.get('verification_body1', lang),
+        body2=locale.get('verification_body2', lang),
+        verification_code=verification_code,
+        team=locale.get('team', lang)
+    )
+
+    try:
+        mail.send(
+            sender=SENDER,
+            reply_to=REPLY_TO,
+            recipient=user.suspended_email,
+            subject=subject,
+            text=text_content,
+            html=html_content,
+            bcc=[MAIL_SYSTEM]
+        )
+        logger.info(light_green(f'Email "{subject}" sent to {user.email}'))
+    except MailSendError as e:
+        raise MailSendError
+
+def send_password_reset_email(
+    lang,
+    user: User,
+    password_reset_code: str,
+    password_reset_code_expiration: datetime):
+
+    subject = locale.get('password_reset_subject', lang)
+
+    password_reset_url = f'https://quantz.thinkxinc.com/v1/{lang}/signin?page=reset&reset_code={password_reset_code}&email={user.email}'
+    password_reset_date = password_reset_code_expiration.strftime("%Y %m/%d %H:%M")
+
+    html_content = render_template(
+        'html/password_reset.html',
+        body1=locale.get('password_reset_body1', lang),
+        password_reset_url=password_reset_url,
+        password_reset_link_text=locale.get('password_reset_link_text', lang),
+        body2=locale.get('password_reset_body2', lang, [password_reset_date]),
+        body3=locale.get('password_reset_body3', lang),
+        team=locale.get('team', lang)
+    )
+
+    text_content = render_template(
+        'plain/welcome.txt',  # Assuming you are reusing or have a template for plain text
+        body1=locale.get('password_reset_body1', lang),
+        password_reset_url=password_reset_url,
+        password_reset_link_text=locale.get('password_reset_link_text', lang),
+        body2=locale.get('password_reset_body2', lang, [password_reset_date]),
+        body3=locale.get('password_reset_body3', lang),
+        team=locale.get('team', lang)
+    )
+
+    try:
+        mail.send(
+            sender=SENDER,
+            reply_to=REPLY_TO,
+            recipient=user.email,
+            subject=subject,
+            text=text_content,
+            html=html_content,
+            bcc=[MAIL_SYSTEM]
+        )
+        logger.info(light_green(f'Email "{subject}" sent to {user.email}'))
+    except MailSendError as e:
+        raise MailSendError
+
+
+def send_notify_card_issue_email(user: User):
+    """Run in celery worker"""
+    lang = user.lang
+    flask_app = Flask(__name__, template_folder='templates')  # mails/ is root
+    logger.debug(flask_app.jinja_loader.searchpath)
+    with flask_app.app_context(): # celery worker process needs context
+        subject = locale.get('notify_card_issue_subject', lang)
+        html_content = render_template(
+            'html/notify_card_issue.html',
+            body1=locale.get('notify_card_issue_body1', lang),
+            url=f"https://quantz.thinkxinc.com/v1/{lang}/home?page=settings&key=card",
+            click=locale.get('notify_card_issue_click', lang),
+            body2=locale.get('notify_card_issue_body2', lang),
+            #body3=locale.get('notify_card_issue_body3', lang),
+            team=locale.get('team', lang)
+            )
+        text_content = render_template(
+            'plain/notify_card_issue.txt',
+            body1=locale.get('notify_card_issue_body1', lang),
+            url=f"https://quantz.thinkxinc.com/v1/{lang}/home?page=settings&key=card",
+            click=locale.get('notify_card_issue_click', lang),
+            body2=locale.get('notify_card_issue_body2', lang),
+            #body3=locale.get('notify_card_issue_body3', lang),
+            team=locale.get('team', lang)
+            )
+
+        try:
+            mail.send(
+                sender=SENDER,
+                reply_to=REPLY_TO,
+                recipient=user.email,
+                subject=subject,
+                text=text_content,
+                html=html_content,
+                bcc=[MAIL_SYSTEM]
+            )
+            logger.info(light_green(f'Email "{subject}" sent to {user.email}'))
+        except MailSendError as e:
+            raise MailSendError
+
+def send_free_call_given_email(user: User):
+    """Run in celery worker"""
+    lang = user.lang
+    flask_app = Flask(__name__, template_folder='templates')  # mails/ is root
+    logger.debug(flask_app.jinja_loader.searchpath)
+    with flask_app.app_context(): # celery worker process needs context
+        free_call_in_usd = UNIT_PRICE_USD * user.free_call
+        subject = locale.get('free_call_given_subject', lang, [str(user.free_call), str(free_call_in_usd)])
+        html_content = render_template(
+            'html/free_call_given.html',
+            body1=locale.get('free_call_given_body1', lang),
+            body2=locale.get('free_call_given_body2', lang, [str(user.free_call)], str(free_call_in_usd)),
+            body3=locale.get('free_call_given_body3', lang),
+            team=locale.get('team', lang)
+            )
+        text_content = render_template(
+            'plain/free_call_given.txt',
+            body1=locale.get('free_call_given_body1', lang),
+            body2=locale.get('free_call_given_body2', lang, [str(user.free_call), str(free_call_in_usd)]),
+            body3=locale.get('free_call_given_body3', lang),
+            team=locale.get('team', lang)
+            )
+
+        try:
+            mail.send(
+                sender=SENDER,
+                reply_to=REPLY_TO,
+                recipient=user.email,
+                subject=subject,
+                text=text_content,
+                html=html_content,
+                bcc=[MAIL_SYSTEM]
+            )
+            logger.info(light_green(f'Email "{subject}" sent to {user.email}'))
+        except MailSendError as e:
+            raise MailSendError
+
+
+def format_history(parsed_history: list, locale: Locale, lang: str) -> (str, str):
+    # To replace user: or assistant: in locale
+    user_label = locale.get("chatdata_user_label", lang)
+    assistant_label = locale.get("chatdata_assistant_label", lang)
+
+    # Initialize output strings for text and HTML formats.
+    text_output = ""
+    html_output = '<ul style="padding-left: 0; list-style: none;">'
+
+    # HTML styles
+    user_style = 'style="color:#52b0bd;"'
+    assistant_style = 'style="color:#aaa;"'
+    text_style = 'style="color:#333;"'
+
+    # Iterate through each dialog in the history
+    for dialog in parsed_history:
+        speaker = dialog['speaker']
+        text = dialog['text']
+
+        if speaker == 'human':
+            # Formatting for text version
+            text_output += f"{user_label}: {text}\n"
+            
+            # Formatting for HTML version
+            html_output += f'<li style="padding-bottom: 8px;">'
+            html_output += f'<span {user_style}>{user_label}: </span><span {text_style}>{text}</span>'
+            html_output += '</li>'
+        elif speaker == 'bot':
+            # Formatting for text version
+            text_output += f"{assistant_label}: {text}\n"
+
+            # Formatting for HTML version
+            html_output += f'<li style="padding-bottom: 8px;">'
+            html_output += f'<span {assistant_style}>{assistant_label}: </span><span {text_style}>{text}</span>'
+            html_output += '</li>'
+
+    # Close the HTML list
+    html_output += '</ul>'
+
+    return text_output, html_output
+
+def send_chatdata_report_email(parsed_history: list, start_time: datetime, user: User):
+    lang = user.lang
+    flask_app = Flask(__name__, template_folder='templates')  # mails/ is root
+    logger.debug(flask_app.jinja_loader.searchpath)
+    with flask_app.app_context(): # celery worker process needs context
+        subject = locale.get('chatdata_report_subject', lang)
+        history_text, history_html = format_history(parsed_history, locale, lang)
+        html_content = render_template(
+            'html/chatdata_report.html',
+            #body1=locale.get('chatdata_report_body1', lang),
+            time_label=locale.get('chatdata_report_time_label', lang),
+            time_str=start_time.strftime("%Y %m/%d %H:%M"),
+            history=history_html,
+            team=locale.get('team', lang)
+            )
+        text_content = render_template(
+            'html/chatdata_report.html',
+            #body1=locale.get('chatdata_report_body1', lang),
+            time_label=locale.get('chatdata_report_time_label', lang),
+            time_str=start_time.strftime("%Y %m/%d %H:%M"),
+            history=history_text,
+            team=locale.get('team', lang)
+            )
+
+        try:
+            mail.send(
+                sender=SENDER,
+                reply_to=REPLY_TO,
+                recipient=user.email,
+                subject=subject,
+                text=text_content,
+                html=html_content,
+                bcc=[MAIL_SYSTEM]
+            )
+            logger.info(light_green(f'Email "{subject}" sent to {user.email}'))
+        except MailSendError as e:
+            raise MailSendError
+
+
+
+
+#def render_email_change_verification(
+#        user: User, mail_confirmation_code: str,
+#        lang='en', html=True, hosturl=HOST_URL):
+#    if html:
+#        return render_template(html_path(
+#            'email_change_verification', lang),
+#            user=user,
+#            mail_confirmation_code=mail_confirmation_code,
+#            hosturl=hosturl)
+#    else:
+#        return plain_text(
+#            plain_path('email_change_verification', lang),
+#            user=user,
+#            mail_confirmation_code=mail_confirmation_code,
+#            hosturl=hosturl)
+#
+#def render_email_change_success(
+#        user: User, lang='en', html=True, hosturl=HOST_URL):
+#    if html:
+#        return render_template(
+#            html_path('email_change_success', lang),
+#            user=user,
+#            hosturl=hosturl)
+#    else:
+#        return plain_text(
+#            plain_path('email_change_success', lang),
+#            user=user,
+#            hosturl=hosturl)
+#
+#def render_password_reset(
+#        user: User, password_reset_code: str, lang='en', html=True,
+#        hosturl=HOST_URL):
+#    if html:
+#        return render_template(
+#            html_path('password_reset', lang),
+#            user=user,
+#            password_reset_code=password_reset_code,
+#            hosturl=hosturl)
+#    else:
+#        return plain_text(
+#            plain_path('password_reset', lang),
+#            user=user,
+#            password_reset_code=password_reset_code,
+#            hosturl=hosturl)
+#
+#def render_password_change_success(
+#        user: User, lang='en', html=True,
+#        hosturl=HOST_URL):
+#    if html:
+#        return render_template(
+#            html_path('password_change_success', lang),
+#            user=user,
+#            hosturl=hosturl)
+#    else:
+#        return plain_text(
+#            plain_path('password_change_success', lang),
+#            user=user,
+#            hosturl=hosturl)

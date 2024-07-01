@@ -1,0 +1,164 @@
+{
+    "top_header_catchcopy": {
+        "en": "The simplest AI Voice Help Center that grows your business on your behalf.",
+        "ja": "あなたが仕事をしている間に、あなたの”分身”が回答。最速クイックレスポンスの音声AIを30分で設置。",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "top_header_try_button": {
+        "en": "TRY NOW FOR FREE !",
+        "ja": "今すぐ無料で試す",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "top_main_title": {
+        "en": "Turn Your Website Into a Sales Machine With the Simplest AI Voice Help Center",
+        "ja": "世界で最もシンプルでクイックな応答の音声AI、Quantzがあなたに代わって問い合わせに対応",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "top_main_subtitle": {
+        "en": "Save time. Get more leads. Increase sales.",
+        "ja": "あなたの時間を増やし、大事な仕事に集中させる。",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "top_main_try_label": {
+        "en": "Get {} free credits when you sign up!",
+        "ja": "今なら1ヶ月無料で試せる{}回分をプレゼント",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "top_main_try_button": {
+        "en": "Start Free Trial",
+        "ja": "今すぐ無料で試してみる",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "top_step_title": {
+        "en": "Set up your Voice AI in under 30 minutes.",
+        "ja": "30分であなたのWebサイトに簡単に組み込める",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "top_step_1": {
+        "en": "Step 1",
+        "ja": "ステップ1",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "top_step_1_desc": {
+        "en": "Create an account, add a payment method, and set up usage limits.",
+        "ja": "メールアドレスで登録、支払い方法、利用上限をセットアップ",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "top_step_1_time": {
+        "en": "5 min",
+        "ja": "5分",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "top_step_2": {
+        "en": "Step 2",
+        "ja": "ステップ2",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "top_step_2_desc": {
+        "en": "Collect relevant information about your business and paste it into Quantz.",
+        "ja": "Quantzに教えるビジネスの説明をノートに書き込む",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "top_step_2_time": {
+        "en": "10 min",
+        "ja": "10分",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "top_step_3": {
+        "en": "Step 3",
+        "ja": "ステップ3",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "top_step_3_desc": {
+        "en": "Copy and paste the HTML code snippet to add the Quantz button to your site.",
+        "ja": "QuantzボタンのHTMLコードをコピーしてサイトに貼り付ける",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "top_step_3_time": {
+        "en": "15 min",
+        "ja": "15分",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "top_demo_experience_1": {
+        "en": "Experience Quantz as a user",
+        "ja": "Quantzについて聞いてみてください",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "top_demo_experience_2": {
+        "en": "Choose the button type to get started",
+        "ja": "クリックして開始",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    }
+}

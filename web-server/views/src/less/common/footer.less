@@ -1,0 +1,57 @@
+div.quantz-basic-footer {
+    display: flex;
+    justify-content: flex-end; // Aligns the footer content to the right
+    align-items: center;
+    background-color: @footer-bg;
+    margin-top: 10px;
+    padding: 17px 30px;
+
+    div.footer-content {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    div.footer-links {
+        display: flex;
+        justify-content: flex-end; // Aligns links to the right
+        margin-right: 20px; // Adds a margin to the right of the links
+
+        a.footer-link {
+            color: #5b5b5b;
+            text-decoration: none;
+            font-size: 0.9em;
+            margin-right: 15px; // Space between links
+
+            transition: color 0.3s;
+    
+            &:hover {
+                color: #00416c;
+            }
+        }
+    }
+
+    div.footer-rights {
+        font-size: 0.8em;
+        font-weight: 500;
+        text-align: right; // Ensures text is right-aligned
+        color: #717171;
+    }
+}
+
+@media (max-width: @smartphone-width) {
+    div.quantz-basic-footer {
+        flex-direction: row; // Horizontal layout for the footer
+        align-items: center;
+        padding: 17px 17px;
+
+        div.footer-content {
+            justify-content: space-between; // Distribute content
+            div.footer-links {
+                a.footer-link {
+                    font-size: 0.8em;
+                }
+            }
+        }
+    }
+}

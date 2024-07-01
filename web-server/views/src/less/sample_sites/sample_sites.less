@@ -1,0 +1,668 @@
+#sample-techschool {
+    height: 100vh;
+    header {
+        height: 67px;
+        background-color: orange;
+    }
+    div.main {
+        display: flex;
+        height: 70%;
+        flex-direction: row;
+
+        section.left, section.right {
+        }
+
+        section.left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            //justify-content: center;
+            margin-top: 126px;
+
+            width: 50%;
+            padding: 30px;
+            img.logo {
+                width: 100%;
+                margin-bottom: 30px;
+            }
+            img {
+                max-width: 100%;
+            }
+            img.robot, img.basic {
+                margin-bottom: 20px;
+            }
+            img.advanced {
+
+            }
+        }
+        section.right {
+            width: 50%;
+            div.QBTN-button-container {
+                margin-top: 163px;
+            }
+        }
+    }
+}
+
+#blue {
+    width: 100vw;
+    height: 100vh;
+    background-color: blue;
+}
+
+#green {
+    width: 100vw;
+    height: 100vh;
+    background-color: green;
+}
+
+// basic demo A
+
+#basicDemoA {
+    div.top-bg {
+        height: 100vh;
+    }
+
+    svg.cloud-pattern {
+        height: 100%;
+    }
+
+    .waves-container {
+        position: absolute;
+        top: 90px;
+        opacity: 0.3;
+        width: 100%;
+        height: 100vh;
+        background-size: cover, 800% 100%;
+        animation: moveGradient 30s linear infinite;
+      }
+
+      .waves {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 300px;
+        margin-bottom: -7px; /* Fix for safari gap */
+        min-height: 100px;
+        max-height: 300px;
+      }
+
+      .parallax > use {
+        animation: move-forever 25s cubic-bezier(.55,.5,.45,.5) infinite;
+      }
+      .parallax > use:nth-child(1) {
+        animation-delay: -2s;
+        animation-duration: 17s;
+      }
+      .parallax > use:nth-child(2) {
+        animation-delay: -3s;
+        animation-duration: 10s;
+      }
+
+
+      @keyframes move-forever {
+        0% {
+          transform: translate3d(-90px,0,0);
+        }
+        100% {
+          transform: translate3d(85px,0,0);
+        }
+      }
+
+      @keyframes moveGradient {
+        0% { background-position: 0% 0%, 0% 50%; }
+        50% { background-position: 100% 5%, 100% 50%; }
+        100% { background-position: 0% 0%, 0% 50%; }
+      }
+
+      @media (max-width: 768px) {
+        .waves {
+          height: 40px;
+          min-height: 40px;
+        }
+      }
+
+    div.basicDemoA {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        //justify-content: center;
+        height: 100vh;
+
+        div.btnMain {
+        display: none;
+            margin-top: 200px;
+
+        }
+
+    }
+}
+
+
+// sushi
+#sushi {
+
+    &.jp {
+        //font-family: "Hiragino-Mincho";
+    }
+
+    nav.navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #77282e;
+        //background-color: #333;
+        padding: 10px 20px;
+    
+        img.logo {
+            height: 50px;
+            margin-right: 20px;
+        }
+
+        div.right {
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+
+            div.QBTN-quantz-button-loader {
+                margin-left: auto;
+                .QBTN-locale-button {
+                    height: 10px;
+                    width: 26px;
+                }
+            }
+    
+            div.phone-number {
+                margin-left: 48px;
+                color: #fff;
+                font-size: 30px;
+                padding-right: 130px;
+                font-weight: 600;
+            }
+
+        }
+    }
+    
+    header.header {
+        position: relative;
+        text-align: center;
+        color: white;
+    
+        img {
+            height: 70vh;
+            width: 100%;
+        }
+    
+        div.main-copy {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+    }
+    
+    div.main-view {
+        padding: 20px;
+        text-align: center;
+    
+        h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+    
+        h4 {
+            font-size: 18px;
+            margin: 5px 0;
+        }
+    }
+}
+
+// 6th mobile
+#sample-6thmobile {
+    @keycolor: #333333; // Dark grey for primary accents
+    @subkeycolor: #555555; // Medium grey for secondary accents
+    @textcolor: #333333; // Dark grey for text
+    @backgroundcolor: #f9f9f9; // Very light grey for backgrounds
+    @linkcolor: #666666; // Grey for links
+    @color1: #2c6c58;
+    @color2: #8c7c2d;
+    @color3: #593d89;
+    @color4: #821a89;
+
+
+  background-color: @backgroundcolor;
+  color: @textcolor;
+  font-family: 'Arial', sans-serif;
+
+  header {
+    background-color: #222222;//#ffffff;//@subkeycolor;
+    color: @textcolor;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    align-items: center;
+
+    img.logo {
+      height: 60px;
+    }
+
+    nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .QBTN-quantz-button-loader {
+            margin-right: 54px;
+            .QBTN-locale-button {
+                height: 13px;
+                width: 30px;
+            }
+        }
+      ul {
+        display: flex;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+
+        li {
+          margin-left: 20px;
+
+          a {
+            color: #5e5e5e;
+            text-decoration: none;
+            font-weight: bold;
+
+            &:hover {
+              color: @keycolor;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  section.top-view {
+    //background: linear-gradient(135deg, #2c6c58 25%, #2b7562 25%, #8c7c2d 50%, #c69a24 50%, #593d89 75%, #821a89 75%);
+    background: linear-gradient(135deg, #555555 25%, #4d4d4d 25%, #3b3b3b 50%, #434343 50%, #4c4c4c 75%, #585858 75%);
+    //background: linear-gradient(135deg, @subkeycolor 25%, @keycolor 25%, @keycolor 50%, @subkeycolor 50%, @subkeycolor 75%, @keycolor 75%);
+    color: @textcolor;
+    text-align: center;
+    padding: 50px 20px;
+    position: relative;
+
+    h1 {
+        color: #b4b4b4;// white;
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    p {
+        color: #9f9f9f;//white;
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    // Simulating the button style in the example
+    .button {
+      display: inline-block;
+      background-color: @keycolor;
+      color: @textcolor;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-top: 20px;
+
+      &:hover {
+        background-color: darken(@keycolor, 10%);
+      }
+    }
+  }
+
+
+  div.main {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: @backgroundcolor; 
+
+    section.welcome {
+        padding: 20px;
+        margin-bottom: 2rem;
+        background-color: #fff; // White background for content sections
+        border-radius: 8px; // Rounded corners
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Subtle shadow for depth
+
+        background-image: linear-gradient(to right, @subkeycolor, @keycolor);
+        color: @textcolor;
+
+        h2 {
+            color: #272727;//#a8a8a8; // White text for readability on a dark background
+            font-size: 24px;
+        }
+
+        p {
+            color: #272727; // White text for readability on a dark background
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+
+            li {
+                background-color: lighten(@backgroundcolor, 5%); // Slightly lighter than the main background
+                border-radius: 5px;
+                margin-bottom: 5px;
+
+                h3 {
+                    font-size: 18px;
+                    color: darken(@keycolor, 10%); // Darker shade of the key color
+                    margin-bottom: 5px;
+                }
+
+                p {
+                    font-size: 14px;
+                    line-height: 1.4;
+                }
+            }
+        }
+    }
+
+    //section.plan-offerings, section.tailored-calling-options {
+    //    h3 {
+    //        margin-top: 0;
+    //    }
+    //        ul li:nth-of-type(1) > h3 {
+    //            color: @color1;
+    //        }
+    //        
+    //        ul li:nth-of-type(2) > h3 {
+    //            color: @color2;
+    //        }
+    //        
+    //        ul li:nth-of-type(3) > h3 {
+    //            color: @color3;
+    //        }
+    //        
+    //        ul li:nth-of-type(4) > h3 {
+    //            color: @color4;
+    //        }
+    //}
+
+    section.plans, section.plan-offerings, section.discounts-special-offers {
+            background: #fff; // White background for each section
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px; // Rounded corners
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Subtle shadow
+    
+            h2 {
+                //margin-top: 0;
+                font-size: 24px;
+                color: @keycolor;
+                border-bottom: 2px solid @subkeycolor; // Underline for headings
+            }
+    
+            p {
+                font-size: 22px;
+                line-height: 1.6;
+                color: @textcolor;
+            }
+    
+            ul {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr); // Two columns for list items
+                gap: 10px; // Spacing between grid items
+                padding: 0;
+    
+                li {
+                    background: lighten(@backgroundcolor, 5%); // Lighter background for list items
+                    padding: 10px;
+                    border-radius: 5px;
+    
+                    h3 {
+                        font-size: 23px;
+                        color: darken(@keycolor, 10%); // Darker orange for subheadings
+                        margin-bottom: 5px;
+                    }
+
+                   p {
+                        font-size: 20px;
+                        color: @textcolor;
+                    }
+                }
+            }
+
+
+    
+ 
+    }
+    section.discounts-special-offers {
+        background: linear-gradient(to right, @subkeycolor, @keycolor); // Gradient background
+        color: @textcolor;
+
+        ul {
+            display: flex;
+            justify-content: space-around; // Evenly space out list items
+
+            li {
+                font-size: 16px;
+                font-weight: bold;
+            }
+        }
+    }
+
+
+    section.billing-management, section.tailored-calling-options, section.customize-mobile, section.service-options {
+        background: #fff; // White background for each section
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 8px; // Rounded corners
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Subtle shadow
+
+        h2 {
+            font-size: 24px;
+            color: @keycolor;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 22px;
+            line-height: 1.6;
+            color: @textcolor;
+            margin-bottom: 20px; // More space below paragraphs
+        }
+
+        div.image-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            img {
+                width: 910px;
+            }
+        }
+        ul {
+            display: flex;
+            flex-wrap: wrap; // Allows items to wrap in smaller screens
+            gap: 10px; // Spacing between grid items
+
+            li {
+                flex: 1 1 45%; // Each item can grow and takes about half of the container width
+                background: lighten(@backgroundcolor, 5%); // Lighter background for list items
+                padding: 10px;
+                border-radius: 5px;
+
+                h3 {
+                    font-size: 18px;
+                    color: darken(@keycolor, 10%); // Darker orange for subheadings
+                    margin-bottom: 5px;
+                }
+
+                p {
+                    font-size: 22px;
+                    color: @textcolor;
+                }
+            }
+        }
+    }
+
+    // Special styling for the billing management section
+    .billing-management {
+        background: linear-gradient(to bottom, #fff, lighten(@subkeycolor, 10%)); // Subtle gradient from white to light grey
+    }
+
+    // Tailored calling options section styling
+    .tailored-calling-options {
+        padding-left: 30px; // Slightly more padding on the left for content distinction
+        border-left: 4px solid @keycolor; // Vertical line to the left
+    }
+
+    // Customize mobile experience section
+    .customize-mobile {
+        padding-top: 30px; // Additional padding at the top
+        background-color: darken(@backgroundcolor, 5%); // Slightly darker background
+    }
+
+    // Extensive range of service options
+    .service-options {
+        padding: 30px; // More padding for a more spacious layout
+        background: linear-gradient(to right, @subkeycolor, @backgroundcolor); // Horizontal gradient
+        color: @textcolor;
+    }
+
+    section.security-protection,
+    section.financial-services,
+    section.family-personal-safety,
+    section.advanced-connectivity,
+    section.travel-international,
+    section.community-emergency-services {
+        background: #fff; // Clean white background for high readability
+        padding: 30px; // Generous padding for a spacious layout
+        margin-bottom: 30px; // Space between sections for clear separation
+        border-radius: 12px; // Rounded corners for a softer, modern look
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05); // Subtle, wide shadow for depth
+
+        h2 {
+            font-size: 26px; // Larger font size for headings
+            color: @keycolor; // Key color for heading to stand out
+            margin-bottom: 20px; // Space after heading for clear separation
+            padding-bottom: 10px; // Padding below the heading
+            border-bottom: 3px solid @subkeycolor; // Subtle bottom border for aesthetic division
+        }
+
+        p, ul {
+            font-size: 16px;
+            line-height: 1.8; // Increased line height for readability
+            color: @textcolor; // Consistent text color for readability
+            margin-bottom: 20px; // Margin at the bottom for separation
+        }
+
+        ul {
+            list-style: none; // Remove bullet points for cleanliness
+            padding: 0;
+            display: grid; // Using CSS Grid for flexible layout
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); // Responsive columns
+            gap: 15px; // Space between grid items
+            li {
+                font-size: 20px;
+                strong {
+                    font-size: 22px;
+                }
+            }
+        }
+
+        li {
+            background-color: #8f8f8f;// #000;//#ff8000;//#000;
+            color: #fff;
+            padding: 15px; // Padding for each list item for touch friendliness
+            border-radius: 8px; // Rounded corners for list items
+        }
+
+    }
+
+        // Security Protection
+        .security-protection {
+            background: linear-gradient(to right, #e6f7ff, #b3e0ff);
+        }
+    
+        // Financial Services
+        .financial-services {
+            background-color: #fbf2d4; // Light yellow background for financial focus
+        }
+    
+        // Family and Personal Safety
+        .family-personal-safety {
+            background-color: #e2efda; // Light green background for safety focus
+        }
+    
+        // Advanced Connectivity
+        .advanced-connectivity {
+            background-color: #e8eaf6; // Light blue background for tech focus
+            li {
+                border-left-color: @subkeycolor; // Different color for the border
+            }
+        }
+    
+        // Travel and International
+        .travel-international {
+            background: linear-gradient(to bottom, #ffe0b2, #ffcc80); // Gradient from light to more intense orange
+        }
+    
+        // Community and Emergency Services
+        .community-emergency-services {
+            background-color: #ffebee; // Light red background for urgency
+            li {
+                border-left-color: darken(@keycolor, 20%); // Darker border for emphasis
+            }
+        }
+
+
+        .additional-utilities, .additional-services {
+            h2 {
+                font-size: 34px;
+                color: @keycolor;
+                margin-bottom: 15px;
+                margin-top: 44px;
+            }
+    
+            ul, ol {
+                font-size: 20px;
+                line-height: 1.6;
+                color: @textcolor;
+                list-style-type: none; // Removing default list styling
+                margin: 0;
+                padding: 0;
+            }
+    
+            li {
+                margin-bottom: 10px;
+                padding: 10px;
+                background-color: lighten(@backgroundcolor, 5%); // Slightly lighter background for readability
+                border-radius: 5px; // Rounded corners for modern feel
+    
+                .title {
+                    font-weight: bold;
+                    display: block; // Ensures title is on a new line, clearly separating it from the description
+                    margin-bottom: 5px; // Space between title and description
+                }
+            }
+        }
+    
+        // Specific styles for additional-services to potentially differentiate from utilities
+        .additional-services {
+            background: linear-gradient(to bottom, @backgroundcolor, lighten(@backgroundcolor, 10%)); // Gradient background for distinction
+        }
+  }
+}

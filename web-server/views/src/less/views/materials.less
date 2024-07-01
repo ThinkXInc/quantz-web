@@ -1,0 +1,432 @@
+//@material-list-header-bg: #182026;
+//@material-list-header-title: #596772;
+//@material-list-count: #fcfdfd;
+//@create-new-bg: #05526b;  // #65056b
+//@create-new-title: #fff;
+//@material-list-bg: #293742;
+//@material-bg: #293742;
+//@material-bg-highlight: #5195c9; 
+//@material-border: #2f3f4c;
+//@material-title: #d5e2e8;
+//@material-text: #6f7e8d;
+//@material-title-highlight: #fff;
+//@material-text-highlight: #fff;
+//@material-create-view-bg: #26333d;
+
+@material-create-view-bg: #2e2e2e;
+
+@tablet-width: 768px;
+@smartphone-width: 480px;
+
+#MainContent.materials {
+    display: flex;
+    flex-direction: row;
+}
+
+#MainContent.materials div.MaterialList.TableView {
+    @material-list-header-bg: #282828;
+    @material-list-header-title: #596772;
+    @material-list-count: #fcfdfd;
+    @create-new-bg: #50636a;//#055c6b;  // #65056b
+    @create-new-title: #fff;
+    @material-list-bg: #444444;
+    @material-bg: #444444;
+    @material-bg-selected: #5b5b5b;//#535353;//#32383b;//#535353;
+    @material-bg-highlight: #5b5b5b;// #535353;//#32383b;//#5195c9;//#17617e;//  //#5c5c5c; //
+    @material-border: #4d4d4d;
+    @material-title: #d5e2e8;//#e6ecee;//
+    @material-text: #a3a3a3;//#959595;//#bdbdbd;// // #8b8b8b;
+    @material-title-highlight: #fff;
+    @material-text-highlight: #fff;
+    @scrollbar-thumb: #8b8b8b;
+
+    display: flex;
+    flex-direction: column; // Added to layout the inner elements vertically
+    width: 300px;
+    height: 100vh;
+    background-color: @material-list-bg;
+
+    ::-webkit-scrollbar {
+        width: 3px;
+    }
+    
+    ::-webkit-scrollbar-button {
+      background-color: @material-list-bg;
+    }
+    
+    ::-webkit-scrollbar-track {
+      -webkit-box-shadow: none;
+      background-color: @material-list-bg;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background-color: @scrollbar-thumb;
+    }
+
+    div.tableViewContainer {
+        // Styles for the overall container
+        display: flex;
+        flex-direction: column;
+        height: max-content;
+
+        div.materialListHeader {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 83px;
+            padding: 15px 20px;
+            background-color: @material-list-header-bg;
+
+            div.leftContainer {
+                h1.materialListHeaderTitle {
+                    font-size: 0.9em;
+                    color: @material-list-header-title;
+                }
+                h3.materialListCount {
+                    font-size: 1.1em;
+                    margin-top: 4px;
+                    color: @material-list-count;
+                }
+            }
+
+            div.rightContainer {
+                display: flex;
+                flex-direction: row;
+                img.search_icon {
+                    cursor: pointer;
+                    width: 34px;
+                    height: 34px;
+                }
+            }
+        }
+
+        div.createNew { // Styles for the "Add new material" section
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            height: 65px;
+            background-color: @create-new-bg;
+
+            img.plusIcon {
+                width: 24px;
+                height: 24px;
+                margin-right: 10px; // Added for some space between the icon and label
+            }
+
+            h4.title {
+                font-size: 16px;
+                color: @create-new-title;
+            }
+        }
+        div.createNew:hover {
+
+        }
+
+        div.tableView {
+            flex: 1;
+            overflow-y: auto;
+
+            ul.tableListView {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+
+                li.tableViewCell {
+                    // Base styles for each cell
+                    cursor: pointer;
+                    padding: 16px 20px; // Added padding for each material
+                    background-color: @material-bg;
+                    border-bottom: 1px solid @material-border;
+                    .transitionAll();
+
+                    div.contentWrapper {
+                        div.header {
+                            span.label {
+                                display: none;
+                            }
+                            h6.title {
+                                font-size: 1em; 
+                                color: @material-title;
+                            }
+                        }
+                        div.body {
+                            p.text {
+                                font-size: .8em;
+                                color: @material-text;
+                                margin-top: 7px;
+                            }
+                        }
+                        div.footer {
+                            display: none;
+                        }
+                    }
+                }
+
+                li.tableViewCell.selected {
+                    background-color: @material-bg-selected;
+
+                    div.buttonContainer.right {
+                        background: linear-gradient(to left, @material-bg-selected, @material-bg-selected 77%, transparent);
+                    }
+                    div.buttonContainer.left {
+                        background: linear-gradient(to right, @material-bg-selected, @material-bg-selected 77%, transparent);
+                    }
+                }
+
+                li.tableViewCell:hover {
+                    background-color: @material-bg-highlight;
+                    div.header {
+                        h6.title {
+                            color: @material-title-highlight;
+                        }
+                    }
+                    div.body {
+                        p.text {
+                            color: @material-text-highlight;
+                        }
+                    }
+                }
+            }
+        }
+
+        div.tableViewFooter {
+            @footer-border-top: #e5e5e5;
+            // Styles for the table footer
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 15px;
+            border-top: 1px solid @footer-border-top; // Example styling
+        }
+    }
+}
+
+
+// MaterialCreateView
+#MaterialCreateView {
+    @input-field-bg: #282828;
+    @input-field-text: #c2c2c2;
+    @input-field-caret: #69d7ff;
+    @counter-text-notice: #69d7ff;
+    @counter-text: #9cbabb;
+    @input-field-message-notice: #7390B5;
+    @input-field-message: #fff;
+    @input-field-press-label: #fff;
+    @alert-red: #8c1111;
+
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    overflow-y: auto;
+    background-color: @material-create-view-bg;
+
+    div.inputPageViewContainer {
+        width: 85%;
+
+        div.inputPageViewPages {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; // Vertically center children
+
+            div.inputPageViewPage {
+                display: flex;
+                flex-direction: column;
+                align-items: center; // Horizontally center children
+            }
+
+            div.MaterialCreatePage {
+                @import 'material_title_field.less';
+                @import 'material_text_field.less';
+                @import 'material_keywords_field.less';
+                @import 'material_sample_question_field.less';
+                @import 'material_sample_answer_view.less';
+            }
+
+            //// MaterialTitlePage
+            //div.MaterialTitlePage {
+            //    margin-top: 30px;
+            //    @import 'material_title_field.less';
+            //}
+
+            //// MaterialTextPage
+            //div.MaterialTextPage {
+            //    margin-top: 30px;
+            //    @import 'material_text_field.less';
+            //}
+        }
+
+        div.MaterialCreateView__AlertMessage.AlertMessage {
+            display: flex;
+            flex-direction: column;
+
+            p.AlertMessage__message {
+                display: none;
+                // Add additional styles for the AlertMessage__message here
+            }
+        }
+    }
+}
+
+
+@media (min-width: @tablet-width) {
+}
+
+@media (max-width: @smartphone-width) {
+    @cubic-bezier1: cubic-bezier(.65,0,.34,1);
+    @transition-duration: 0.2s;
+
+   
+    .hideListViewToLeft {
+        opacity: 0;
+        transform: translateX(-100%); // Move out to the left
+        transition: opacity @transition-duration @cubic-bezier1, transform @transition-duration @cubic-bezier1; // Specific easing for hiding
+    }
+    
+    .showListViewToRight {
+        display: block; // Ensure div.B is visible
+        opacity: 1;
+        transform: translateX(0%); // Align to its original position
+        transition: opacity @transition-duration @cubic-bezier1, transform @transition-duration @cubic-bezier1; // Consistent with show to left
+    }
+    
+    #MainContent.materials {
+        flex-direction: column;
+        position: relative;
+    }
+
+    #MainContent.materials div.MaterialList.TableView {
+        width: 100%;
+        div.tableView {
+            flex: none !important;
+            overflow-y: hidden !important;
+            height: 100% !important;
+        }
+    }
+    #MaterialListContainer, #MaterialCreateView {
+        background-color: #333;
+        top: 50px;
+        width: 100%;
+        position: absolute;
+    }
+    #MaterialListContainer {
+        z-index: 1;
+    }
+    #MaterialCreateView {
+        z-index: -1;
+        display: none;
+        visibility: hidden;
+        transform: translateX(100%); // Move to the right
+        div.CreateViewHeader {
+            padding: 15px 10px;
+            img.back {
+                width: 17px;
+            }
+        }
+        div.inputPageViewContainer {
+            width: 100%;
+            padding: 0 22px;
+            div.inputPageViewPages {
+                div.MaterialCreatePage {
+                    div.MaterialTitleField.visible {
+                        margin-top: 10px;
+                    }
+                    div.MaterialTextField {
+                        div.inputOuter textarea.textform {
+                            height: 126px;
+                            padding: 8px 8px 24px 8px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #MaterialCreateView.showCreateViewToLeft {
+        opacity: 1;
+        display: block;
+        // FIXME: transition not work when display none is set.
+        visibility: visible;
+        transform: translateX(0%); // Move to original position
+        transition: visibility 0s ease-in, opacity @transition-duration @cubic-bezier1, transform @transition-duration @cubic-bezier1; // Remove delay when showing
+    }
+    #MaterialCreateView.hideCreateViewToRight {
+        display: none;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateX(100%); // Move to the right
+        transition: visibility 0s ease-in, opacity @transition-duration ease-in, transform @transition-duration @cubic-bezier1; // Maintain easing for consistency
+    }
+ 
+}
+
+// DeleteModalView
+#MainContent.materials div.MaterialDeleteModalView {
+    @bg-opacity: 0.5;
+    @modal-window-bg: #ffffff;
+    @content-wrapper-bg: #fff;
+    @title-color: #333333;
+    @text-color: #555555;
+    @footer-bg: #ffffff;
+    @cancel-button-bg: #fff; 
+    @cancel-button-border: #cfcfcf;
+    @cancel-button-text: #595959;
+    @cancel-button-bg-hover: #dddddd;
+    @cancel-button-text-hover: #59595;
+    @done-button-bg: #7e1b1b; 
+    @done-button-border: #7c0000; 
+    @done-button-text: #fff; 
+    @done-button-bg-hover: #5e0606;
+    @done-button-text-hover: #fff;
+
+    // Styles for the modal's background
+    div.bg {
+    }
+
+    // Styles for the modal's main window
+    div.window {
+
+        // Styles for the modal's content wrapper
+        div.contentWrapper {
+            background-color: @content-wrapper-bg;
+
+            h3.title {
+                color: @title-color;
+            }
+
+            p.mainContent {
+                color: @text-color;
+                span.materialTitle {
+                    font-weight: bold;
+                }
+            }
+        }
+
+        // Styles for the modal's footer
+        div.footer {
+            background-color: @footer-bg;
+
+            button.cancelButton {
+                border: 1px solid @cancel-button-border;
+                background-color: @cancel-button-bg;
+                color: @cancel-button-text;
+                &:hover {
+                    background-color: @cancel-button-bg-hover;
+                    color: @cancel-button-text-hover;
+                }
+            }
+            button.doneButton {
+                border: 1px solid @done-button-border;
+                background-color: @done-button-bg;
+                color: @done-button-text;
+                &:hover {
+                    background-color: @done-button-bg-hover;
+                    color: @done-button-text-hover;
+                }
+            }
+        }
+    }
+}

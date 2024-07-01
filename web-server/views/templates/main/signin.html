@@ -1,0 +1,28 @@
+{% extends "general/common.html" %}
+{% block content %}
+<section id="signin">
+</section>
+<script>
+{
+    const lang = "{{ lang }}"
+    const langName = "{{ lang_name }}"
+    const redirectUrl = "{{ redirect_url }}"
+
+    const localeDict = {{ locale_json | safe }};
+    if (!localeDict) {
+        console.error('locale_json not received.');
+    }
+    const locale = new Locale(localeDict);
+
+    console.log(locale);
+
+    window.locale = locale;
+    window.lang = lang;
+    window.langName = langName;
+    window.redirectUrl = redirectUrl;
+}
+</script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src=/js/helpers/googleoauth.js></script>
+<script src=/js/view_controllers/signin.js></script>
+{% endblock %}

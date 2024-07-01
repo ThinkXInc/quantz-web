@@ -1,0 +1,166 @@
+div.MaterialTitleField {
+
+    @input-field-bg: #282828;
+    @input-field-text: #e8e8e8;
+    @input-field-caret: #69d7ff;
+    @input-bottom-border: #8d8d8d;
+    @icon: #d9d9d9;
+    @icon-hover: #fff;
+
+    @input-field-message-notice: #7390B5;
+    @input-field-message: #fff;
+    @input-field-press-label: #fff;
+    @alert-red: #c88f8f;
+
+
+    width: 100%;
+    transition: margin-top 0.3s ease, height 0.3s ease;
+    height: 0;  /* Initial height */
+    margin-top: 0;  /* Initial margin-top */
+
+    div.inputOuter {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        border: none;
+        //border-bottom: 1px solid #8d8d8d;
+
+        div.inputWrapper {
+            input.titleform {
+                flex: 1 0 70%;
+                //font-weight: 600;
+                color: @input-field-text;
+                margin: 0;
+                font-size: 1.4rem;
+                caret-color: @input-field-caret;
+            }
+            input.titleform:focus {
+                outline: 2px solid transparent;
+                outline-offset: 2px;
+            }
+        }
+        div.iconBox {
+            flex: 1;
+            display: flex;
+            gap: 3px;
+            justify-content: end;
+            button {
+                svg.editIconSVG, svg.doneIconSVG, svg.cancelIconSVG {
+                    cursor: pointer;
+                    width: 24px;
+                    height: 24px;
+                    padding: 1px;
+                    background-color: transparent;
+                }
+                svg.cancelIconSVG {
+                    padding: 4px;
+                }
+            }
+        }
+
+        div.iconBox {
+            button {
+               svg.editIconSVG, svg.doneIconSVG, svg.cancelIconSVG {
+                    .cls-1, .cls-2 {
+                        .transitionAll();
+                        stroke: @icon;
+                    }
+                }
+                svg.editIconSVG:hover, svg.doneIconSVG:hover, svg.cancelIconSVG:hover {
+                    .cls-1, .cls-2 {
+                        stroke: @icon-hover;
+                    }
+                }
+            }
+        }
+
+        div.footer {
+            p.alertMessage {
+                color: @alert-red;
+                font-size: 0.7rem;
+            }
+        }
+    }
+
+    div.gradientViewIndicator {
+        div.indicator-container {
+            div.indicator-wrapper {
+                padding: 6px 0 6px 0;  // this value should be correspond with the inputOuter display height
+                svg {
+
+                }
+            }
+        }
+
+    }
+}
+div.MaterialTitleField.visible {
+    height: auto;  /* Final height */
+    margin-top: 30px;  /* Final margin-top */
+}
+div.MaterialTitleField.hidden {
+    height: 0;  /* Initial height */
+    margin-top: 0;  /* Initial margin-top */
+}
+div.MaterialTitleField.onDisplay {
+    div.iconBox {
+        button.editButton {
+            display: inline-block;
+        }
+        button.doneButton {
+            display: none;
+        }
+        button.cancelButton {
+            display: none;
+        }
+    }
+}
+div.MaterialTitleField.onEdit {
+    @input-field-bg-edit: #373737;
+    div.inputOuter {
+        background-color: @input-field-bg-edit;
+        div.iconBox {
+            button.editButton {
+                display: none;
+            }
+            button.doneButton {
+                display: inline-block;
+            }
+            button.cancelButton {
+                display: inline-block;
+            }
+        }
+    }
+}
+div.MaterialTitleField.onDisable {
+    @icon-disable: #cacaca;
+    div.inputOuter {
+        input.titleform {
+            pointer-events: none;  // Prevents all interactions with the element
+            opacity: 0.6;
+        }
+        div.iconBox {
+            button.editButton, button.doneButton, button.cancelButton {
+                pointer-events: none;  // Prevents all interactions with the button
+                opacity: 0.6;
+                svg.editIconSVG:hover, svg.doneIconSVG:hover, svg.cancelIconSVG:hover {
+                    .cls-1, .cls-2 {
+                        stroke: @icon-disable;
+                    }
+                }
+            }
+        }
+    }
+}
+
+div.TextField.alert {
+    div.inputOuter {
+        div.footer {
+            div.right {
+                span.counter {
+                    color: @alert-red;
+               }
+            }
+        }
+    }
+}

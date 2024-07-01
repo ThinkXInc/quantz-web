@@ -1,0 +1,83 @@
+{
+    "stripe_customer_id_update_error": {
+        "en": "Failed to create payment ID. Please try again.",
+        "ja": "支払いIDの作成に失敗しました。再度お試しください。",
+        "zh": "创建支付 ID 失败。请重试。",
+        "fr": "Échec de la création de l'ID de paiement. Veuillez réessayer.",
+        "es": "Error al crear la identificación de pago. Por favor, inténtelo de nuevo.",
+        "ar": "فشل في إنشاء معرف الدفع. يرجى المحاولة مرة أخرى.",
+        "ru": "Не удалось создать идентификатор платежа. Пожалуйста, попробуйте снова."
+    },
+    "billing_description": {
+        "en": "Quantz Usage Fee from $0 to $1: $2 USD per instance for $3 instances",
+        "ja": "Quantz利用料 [$0 ~ $1] $2 USD x $3回",
+        "zh": "Quantz 使用费用从 $0 到 $1：每次 $2 USD，共 $3 次",
+        "fr": "Frais d'utilisation Quantz du $0 au $1 : $2 USD par instance pour $3 instances",
+        "es": "Tarifa de uso de Quantz de $0 a $1: $2 USD por instancia para $3 instancias",
+        "ar": "رسوم استخدام Quantz من $0 إلى $1: $2 دولار أمريكي لكل حالة عن $3 حالات",
+        "ru": "Плата за использование Quantz с $0 до $1: $2 USD за инстанс за $3 инстансов"
+    },
+    "billing_description_with_free_call": {
+        "en": "Quantz Usage Fee from $0 to $1: $2 USD per instance for $3 instances (after applying $4 free instances)",
+        "ja": "Quantz利用料 [$0 ~ $1] $2 USD x $3回 ($4回の無料分適用後)",
+        "zh": "Quantz 使用费用从 $0 到 $1：每次 $2 USD，共 $3 次（应用 $4 次免费后）",
+        "fr": "Frais d'utilisation Quantz du $0 au $1 : $2 USD par instance pour $3 instances (après application de $4 instances gratuites)",
+        "es": "Tarifa de uso de Quantz de $0 a $1: $2 USD por instancia para $3 instancias (después de aplicar $4 instancias gratuitas)",
+        "ar": "رسوم استخدام Quantz من $0 إلى $1: $2 دولار أمريكي لكل حالة عن $3 حالات (بعد تطبيق $4 حالات مجانية)",
+        "ru": "Плата за использование Quantz с $0 до $1: $2 USD за инстанс за $3 инстансов (после применения $4 бесплатных инстансов)"
+    },
+    "method_status_no_customer_id": {
+        "en": "No stripe_customer_id set.",
+        "ja": "stripe_customer_idがセットされていません。",
+        "zh": "未设置stripe_customer_id。",
+        "fr": "Aucun stripe_customer_id n'est défini.",
+        "es": "No se ha establecido el stripe_customer_id.",
+        "ar": "لم يتم تعيين stripe_customer_id.",
+        "ru": "Не указан stripe_customer_id."
+    },
+    "method_status_no_payment_method_id": {
+        "en": "No payment_method_id set.",
+        "ja": "payment_method_idがセットされていません。",
+        "zh": "未设置payment_method_id。",
+        "fr": "Aucun payment_method_id n'est défini.",
+        "es": "No se ha establecido el payment_method_id.",
+        "ar": "لم يتم تعيين payment_method_id.",
+        "ru": "Не указан payment_method_id."
+    },
+    "method_status_card_declined": {
+        "en": "Your credit card was declined in the last billing attempt.",
+        "ja": "前回の請求でクレジットカードが拒否されています。",
+        "zh": "您的信用卡在上次结算尝试中被拒绝。",
+        "fr": "Votre carte de crédit a été refusée lors de la dernière tentative de facturation.",
+        "es": "Su tarjeta de crédito fue rechazada en el último intento de facturación.",
+        "ar": "تم رفض بطاقتك الائتمانية في آخر محاولة للفوترة.",
+        "ru": "Ваша кредитная карта была отклонена при последней попытке выставления счета."
+    },
+    "method_status_card_declined_but_updated": {
+        "en": "Your credit card was declined in the last billing attempt, but the card information has been updated since.",
+        "ja": "前回の請求でクレジットカードが拒否されましたが、その後カード情報が更新されました。",
+        "zh": "您的信用卡在上次结算尝试中被拒绝，但之后已更新卡信息。",
+        "fr": "Votre carte de crédit a été refusée lors de la dernière tentative de facturation, mais les informations de la carte ont été mises à jour depuis.",
+        "es": "Su tarjeta de crédito fue rechazada en el último intento de facturación, pero la información de la tarjeta ha sido actualizada desde entonces.",
+        "ar": "تم رفض بطاقتك الائتمانية في آخر محاولة للفوترة، ولكن تم تحديث معلومات البطاقة منذ ذلك الحين.",
+        "ru": "Ваша кредитная карта была отклонена при последней попытке выставления счета, но с тех пор информация о карте была обновлена."
+    },
+    "method_status_valid": {
+        "en": "Valid payment_method_id set.",
+        "ja": "正常なpayment_method_idがセットされています。",
+        "zh": "已设置有效的payment_method_id。",
+        "fr": "Un payment_method_id valide est défini.",
+        "es": "Se ha establecido un payment_method_id válido.",
+        "ar": "تم تعيين payment_method_id صالح.",
+        "ru": "Указан действующий payment_method_id."
+    },
+    "method_status_stripe_error": {
+        "en": "Stripe error: Failed to check payment method status.",
+        "ja": "Stripeエラー: 支払い手段のステータスチェックに失敗しました。",
+        "zh": "Stripe错误：支付方式状态检查失败。",
+        "fr": "Erreur Stripe : Échec de la vérification du statut de la méthode de paiement.",
+        "es": "Error de Stripe: Fallo al comprobar el estado del método de pago.",
+        "ar": "خطأ Stripe: فشل في التحقق من حالة طريقة الدفع.",
+        "ru": "Ошибка Stripe: не удалось проверить статус платежного метода."
+    }
+}

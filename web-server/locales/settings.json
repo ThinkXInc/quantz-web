@@ -1,0 +1,552 @@
+{
+    "settings_basic_page_title": {
+        "ja": "基本設定",
+        "en": "Main Settings",
+        "zh": "基本设置",
+        "fr": "Paramètres de base",
+        "es": "Configuración Básica",
+        "ar": "الإعدادات الأساسية",
+        "ru": "Основные настройки"
+    },
+    "settings_billing_page_title": {
+        "ja": "支払い設定",
+        "en": "Billing Settings",
+        "zh": "账单设置",
+        "fr": "Paramètres de facturation",
+        "es": "Configuración de Facturación",
+        "ar": "إعدادات الفوترة",
+        "ru": "Настройки оплаты"
+    },
+    "SettingsModalView_title": {
+        "en": "Settings",
+        "ja": "設定",
+        "zh": "设置",
+        "fr": "Paramètres",
+        "es": "Configuraciones",
+        "ar": "الإعدادات",
+        "ru": "Настройки"
+    },
+    "SettingsModalView_text": {
+        "en": "You can modify your preferences and account settings here.",
+        "ja": "ここであなたの設定やアカウント設定を変更することができます。",
+        "zh": "您可以在此修改您的偏好和账户设置。",
+        "fr": "Vous pouvez modifier vos préférences et les paramètres de votre compte ici.",
+        "es": "Aquí puede modificar sus preferencias y configuraciones de cuenta.",
+        "ar": "يمكنك تعديل تفضيلاتك وإعدادات حسابك هنا.",
+        "ru": "Здесь вы можете изменить свои предпочтения и настройки учетной записи."
+    },
+    "SettingsModalView_cancel": {
+        "en": "Close",
+        "ja": "閉じる",
+        "zh": "关闭",
+        "fr": "Fermer",
+        "es": "Cerrar",
+        "ar": "إغلاق",
+        "ru": "Закрыть"
+    },
+    "SettingsModalView_done": {
+        "en": "Done",
+        "ja": "完了",
+        "zh": "完成",
+        "fr": "Terminé",
+        "es": "Hecho",
+        "ar": "تم",
+        "ru": "Готово"
+    },
+    "settings_origin_title": {
+        "en": "Site Domain to install",
+        "ja": "設置するサイトのドメイン",
+        "zh": "要安装的网站域名",
+        "fr": "Domaine du site à installer",
+        "es": "Dominio del sitio a instalar",
+        "ar": "نطاق الموقع للتثبيت",
+        "ru": "Домен сайта для установки"
+    },
+    "settings_origin_explanation_original_domain": {
+        "en": "You can install it anywhere on the site provided with this domain.",
+        "ja": "このドメインで提供されるサイトのどこにでも設置できます。",
+        "zh": "您可以在此域名提供的任何位置安装。",
+        "fr": "Vous pouvez l'installer n'importe où sur le site fourni avec ce domaine.",
+        "es": "Puede instalarlo en cualquier lugar del sitio proporcionado con este dominio.",
+        "ar": "يمكنك تثبيته في أي مكان على الموقع المقدم مع هذا النطاق.",
+        "ru": "Вы можете установить его в любом месте сайта, предоставленного с этим доменом."
+    },
+    "settings_origin_explanation_public_domain": {
+        "en": "Quantz button can only be installed on this page.",
+        "ja": "このURLのページにのみ設置できます。",
+        "zh": "您只能在此URL的页面上安装。",
+        "fr": "Vous pouvez l'installer uniquement sur la page de cette URL.",
+        "es": "Solo puede instalarlo en la página de esta URL.",
+        "ar": "يمكنك تثبيته فقط على صفحة هذا الرابط.",
+        "ru": "Вы можете установить его только на странице этого URL."
+    },
+    "settings_origin_explanation_invalid": {
+        "en": "Does not match the domain of the registered email address.",
+        "ja": "登録メールアドレスのドメインと一致していません。",
+        "zh": "与注册电子邮件地址的域名不匹配。",
+        "fr": "Ne correspond pas au domaine de l'adresse e-mail enregistrée.",
+        "es": "No coincide con el dominio de la dirección de correo electrónico registrada.",
+        "ar": "لا يتطابق مع نطاق عنوان البريد الإلكتروني المسجل.",
+        "ru": "Не совпадает с доменом зарегистрированного адреса электронной почты."
+    },
+    "settings_origin_updated": {
+        "ja": "サイトドメインが正常に更新されました。",
+        "en": "The site domain has been successfully updated.",
+        "zh": "网站域名已成功更新。",
+        "fr": "Le domaine du site a été mis à jour avec succès.",
+        "es": "El dominio del sitio se ha actualizado correctamente.",
+        "ar": "تم تحديث نطاق الموقع بنجاح.",
+        "ru": "Домен сайта успешно обновлен."
+    },
+    "settings_origin_placeholder": {
+        "en": "eg. xxx.com, xxx.com/page",
+        "ja": "例) xxx.com, xxx.com/page",
+        "zh": "例如：xxx.com，xxx.com/page",
+        "fr": "ex. : xxx.com, xxx.com/page",
+        "es": "ej. xxx.com, xxx.com/página",
+        "ar": "مثال: xxx.com، xxx.com/صفحة",
+        "ru": "например, xxx.com, xxx.com/page"
+    },
+    "settings_origin_error_invalid_domain": {
+        "en": "Please enter the domain of the site you want to install. e.g., site.com",
+        "ja": "設置するサイトのドメインを入力してください。 例) site.com",
+        "zh": "请输入您想安装的站点的域名。例如，site.com",
+        "fr": "Veuillez entrer le domaine du site que vous souhaitez installer. ex. : site.com",
+        "es": "Por favor, ingrese el dominio del sitio que desea instalar. p.ej., site.com",
+        "ar": "يرجى إدخال نطاق الموقع الذي تريد تثبيته. مثل، site.com",
+        "ru": "Пожалуйста, введите домен сайта, который вы хотите установить. например, site.com"
+    },
+    "settings_origin_error_not_correspond": {
+        "en": "Does not match the domain of the registered email address. Please enter the same domain as the email address or change the email address.",
+        "ja": "登録メールアドレスのドメインと一致していません。メールアドレスと同じドメインを入力するか、メールアドレスを変更してください。",
+        "zh": "与注册邮箱地址的域名不匹配。请输入与邮箱地址相同的域名或更改邮箱地址。",
+        "fr": "Ne correspond pas au domaine de l'adresse e-mail enregistrée. Veuillez saisir le même domaine que l'adresse e-mail ou changer d'adresse e-mail.",
+        "es": "No coincide con el dominio de la dirección de correo electrónico registrada. Por favor, introduzca el mismo dominio que la dirección de correo electrónico o cambie la dirección de correo electrónico.",
+        "ar": "لا يتطابق مع نطاق عنوان البريد الإلكتروني المسجل. الرجاء إدخال نفس النطاق كعنوان البريد الإلكتروني أو تغيير عنوان البريد الإلكتروني.",
+        "ru": "Не соответствует домену зарегистрированного адреса электронной почты. Пожалуйста, введите тот же домен, что и адрес электронной почты, или измените адрес электронной почты."
+    },
+    "settings_origin_not_verified_explanation": {
+        "en": "The domain of the site where the Quantz button is installed must match the domain of the registered email address (the part after the @ sign) or be a specific page (such as xxx.com/yourpage).",
+        "ja": "Quantzボタンを設置するサイトのドメインは、登録メールアドレスのドメインと一致するか (メールの@マーク以下)、特定のページ (xxx.com/yourpageなど)でなければなりません。",
+        "zh": "安装Quantz按钮的网站域名必须与注册邮箱地址的域名（@符号之后的部分）匹配，或者是特定页面（如xxx.com/yourpage）。",
+        "fr": "Le domaine du site sur lequel le bouton Quantz est installé doit correspondre au domaine de l'adresse e-mail enregistrée (la partie après le signe @) ou être une page spécifique (tel que xxx.com/yourpage).",
+        "es": "El dominio del sitio donde se instala el botón Quantz debe coincidir con el dominio de la dirección de correo electrónico registrada (la parte después del signo @) o ser una página específica (como xxx.com/yourpage).",
+        "ar": "يجب أن يتطابق نطاق الموقع الذي يتم تثبيت زر Quantz فيه مع نطاق عنوان البريد الإلكتروني المسجل (الجزء بعد علامة @) أو أن يكون صفحة محددة (مثل xxx.com/yourpage).",
+        "ru": "Домен сайта, на котором установлена кнопка Quantz, должен совпадать с доменом зарегистрированного электронного адреса (часть после символа @) или быть конкретной страницей (например, xxx.com/yourpage)."
+    },
+    "settings_submit_button": {
+        "en": "Send",
+        "ja": "送信",
+        "zh": "发送",
+        "fr": "Envoyer",
+        "es": "Enviar",
+        "ar": "إرسال",
+        "ru": "Отправить"
+    },
+    "settings_resendButtonText": {
+        "en": "Resend Verification Email",
+        "ja": "認証メールを再送",
+        "zh": "重新发送验证邮件",
+        "fr": "Renvoyer l'e-mail de vérification",
+        "es": "Reenviar correo de verificación",
+        "ar": "إعادة إرسال بريد التحقق",
+        "ru": "Повторно отправить письмо для проверки"
+    },
+    "settings_email_title": {
+        "en": "Email",
+        "ja": "メールアドレス",
+        "zh": "电子邮件",
+        "fr": "E-mail",
+        "es": "Correo electrónico",
+        "ar": "البريد الإلكتروني",
+        "ru": "Электронная почта"
+    },
+    "settings_email_placeholder": {
+        "en": "eg. xxx@mail.com",
+        "ja": "例) xxx@mail.com",
+        "zh": "例如：xxx@mail.com",
+        "fr": "ex. : xxx@mail.com",
+        "es": "ej. xxx@mail.com",
+        "ar": "مثال: xxx@mail.com",
+        "ru": "например, xxx@mail.com"
+    },
+    "settings_pending": {
+        "en": "Pending",
+        "ja": "未認証",
+        "zh": "待验证",
+        "fr": "En attente",
+        "es": "Pendiente",
+        "ar": "قيد الانتظار",
+        "ru": "Ожидание"
+    },
+    "settings_email_resent": {
+        "en": "Verification email sent.",
+        "ja": "認証メールを送信しました。",
+        "zh": "验证邮件已发送。",
+        "fr": "E-mail de vérification envoyé.",
+        "es": "Correo electrónico de verificación enviado.",
+        "ar": "تم إرسال بريد التحقق.",
+        "ru": "Письмо для подтверждения отправлено."
+    },
+    "settings_email_verified": {
+        "en": "Email is verified.",
+        "ja": "メールアドレスは認証済みです。",
+        "zh": "电子邮件已验证。",
+        "fr": "L'e-mail est vérifié.",
+        "es": "El correo electrónico está verificado.",
+        "ar": "تم التحقق من البريد الإلكتروني.",
+        "ru": "Электронная почта подтверждена."
+    },
+    "settings_purchaseUnit_title": {
+        "en": "Unit",
+        "ja": "ユニット",
+        "zh": "单位",
+        "fr": "Unité",
+        "es": "Unidad",
+        "ar": "وحدة",
+        "ru": "Единица"
+    },
+    "settings_purchaseUnit_placeholder": {
+        "en": "",
+        "ja": "",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "verify_code_unfilled": {
+        "en": "Please enter all 4 digits.",
+        "ja": "4桁の数字をすべて入力してください。",
+        "zh": "请输入全部4位数字。",
+        "fr": "Veuillez entrer les 4 chiffres.",
+        "es": "Por favor, introduzca los 4 dígitos.",
+        "ar": "الرجاء إدخال الأربعة أرقام.",
+        "ru": "Пожалуйста, введите все 4 цифры."
+
+    },
+    "verify_code_form_title": {
+        "ja": "メールに記載された認証コードを入力してください",
+        "en": "Please enter the verification code sent to your email",
+        "zh": "请输入发送到您邮箱的验证码",
+        "fr": "Veuillez saisir le code de vérification envoyé à votre adresse e-mail",
+        "es": "Por favor, ingrese el código de verificación enviado a su correo electrónico",
+        "ar": "يرجى إدخال رمز التحقق المرسل إلى بريدك الإلكتروني",
+        "ru": "Пожалуйста, введите код подтверждения, отправленный на вашу электронную почту"
+    },
+    "settings_billing_card_title": {
+        "ja": "カード情報",
+        "en": "Card Information",
+        "zh": "卡信息",
+        "fr": "Informations sur la carte",
+        "es": "Información de la tarjeta",
+        "ar": "معلومات البطاقة",
+        "ru": "Информация о карте"
+    },
+    "settings_payment_method_card_declined": {
+        "ja": "現在ご登録のクレジットカードに問題が発生しています。至急、クレジットカード情報を更新してください。",
+        "en": "There is an issue with your registered credit card. Please update your credit card information urgently.",
+        "zh": "您注册的信用卡出现问题。请立即更新您的信用卡信息。",
+        "fr": "Un problème est survenu avec votre carte de crédit enregistrée. Veuillez mettre à jour vos informations de carte de crédit de toute urgence.",
+        "es": "Hay un problema con su tarjeta de crédito registrada. Actualice la información de su tarjeta de crédito con urgencia.",
+        "ar": "هناك مشكلة في بطاقة الائتمان المسجلة لديك. يرجى تحديث معلومات بطاقتك الائتمانية بشكل عاجل.",
+        "ru": "Произошла проблема с вашей зарегистрированной кредитной картой. Пожалуйста, срочно обновите информацию о вашей кредитной карте."
+    },
+    "settings_payment_method_no_customer_id": {
+        "ja": "お支払い情報が登録されていません。サービスを利用するために、クレジットカード情報を登録してください。",
+        "en": "Payment information is not registered. Please register your credit card information to use the service.",
+        "zh": "支付信息未注册。请注册您的信用卡信息以使用此服务。",
+        "fr": "Les informations de paiement ne sont pas enregistrées. Veuillez enregistrer vos informations de carte de crédit pour utiliser le service.",
+        "es": "La información de pago no está registrada. Registre la información de su tarjeta de crédito para utilizar el servicio.",
+        "ar": "لم يتم تسجيل معلومات الدفع. يرجى تسجيل معلومات بطاقتك الائتمانية لاستخدام الخدمة.",
+        "ru": "Информация об оплате не зарегистрирована. Пожалуйста, зарегистрируйте информацию о вашей кредитной карте для использования сервиса."
+    },
+    "settings_payment_method_payment_method_invalid": {
+        "ja": "正常なお支払い情報が登録されていません。サービスを利用するために、クレジットカード情報を更新してください。",
+        "en": "Valid payment information is not registered. Please update your credit card information to use the service.",
+        "zh": "未注册有效的支付信息。请更新您的信用卡信息以使用该服务。",
+        "fr": "Les informations de paiement valides ne sont pas enregistrées. Veuillez mettre à jour vos informations de carte de crédit pour utiliser le service.",
+        "es": "No se ha registrado información de pago válida. Actualice la información de su tarjeta de crédito para utilizar el servicio.",
+        "ar": "لم يتم تسجيل معلومات دفع صالحة. يرجى تحديث معلومات بطاقتك الائتمانية لاستخدام الخدمة.",
+        "ru": "Действительная информация об оплате не зарегистрирована. Пожалуйста, обновите информацию о вашей кредитной карте для использования сервиса."
+    },
+    "settings_update_card_button": {
+        "en": "Update Card Information",
+        "ja": "カード情報を更新する",
+        "zh": "更新卡信息",
+        "fr": "Mettre à jour les informations de la carte",
+        "es": "Actualizar información de la tarjeta",
+        "ar": "تحديث معلومات البطاقة",
+        "ru": "Обновить информацию о карте"
+    },
+    "settings_billing_limit_title": {
+        "en": "Monthly Usage Limit",
+        "ja": "１ヶ月あたりの利用上限",
+        "zh": "每月使用限额",
+        "fr": "Limite d'utilisation mensuelle",
+        "es": "Límite de uso mensual",
+        "ar": "الحد الأقصى للاستخدام الشهري",
+        "ru": "Месячный лимит использования"
+    },
+    "settings_limit_max": {
+        "en": "Maximum",
+        "ja": "最大",
+        "zh": "最大",
+        "fr": "Maximum",
+        "es": "Máximo",
+        "ar": "الحد الأقصى",
+        "ru": "Максимально"
+    },
+    "settings_limit_max_description": {
+        "en": "calls per month",
+        "ja": "回/月",
+        "zh": "次/月",
+        "fr": "appels par mois",
+        "es": "llamadas por mes",
+        "ar": "مكالمة/الشهر",
+        "ru": "звонков в месяц"
+    },
+    "settings_limit_max_charge": {
+        "en": "Monthly Budget Limit",
+        "ja": "１ヶ月あたりの請求上限金額",
+        "zh": "每月预算上限",
+        "fr": "Limite de budget mensuel",
+        "es": "Límite de presupuesto mensual",
+        "ar": "الحد الأقصى للميزانية الشهرية",
+        "ru": "Месячный лимит бюджета"
+    },
+    "settings_limit_max_charge_price": {
+        "en": "$$0 /month",
+        "ja": "$$0 /月",
+        "zh": "$$0 /月",
+        "fr": "$$0 /mois",
+        "es": "$$0 /mes",
+        "ar": "$$0 /شهر",
+        "ru": "$$0 /месяц"
+    },
+    "settings_customize_page_title": {
+        "en": "Customize Button",
+        "ja": "ボタンのカスタマイズ",
+        "zh": "自定义按钮",
+        "fr": "Personnaliser le bouton",
+        "es": "Personalizar botón",
+        "ar": "تخصيص الزر",
+        "ru": "Настройка кнопки"
+    },
+    "settings_customize_operator_name_title": {
+        "en": "Operator's Name",
+        "ja": "オペレーターの名前",
+        "zh": "操作员名称",
+        "fr": "Nom de l'opérateur",
+        "es": "Nombre del operador",
+        "ar": "اسم المشغل",
+        "ru": "Имя оператора"
+    },
+    "settings_customize_operator_name_placeholder": {
+        "en": "(e.g., Misaki)",
+        "ja": "(例) ミサキ",
+        "zh": "(例如，美咲)",
+        "fr": "(par exemple, Misaki)",
+        "es": "(por ejemplo, Misaki)",
+        "ar": "(مثلا، ميساكي)",
+        "ru": "(например, Мисаки)"
+    },
+    "settings_customize_first_message_title": {
+        "en": "First Message",
+        "ja": "最初のメッセージ",
+        "zh": "首条消息",
+        "fr": "Premier message",
+        "es": "Primer mensaje",
+        "ar": "الرسالة الأولى",
+        "ru": "Первое сообщение"
+    },
+    "settings_customize_first_message_placeholder": {
+        "en": "(e.g., Hello. Please tell us what you would like to know while pressing the button.)",
+        "ja": "(例) こんにちは。ボタンを押しながらサービスについて知りたいことを話してください。",
+        "zh": "(例如，您好。请在按下按钮时告诉我们您想了解什么。)",
+        "fr": "(par exemple, Bonjour. Veuillez nous dire ce que vous souhaitez savoir en appuyant sur le bouton.)",
+        "es": "(por ejemplo, Hola. Por favor, díganos qué le gustaría saber mientras presiona el botón.)",
+        "ar": "(على سبيل المثال، مرحباً. يرجى إخبارنا بما ترغب في معرفته أثناء الضغط على الزر.)",
+        "ru": "(например, Привет. Пожалуйста, скажите нам, что вы хотели бы узнать, нажимая на кнопку.)"
+    },
+    "settings_customize_first_message_submit": {
+        "en": "Submit",
+        "ja": "送信",
+        "zh": "提交",
+        "fr": "Soumettre",
+        "es": "Enviar",
+        "ar": "إرسال",
+        "ru": "Отправить"
+    },
+    "settings_customize_button_type_title": {
+        "en": "Button Type",
+        "ja": "ボタンタイプ",
+        "zh": "按钮类型",
+        "fr": "Type de bouton",
+        "es": "Tipo de botón",
+        "ar": "نوع الزر",
+        "ru": "Тип кнопки"
+    },
+    "settings_customize_button_type_item_A": {
+        "en": "Type A",
+        "ja": "タイプA",
+        "zh": "类型A",
+        "fr": "Type A",
+        "es": "Tipo A",
+        "ar": "النوع أ",
+        "ru": "Тип А"
+    },
+    "settings_customize_button_type_item_B": {
+        "en": "Type B",
+        "ja": "タイプB",
+        "zh": "类型B",
+        "fr": "Type B",
+        "es": "Tipo B",
+        "ar": "النوع ب",
+        "ru": "Тип Б"
+    },
+    "settings_customize_button_size_title": {
+        "en": "Button Size",
+        "ja": "ボタンサイズ",
+        "zh": "按钮大小",
+        "fr": "Taille du bouton",
+        "es": "Tamaño del botón",
+        "ar": "حجم الزر",
+        "ru": "Размер кнопки"
+    },
+    "settings_customize_button_width_title": {
+        "en": "Width",
+        "ja": "幅",
+        "zh": "宽度",
+        "fr": "Largeur",
+        "es": "Ancho",
+        "ar": "العرض",
+        "ru": "Ширина"
+    },
+    "settings_customize_button_width_placeholder": {
+        "en": "",
+        "ja": "",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "settings_customize_button_height_title": {
+        "en": "Height",
+        "ja": "高さ",
+        "zh": "高度",
+        "fr": "Hauteur",
+        "es": "Altura",
+        "ar": "الارتفاع",
+        "ru": "Высота"
+    },
+    "settings_customize_button_height_placeholder": {
+        "en": "",
+        "ja": "",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "settings_customize_px_unit": {
+        "en": "px",
+        "ja": "px",
+        "zh": "像素",
+        "fr": "px",
+        "es": "px",
+        "ar": "بكسل",
+        "ru": "px"
+    },
+    "settings_customize_button_color_title": {
+        "en": "Button Color",
+        "ja": "ボタン色",
+        "zh": "按钮颜色",
+        "fr": "Couleur du bouton",
+        "es": "Color del botón",
+        "ar": "لون الزر",
+        "ru": "Цвет кнопки"
+    },
+    "settings_customize_font_size_title": {
+        "en": "Font Size",
+        "ja": "フォントサイズ",
+        "zh": "字体大小",
+        "fr": "Taille de la police",
+        "es": "Tamaño de fuente",
+        "ar": "حجم الخط",
+        "ru": "Размер шрифта"
+    },
+    "settings_customize_font_size_placeholder": {
+        "en": "",
+        "ja": "",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "settings_customize_balloon_size_title": {
+        "en": "",
+        "ja": "吹き出しサイズ",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "settings_customize_balloon_width_title": {
+        "en": "Width",
+        "ja": "幅",
+        "zh": "宽度",
+        "fr": "Largeur",
+        "es": "Ancho",
+        "ar": "العرض",
+        "ru": "Ширина"
+    },
+    "settings_customize_balloon_width_placeholder": {
+        "en": "",
+        "ja": "",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "settings_customize_balloon_height_title": {
+        "en": "Height",
+        "ja": "高さ",
+        "zh": "高度",
+        "fr": "Hauteur",
+        "es": "Altura",
+        "ar": "الارتفاع",
+        "ru": "Высота"
+    },
+    "settings_customize_balloon_height_placeholder": {
+        "en": "",
+        "ja": "",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "settings_preview_code_copy_tooltip": {
+        "ja": "埋め込みコードをコピー",
+        "en": "Copy embed code",
+        "zh": "复制嵌入代码",
+        "fr": "Copier le code intégré",
+        "es": "Copiar el código embebido",
+        "ar": "نسخ الكود المضمن",
+        "ru": "Скопировать встроенный код"
+    },
+    "settings_preview_code_copy_done_tooltip": {
+        "ja": "クリップボードにコピーしました。",
+        "en": "Copied to clipboard.",
+        "zh": "已复制到剪贴板。",
+        "fr": "Copié dans le presse-papiers.",
+        "es": "Copiado al portapapeles.",
+        "ar": "تم النسخ إلى الحافظة.",
+        "ru": "Скопировано в буфер обмена."
+    }
+}
