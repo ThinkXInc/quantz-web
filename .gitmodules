@@ -1,0 +1,9 @@
+[submodule "web-server/llm"]
+	path = web-server/llm
+	url = git@github.com:ThinkXInc/llm.git
+[submodule "web-server/libcommon"]
+	path = web-server/libcommon
+	url = git@github.com:ThinkXInc/libcommon.git
+[submodule "web-server/views/src/js/simplicity"]
+	path = web-server/views/src/js/simplicity
+	url = git@github.com:ThinkXInc/simplicity.git
