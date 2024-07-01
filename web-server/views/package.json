@@ -1,5 +1,5 @@
 {
-  "name": "quantz",
+  "name": "quantz-web",
   "version": "1.0.0",
   "scripts": {
     "copy:simplicity:js": "cpx \"src/js/simplicity/dist/simplicity.js\" \"js/simplicity/dist/\" --watch",

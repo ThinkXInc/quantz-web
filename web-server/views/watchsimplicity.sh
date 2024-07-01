@@ -1,3 +1,3 @@
 deactivate
-cd /src/quantz/web-server/views/src/js/simplicity
-sudo npx npm-run-all --parallel build:js compile:css
+cd /src/quantz-web/web-server/views/src/js/simplicity
+npx npm-run-all --parallel build:js compile:css

@@ -11,7 +11,6 @@ if [ -z "$1" ]; then
   echo "Usage: . ./restart.sh <service_name>"
   return 1
 fi
-
 # Map the friendly service name to the actual systemd service name or Docker container
 case $1 in
   uwsgi)
@@ -32,5 +31,12 @@ case $1 in
     ;;
 esac
 
-# Perform the restart operation for systemd services
-sudo systemctl restart $service_name
+# Check if the second argument is 'reload'
+action="restart"
+if [[ "$2" == "reload" ]]; then
+  action="reload"
+fi
+
+# Perform the restart or reload operation for systemd services
+sudo systemctl $action $service_name
+

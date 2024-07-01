@@ -9,6 +9,10 @@ Prerequisites:
 - Nginx, version >= 1.19.10
 - Node.js, version >= 14.17.0
 
+
+## All services (processes)
+
+See Evernote
   
 
 ## References

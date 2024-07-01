@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=forking
-ExecStart=/usr/sbin/nginx -c /src/quantz/web-server/nginx/nginx.conf
+ExecStart=/usr/sbin/nginx -c /src/quantz-web/web-server/nginx/nginx.conf
 ExecReload=/usr/sbin/nginx -s reload
 ExecStop=/usr/sbin/nginx -s quit
 User=root

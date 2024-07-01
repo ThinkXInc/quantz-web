@@ -4,8 +4,8 @@ After=network.target
 
 [Service]
 Type=simple
-WorkingDirectory=/src/quantz/web-server
-ExecStart=/src/quantz/web-server/venv/bin/uwsgi --ini /src/quantz/web-server/uwsgi/uwsgi.ini
+WorkingDirectory=/src/quantz-web/web-server
+ExecStart=/src/quantz-web/web-server/venv/bin/uwsgi --ini /src/quantz-web/web-server/uwsgi/uwsgi.ini
 User=kaz
 Restart=always
 RestartSec=3
