@@ -1,0 +1,17 @@
+defscrollback 10000
+escape ^t^t
+zombie "^d^r"
+hardstatus alwayslastline I%wI
+vbell off
+
+# mongodb
+#screen -t mongodb 0 sh -c 'mongod --dbpath mongodb/db'
+# redis session
+screen -t session 0 sh -c 'redis-server ../web-server/redis_session/redis_session.conf'
+# compile sources (see package.json)
+screen -t watch 1 sh -c 'cd ../web-server/views && sudo npx npm-run-all --parallel compile:views:js compile:views:css'
+# nginx
+screen -t nginx 2 sh -c '/usr/local/bin/nginx -p`pwd` -c `pwd`/nginx/nginx.conf'
+# uwsgi
+screen -t uwsgi 3 sh -c 'uwsgi --ini uwsgi/uwsgi.ini'
+
