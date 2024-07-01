@@ -89,7 +89,15 @@
         "ar": "أعد إدخال كلمة المرور",
         "ru": "Введите ваш пароль ещё раз"
     },
-
+    "accounts_signin_link": {
+        "en": "Sign In",
+        "ja": "ログイン",
+        "zh": "登录",
+        "fr": "Connexion",
+        "es": "Iniciar sesión",
+        "ar": "تسجيل الدخول",
+        "ru": "Вход"
+    },
     "signup_verify_code_title": {
         "en": "Enter Verification Code",
         "ja": "認証コードの入力",

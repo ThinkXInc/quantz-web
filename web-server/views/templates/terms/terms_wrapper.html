@@ -1,0 +1,17 @@
+{%extends "general/base.html" %}
+
+{% block head %}
+<link rel=stylesheet href=/css/main.css>
+<script src="/js/simplicity/dist/simplicity.js"></script>
+{% endblock %}
+
+{% block content %}
+{% include 'common/header.html' %}
+
+{% include terms_file_name  %}
+
+{% include 'common/footer.html' %}
+{% endblock %}
+
+{% block foot %}
+{% endblock %}

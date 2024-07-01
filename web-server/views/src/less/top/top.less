@@ -47,58 +47,93 @@
 }
 
 // header
-#top{
-    div.header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background-color: @header-bg;
-        padding: 10px 20px;
-        color: @white;
-    
-        div.left {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-
-            img.logo {
-                height: 50px; // Logo height
-                margin-right: 10px;
-            }
-    
-            h3.header-copy {
-                color: white;
-                margin: 0;
-                font-size: 0.9em;
-                font-weight: 200;
-                display: block;
-                padding-top: 0.5em;
-            }
-        }
-        div.right {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-
-            h5.sales-catch {
-                display: none;
-                color: #a0a0ad;
-                margin: 0;
-                font-size: 0.9em;
-                font-weight: 500;
-            }
-
-            button.try-button {
-                display: block;
-                margin-right: 10px;
-            }
-   
-            .locale {
-                // Styles for locale button if needed
-            }
-        }
-    }
-}
+//#top{
+//    div.header {
+//        display: flex;
+//        align-items: center;
+//        justify-content: space-between;
+//        background-color: @header-bg;
+//        padding: 10px 20px;
+//        color: @white;
+//    
+//        div.left {
+//            display: flex;
+//            flex-direction: row;
+//            align-items: center;
+//
+//            img.logo {
+//                height: 50px; // Logo height
+//                margin-right: 10px;
+//            }
+//    
+//            h3.header-copy {
+//                color: white;
+//                margin: 0;
+//                font-size: 0.9em;
+//                font-weight: 200;
+//                display: block;
+//                padding-top: 0.5em;
+//            }
+//        }
+//        div.right {
+//            display: flex;
+//            flex-direction: row;
+//            align-items: center;
+//
+//            h5.sales-catch {
+//                display: none;
+//                color: #a0a0ad;
+//                margin: 0;
+//                font-size: 0.9em;
+//                font-weight: 500;
+//            }
+//
+//            button.try-button {
+//                display: block;
+//                margin-right: 10px;
+//            }
+//   
+//            .locale {
+//                // Styles for locale button if needed
+//            }
+//
+//            a.login {
+//                width: 20px;
+//                margin-left: 10px;
+//                margin-right: 11px;
+//                display: flex;
+//                flex-direction: row;
+//                align-items: center;
+//                justify-content: center;
+//                img.signinIcon {
+//
+//                }
+//                span.tooltip {
+//                    position: absolute;
+//                    top: 50%;
+//                    left: 100%; /* Positioning tooltip to the right of the item */
+//                    font-size: 0.9em;
+//                    transform: translateY(-50%);
+//                    background-color: black;
+//                    color: white;
+//                    padding: 5px 10px;
+//                    white-space: nowrap;
+//                    opacity: 0;
+//                    visibility: hidden;
+//                    transition: opacity 0.3s ease, visibility 0.3s ease;
+//                    border-radius: 3px; /* Optional: Adds rounded corners to the tooltip */
+//                    box-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* Optional: Adds a slight shadow for better visibility */
+//                }
+//            }
+//            a.login:hover {
+//                span.tooltip {
+//                    opacity: 1;
+//                    visibility: visible;
+//                }
+//            }
+//        }
+//    }
+//}
 
 // main
 #top div.main-container {
@@ -153,6 +188,7 @@
                     margin-top: 10px;
                     font-weight: 800;
                     margin: 25px 0 16px 0;
+                    line-height: 1.3em;
                 }
                 h2.subtitle {
                     color: #323232;
@@ -344,10 +380,16 @@
                 }
             }
             div.btn-main {
-                div.QBTN-demo-button {
+                div.demo-button-container {
                     min-width: 300px;
                     min-height: 240px;
-                    div.QBTN-TYPE-B {
+                    div.QBTN-button-loader {
+                        display: none;
+                    }
+                    div.QBTN-button-loader.show {
+                        display: block;
+                    }
+                    div.QBTN-button-loader.B {
                         margin-top: 62px;
                     }
                     div.QBTN-balloon-container {
@@ -806,8 +848,8 @@
                                 margin-bottom: 24px;
                             }
                             div.btn-main {
-                                div.QBTN-demo-button {
-                                    div.QBTN-TYPE-B {
+                                div.demo-button-container {
+                                    div.B {
                                         padding-left: 40px;
                                     }
                                 }

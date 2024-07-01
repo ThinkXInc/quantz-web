@@ -171,7 +171,7 @@ class User(MongoModel):
     email = EmailField(required=False, unique=True)
     suspended_email = EmailField(required=False, unique=False)
     password = StringField(required=False)
-    google_id = StringField(required=False, unique=True)
+    google_id = StringField(required=False)  # null duplicates
 
     origin = StringField(max_length=ORIGIN_MAX_LENGTH)
     verified_emails = ListField()
@@ -225,6 +225,7 @@ class User(MongoModel):
         'max_documents': 1000,  # 1000 entries  TODO: use Config
         'indexes': [
             '#email', # hashed index (complete match)
+            {'fields': ['google_id'], 'unique': True, 'sparse': True}  # unique but null allowed
         ]
     }
 

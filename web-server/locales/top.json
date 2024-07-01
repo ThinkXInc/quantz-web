@@ -1,25 +1,7 @@
 {
-    "top_header_catchcopy": {
-        "en": "The simplest AI Voice Help Center that grows your business on your behalf.",
-        "ja": "あなたが仕事をしている間に、あなたの”分身”が回答。最速クイックレスポンスの音声AIを30分で設置。",
-        "zh": "",
-        "fr": "",
-        "es": "",
-        "ar": "",
-        "ru": ""
-    },
-    "top_header_try_button": {
-        "en": "TRY NOW FOR FREE !",
-        "ja": "今すぐ無料で試す",
-        "zh": "",
-        "fr": "",
-        "es": "",
-        "ar": "",
-        "ru": ""
-    },
     "top_main_title": {
         "en": "Turn Your Website Into a Sales Machine With the Simplest AI Voice Help Center",
-        "ja": "世界で最もシンプルでクイックな応答の音声AI、Quantzがあなたに代わって問い合わせに対応",
+        "ja": "世界で最もシンプルでクイックな音声AI、Quantzがあなたに代わって問い合わせに対応",
         "zh": "",
         "fr": "",
         "es": "",

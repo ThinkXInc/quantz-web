@@ -269,8 +269,10 @@ def process_chatdata(client_id):
             logger.info(green(f'User {user.email} found.'))
         except UserNotFoundError as e:
             logger.error(red(f"{e}"))
+            return
         except Exception as e:
             logger.error(red(f"Find user failed: {e}"))
+            return
 
         # Save history to MongoDB
         try:

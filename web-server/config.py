@@ -39,7 +39,10 @@ def check_config(config, required_keys):
                 logger.error(red(f"Config.{key} is set but its value is None."))
             else:
                 # Log with standard highlighting for info
-                logger.debug(yellow(f"Config.{key}: {value}"))
+                if "SECRET" in key or "PASS" in key:
+                    logger.debug(yellow(f"Config.{key}: **{value[-2:]}"))
+                else:
+                    logger.debug(yellow(f"Config.{key}: {value}"))
         else:
             # Log missing keys with error highlighting
             logger.error(red(f"Config key '{key}' is missing."))
@@ -136,6 +139,8 @@ class Config:
     ENV = env
 
     DEFAULT_LANG = 'en'
+    BASIC_AUTH_USERNAME = 'think'
+    BASIC_AUTH_PASSWORD = 'x'
     FLASK_APP_SECRET_KEY = os.environ.get("FLASK_APP_SECRET_KEY")
     FLASK_MAX_CONTENT_LENGTH = 70000000
     SESSION_COOKIE_NAME = 'session'

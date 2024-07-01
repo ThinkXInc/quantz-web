@@ -9,8 +9,13 @@
     50% { opacity: 0.3; }      /* Reach maximum opacity at the halfway point */
 }
 #signup, #signin {
+    @alert-red: #8c1111;
     height: 100vh;
-    background-color: #585858;
+    //background-color: #585858;
+    //background: linear-gradient(15deg, #1e455f, #5224a3);
+    //background: linear-gradient(15deg, #101c5c, #2373a7);
+    background: linear-gradient(15deg, #1e455f, #5224a3);
+    //background: linear-gradient(15deg, #26075e, #2373a7);
     .PageView {
         background-color: #fff;
         display: block;
@@ -21,7 +26,7 @@
         left: 50%;
         transform: translate(-50%, -50%);
         border-radius: 8px;
-        box-shadow: 0 5px 15px #c6c6c6;
+        //box-shadow: 0 5px 15px #c6c6c6;
         overflow: hidden;
         padding: 24px 28px;
         .PageViewContainer {
@@ -72,6 +77,7 @@
                         font-size: 0.8em;
                         color: #aaa;
                         margin: 0px 10px;
+                        width: max-content;
                     }
                 }
                 div.TextField {
@@ -88,7 +94,7 @@
                                 border: 1px solid #bdbdbd;
                                 padding: 8px;
                                 border-radius: 4px;
-                                box-shadow: 1px 1px 6px #f1f1f1;
+                                //box-shadow: 1px 1px 6px #f1f1f1;
                             }
                             input::placeholder {
                                 font-size: 0.9em;
@@ -133,7 +139,25 @@
                 p.pageAlert {
                     color: @alert-red;
                     font-size: 0.8em;
+                    padding: 4px 0 0 0;
                 }
+            }
+        }
+    }
+
+    .PageViewContainer.EmailPage {
+        div.container {
+            a.signInLink {
+                cursor: pointer;
+                color: #0055ff;
+                margin-top: 12px;
+                font-size: 0.8em;
+                border-radius: 18px;
+                padding: 8px 20px;
+                transition: background-color 0.2s @ease;
+            }
+            a:hover {
+                background-color: #f0f5ff;
             }
         }
     }
@@ -234,6 +258,8 @@
     }
 
     .PageViewContainer.CardPage {
+        max-height: 640px;
+        overflow-y: auto;
         div.container {
             div.CardInputView {
                 padding: 0 60px;

@@ -98,7 +98,8 @@ class Signin {
 
         const $logo = document.createElement('img');
         $logo.classList.add('logo');
-        $logo.src = '/img/logo/horizontal@2x.png';
+        //$logo.src = '/img/logo/horizontal@2x.png';
+        $logo.src = '/img/logo/horizontal_bluebg_224@2x.png';
     
         $logoLink.appendChild($logo);
         $logoContainer.appendChild($logoLink);

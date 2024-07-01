@@ -4,6 +4,8 @@ const terser = require('gulp-terser');
 const javascriptObfuscator = require('gulp-javascript-obfuscator');
 const sourcemaps = require('gulp-sourcemaps');
 
+const version = 7;
+
 gulp.task('scripts', function() {
   return gulp.src([
       'js/quantz_namespace.js',
@@ -17,7 +19,7 @@ gulp.task('scripts', function() {
       'js/style_generator.js',
       'js/opus-decoder.js',
       'js/core.js',
-      './js/quantz-button-v6.js'
+      `./js/quantz-button-v${version}.js`
     ])
     //.pipe(concat('quantz-button.min.js')) // NOTE: should NOT be quantz-button.min.js
     .pipe(concat('quantz-button-v7.min.js')) // NOTE: should NOT be quantz-button.min.js
@@ -29,7 +31,7 @@ gulp.task('scripts', function() {
       controlFlowFlatteningThreshold: 1,
       deadCodeInjection: true,
       deadCodeInjectionThreshold: 1,
-      //disableConsoleOutput: true,
+      disableConsoleOutput: true,
       //debugProtection: true,
       log: true,//false,
       renameGlobals: true,
@@ -54,7 +56,7 @@ gulp.task('scripts-dev', function() {
       'js/style_generator.js',
       'js/opus-decoder.js',
       'js/core.js',
-      './js/quantz-button-v6.js'
+      `./js/quantz-button-v${version}.js`
     ])
     .pipe(sourcemaps.init())  // Initializes sourcemaps
     .pipe(concat('quantz-button-v7-dev.js')) // Concatenate without the 'min' suffix

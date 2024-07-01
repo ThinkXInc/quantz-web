@@ -54,6 +54,7 @@ DEFAULT_LANG = Config.DEFAULT_LANG
 
 # Stripe
 stripe.api_key = Config.STRIPE_SECRET_KEY
+logger.info(magenta(f'stripe api key set by key ...{Config.STRIPE_SECRET_KEY[-4:]}'))
 
 # Locale
 from libcommon.locale import Locale, COMMON_LOCALES_FILE_PATHS
@@ -115,7 +116,7 @@ def payments_setup(user):
         return UnexpectedAPIErrorFormat(lang=DEFAULT_LANG, message=message).http_response()
     except Exception as e:
         logger.error(red(str(e)))
-        return ForbiddenAPIErrorFormat(message=str(e)).http_response()
+        return ForbiddenAPIErrorFormat(lang=DEFAULT_LANG, message=str(e)).http_response()
 
 @blueprint_payments.route('/v1/stripe/webhook', methods=['POST'])
 def stripe_webhook():

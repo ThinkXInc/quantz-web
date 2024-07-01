@@ -39,21 +39,9 @@
 
 
 <section id="top">
-  <div class="header">
-    <div class="left">
-      <a href="/{{ lang }}/"><img class="logo" src="/img/logo/horizontal-whitefont_200_60@2x.png" alt="Quantz Logo"></a>
-      <h3 class="header-copy">{{ locale_dict["top_header_catchcopy"][lang] }}</h3>
-    </div>
-      <!--
-      <h5 class="sales-catch">Now you can get {{ free_call }} free trials for a month!</h5>
-      -->
-    <div class="right">
-      <button class="try-button" onclick="redirectToSignup()">{{ locale_dict["top_header_try_button"][lang] }}</button>
-      <div class="locale">
-          {% include 'common/lang_selector.html' %} 
-      </div>
-    </div>
-  </div>
+
+  {% include 'common/header.html' %}
+
   <div class="main-container">
     <div id="main-bg" class="main-bg">
     </div>
@@ -124,9 +112,10 @@
           <div id="demoViewInterface" class="demo-view-interface">
             <div class="btn-main">
                 <script src="https://quantz.thinkxinc.com/js/dist/quantz-button.min.js"></script>
-                <div id="QBTN-demo-button" class="QBTN-demo-button">
+                <div class="demo-button-container">
+                  <div class="A QBTN-button-loader show" data-quantz-config='{"buttonType":"A","iconSize":25,"fontSize":13,"buttonWidth":200,"buttonHeight":44,"buttonColor":"#b80613","borderRadius":20,"displayLocale":true,"balloonRectWidth":"30vw","balloonRectHeight":"20vh","defaultLang":"en"}'></div>
+                  <div class="B QBTN-button-loader" data-quantz-config='{"buttonType":"B","iconSize":30,"fontSize":13,"buttonWidth":260,"buttonHeight":50,"buttonColor":"#0067FF","borderRadius":20,"displayLocale":true,"balloonRectWidth":"30vw","balloonRectHeight":"20vh","defaultLang":"en"}'></div>
                 </div>
-                <!--<div id="QBTN-top" class="QBTN-quantz-button-loader" data-button-id="QBTN-top" data-quantz-config="{&quot;buttonType&quot;:&quot;A&quot;,&quot;iconSize&quot;:25,&quot;fontSize&quot;:13,&quot;buttonWidth&quot;:200,&quot;buttonHeight&quot;:44,&quot;buttonColor&quot;:&quot;#b80613&quot;,&quot;borderRadius&quot;:20,&quot;displayLocale&quot;:true,&quot;balloonRectWidth&quot;:&quot;19vw&quot;,&quot;balloonRectHeight&quot;:&quot;20vh&quot;,&quot;defaultLang&quot;:&quot;en&quot;}"></div>-->
             </div>
           </div>
           <div class="demo-side">

@@ -333,13 +333,13 @@
                 if (node.matches(`.${ns.DefaultConfig.prefix}${ns.DefaultConfig.buttonLoaderClassName}`)) {
                     console.log(`[Quantz Button] Node added with class: ${node.className} and id: ${node.id}. And node matchs button loader class.`);
                     console.log('[Quantz Button] Matching button loader node found');
-                    ns.initializeButton(node);
+                    ns.initializeButton({$buttonLoader: node});
                 } else {
                     //console.log('[Quantz Button] Added node did not match expected selector');
                     // Recursively check child nodes
                     node.querySelectorAll(`.${ns.DefaultConfig.prefix}${ns.DefaultConfig.buttonLoaderClassName}`).forEach(innerNode => {
                         console.log(`[Quantz Button] Found matching node ${innerNode.className} inside added parent ${node.className}`);
-                        ns.initializeButton(innerNode);
+                        ns.initializeButton({$buttonLoader: innerNode});
                     });
                 }
             }
@@ -365,21 +365,42 @@
         }
         return result;
     }
-    
 
-    ns.initializeButton = function({$buttonLoader}) {
-        console.log(`[Quantz Button] Start initializing button with id ${$buttonLoader.id}`);
+    ns.updateStyleFromAttributes = function({$buttonLoader, buttonId}) {
+        // FIXME: not completed
+        console.log(`[Quantz Button ${buttonId}] [updateStyleFromAttributes] try update style from data-quantz-config`)
+        if (!$buttonLoader) {
+            console.error('[Quantz Button] [updateStyle] Button loader element not found.');
+        }
+        console.log(`[Quantz Button ${buttonId}] [updateStyleFromAttributes] button found with attributes ${$buttonLoader.getAttribute('data-quantz-config')}`)
+        let config = ns.parseConfig({buttonId: buttonId, $buttonLoader: $buttonLoader});
+        ns.setupConfig({buttonId: buttonId, config: config});
+        ns.applyDynamicStyles({buttonId: buttonId, config: config})
+    }
+
+    ns.parseConfig = function({buttonId, $buttonLoader}) {
         let config;
-        const buttonId = ns.generateButtonId();
         try {
             console.log(`[Quantz Button ${buttonId}] try parsing config attributes from data-quantz-config`)
             const configString = $buttonLoader.getAttribute('data-quantz-config');
+            console.log(`[Quantz Button ${buttonId}] Parse config string: ${configString}`);
             config = JSON.parse(configString);
             console.log(`[Quantz Button ${buttonId}] Configuration parsed: ${JSON.stringify(config)}`);
+            return config;
         } catch (error) {
             console.error(`[Quantz Button ${buttonId}] Error parsing quantz config data:`, error);
             return;
         }
+    }
+
+    ns.initializeButton = function({$buttonLoader}) {
+        const buttonId = ns.generateButtonId();
+        console.log(`[Quantz Button] Start initializing button with id ${buttonId}`);
+        console.log('[Quantz Button] $buttonLoader:', $buttonLoader);
+        if (!$buttonLoader) {
+            console.error('[Quantz Button] Button loader element not found.');
+        }
+        let config = ns.parseConfig({buttonId: buttonId, $buttonLoader: $buttonLoader});
 
         // Load CSS dynamically based on the button type
         ns.setupConfig({buttonId: buttonId, config: config});

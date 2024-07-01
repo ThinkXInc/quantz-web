@@ -1265,24 +1265,32 @@ class SettingsView {
     }
 
     updateQuantzButton() {
-        const buttonId = `QBTN-${this.user._id}`;
-        console.log(`Quantz button id to generate ${buttonId}`);
+        const buttonKey = `QBTN-preview`;//`QBTN-${this.user._id}`;
+        console.log(`Find quantz button with key ${buttonKey}`);
 
-        let $btn = document.getElementById(buttonId);
+        let $btn = document.querySelector(`[data-button-key='${buttonKey}']`);
 
         if (!$btn) {
-            console.log(`No button found. Create new button loader.`)
+            console.log(`Create new button loader.`)
             $btn = document.createElement('div');
-            $btn.id = buttonId;
-            $btn.classList.add('QBTN-quantz-button-loader');
-            $btn.setAttribute('data-button-id', buttonId);
+            $btn.classList.add('QBTN-button-loader');
+            $btn.setAttribute('data-button-key', buttonKey);
+            $btn.setAttribute('data-publisher-id', `${this.user._id}`);
+
+            const configString = this.configStringFromLatestValues();
+            $btn.setAttribute('data-quantz-config', configString);
+
+            // Once DOM is appended, the addition is observed by script and setup starts
+            this.$previewWrapper.appendChild($btn)
+
         } else {
-            console.log(`Button found. Remove all children.`)
-            while ($btn.firstChild) {
-                $btn.removeChild($btn.firstChild);
-            }
+            const configString = this.configStringFromLatestValues();
+            $btn.setAttribute('data-quantz-config', configString);
+            Quantz.initializeButton({$buttonLoader: $btn});
         }
-       
+    }
+
+    configStringFromLatestValues() {
         const configString = JSON.stringify({
             buttonType: this.buttonTypeSelector.value,
             iconSize: 30,
@@ -1296,11 +1304,7 @@ class SettingsView {
             balloonRectHeight: `${this.balloonHeightForm.value}vh`,
             defaultLang: this.lang
         });
-        
-        $btn.setAttribute('data-quantz-config', configString);
-        
-        // Once DOM is appended, the addition is observed by script and setup starts
-        this.$previewWrapper.appendChild($btn)
+        return configString
     }
 
     generateCodeSnippet() {
@@ -1320,7 +1324,7 @@ class SettingsView {
             defaultLang: this.lang
         });
     
-        const loaderCode = `<div id="QBTN-${this.user._id}" class="QBTN-quantz-button-loader" data-button-id="QBTN-${this.user._id}" data-quantz-config='${config}'></div>`;
+        const loaderCode = `<div class="QBTN-button-loader" data-publisher-id="${this.user._id}" data-quantz-config='${config}'></div>`;
         return `${scriptCode}${loaderCode}`
     }
 

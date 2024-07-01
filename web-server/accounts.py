@@ -48,7 +48,7 @@ from libcommon.web.http_errors import InvalidContentTypeAPIErrorFormat, \
 from libcommon.web.flask_helpers import language_wrapper, content_type_check_json, \
     required_fields_check, required_query_params, validate_request, \
     format_check, length_check, regex_check, \
-    handle_error, session_helper, google_oauth_token_check
+    handle_error, session_helper, google_oauth_token_check, requires_auth
 from libcommon.web.regex_patterns import EMAIL_REGEX, PASSWORD_AT_LEAST_ONE_UPPER_AND_NUMERIC_REGEX
 
 # Locale
@@ -152,7 +152,12 @@ def terms(lang, lang_name):
         locale_json=locale.to_json_string())
 
 @blueprint_accounts.route('/users/flush', methods=['GET'])
+@requires_auth
 def users_flush():
+    if not ENABLE_INITIALIZE_ALL_USERS:
+        logger.info(yellow('User flush attempt blocked because feature is disabled.'))
+        return jsonify({'error': 'Flushing users is disabled'}), 403  # Or another appropriate status code
+
     try:
         if ENABLE_INITIALIZE_ALL_USERS:
             from manage_mongodb import delete_all_users

@@ -1,0 +1,29 @@
+{
+    "header_catchcopy": {
+        "en": "The simplest AI Voice Help Center that grows your business on your behalf.",
+        "ja": "あなたが仕事をしている間に、あなたの”分身”が回答。最速クイックレスポンスの音声AIを30分で設置。",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "header_try_button": {
+        "en": "TRY NOW FOR FREE !",
+        "ja": "今すぐ無料で試す",
+        "zh": "立即免费试用！",
+        "fr": "ESSAYEZ MAINTENANT GRATUITEMENT !",
+        "es": "¡PRUÉBALO AHORA GRATIS!",
+        "ar": "جربه الآن مجانًا!",
+        "ru": "ПОПРОБУЙТЕ СЕЙЧАС БЕСПЛАТНО!"
+    },
+    "header_signin_tooltip": {
+        "en": "Sign In",
+        "ja": "ログイン",
+        "zh": "登录",
+        "fr": "Connexion",
+        "es": "Iniciar sesión",
+        "ar": "تسجيل الدخول",
+        "ru": "Вход"
+    }
+}

@@ -86,10 +86,6 @@ from models.data.material_vectordb import (
 def home(user, lang, lang_name):
     logger.info(magenta(f'[GET] /{lang}/home'))
 
-    if not user:
-        logger.info(magenta('X'))
-        raise UserNotFoundError
-
     # DEBUG
     #Session.start('6608eee0010a17bff9abcd0c')
     #Session.start('660fb470cdab5917fb9023e6')

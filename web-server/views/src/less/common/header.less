@@ -28,6 +28,7 @@ div.quantz-basic-header {
         padding: 10px 20px;
         cursor: pointer;
         transition: background-color 0.3s;
+        margin-right: 10px;
         
         &:hover {
             background-color: @try-button-hover;
@@ -76,6 +77,42 @@ div.quantz-basic-header {
 
         .locale {
             // written in lang_selector.less
+        }
+
+        a.login {
+            position: relative;
+            width: 20px;
+            margin-left: 10px;
+            margin-right: 11px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            img.signinIcon {
+
+            }
+            span.tooltip {
+                position: absolute;
+                top: 200%;
+                left: -100%;
+                font-size: 10px;
+                transform: translateY(-50%);
+                background-color: #252525;
+                color: white;
+                padding: 5px 10px;
+                white-space: nowrap;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.3s ease, visibility 0.3s ease;
+                border-radius: 3px; /* Optional: Adds rounded corners to the tooltip */
+                box-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* Optional: Adds a slight shadow for better visibility */
+            }
+        }
+        a.login:hover {
+            span.tooltip {
+                opacity: 1;
+                visibility: visible;
+            }
         }
     }
 }

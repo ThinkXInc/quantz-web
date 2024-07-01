@@ -42,8 +42,6 @@ class Top {
 
         $demoView.insertBefore(buttonTypeSelector.$view, $demoView.firstChild);
         this.buttonTypeSelector = buttonTypeSelector;
-
-        this.updateQuantzButton();
     }
 
     setupEvents() {
@@ -51,66 +49,17 @@ class Top {
             e.preventDefault();
             const {newValue} = e.detail;
             console.warn(`button type: ${newValue}`)
-            this.updateQuantzButton();
-        })
-    }
 
-    updateQuantzButton() {
-        const buttonId = `QBTN-top`;
-        console.log(`Quantz button id to generate ${buttonId}`);
+            const buttonsA = document.querySelectorAll('.A');
+            const buttonsB = document.querySelectorAll('.B');
 
-        let $btn = document.getElementById(buttonId);
-
-        if (!$btn) {
-            console.log(`No button found. Create new button loader.`)
-            $btn = document.createElement('div');
-            $btn.id = buttonId;
-            $btn.classList.add('QBTN-quantz-button-loader');
-            $btn.setAttribute('data-button-id', buttonId);
-        } else {
-            console.log(`Button found. Remove all children.`)
-            while ($btn.firstChild) {
-                $btn.removeChild($btn.firstChild);
+            if (newValue === "A") {
+                buttonsB.forEach(button => button.classList.remove('show'));
+                buttonsA.forEach(button => button.classList.add('show'));
+            } else {
+                buttonsA.forEach(button => button.classList.remove('show'));
+                buttonsB.forEach(button => button.classList.add('show'));
             }
-        }
-       
-        let configString;
-        switch (this.buttonTypeSelector.value) {
-            case 'A':
-                configString = JSON.stringify({
-                    buttonType: 'A',
-                    iconSize: 25,
-                    fontSize: 13,
-                    buttonWidth: 200,
-                    buttonHeight: 44,
-                    buttonColor: '#b80613',
-                    borderRadius: 20,
-                    displayLocale: true,
-                    balloonRectWidth: `30vw`,
-                    balloonRectHeight: `20vh`,
-                    defaultLang: this.lang
-                });
-                break;
-            case 'B':
-                configString = JSON.stringify({
-                    buttonType: 'B',
-                    iconSize: 30,
-                    fontSize: 13,
-                    buttonWidth: 260,
-                    buttonHeight: 50,
-                    buttonColor: '#0067FF',
-                    borderRadius: 20,
-                    displayLocale: true,
-                    balloonRectWidth: `30vw`,
-                    balloonRectHeight: `20vh`,
-                    defaultLang: this.lang
-                });
-                break;
-        }
-       
-        $btn.setAttribute('data-quantz-config', configString);
-        
-        // Once DOM is appended, the addition is observed by script and setup starts
-        document.getElementById('QBTN-demo-button').appendChild($btn)
+        })
     }
 }

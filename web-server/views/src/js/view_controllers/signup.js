@@ -121,7 +121,8 @@ class Signup {
 
         const $logo = document.createElement('img');
         $logo.classList.add('logo');
-        $logo.src = '/img/logo/horizontal@2x.png';
+        //$logo.src = '/img/logo/horizontal@2x.png';
+        $logo.src = '/img/logo/horizontal_bluebg_224@2x.png';
     
         $logoLink.appendChild($logo);
         $logoContainer.appendChild($logoLink);
@@ -235,6 +236,11 @@ class Signup {
         });
         emailPageNextButton.$button.classList.add('nextButton');
 
+        const $signInLink = document.createElement('a');
+        $signInLink.classList.add('signInLink');
+        $signInLink.textContent = locale.get('accounts_signin_link', lang)
+        $signInLink.href = `/v1/${lang}/signin`;
+
         const $emailPageAlert = document.createElement('p');
         $emailPageAlert.id = 'emailPageAlert';
         $emailPageAlert.classList.add('pageAlert');
@@ -258,6 +264,7 @@ class Signup {
         $container.appendChild(passwordForm.$view);
         $container.appendChild(passwordConfirmForm.$view);
         $container.appendChild(emailPageNextButton.$view);
+        $container.appendChild($signInLink);
         $container.appendChild($emailPageAlert);
 
         this.pageView.appendChild($emailPageTitle, pageIndex)
@@ -549,7 +556,14 @@ class Signup {
             (error) => {
                 if (error && error.code) {
                     console.log(`[error] code:${error.code} reason:${error.reason}`);
-                    if (error.code == 400 || error.code == 401) {
+                    if (error.code == 401) {  // Assuming 302 or any specific code you decide to use for redirects
+                        console.error('no user found. redirect to signup page.')
+                        const { message, redirect_url } = error;
+                        //window.location.href = redirect_url;
+                        this.$verifyCodePageAlert.style.display = 'block';
+                        this.$verifyCodePageAlert.textContent = message;
+                    }
+                    else if (error.code == 400) {
                         // mismatch, expired, validation or other failer
                         const { errors } = error; 
                         if (errors) {
@@ -569,6 +583,10 @@ class Signup {
                         }
                     }
                     else if (error.code == 500) {
+                        const { message } = error;
+                        this.$verifyCodePageAlert.style.display = 'block';
+                        this.$verifyCodePageAlert.textContent = message;
+                    } else {
                         const { message } = error;
                         this.$verifyCodePageAlert.style.display = 'block';
                         this.$verifyCodePageAlert.textContent = message;
@@ -963,6 +981,13 @@ class Signup {
             onError: (error)=> {
                 _this.$cardPageAlert.style.display = 'block';
                 _this.$cardPageAlert.textContent = error;
+                const $cardPageElement = document.querySelector('.CardPage');
+                if ($cardPageElement) {
+                    $cardPageElement.scroll({
+                        top: $cardPageElement.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                }
             },
             onComplete: () => {
                 _this.cardPageNextButton.load(false);  // Hide loading indication
@@ -1194,7 +1219,7 @@ class Signup {
 
         const termsScrollView = new TermsScrollView({
             id: 'Terms',
-            templateUrl: `/v1/${lang}/terms`
+            templateUrl: `/${lang}/terms/agreement`
         })
         this.termsScrollView = termsScrollView
 

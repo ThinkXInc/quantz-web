@@ -46,6 +46,7 @@ from libcommon.web.flask_helpers import language_wrapper, content_type_check_jso
 COMMON_LOCALES_ROOT = join(abspath(__file__), 'libcommon/locales')
 LOCALES_ROOT = Config.LOCALES_ROOT
 TOP_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/top.json'
+HEADER_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/header.json'
 FOOTER_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/footer.json'
 ERROR_PAGES_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/error_pages.json'
 SETTINGS_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/settings.json'
@@ -53,6 +54,7 @@ MATERIALS_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/materials.json'
 MATERIALS_RESPONSES_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/materials_responses.json'
 locale = Locale([
     ERROR_PAGES_LOCALE_FILE_PATH,
+    HEADER_LOCALE_FILE_PATH,
     FOOTER_LOCALE_FILE_PATH,
     ] + COMMON_LOCALES_FILE_PATHS
 )
@@ -91,7 +93,7 @@ DEFAULT_LANG = Config.DEFAULT_LANG
 @app.route('/<lang>/')
 @language_wrapper
 def top_handler(lang, lang_name):
-    logger.info(magenta(f'[GET] top'))
+    logger.info(magenta(f'[GET] top {lang}'))
     locale.add_locale_file(TOP_LOCALE_FILE_PATH)
     locale.add_locale_file(SETTINGS_LOCALE_FILE_PATH)  # for demo
     return render_template(
@@ -119,10 +121,40 @@ def test_handler():
 @app.route('/<lang>/terms')
 @language_wrapper
 def terms(lang, lang_name):
+    template_file_name = f'terms/terms_wrapper.html'
+    terms_file_name = f'terms/terms_{lang}.html'
+    locale.add_locale_file(TOP_LOCALE_FILE_PATH)
+    return render_template(
+        template_file_name,
+        lang=lang,
+        lang_name=lang_name,
+        terms_file_name=terms_file_name,
+        locale_dict=locale.dict())
+
+@app.route('/terms/agreement')
+@app.route('/<lang>/terms/agreement')
+@language_wrapper
+def terms_agreement(lang, lang_name):
     template_file_name = f'terms/terms_{lang}.html'
     return render_template(
         template_file_name,
+        lang=lang,
+        lang_name=lang_name,
         locale_dict=locale.dict())
+
+@app.route('/llama3_agreement')
+@language_wrapper
+def llama3_agreement(lang, lang_name):
+    template_file_name = f'terms/terms_wrapper.html'
+    terms_file_name = f'terms/terms_{lang}.html'
+    return render_template(
+        template_file_name,
+        lang=lang,
+        lang_name=lang_name,
+        terms_file_name=terms_file_name,
+        locale_dict=locale.dict())
+
+       
 
 # Privacy Policy
 @app.route('/privacy')
@@ -149,7 +181,6 @@ def transaction_info(lang, lang_name):
         lang=lang,
         lang_name=lang_name,
         locale_dict=locale.dict())
-
 
 # User
 @app.route('/v1/<lang>/user')
@@ -187,10 +218,19 @@ def handle_user_not_found(error, lang, lang_name):
 
     if request.path.endswith('/materials/list') or request.path.endswith('/user'):
         return UnauthorizedAPIErrorFormat(lang=lang, message=str(error)).http_response()
+    elif request.path.endswith('/home'):
+        original_url = quote(request.url)
+        return redirect(url_for('accounts.signin', lang=lang, redirect=original_url))
     else:
         original_url = quote(request.url)
-        logger.info(f"redirect url is set to {original_url}")
-        return redirect(url_for('accounts.signin', lang=lang, redirect=original_url))
+        redirect_url = url_for('accounts.signup', lang=lang, redirect=original_url)
+        #error_format = UnauthorizedAPIErrorFormat(lang=lang, message=str(error))
+        #response_dict = error_format.dict()
+        #response_dict['redirectUrl'] = redirect_url
+        #logger.info(f"redirect url is set to {original_url}")
+        ##return redirect(url_for('accounts.signup', lang=lang, redirect=original_url))
+        #return jsonify(response_dict), error_format.code.value
+        return UnauthorizedAPIErrorFormat(lang=lang, message=str(error), redirect_url=redirect_url).http_response()
 
 @app.errorhandler(400)
 @language_wrapper
