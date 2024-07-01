@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>App Task</title>
+    <script src="./js/async_task_client.js"></script>
+    <style>
+        #inputForm {
+            display: block;
+            width: 400px;  /* Increases the width of the input box */
+            height: 100px;  /* Increases the height of the input box */
+            font-size: 1em;  /* Increases the font size inside the input box */
+        }
+        #title, #keywords {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <textarea id="inputForm" placeholder="input here"></textarea>
+    <input id="questionForm" placeholder="input question"/>
+    <button id="submitButton">Submit</button>
+    <label for="languageSelect">Language:</label>
+    <select id="languageSelect"></select>
+    <label for="taskSelect">Task:</label>
+    <select id="taskSelect"></select>
+
+    <ul id="results"></ul>
+    <p id="title"></p>
+    <p id="keywords"></p>
+    <p id="sampleAnswer"></p>
+    <p id="review"></p>
+
+    <script>
+        const asyncTaskClient = new AsyncTaskClient();
+
+        const languageData = {
+            "en": ["English"],
+            "ja": ["Japanese", "日本語"],
+            "es": ["Spanish", "Español"],
+            "zh": ["Chinese", "中文"],
+            "fr": ["French", "Français"],
+            "it": ["Italian", "Italiano"]
+        }
+
+        const defaultLang = "en";
+        const languageSelector = new Selector("languageSelect", languageData, defaultLang);
+
+        const taskData = {
+            "title_keywords": ["title_keywords"],
+            "sample_answer": ["sample_answer"],
+            "review": ["review"],
+        }
+
+        const defaultTask = "sample_answer";
+        const taskSelector = new Selector("taskSelect", taskData, defaultTask);
+
+
+        // Function to set a random sentence with a random number
+        function setRandomSentence() {
+            const sentences = [
+                "The rise of telemedicine transforms healthcare, offering convenience and accessibility while maintaining high-quality care through virtual consultations, especially crucial during the pandemic.",
+                "For me, becoming isn’t about arriving somewhere or achieving a certain aim. I see it instead as forward motion, a means of evolving, a way to reach continuously toward a better self. The journey doesn’t end.",
+                "Artificial intelligence revolutionizes job markets, automating tasks, enhancing productivity, and creating new roles while also posing challenges for workforce adaptation and ethical considerations in its deployment."
+            ];
+            const randomIndex = Math.floor(Math.random() * sentences.length);
+            const randomSentence = sentences[randomIndex];
+            
+            document.getElementById('inputForm').value = randomSentence;
+        }
+
+        function setRandomQuestion() {
+            const questions = [
+                "What is this?",
+                "What is the benefit of this?",
+                "How can we make it?",
+                "Let me know more details."
+            ]
+            const randomIndex = Math.floor(Math.random() * questions.length);
+            const randomQuestion = questions[randomIndex];
+            document.getElementById('questionForm').value = randomQuestion;
+        }
+
+        function appendToResults(content) {
+            console.log("Appending content to results:", content);
+            const resultsElement = document.getElementById('results');
+            if (!resultsElement) {
+                console.error('Results element not found.');
+                return;
+            }
+    
+            const messageElement = document.createElement('p');
+            messageElement.textContent = content;
+            // Append the new message to the results section
+            resultsElement.appendChild(messageElement);
+        }
+
+        window.onload = () => {
+            asyncTaskClient.initialize();
+            setRandomSentence();  // Set random sentence with number when the page loads
+            setRandomQuestion()
+        };
+
+        document.getElementById('submitButton').addEventListener("mousedown", () => {
+            console.log('tapped')
+            let text = document.getElementById('inputForm').value; // Get the current value of the input form
+            const task = taskSelector.getValue();
+            if (task == "sample_answer" || task == "review") {
+                text = text + "<question>:" + document.getElementById('questionForm').value;
+            }
+            const requestData = new RequestData(task, text, "material001", "session111user123", "en");
+            asyncTaskClient.submit(requestData);
+
+        });
+    </script>
+</body>
+</html>

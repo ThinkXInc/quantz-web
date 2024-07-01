@@ -1,0 +1,335 @@
+#quantz-button-container {
+  position: relative;
+  display: flex !important;
+  justify-content: flex-start; /* Center children horizontally */
+  flex-direction: row; /* @ */
+  align-items: center; /* Align children vertically */
+  height: auto !important; /* @ */
+  width: 250px !important; /* @ button + control */
+}
+
+#quantz-button {
+  width: 204px !important; /* @ */
+  height: 45px !important; /* @ */
+  display: flex !important; /* @ */
+  align-items: center !important; /* @ */
+  border-radius: 7px !important; /* @ */
+  background-color: rgb(0, 121, 239);/* #292929;*/ /* @ */
+  background-image: none !important;
+  border: none;
+  position: relative;
+  cursor: pointer;
+}
+
+/* indicator */
+
+.indicator {
+  display: none; /* @ */
+}
+
+.indicator::before {
+  /* Styles for indicator lines - Dynamic content to be generated in JS */
+  content: '';
+}
+
+.dial {
+  position: absolute;
+  background-color: #2F7A7C;
+  border-radius: 1px; /* For rounded corners */
+}
+
+#glowlight {
+  display: none; /* @ */
+  opacity: 0;
+}
+
+.icon-wrapper {
+  width: 30px; /* @ */
+  height: 30px; /* @ */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-wrapper img {
+  width: 30px !important; /* @ */
+  height: 30px !important; /* @ */
+}
+
+@keyframes rotate-svg {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.rotating-svg {
+  animation: rotate-svg 2.5s linear infinite;
+}
+
+
+/* button-control */
+
+#quantz-button-control {
+  margin-left: 8px; /* @ */
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.spacer {
+  width: 0px; /* @ */
+  flex-shrink: 0;
+  visibility: hidden;
+}
+
+.button-text-container {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centering text and sign within the container */
+}
+
+.sign {
+  height: 10px;
+  width: 10px;
+  margin-right: 5px;
+  position: relative; /* further left */
+  border-radius: 50%;
+  background-color: transparent; /* Will change based on the sign status */
+}
+
+.sign.busy {
+  background-color: #c7c94c;
+}
+.sign.active {
+  background-color: #2f7a7c;
+}
+.sign.error {
+  background-color: #9e3c49;
+}
+
+.button-text {
+  color: #fff; /* @ */
+  width: 146px; /* @ decides button width */
+  display: flex;
+  justify-content: start; /* @ */
+  align-items: center;
+  font-family: 'Helvetica', 'san-serif';
+  height: 24px;
+  text-align: center;
+}
+
+/* locale */
+
+.locale {
+  position: relative; /* This makes it the reference point for its absolutely positioned children */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.locale-button {
+  cursor: pointer;
+  position: relative; /* To position the selector relative to the button */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 14px;
+  width: 29px; /* @ */
+  background-color: #fff;
+  border: 1px solid #aaa;
+  cursor: pointer;
+  padding: 4px 6px 4px 5px;
+  border-radius: 3px;
+}
+
+.locale-button .locale-icon {
+
+}
+
+.locale-button .arrow-icon {
+  width: 10px;
+}
+
+/* Icons inside the localeButton */
+.locale-button img {
+  /* Assuming the icons are appropriately sized, you might need additional styles for alignment and sizing */
+  height: 100%; /* Adjust based on actual icon size */
+}
+
+.selector {
+  cursor: pointer;
+  display: none; /* Initially hidden */
+  flex-direction: column;
+  background-color: white;
+  position: absolute;
+  top: 25px; /* Adjust based on the actual needs, considering borders and padding */
+  left: 0;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10; /* Ensure it's above other content */
+}
+
+.selector p {
+  font-family: 'Helvetica', 'san-serif';
+  font-size: 0.8em;
+  margin: 0;
+  padding: 10px 10px; /* Provides padding inside each language option */
+  cursor: pointer;
+}
+
+.selector p:hover {
+  background-color: #f0f0f0; /* A subtle hover effect for language options */
+}
+
+
+/* balloon */
+
+#quantz-balloon {
+  position: absolute; /* @ */
+  top: 57px; /* @ */
+  left: -20px; /* @ */
+  transition: transform 0.3s, opacity 0.3s;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.balloon-rect {
+  position: relative;
+  top: 50%;
+  left: 55%;
+  transform: translate(-50%, 4%);  /* centering in the container */
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 52vw;
+  height: 40vh;
+  padding: 4px 6px;
+  background: white;
+  border: 0.1px solid #7b7b7b;
+  border-radius: 17px;
+  box-shadow: 4px 3px 12px 2px rgba(0, 0, 0, 0.1);
+}
+
+.balloon-leg {
+  position: absolute;
+  top: -19px; /* Adjust based on the actual size of the leg image */
+  left: 10px;
+  width: 19px; /* Adjust based on the actual size */
+}
+
+.conversation {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  overflow-y: auto;
+  margin-top: 4px;
+  font-size: 1em;
+  color: #999;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  padding: 8px 5px 0px 8px;
+  margin-bottom: 25px;
+}
+
+.dialogue {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  padding-bottom: 8px;
+}
+
+.speaker, .message {
+  font-size: 1em;
+  text-align: left;
+}
+
+.speaker {
+  padding-right: 7px;
+  font-size: 0.7em;
+  width: 27px;
+  min-width: 27px; /* Ensure it doesn't shrink */
+  max-width: 27px; /* Ensure it doesn't grow */
+}
+
+.message {
+  flex-grow: 1; /* Allow message to take up remaining space */
+  margin: 0px;
+  font-size: 0.9em;
+}
+
+.system .speaker {
+  color: #77b4ef;
+}
+.system .message {
+  color: #0079ef;
+}
+.user .speaker {
+  color: #A5A5A5;
+}
+.user .message {
+  color: #000;
+}
+
+.poweredby {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  width: 20%;
+  max-width: 37px;
+  margin-left: 3px;
+}
+
+.annotation {
+  position: absolute;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  bottom: 5px;
+  right: 5px;
+  text-align: left;
+  color: #a6a6a6;
+  font-size: 0.2em;
+  width: 80%;
+  max-height: 24px;
+  line-height: 9px;
+}
+
+.balloon-container.close {
+  display: none;
+}
+.balloon-container.show {
+  display: block;
+}
+.balloon-container.close-by-scale {
+  animation: popDownToLeftTop 0.4s cubic-bezier(.65,0,.34,1) forwards;
+}
+.balloon-container.show-by-scale {
+  animation: popUpFromLeftTop 0.3s cubic-bezier(.65,0,.34,1) forwards;
+}
+
+@keyframes popUpFromLeftTop {
+  0% {
+      visibility: hidden;
+      transform: scale(0);
+      transform-origin: left top;
+  }
+  100% {
+      visibility: visible;
+      transform: scale(1);
+      transform-origin: left top;
+  }
+}
+
+@keyframes popDownToLeftTop {
+  0% {
+      visibility: visible;
+      transform: scale(1);
+      transform-origin: left top;
+  }
+  100% {
+      visibility: hidden;
+      transform: scale(0);
+      transform-origin: left top;
+  }
+}

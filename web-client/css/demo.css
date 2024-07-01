@@ -1,0 +1,112 @@
+#overlay {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    z-index: 99999998; /* Ensures the overlay is behind the buttons and other content */
+}
+#overlay.show {
+    display: block;
+}
+
+#launchButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(0, 121, 239);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 7px;
+    cursor: pointer;
+    margin-left: 10px;  /* REMOVE AFTER */
+}
+
+#launchButton img.icon {
+    margin-right: 10px; /* Space between icon and label */
+    width: 24px;
+    height: auto;
+    /*fill: white !important; can't controll*/ 
+}
+
+#launchButton .label {
+    display: flex;
+    align-items: center;
+}
+
+#launchButton.horizontal .label {
+    flex-direction: row;
+}
+
+#launchButton.vertical .label {
+    flex-direction: column;
+}
+
+#recordButton, #languageSelect, label[for="languageSelect"], #dialogue {
+    display: none;
+}
+
+#recordButton.show, #languageSelect.show, label[for="languageSelect"].show, #dialogue.show {
+    display: block;
+    position: fixed;
+    z-index: 99999999; /* Ensures these elements are above the overlay */
+}
+
+.show#dialogue {
+    list-style-type: none;
+}
+
+.phoneIcon {
+    fill: #fff;
+}
+
+/* */
+
+/* Base container for the icon and animation */
+/* Base container for the icon and animation */
+.info-icon-container {
+    position: relative;
+    width: 100px;  /* Size of the circular path */
+    height: 100px;  /* Size of the circular path */
+    border-radius: 50%;
+    background-color: black; /* Background color of the circle */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .info-icon {
+    color: white;
+    font-size: 50px; /* Size of the info icon */
+    position: relative;
+    z-index: 2;
+  }
+  
+  .info-icon-container::after {
+    content: '';
+    position: absolute;
+    width: 20px; /* Size of the moving light */
+    height: 20px; /* Size of the moving light */
+    background: cyan; /* Color of the moving light */
+    border-radius: 50%; /* Make the light round */
+    box-shadow: 0 0 15px cyan; /* Glow effect */
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    margin-top: -10px; /* Half of the height to center the light */
+    margin-left: -10px; /* Half of the width to center the light */
+    transform-origin: 50px 50px; /* Adjust to move the light dot away from the center */
+    animation: rotateLight 5s linear infinite;
+  }
+  
+  @keyframes rotateLight {
+    0% {
+      transform: rotate(0deg) translateX(-50px); /* Start from the top of the circle */
+    }
+    100% {
+      transform: rotate(360deg) translateX(-50px); /* Rotate around the circle */
+    }
+  }

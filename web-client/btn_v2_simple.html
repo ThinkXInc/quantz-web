@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Design</title>
+</head>
+<body>
+    <h4>Button Type B</h4>
+    <div id="quantz-button-container" class="button-container" style="display: none;"
+        data-button-type="B" 
+        data-icon-size="50" 
+        data-font-size="1.4" 
+        data-button-width="600" 
+        data-button-height="100" 
+        data-border-radius="20" 
+        data-display-locale="true" 
+        data-balloon-rect-width="70vw" 
+        data-balloon-rect-height="45vh">
+        <button id="quantz-button">
+            <div class="icon-wrapper">
+                <img src="./images/standby-icon-white.svg" class="button-icon" alt="Button Icon">
+            </div>
+            <!-- must be here in simple mode -->
+            <div id="button-text-container" class="button-text-container">
+                <div class="button-text">Connecting...</div>
+            </div>
+        </button>
+        <div id="quantz-button-control">
+            <div class="spacer"></div>
+        </div>
+    </div>
+    <script src="js/animation_controller.js"></script>
+    <script src="js/button_controller.js"></script>
+    <script src="js/balloon.js"></script>
+    <script src="js/locale.js"></script>
+    <script src="js/sign.js"></script>
+    <script src="js/style_generator.js"></script>
+    <script src="./js/quantz-button-v2.js" type="text/javascript"></script>
+</body>
+</html>

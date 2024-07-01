@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Audio Stream Capture</title>
+    <script src="./js/opus-decoder.min.js"></script>
+</head>
+<body>
+    <button id="recordButton">Record</button>
+    <label for="languageSelect">Language:</label>
+    <select id="languageSelect"></select>
+
+    <ul id="dialogue"></ul>
+
+    <script>
+        let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let decoder; // OpusDecoder instance
+        let socket;  // WebSocket instance
+
+        let mediaRecorder;
+        let audioChunks = [];
+        let isRecording = false;
+
+        let history = []; // Initialize an empty array to store the dialogue history
+
+        const MessageType = Object.freeze({
+            HEALTH_CHECK: 0,
+            TEXT_MESSAGE: 1,
+            WAV_STREAM: 2
+        });
+
+        const END_OF_MESSAGE = '\\END';
+        const endOfMessageBytes = new TextEncoder().encode(END_OF_MESSAGE);
+
+        document.getElementById('recordButton').addEventListener('mousedown', startRecording);
+        document.getElementById('recordButton').addEventListener('mouseup', stopRecording);
+
+        // Dummy profile
+        const userId = 112
+        let lang = "en"; // Set a default language here
+        let conversationId = '';
+        for (let i = 0; i < 16; i++) {
+            conversationId += Math.floor(Math.random() * 16).toString(16);
+        }
+
+        // Language selector
+        const languageData = {
+            "en": ["English"],
+            "ja": ["Japanese", "日本語", "Japone"],
+            "es": ["Spanish", "Español"],
+            "zh": ["Chinese", "中文"],
+            "fr": ["French", "Français"],
+            "it": ["Italian", "Italiano"]
+        };
+
+        // Function to populate the language select box
+        function populateLanguageSelect() {
+            const select = document.getElementById('languageSelect');
+            for (const [code, names] of Object.entries(languageData)) {
+                const option = document.createElement('option');
+                option.value = code;
+                option.textContent = names[0]; // Display the first name (primary name)
+                select.appendChild(option);
+            }
+        }
+
+        // Set the lang variable based on the selection
+        document.getElementById('languageSelect').addEventListener('change', function() {
+            lang = this.value;
+            console.log("Selected language:", lang);
+        });
+
+        window.onload = async function() {
+            // Setup language selector
+            populateLanguageSelect();
+
+            try {
+                // Initialize OpusDecoder
+                decoder = new window["opus-decoder"].OpusDecoder({ sampleRate: 24000, channels: 1 });
+                await decoder.ready;
+                console.log("Decoder is ready.");
+
+                // Initialize WebSocket
+                const serverUrl = 'wss://153.174.160.217:8001/ws';
+                socket = new WebSocket(serverUrl);
+                socket.onopen = e => console.log("Connection to server opened.");
+                socket.onerror = e => console.error("[Error] An error occurred with the WebSocket:", e);
+                socket.onmessage = handleWebSocketMessage;
+                socket.onclose = e => {
+                    if (e.wasClean) {
+                        console.log(`Connection closed cleanly, code=${e.code}, reason=${e.reason}`);
+                    } else {
+                        console.log('Connection died', `Close event code: ${e.code}, reason: ${e.reason}`);
+                    }
+                };
+
+            } catch (e) {
+                console.error("Error initializing OpusDecoder:", e);
+            }
+
+            // Other initializations...
+        };
+
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(stream => {
+                mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder.ondataavailable = e => {
+                    audioChunks.push(e.data);
+                };
+                mediaRecorder.onstop = e => {
+                    const messageType = new Uint8Array([MessageType.WAV_STREAM]);
+                    const userIdBytes = new Uint32Array([userId]); // 4 bytes
+                    const conversationIdBytes = new TextEncoder().encode(conversationId); // 16 bytes, ensure conversationId is 16 characters
+                    const langBytes = new TextEncoder().encode(lang); // 2 bytes, ensure lang is 2 characters
+                
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                
+                    // Combine all parts into a single Blob
+                    const blobWithHeader = new Blob([messageType, userIdBytes, conversationIdBytes, langBytes, audioBlob, endOfMessageBytes], { type: 'audio/wav' });
+                
+                    if (socket.readyState === WebSocket.OPEN) {
+                        socket.send(blobWithHeader);
+                        console.log("Audio blob with header sent to server.");
+                    } else {
+                        console.error("WebSocket is not open. ReadyState:", socket.readyState);
+                    }
+                
+                    console.log("Audio blob details:", {
+                        size: blobWithHeader.size,
+                        type: blobWithHeader.type,
+                        chunksCount: audioChunks.length
+                    });
+                
+                    audioChunks = [];
+                };
+            })
+            .catch(e => console.error("Error getting user media:", e));
+
+        function startRecording() {
+            console.log(`MediaRecorder state before start: ${mediaRecorder.state}`);
+            if (!isRecording) {
+                audioChunks = [];
+                mediaRecorder.start();
+                isRecording = true;
+                console.log(`MediaRecorder started. State after start: ${mediaRecorder.state}`);
+    
+                // Resume the audio context on user interaction
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                    console.log(`audioCtx resumed`);
+                }
+            }
+        }
+
+        function stopRecording() {
+            console.log(`MediaRecorder state before stop: ${mediaRecorder.state}`);
+            if (isRecording) {
+                mediaRecorder.stop();
+                isRecording = false;
+                console.log(`MediaRecorder stopped. State after stop: ${mediaRecorder.state}`);
+            }
+        }
+
+        let audioBufferQueue = [];
+        let isAudioPlaying = false;
+        let playbackQueue = [];
+        
+        function playBufferedAudio() {
+            if (audioBufferQueue.length === 0 || isAudioPlaying) {
+                return; // No buffered audio to play or audio is already playing
+            }
+        
+            // Set flag to indicate audio is playing
+            isAudioPlaying = true;
+        
+            // Combine all buffered audio into a single buffer
+            let totalLength = audioBufferQueue.reduce((acc, buffer) => acc + buffer.length, 0);
+            let combinedBuffer = audioCtx.createBuffer(1, totalLength, 24000); // Assuming mono audio
+            let offset = 0;
+            audioBufferQueue.forEach(buffer => {
+                combinedBuffer.getChannelData(0).set(buffer, offset);
+                offset += buffer.length;
+            });
+        
+            // Play the combined buffer
+            let source = audioCtx.createBufferSource();
+            source.buffer = combinedBuffer;
+            source.connect(audioCtx.destination);
+            source.start();
+        
+            // When audio finishes playing, check for more audio in the queue
+            source.onended = () => {
+                isAudioPlaying = false;
+                if (playbackQueue.length > 0) {
+                    audioBufferQueue = playbackQueue.shift();
+                    playBufferedAudio();
+                }
+            };
+        
+            // Clear the buffer queue
+            audioBufferQueue = [];
+        }
+        
+        function decodeAndBufferAudioChunk(opusData) {
+            //console.log('Decoding audio chunk of size:', opusData.length);
+            try {
+                let decodedData = decoder.decodeFrame(opusData);
+                if (decodedData.errors && decodedData.errors.length > 0) {
+                    console.error("Decoding errors:", decodedData.errors);
+                    return;
+                }
+                console.log('Decoded audio chunk, samples:', decodedData.samplesDecoded);
+                audioBufferQueue.push(decodedData.channelData[0]);
+            } catch (error) {
+                console.error('Error decoding Opus data:', error);
+            }
+        }
+        
+        function handleWebSocketMessage(e) {
+            //console.log(`Data received from server:`, e.data);
+            if (e.data instanceof Blob) {
+                e.data.arrayBuffer().then(arrayBuffer => {
+                    // Convert ArrayBuffer to Uint8Array
+                    let uint8Array = new Uint8Array(arrayBuffer);
+                    // Convert Uint8Array to String to check for the message type
+                    let messageString = new TextDecoder().decode(uint8Array);
+        
+                    if (messageString.startsWith('\\USER')) {
+                        let userMessage = messageString.substring(5); // Remove '\\USER' (5 characters)
+                        console.log('User message received:', userMessage);
+                        appendToHistory('user', userMessage);
+                    } else if (messageString.startsWith('\\SYSTEM')) {
+                        let systemMessage = messageString.substring(7); // Remove '\\SYSTEM' (7 characters)
+                        console.log('System message received:', systemMessage);
+                        appendToHistory('system', systemMessage); // Splitting for example, modify as needed
+                    } else if (messageString === '\\END' || messageString === '\\NEXT') {
+                        console.log(`Marker received: ${messageString}`);
+                        if (isAudioPlaying) {
+                            playbackQueue.push([...audioBufferQueue]);
+                            audioBufferQueue = [];
+                        } else {
+                            playBufferedAudio();
+                        }
+                    } else {
+                        // Normal data processing
+                        decodeAndBufferAudioChunk(uint8Array);
+                    }
+                });
+            }
+        }
+
+
+        function appendToHistory(sender, message) {
+            history.push({ sender, message });
+            displayMessages();
+        }
+        
+        function displayMessages() {
+            const dialogueElement = document.getElementById('dialogue');
+        
+            if (history.length === 0) return; // No messages to display
+        
+            // Retrieve the last message
+            const lastMessage = history[history.length - 1];
+        
+            // Get the last <li> element, if any
+            const lastListItem = dialogueElement.lastElementChild;
+        
+            // Check if the last <li> is from the same sender
+            if (lastListItem && lastListItem.className === lastMessage.sender) {
+                // Add a new <span> to the last <li>
+                const messageSpan = document.createElement('span');
+                messageSpan.className = 'message';
+                messageSpan.textContent = lastMessage.message;
+                lastListItem.appendChild(messageSpan);
+            } else {
+                // Create a new <li> for a new sender
+                const newListItem = document.createElement('li');
+                newListItem.className = lastMessage.sender;
+                const messageSpan = document.createElement('span');
+                messageSpan.className = 'message';
+                messageSpan.textContent = lastMessage.message;
+                newListItem.appendChild(messageSpan);
+                dialogueElement.appendChild(newListItem);
+            }
+        }
+    </script>
+</body>
+</html>

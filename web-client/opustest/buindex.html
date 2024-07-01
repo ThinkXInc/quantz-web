@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Audio Stream Capture</title>
+    <script src="./js/opus-decoder.min.js"></script>
+</head>
+<body>
+    <button id="recordButton">Record</button>
+    <script>
+        let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let decoder; // OpusDecoder instance
+        let socket;  // WebSocket instance
+
+        let mediaRecorder;
+        let audioChunks = [];
+        let isRecording = false;
+
+        const MessageType = Object.freeze({
+            HEALTH_CHECK: 0,
+            TEXT_MESSAGE: 1,
+            WAV_STREAM: 2
+        });
+
+        const END_OF_MESSAGE = '\\END';
+        const endOfMessageBytes = new TextEncoder().encode(END_OF_MESSAGE);
+
+        document.getElementById('recordButton').addEventListener('mousedown', startRecording);
+        document.getElementById('recordButton').addEventListener('mouseup', stopRecording);
+
+        // Dummy profile
+        const userId = 112
+        const lang = "en"
+        let conversationId = '';
+        for (let i = 0; i < 16; i++) {
+            conversationId += Math.floor(Math.random() * 16).toString(16);
+        }
+
+        window.onload = async function() {
+            try {
+                // Initialize OpusDecoder
+                decoder = new window["opus-decoder"].OpusDecoder({ sampleRate: 24000, channels: 1 });
+                await decoder.ready;
+                console.log("Decoder is ready.");
+
+                // Initialize WebSocket
+                const serverUrl = 'wss://153.174.160.217:8001/ws';
+                socket = new WebSocket(serverUrl);
+                socket.onopen = e => console.log("Connection to server opened.");
+                socket.onerror = e => console.error("[Error] An error occurred with the WebSocket:", e);
+                socket.onmessage = handleWebSocketMessage;
+                socket.onclose = e => {
+                    if (e.wasClean) {
+                        console.log(`Connection closed cleanly, code=${e.code}, reason=${e.reason}`);
+                    } else {
+                        console.log('Connection died', `Close event code: ${e.code}, reason: ${e.reason}`);
+                    }
+                };
+
+            } catch (e) {
+                console.error("Error initializing OpusDecoder:", e);
+            }
+
+            // Other initializations...
+        };
+
+        function startRecording() {
+            console.log(`MediaRecorder state before start: ${mediaRecorder.state}`);
+            if (!isRecording) {
+                audioChunks = [];
+                mediaRecorder.start();
+                isRecording = true;
+                console.log(`MediaRecorder started. State after start: ${mediaRecorder.state}`);
+    
+                // Resume the audio context on user interaction
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                    console.log(`audioCtx resumed`);
+                }
+            }
+        }
+
+        function stopRecording() {
+            console.log(`MediaRecorder state before stop: ${mediaRecorder.state}`);
+            if (isRecording) {
+                mediaRecorder.stop();
+                isRecording = false;
+                console.log(`MediaRecorder stopped. State after stop: ${mediaRecorder.state}`);
+            }
+        }
+
+        /*
+        function decodeAndPlayAudioChunk(opusData) {
+            try {
+                let startTime = performance.now();
+        
+                // Synchronously decode the Opus frame
+                let decodedData = decoder.decodeFrame(opusData);
+        
+                let endTime = performance.now();
+                console.log(`Decoding Time: ${endTime - startTime} ms`);
+        
+                if (decodedData.errors && decodedData.errors.length > 0) {
+                    // Handle any decoding errors
+                    console.error("Decoding errors:", decodedData.errors);
+                    return;
+                }
+        
+                // Assuming the decoded audio is in decodedData.channelData
+                let audioBuffer = audioCtx.createBuffer(decodedData.channelData.length, decodedData.samplesDecoded, decodedData.sampleRate);
+                decodedData.channelData.forEach((channel, index) => {
+                    audioBuffer.getChannelData(index).set(channel);
+                });
+        
+                let source = audioCtx.createBufferSource();
+                source.buffer = audioBuffer;
+                source.connect(audioCtx.destination);
+                source.start();
+            } catch (error) {
+                console.error('Error decoding Opus data:', error);
+            }
+        }
+        
+        function handleWebSocketMessage(e) {
+            console.log(`Data received from server:`, e.data);
+            if (e.data instanceof Blob) {
+                e.data.arrayBuffer().then(arrayBuffer => {
+                    // Convert ArrayBuffer to Uint8Array
+                    let uint8Array = new Uint8Array(arrayBuffer);
+                    // Convert Uint8Array to String to check for the END_OF_MESSAGE marker
+                    let messageString = new TextDecoder().decode(uint8Array);
+        
+                    if (messageString === '\\END') {
+                        console.log('End of message marker received.');
+                        // Handle end of message (cleanup, stopping processing, etc.)
+                    } else {
+                        // Normal data processing
+                        decodeAndPlayAudioChunk(uint8Array);
+                    }
+                });
+            }
+        }
+        */
+
+
+        let audioBufferQueue = []; // Buffer for decoded audio data
+
+        function decodeAndPlayAudioChunk(opusData) {
+            // Decode the Opus frame and buffer the result
+            let decodedData = decoder.decodeFrame(opusData);
+            if (decodedData.errors && decodedData.errors.length > 0) {
+                console.error("Decoding errors:", decodedData.errors);
+                return;
+            }
+            audioBufferQueue.push(decodedData.channelData);
+        }
+        
+        function playBufferedAudio() {
+            // Combine all buffered audio into one buffer and play
+            let totalLength = audioBufferQueue.reduce((sum, buffer) => sum + buffer[0].length, 0);
+            let combinedBuffer = audioCtx.createBuffer(1, totalLength, decoder.sampleRate);
+
+            let offset = 0;
+            audioBufferQueue.forEach(buffer => {
+                combinedBuffer.getChannelData(0).set(buffer[0], offset);
+                offset += buffer[0].length;
+            });
+
+            let source = audioCtx.createBufferSource();
+            source.buffer = combinedBuffer;
+            source.connect(audioCtx.destination);
+            source.start();
+
+            // Clear the buffer queue
+            audioBufferQueue = [];
+        }
+
+        function handleWebSocketMessage(e) {
+            if (e.data instanceof Blob) {
+                e.data.arrayBuffer().then(arrayBuffer => {
+                    let uint8Array = new Uint8Array(arrayBuffer);
+                    let messageString = new TextDecoder().decode(uint8Array);
+        
+                    if (messageString === '\\END') {
+                        console.log('End of message marker received.');
+                        playBufferedAudio(); // Play all buffered audio
+                    } else {
+                        decodeAndPlayAudioChunk(uint8Array);
+                    }
+                });
+            }
+        }
+
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(stream => {
+                mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder.ondataavailable = e => {
+                    audioChunks.push(e.data);
+                };
+                mediaRecorder.onstop = e => {
+                    const messageType = new Uint8Array([MessageType.WAV_STREAM]);
+                    const userIdBytes = new Uint32Array([userId]); // 4 bytes
+                    const conversationIdBytes = new TextEncoder().encode(conversationId); // 16 bytes, ensure conversationId is 16 characters
+                    const langBytes = new TextEncoder().encode(lang); // 2 bytes, ensure lang is 2 characters
+                
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                
+                    // Combine all parts into a single Blob
+                    const blobWithHeader = new Blob([messageType, userIdBytes, conversationIdBytes, langBytes, audioBlob, endOfMessageBytes], { type: 'audio/wav' });
+                
+                    if (socket.readyState === WebSocket.OPEN) {
+                        socket.send(blobWithHeader);
+                        console.log("Audio blob with header sent to server.");
+                    } else {
+                        console.error("WebSocket is not open. ReadyState:", socket.readyState);
+                    }
+                
+                    console.log("Audio blob details:", {
+                        size: blobWithHeader.size,
+                        type: blobWithHeader.type,
+                        chunksCount: audioChunks.length
+                    });
+                
+                    audioChunks = [];
+                };
+            })
+            .catch(e => console.error("Error getting user media:", e));
+
+    </script>
+</body>
+</html>

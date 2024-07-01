@@ -1,0 +1,118 @@
+body, h1, p {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background: url('../images/demo/coworking.jpg') no-repeat center center;
+    background-size: cover;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    background-color: #f2f2f2; /* Adjust to match the website's color */
+}
+
+.menu-items a, .search-icon, .language-selector, .phone-number, .contact-button {
+    margin-left: 10px;
+}
+
+.menu-items {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.contact-button {
+    background-color: #ff7a59; /* Adjust to match the website's button color */
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.hero-content {
+    color: white;
+    text-align: center;
+    padding: 4rem 1rem;
+}
+
+.hero-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.hero-content p {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.rating {
+    display: inline-block;
+    margin-bottom: 2rem;
+}
+
+.search-locations-button {
+    background-color: #0095ff;
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+
+.promo-banner {
+    background-color: #ffa500; /* Example: orange color for the banner */
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+.promo-text {
+    font-weight: bold;
+}
+
+.learn-more-button {
+    background-color: #f2f2f2;
+    color: black;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.main-content {
+    padding: 2rem;
+    max-width: 800px; /* Adjust width as necessary */
+    margin: 2rem auto;
+}
+
+.main-content h2 {
+    color: #333; /* Dark grey color for headings */
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.main-content h3 {
+    color: #333;
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.main-content p {
+    color: #666; /* Lighter grey for paragraphs */
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}

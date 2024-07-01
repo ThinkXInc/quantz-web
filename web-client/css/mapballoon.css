@@ -1,0 +1,175 @@
+
+div.mapBalloon {
+    position: absolute;
+    span.dot {
+        visibility: hidden;  // TODO: not good
+        position: relative;
+        top: -8px;
+        left: -8px;
+        height: 16px;
+        width: 16px;
+        background-color: @blue;
+        border-radius: 50%;
+        display: inline-block;
+        opacity: 1;
+        .box-shadow(1px, 1px, 3px, 0px, rgba(0, 0, 0, 7%));
+        //opacity: 1;
+        //width: 31px;
+    }
+    div.balloon {
+        visibility: hidden;  // TODO: not good
+        flex-direction: column;
+        position: relative;
+        top: -102px;
+        left: -8px;
+        width: 158px;
+        height: 65px;
+        padding: 4px 6px;
+        background: white;
+        border: 0.1px solid #b8b8b8;
+        border-radius: 3px;
+        .box-shadow(1px, 1px, 10px, 2px, rgba(0, 0, 0, 10%));
+        
+        //.background-image-2x('/img/parts/map_balloon.png');
+        //background-image: url(/img/parts/map_balloon.png);
+        //background-image: image-set(url(/img/parts/map_balloon.png) 1x, url(/img/parts/map_balloon@2x.png) 2x);
+        //background-image: -webkit-image-set(url(/img/parts/map_balloon.png) 1x, url(/img/parts/map_balloon@2x.png) 2x);
+        //background-repeat: no-repeat;
+        //background-size: contain;
+
+        img.balloonleg {
+            position: absolute;
+            top: 63px;
+            left: 5px;
+            width: 19px;
+        }
+        span.title {
+            font-weight: 500;
+            font-size: 0.9em;
+            color: @text-gray;
+            height: 12px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        p.text {
+            margin-top: 4px;
+            font-size: 1em;
+            color: @text-darkgray;
+            overflow: hidden;
+            height: 37px;
+            text-overflow: ellipsis;
+            word-break: break-word;
+            // TODO: "..." at the end 
+        }
+    }
+}
+div.mapBalloon.hide {
+    background-color: aqua;
+    span.dot {
+    }
+    div.balloon {
+    }
+}
+div.mapBalloon.show {
+    span.dot {
+        .popUpFromCenter(.3s, .25s);
+    }
+    div.balloon {
+        .popUpFromLeftBottom(.3s, 0s);
+    }
+}
+div.mapBalloon.close {
+    span.dot {
+        .popDownToCenter(1s, 0.5s);
+    }
+    div.balloon {
+        .popDownToLeftBottom(.5s, 0s);
+    }
+}
+div.mapBalloon.focus {
+    span.dot {
+    }
+    div.balloon {
+        .scaleUp(0.4s, 0s, 0%, 100%);
+    }
+}
+div.mapBalloon.unfocus {
+    span.dot {
+    }
+    div.balloon {
+        .scaleDown(0.2s, 0s, 0%, 100%);
+    }
+}
+
+
+.popUpFromCenter(@duration: 1s, @delay: 0s) {
+    .popUp(@duration, @delay, 50%, 50%);
+  }
+  
+  .popDown(@duration: 1s, @delay: 0s, @originleft: 0%, @origintop: 100%) {
+    animation-name: popDown;
+    animation-duration: @duration;
+    animation-delay: @delay;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-timing-function: @cubic-bezier1;
+    transform-origin: @originleft @origintop;
+    @keyframes popDown {
+      0% {
+        visibility: visible;  // TODO: not good
+        transform: scale(1);
+      }
+      100% {
+        visibility: hidden;  // TODO: not good
+        transform: scale(0);
+      }
+    }
+  }
+  
+  .popDownToLeftBottom(@duration: 1s, @delay: 0s) {
+    .popDown(@duration, @delay, 0%, 100%);
+  }
+  
+  .popDownToCenter(@duration: 1s, @delay: 0s) {
+    .popUp(@duration, @delay, 50%, 50%);
+  }
+  
+  .scaleUp(@duration: 1s, @delay: 0s, @originleft: 50%, @origintop: 50%) {
+    animation-name: scaleUp;
+    animation-duration: @duration;
+    animation-delay: @delay;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-timing-function: @cubic-bezier1;
+    transform-origin: @originleft @origintop;
+    @keyframes scaleUp {
+      0% {
+        visibility: visible;  // TODO: not good
+        transform: scale(1);
+      }
+      100% {
+        visibility: visible;  // TODO: not good
+        transform: scale(1.1);
+      }
+    }
+  }
+  .scaleDown(@duration: 1s, @delay: 0s, @originleft: 50%, @origintop: 50%) {
+    animation-name: scaleDown;
+    animation-duration: @duration;
+    animation-delay: @delay;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-timing-function: @cubic-bezier1;
+    transform-origin: @originleft @origintop;
+    @keyframes scaleDown {
+      0% {
+        visibility: visible;  // TODO: not good
+        transform: scale(1.1);
+      }
+      100% {
+        visibility: visible;  // TODO: not good
+        transform: scale(1);
+      }
+    }
+  }

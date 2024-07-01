@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Design</title>
+</head>
+<body>
+    <div id="quantz-button-container" class="button-container"
+    data-button-type="A" 
+    data-font-size="0.8" 
+    data-button-width="100" 
+    data-display-locale="false" 
+    data-balloon-rect-width="40vw" 
+    data-balloon-rect-height="35vh">
+    <div id="quantz-button-container" class="button-container" data-button-type="A">
+        <button id="quantz-button" style="background-image: url('./images/base_plane.png');">
+            <div class="indicator"></div>
+
+            <svg id="glowlight" width="144px" height="144px" viewBox="0 0 144 144" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="gradient1" gradientUnits="objectBoundingBox" x1="1" y1="0.5" x2="0" y2="0.5">
+                        <stop offset="0%" stop-color="#33D6BB" />
+                        <stop offset="34%" stop-color="#33D6BB" />
+                        <stop offset="67%" stop-color="#316480" stop-opacity="1" />
+                        <stop offset="100%" stop-color="#316480" stop-opacity="0" />
+                    </linearGradient>
+                    <filter id="blur" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="3" />
+                    </filter>
+                </defs>
+                <g filter="url(#blur)">
+                    <path d="M 12,72 A 60,60 0 0 1 132,72" stroke="url(#gradient1)" stroke-width="8" fill="none" stroke-linecap="round"/>
+                </g>
+            </svg>
+
+            <div class="icon-wrapper">
+                <img src="./images/standby-icon-white.svg" class="button-icon" alt="Button Icon">
+            </div>
+        </button>
+        <div id="quantz-button-control">
+            <div class="spacer"></div>
+            <div id="button-text-container" class="button-text-container">
+                <div class="button-text">Connecting...</div>
+            </div>
+        </div>
+    </div>
+    <script src="js/animation_controller.js"></script>
+    <script src="js/indicator_controller.js"></script>
+    <script src="js/button_controller.js"></script>
+    <script src="js/balloon.js"></script>
+    <script src="js/locale.js"></script>
+    <script src="js/sign.js"></script>
+    <script src="js/style_generator.js"></script>
+    <script src="./js/quantz-button-v2.js" type="text/javascript"></script>
+</body>
+</html>

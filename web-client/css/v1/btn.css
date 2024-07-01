@@ -1,0 +1,174 @@
+/* Quantz Button */
+#main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#canvas {
+	width: 500px;
+	height: 500px;
+}
+
+#start.version1 {
+	cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+	background-color: #f7f7f7;
+    /*background-image: linear-gradient(to bottom, #f7f7f7, #d3d3d3);/* #e7e7e7); original*/
+	/*background-image: linear-gradient(to bottom, #fefefe, #ececec);*/
+	color: #808080;
+	font-size:12px;
+	margin: 0 auto;
+	width: 144px;
+	height: 144px;
+	/*position: relative;*/ /* demo */
+
+	width: 144px; /* demo */
+    height: 144px; /* demo */
+    position: absolute; /* demo */
+	left: 900px;
+	top: 500px;
+
+	text-align: center;
+	line-height: 144px;
+	border-radius: 50%;
+	border-width: 2px;
+	border-style: outset;
+	/*box-shadow: 0px 3px 8px #aaa, inset 0px 2px 3px #fff;*/
+	transition: color 0.3s cubic-bezier(.65,0,.34,1), border-color 0.1s cubic-bezier(.65,0,.34,1), box-shadow 0.3s cubic-bezier(.65,0,.34,1); /* Apply cubic-bezier for transitions */
+
+}
+
+#start.version1:hover{
+	text-decoration: none;
+	color: #808080;
+	/*box-shadow: 0px 2px 5px #9c9c9c, inset 0px 2px 3px #fff;*/
+}
+
+#start.version1 .icon {
+    width: 50px;
+    height: auto;
+    margin-bottom: 21px;
+}
+  
+#start.version1 .text {
+  position: absolute;
+  bottom: -27px;
+  color: #808080;
+  font-size: 10px;
+}
+
+@keyframes waitingBorderColor {
+	0%, 100% {
+	  border-color: #00ffec;
+	}
+	50% {
+	  border-color: #32bbb1;/*#0f837b;*/
+	}
+}
+
+@keyframes listeningBorderColor {
+	0%, 100% {
+	  border-color: #cceb00;
+	}
+	50% {
+	  border-color: #8ea400;/*#0f837b;*/
+	}
+}
+
+@keyframes replyingBorderColor {
+	0%, 100% {
+	  border-color: #fff;/*#02a7ff;/*#2d8cc0;*/
+	}
+	50% {
+	  border-color: #02a7ff;/*#02273b;/*#0f837b;*/
+	}
+}
+
+#start.version1.waiting{
+	border-color: #00ffec;/* #0f837b;/*#0a605d;*/ 
+	animation: waitingBorderColor 2.5s infinite linear;
+	border-style: solid;
+	/*box-shadow: 0px 3px 8px #00e6ff, inset 0px 2px 3px #22f6ff;*/
+}
+
+#start.version1.listening {
+	border-color: #a6e201;/*#93c800;/*#00c8bb; */
+	animation: listeningBorderColor 2.5s infinite linear;
+	border-style: solid;
+}
+
+#start.version1.loading {
+	border-color: #124553;
+	border-style: solid;
+}
+
+#start.version1.replying {
+	border-color: #2d8cc0; /* #2d4cc0; /*#c0c02d;*/
+	animation: replyingBorderColor 1.5s infinite linear;/*cubic-bezier(.65,0,.34,1);/*linear;*/
+	border-style: solid;
+
+}
+
+
+/* push-speak-icon animation */
+
+
+
+/* Others */
+
+#container
+{
+    display: none;
+ 	width:80%; 
+	/*border:solid 1px #F0F0F0; 
+	 */
+	margin:10px auto;
+	-webkit-transition: background 0.5s;
+  	-o-transition: background 0.5s;
+  	transition: background 0.5s;
+}
+#container .sketch{
+ 	width:80%; 
+	height:80%;
+}
+
+#log {
+	z-index:3;
+}
+
+#control {
+	color:#000;
+	margin:20px;
+	margin-top:-38px;
+}
+
+#control p
+{
+	margin-top: 0em;
+}
+#control footer
+{
+	padding-top: 0em;
+}
+
+#control #yourname
+{
+ 	width:30%; 
+	height:28px;
+	border-radius:0px;
+	min-width:300px; 
+	text-align:center; 
+	margin:auto auto;
+}
+#control #yourname.check{
+  border:1px solid #8a2be2;
+  -webkit-box-shadow:0 0 6px #c42de2;
+  -moz-box-shadow:0 0 5px #c42de2;
+  box-shadow:0 0 5px #c42de2;
+  outline: none;
+}
