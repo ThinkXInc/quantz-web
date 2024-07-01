@@ -4,8 +4,8 @@ After=network.target
 
 [Service]
 Type=simple
-WorkingDirectory=/src/quantz/web-server
-ExecStart=/usr/bin/redis-server /src/quantz/web-server/redis_session/redis_session.conf
+WorkingDirectory=/src/quantz-web/web-server
+ExecStart=/usr/bin/redis-server /src/quantz-web/web-server/redis_session/redis_session.conf
 User=kaz
 Restart=always
 RestartSec=3

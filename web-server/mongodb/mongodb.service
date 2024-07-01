@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/mongod --config /src/quantz/web-server/mongodb/mongodb.conf
+ExecStart=/usr/bin/mongod --config /src/quantz-web/web-server/mongodb/mongodb.conf
 User=kaz
 Restart=always
 RestartSec=3

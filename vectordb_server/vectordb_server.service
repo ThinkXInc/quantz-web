@@ -5,8 +5,8 @@ After=network.target
 [Service]
 Type=simple
 User=kaz
-WorkingDirectory=/src/quantz/vectordb_server
-ExecStart=/src/quantz/vectordb_server/venv/bin/celery -A run:celery_app worker -l info -Q echo,vectordb_save,vectordb_update,vectordb_delete,vectordb_delete_collection,vectordb_create_collection
+WorkingDirectory=/src/quantz-web/vectordb_server
+ExecStart=/src/quantz-web/vectordb_server/venv/bin/celery -A run:celery_app worker -l info -Q echo,vectordb_save,vectordb_update,vectordb_delete,vectordb_delete_collection,vectordb_create_collection
 Restart=on-failure
 
 [Install]
