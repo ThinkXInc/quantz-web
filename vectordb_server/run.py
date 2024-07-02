@@ -59,8 +59,10 @@ def setup_worker_process(sender=None, **kwargs):
         current_process()._run_vectordb_delete = run_delete
         current_process()._run_vectordb_create_collection = run_create_collection
         current_process()._run_vectordb_delete_collection = run_delete_collection
+
+        logger.info(yellow('Worker process successfully initialized with VectorDB operations.'))
     except Exception as e:
-        logger.error(f"[ERROR] Error setting up worker process: {e}")
+        logger.error(red(f"[ERROR] Error setting up worker process: {e}"))
     finally:
         logger.info(green('vectordb worker process ready.'))
 
