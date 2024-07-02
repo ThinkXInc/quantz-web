@@ -16,7 +16,7 @@ services:
   redis:
     image: redis:latest
     hostname: redis-results-web
-    command: redis-server --requirepass guest --loglevel debug
+    command: redis-server --loglevel debug
     ports:
       - "6380:6379"
     volumes:
