@@ -1,6 +1,7 @@
 import time
 import re
 import sys
+import os
 sys.path.append('../')
 from typing import Dict, List, Union, Optional
 # Vector DB models
@@ -27,6 +28,11 @@ REQUIRED_KEYS_IN_CONFIG = [
 ]
 check_config(Config, REQUIRED_KEYS_IN_CONFIG)
 
+def get_cuda_context():
+    gpu_id = os.getenv("GPU_ID", default="0")
+    logger.info(bold(f"allocate to gpu: {gpu_id}"))
+    return int(gpu_id)
+
 VECTORDB_ENCODER_CHECKPOINT = Config.VECTORDB_ENCODER_CHECKPOINT
 VECTORDB_EMBEDDING_DIM = Config.VECTORDB_EMBEDDING_DIM
 VECTORDB_HOST = Config.VECTORDB_HOST
@@ -36,7 +42,7 @@ VECTORDB_PORT = Config.VECTORDB_PORT
 encoder = SentenceEncoder(
     VECTORDB_ENCODER_CHECKPOINT,
     embedding_dim=VECTORDB_EMBEDDING_DIM,
-    device='cuda:1'
+    device=f'cuda:{get_cuda_context()}'
 )
 vdb = VectorDatabase(
     host=VECTORDB_HOST,

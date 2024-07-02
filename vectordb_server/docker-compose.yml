@@ -3,26 +3,34 @@ version: '3.8'
 services:
   rabbitmq:
     image: rabbitmq:management
+    # docker can not search parent folder. made symbolic link ln -s ../.env ./.env
+    #env_file: 
+    #  - ../.env
     hostname: rabbitmq-web
     environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_VECTORDB_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_VECTORDB_PASSWORD}
     ports:
-      - "5672:5672"  # RabbitMQ service
+      - "${RABBITMQ_VECTORDB_PORT}:5672"  # RabbitMQ service
       - "15672:15672"  # RabbitMQ management interface
+    restart: unless-stopped
     networks:
       - backend
 
   redis:
     image: redis:latest
+    # docker can not search parent folder. made symbolic link ln -s ../.env ./.env
+    #env_file: 
+    #  - ../.env
     hostname: redis-results-web
-    command: redis-server --loglevel debug
+    command: redis-server --loglevel ${REDIS_RESULTS_VECTORDB_LOGLEVEL}
     ports:
-      - "6380:6379"
+      - "${REDIS_RESULTS_VECTORDB_PORT}:6379"
     volumes:
       - redis_data:/data
     environment:
-      REDIS_DATABASES: 0
+      REDIS_DATABASES: ${REDIS_RESULTS_VECTORDB_DB_NUMBER}
+    restart: unless-stopped
     networks:
       - backend
 

@@ -1,0 +1,1 @@
+sudo journalctl -fu vectordb_server.service --output cat

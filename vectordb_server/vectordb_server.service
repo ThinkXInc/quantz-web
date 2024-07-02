@@ -7,6 +7,7 @@ Type=simple
 User=kaz
 WorkingDirectory=/src/quantz-web/vectordb_server
 ExecStart=/src/quantz-web/vectordb_server/venv/bin/celery -A run:celery_app worker -l info -Q echo,vectordb_save,vectordb_update,vectordb_delete,vectordb_delete_collection,vectordb_create_collection
+Environment="GPU_ID=0"
 Restart=on-failure
 
 [Install]
