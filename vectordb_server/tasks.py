@@ -51,7 +51,9 @@ def vectordb_save(collection_name: str, metadata_dict: dict, send_callback: Opti
             metadata_dict=metadata_dict,
             send_callback=send_callback)
         # If res is successful, return a positive response.
-        logger.info(bold(f'<Response>: {res}'))
+        res_to_log = dict(res)
+        res_to_log['vector'] = f"{res.dict().get('vector', [])[:8]}..."
+        logger.info(bold(f'<Response>: {res_to_log}'))
         return {'success': True, 'data': res.id}
     except VectorDBSaveError as e:
         logger.error(red(f'VectorDBSaveError: {e}'))
@@ -73,7 +75,9 @@ def vectordb_update(collection_name: str, metadata_dict: dict, send_callback: Op
             collection_name=collection_name,
             metadata_dict=metadata_dict,
             send_callback=send_callback)
-        logger.info(f'<Response>: {res}')
+        res_to_log = dict(res)
+        res_to_log['vector'] = f"{res.dict().get('vector', [])[:8]}..."
+        logger.info(f'<Response>: {res_to_log}')
         return {'success': True, 'data': res.id}
     except VectorDBUpdateError as e:
         logger.error(red(f'VectorDBUpdateError: {e}'))

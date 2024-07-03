@@ -74,7 +74,7 @@ for user_id in all_user_ids:
         logger.error(red(f"Error in get materials by user: {e}"))
 
     logger.info(f'{len(materials)} materials found in mongodb')
-    document_ids_in_mongodb = [material.id for material in materials]
+    document_ids_in_mongodb = [str(material.id) for material in materials]
     logger.debug(f'material ids in mongodb {document_ids_in_mongodb}')
 
     try:
