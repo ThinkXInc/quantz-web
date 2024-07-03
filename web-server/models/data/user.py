@@ -382,6 +382,18 @@ class User(MongoModel):
             raise UserQueryError(f"An error occurred while querying user by Stripe customer ID: {e}")
 
     @classmethod
+    def list_all_user_ids(cls):
+        """List all user IDs from the MongoDB collection."""
+        try:
+            user_ids = cls.objects.only('id')
+            user_id_list = [user.id for user in user_ids]
+            logger.debug(f"Retrieved user IDs: {user_id_list}")
+            return user_id_list
+        except Exception as e:
+            logger.error(red(f"Failed to list user IDs: {e}"))
+            raise
+
+    @classmethod
     def update_user(cls, user_id, **updates):
         try:
             user = cls.objects(id=user_id).first()
