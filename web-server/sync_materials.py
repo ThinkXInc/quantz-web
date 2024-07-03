@@ -1,4 +1,12 @@
+# python sync_materials.py
+# 
+# - Delete all materials in vdb not linked to any users in mongodb
+# - (TODO) Update/Save and correspond all materials in vdb to user's saved documents in mongodb
+
 import os
+
+# TODO: add argparse option
+# DRY_RUN = False
 
 # Set logger
 from libcommon.logger import Logger
