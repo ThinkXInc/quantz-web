@@ -638,12 +638,12 @@ def users_update_limit(user, lang, lang_name):
 @format_check('button_width', int)
 @format_check('button_height', int)
 @format_check('font_color', str)
-@format_check('font_size', float)
+@format_check('font_size', str)  # float string (javascript convert float 11.0 to int 11 automatically)
 @format_check('blloon_width', int)
 @format_check('blloon_height', int)
 def users_update_customize(user, lang, lang_name):
     # Log the incoming request
-    logger.info(cyan(f'request: {request.url} => {request.json}'))
+    logger.info(magenta(f'[POST] users/update/customize => \n' + '-'*100 + f'\n{request.json}' + '-'*100))
 
     # Validate request
     validation_error = validate_request(lang, locale)
@@ -652,7 +652,6 @@ def users_update_customize(user, lang, lang_name):
 
     # Fetch updates from the request JSON
     updates = request.json
-    logger.info(magenta(f'[POST] users/update/customize => \n' + '-'*100 + f'\n{updates}' + '-'*100))
 
     try:
         # Update the customization settings of the user
@@ -661,6 +660,8 @@ def users_update_customize(user, lang, lang_name):
 
         for key, value in updates.items():
             if hasattr(user.customize, key):
+                if key == 'font_size':
+                    value = float(value)
                 setattr(user.customize, key, value)
             else:
                 logger.warning(yellow(f"Invalid customization field: {key}"))

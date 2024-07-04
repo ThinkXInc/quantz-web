@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         constructor({buttonId, buttonType}) {
             this.buttonId = buttonId;
             this.buttonType = buttonType;
-            this.selectorButtonType = `#QBTN-quantz-button-container.QBTN-TYPE-${this.buttonType}`;
+            this.selectorButtonType = `#QBTN-button-container-${buttonId}.QBTN-TYPE-${this.buttonType}`;
             this.selectorButtonTypeBalloon = `.QBTN-balloon-container.QBTN-TYPE-${this.buttonType}`;
             this.baseCssSelector = `link[href="./css/quantz-${buttonType}-medium.css"]`
             // this.baseCssPath = './css/';

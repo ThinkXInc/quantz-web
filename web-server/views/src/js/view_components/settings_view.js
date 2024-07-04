@@ -1390,9 +1390,10 @@ class SettingsView {
         this.fontSizeForm.$view.addEventListener('textchanged', (e)=> {
             e.preventDefault();
             const {newValue} = e.detail;
-            console.warn(`font size: ${newValue}`)
+            const parsedFontSize = parseFloat(newValue);
+            console.warn(`font size: ${parsedFontSize}`)
             if(!this.fontSizeForm.validate()) {
-                this.submitCustomize({'font_size': Number(newValue)})
+                this.submitCustomize({'font_size': parsedFontSize.toFixed(2)}) // NOTE: string (javascript convert float 11.0 to int 11 automatically) 
             }
         })
         // Balloon Size

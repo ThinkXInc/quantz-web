@@ -17,7 +17,7 @@
         defaultButtonTextContent: 'Connecting...',
         indicatorClassName: 'indicator',
         indicatorDiameterRate: 0.8,
-        iconSizeScaleFactor: 40/144,
+        iconSizeScaleFactor: 44/144,
         glowLightId: '',
         iconWrapperClassName: 'icon-wrapper',
         defaultIconImgSrc: 'https://quantz.thinkxinc.com/img/quantz_button/standby-icon-white.svg',
