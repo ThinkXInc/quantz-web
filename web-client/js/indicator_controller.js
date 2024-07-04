@@ -204,7 +204,7 @@
             let i = 0;
             spectrum.forEach(spec => {
                 if (i < ns.configs[this.buttonId].N) {
-                    const length = spectrum[i]/3; // TODO: need adjust
+                    const length = spectrum[i]/ns.configs[this.buttonId].dialSpectrumAnimationScaleFactor; // TODO: need adjust
                     const thickness = ns.configs[this.buttonId].dialThicknessSpeaking;
                     const duration = 0.2;
                     const color = ns.configs[this.buttonId].dialColorSpeaking;

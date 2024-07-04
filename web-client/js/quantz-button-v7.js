@@ -32,6 +32,7 @@
         arrowDownIconSrc: 'https://quantz.thinkxinc.com/img/quantz_button/arrow-down.svg',
         N: 32, // Number of lines
         dialLength: 6, // Length of each dial
+        dialSpectrumAnimationScaleFactor: 6,  // smaller is longer
         dialColorUp: '#2F7A7C',//'#334d4e',//'#2F7A7C', // dial color
         dialColorConnected: '#01a7ac',
         dialColorReplyStart: '#78acad',//'#334d4e',//'#2F7A7C', // dial color
