@@ -244,7 +244,7 @@ class Config:
         HOST_URL = "https://quantz.thinkxinc.com"
         LOG_LEVEL = logging.DEBUG
 
-        NEXT_BILLING_SCHEDULE = BillingSchedule.SECONDS_30
+        NEXT_BILLING_SCHEDULE = BillingSchedule.MINUTES_5
         PAYMENT_RETRY_DELAY = 30  # sec
     elif env == "local":
         HOST_URL = "http://localhost:8000"

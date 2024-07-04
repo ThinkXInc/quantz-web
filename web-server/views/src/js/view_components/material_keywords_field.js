@@ -82,7 +82,6 @@ class MaterialKeywordsField extends KeywordsField {
             isCounter
         });
 
-        
         // Additional initializations specific to MaterialKeywordsField
         this.$textField.classList.add(id);
         this._addLoader();

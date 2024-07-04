@@ -225,7 +225,7 @@
         "ru": "Сайт для установки кнопки"
     },
     "signup_origin_subtitle": {
-        "en": "Please enter the domain of the site where the Quantz button will be installed (e.g., xxx.com or xxx.com/page).",
+        "en": "Please enter the URL of a website (if you own the domain) or a website page (if you’re using a third-party domain) (e.g., xxx.com or xxx.com/page).",
         "ja": "Quantzボタンを設置するサイトのドメイン (xxx.com または xxx.com/page) を入力してください。",
         "zh": "请输入安装Quantz按钮的网站域名（例如，xxx.com或xxx.com/page）。",
         "fr": "Veuillez saisir le domaine du site où le bouton Quantz sera installé (par exemple, xxx.com ou xxx.com/page).",

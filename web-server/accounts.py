@@ -105,7 +105,7 @@ basic_auth_users = {
 
 blueprint_accounts = Blueprint('accounts', __name__)
 
-ENABLE_INITIALIZE_ALL_USERS = (ENV == 'develop' and True)
+ENABLE_INITIALIZE_ALL_USERS = (ENV == 'develop' and False)
 
 @blueprint_accounts.route('/v1/signup', methods=['GET'])
 @blueprint_accounts.route('/v1/<lang>/signup', methods=['GET'])

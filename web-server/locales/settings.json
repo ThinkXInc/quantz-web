@@ -63,7 +63,7 @@
         "ru": "Домен сайта для установки"
     },
     "settings_origin_explanation_original_domain": {
-        "en": "You can install it anywhere on the site provided with this domain.",
+        "en": "You can install the Quantz button on any page of your website.",
         "ja": "このドメインで提供されるサイトのどこにでも設置できます。",
         "zh": "您可以在此域名提供的任何位置安装。",
         "fr": "Vous pouvez l'installer n'importe où sur le site fourni avec ce domaine.",
@@ -72,7 +72,7 @@
         "ru": "Вы можете установить его в любом месте сайта, предоставленного с этим доменом."
     },
     "settings_origin_explanation_public_domain": {
-        "en": "Quantz button can only be installed on this page.",
+        "en": "You can install the Quantz button on this page only.",
         "ja": "このURLのページにのみ設置できます。",
         "zh": "您只能在此URL的页面上安装。",
         "fr": "Vous pouvez l'installer uniquement sur la page de cette URL.",
@@ -487,13 +487,13 @@
         "ru": ""
     },
     "settings_customize_balloon_size_title": {
-        "en": "",
+        "en": "Balloon Size",
         "ja": "吹き出しサイズ",
-        "zh": "",
-        "fr": "",
-        "es": "",
-        "ar": "",
-        "ru": ""
+        "zh": "气球大小",
+        "fr": "Taille de la bulle",
+        "es": "Tamaño del globo",
+        "ar": "حجم البالون",
+        "ru": "Размер шарика"
     },
     "settings_customize_balloon_width_title": {
         "en": "Width",

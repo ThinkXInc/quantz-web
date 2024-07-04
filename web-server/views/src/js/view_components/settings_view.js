@@ -1202,8 +1202,13 @@ class SettingsView {
     createPreviewView($preview) {
         const $previewWrapper = document.createElement('div');
         $previewWrapper.classList.add('PreviewWrapper');
-        this.$previewWrapper = $previewWrapper;
 
+        // FIXME: not work
+        //const script = document.createElement('script');
+        //script.src = "https://quantz.thinkxinc.com/js/dist/quantz-button.min.js";
+        //$previewWrapper.appendChild(script);
+    
+        this.$previewWrapper = $previewWrapper;
         $preview.appendChild($previewWrapper);
     }
 
