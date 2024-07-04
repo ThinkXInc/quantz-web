@@ -154,7 +154,7 @@ class Customize(EmbeddedDocument):
     button_height = IntField(default=50)  # px
     button_color = StringField(default="#0067FF")
     font_size = FloatField(default=13.0)  # px
-    balloon_width = IntField(default=35)  # vw
+    balloon_width = IntField(default=17)  # vw
     balloon_height = IntField(default=30)  # vh
 
 class Counter(Document):
