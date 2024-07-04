@@ -19,17 +19,17 @@
             return style.sheet;
         }
 
-        update({index, length, thickness, color, duration, delay, curve, reverse = true}) {
-            console.log(`[IndicatorController update] Updating dial at index ${index}`);
+        update({index, length, thickness, color, duration, delay, curve, reverse = true, debugMode = false}) {
+            if(debugMode) {console.log(`[IndicatorController update] Updating dial at index ${index}`);}
             const dial = this.dials[index];
             if (dial) {
-                console.log(`[IndicatorController update] Found dial at index ${index}, starting update process.`);
+                if (debugMode) {console.log(`[IndicatorController update] Found dial at index ${index}, starting update process.`);}
                 // Capture current styles
                 const currentColor = getComputedStyle(dial).backgroundColor;
                 const currentWidth = getComputedStyle(dial).width;
                 const currentHeight = getComputedStyle(dial).height;
 
-                console.log(`[IndicatorController update] Current styles - Color: ${currentColor}, Width: ${currentWidth}, Height: ${currentHeight}`);
+                if (debugMode) {console.log(`[IndicatorController update] Current styles - Color: ${currentColor}, Width: ${currentWidth}, Height: ${currentHeight}`);}
 
                 dial.style.animation = '';
 
@@ -62,7 +62,7 @@
                 const ruleIndex = this.styleSheet.insertRule(keyframes, this.styleSheet.cssRules.length);
                 this.ruleIndices.set(index, ruleIndex);
 
-                console.log(`[IndicatorController update] Inserted keyframe rule at index ${ruleIndex}.`);
+                if (debugMode) {console.log(`[IndicatorController update] Inserted keyframe rule at index ${ruleIndex}.`);}
 
                 // Set up new CSS animation
                 dial.style.animationName = animationName;
@@ -73,9 +73,9 @@
                 dial.style.animationIterationCount = '1';
                 dial.style.animationFillMode = 'forwards';
 
-                console.log(`[IndicatorController update] Animation settings applied to dial at index ${index}.`);
+                if (debugMode) {console.log(`[IndicatorController update] Animation settings applied to dial at index ${index}.`);}
             }  else {
-                console.error(`[IndicatorController update] No dial found at index ${index}. Update aborted.`);
+                if (debugMode) {console.error(`[IndicatorController update] No dial found at index ${index}. Update aborted.`);}
             }
         }
 
@@ -229,6 +229,20 @@
                 length: this.defaultLength,
                 thickness: ns.configs[this.buttonId].dialThicknessConnected,
                 color: ns.configs[this.buttonId].dialColorConnected,
+                duration: 1,
+                delay: 0,
+                curve: ns.configs[this.buttonId].animationCurve,
+                reverse: false
+            });
+        }
+
+        resetToStandby() {
+            console.log('[Indicator controller] reset all animation and standby')
+            this.resetStyles();
+            this.updateAll({
+                length: this.defaultLength,
+                thickness: ns.configs[this.buttonId].dialThickness,
+                color: ns.configs[this.buttonId].dialColorUp,
                 duration: 1,
                 delay: 0,
                 curve: ns.configs[this.buttonId].animationCurve,

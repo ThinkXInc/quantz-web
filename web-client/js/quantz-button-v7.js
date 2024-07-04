@@ -32,8 +32,8 @@
         arrowDownIconSrc: 'https://quantz.thinkxinc.com/img/quantz_button/arrow-down.svg',
         N: 32, // Number of lines
         dialLength: 6, // Length of each dial
-        dialColorConnected: '#01a7ac',
         dialColorUp: '#2F7A7C',//'#334d4e',//'#2F7A7C', // dial color
+        dialColorConnected: '#01a7ac',
         dialColorReplyStart: '#78acad',//'#334d4e',//'#2F7A7C', // dial color
         dialColorListening: '#205354',//'#334d4e',//'#2F7A7C', // dial color
         dialColorSpeaking: '#71f1f4',//'#2F7A7C', //'#a7ae54',//'#2F7A7C',//'#37afe8',//#2F7A7C',
@@ -92,7 +92,7 @@
             dial.style.position = 'absolute';
             dial.style.width = `${ns.configs[buttonId].dialLength}px`;
             dial.style.height = ns.configs[buttonId].dialThickness;
-            dial.style.backgroundColor = ns.configs[buttonId].dialColor;
+            dial.style.backgroundColor = ns.configs[buttonId].dialColorUp;
             dial.style.borderRadius = '1px';
 
             const angle = (i / ns.configs[buttonId].N) * 2 * Math.PI - Math.PI / 2;
@@ -562,20 +562,20 @@
 
         $buttonLoader.addEventListener(ns.configs[buttonId].audioSignalEventName, function(event) {
             const { buttonId, spectrum } = event.detail;
-            console.log(`@[Quantz Button ${buttonId}] spectrum size:`, spectrum.length, 'received')
+            console.log(`[Quantz Button ${buttonId}] spectrum size:`, spectrum.length, 'received')
             //console.log('**** spectrum', spectrum);
             ns.indicatorControllers[buttonId].speakingAnimation(spectrum);
         })
 
         $buttonLoader.addEventListener(ns.configs[buttonId].endAudioSignalEventName, function(event) {
-            console.log(`@[Quantz Button ${buttonId}] **** (finish) spectrum`);
+            console.log(`[Quantz Button ${buttonId}] **** (finish) spectrum`);
             if (ns.configs[buttonId].buttonType === ns.ButtonType.A) {
                 ns.indicatorControllers[buttonId].resetToConnectedAnimation();
             }
         })
 
         $buttonLoader.addEventListener(ns.configs[buttonId].endTurnEventName, function(event) {
-            console.log(`@[Quantz Button ${buttonId}] end turn event received`);
+            console.log(`[Quantz Button ${buttonId}] end turn event received`);
             ns.buttonControllers[buttonId].switchToPushSpeak();
             if (ns.configs[buttonId].buttonType === ns.ButtonType.A) {
                 ns.indicatorControllers[buttonId].endTurnAnimation();
@@ -583,21 +583,22 @@
         });
 
         $buttonLoader.addEventListener(ns.configs[buttonId].reachToLimitEventName, function(event) {
-            console.log(`@[Quantz Button ${buttonId}] reach to limit event received`);
+            console.log(`[Quantz Button ${buttonId}] reach to limit event received`);
             ns.buttonControllers[buttonId].switchToStandby();
+            ns.indicatorControllers[buttonId].resetToStandby();
             ns.cores[buttonId].disconnect();
         })
 
         $buttonLoader.addEventListener(ns.configs[buttonId].languageChangeEventName, function(event) {
             const { buttonId, lang } = event.detail;
-            console.log(`@[Quantz Button ${buttonId}] language change event received:`, lang);
+            console.log(`[Quantz Button ${buttonId}] language change event received:`, lang);
             ns.buttonControllers[buttonId].changeLanguage(lang);
             ns.balloons[buttonId].changeLanguage(lang);
         });
 
         $buttonLoader.addEventListener(ns.configs[buttonId].failedToGetTokenEventName, function(event) {
             const { buttonId, error, status } = event.detail;
-            console.log(`@[Quantz Button ${buttonId}] failed to get token event received:`, error);
+            console.log(`[Quantz Button ${buttonId}] failed to get token event received:`, error);
             if (status == 429 || status == "429") {
                 ns.buttonControllers[buttonId].switchToLimitReached();
             } else {

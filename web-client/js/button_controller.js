@@ -115,42 +115,50 @@
         }
 
         switchToStandby() {
+            console.log(`[ButtonController] switch to standby.`)
             this.toggleButtonState(ns.ButtonState.standby);
             this.updateButtonText('standby');
+            this.setIcon(ns.IconType.STANDBY);
             this.sign.changeTo(ns.SignType.standby);
         }
 
         switchToConnected() {
+            console.log(`[ButtonController] switch to connected.`)
             this.toggleButtonState(ns.ButtonState.connected);
             this.updateButtonText('connected');
             this.sign.changeTo(ns.SignType.active);
         }
 
         switchStandbyToPushSpeak() {
+            console.log(`[ButtonController] switch standby to pushSpeak.`)
             this.toggleButtonState(ns.ButtonState.pushSpeak);
             this.switchIcon(ns.IconType.STANDBY, ns.IconType.PUSHSPEAK, ns.AnimationType.flipOut, ns.AnimationType.flipIn, 0, 0.3, 0, 0.3);
             this.updateButtonText('pushSpeak');
         }
 
         switchToRecording() {
+            console.log(`[ButtonController] switch to listening.`)
             this.toggleButtonState(ns.ButtonState.listening);
             this.setIcon(ns.IconType.RECORDING);
             this.updateButtonText('listening');
         }
 
         switchToPushSpeak() {
+            console.log(`[ButtonController] switch to pushSpeak.`)
             this.toggleButtonState(ns.ButtonState.pushSpeak);
             this.setIcon(ns.IconType.PUSHSPEAK);
             this.updateButtonText('pushSpeak');
         }
 
         switchToReplying() {
+            console.log(`[ButtonController] switch to replying.`)
             this.toggleButtonState(ns.ButtonState.replying);
             this.setIcon(ns.IconType.REPLYING);
             this.updateButtonText('replying');
         }
 
         switchToBusy() {
+            console.log(`[ButtonController] switch to busy.`)
             this.toggleButtonState(ns.ButtonState.busy);
             this.setIcon(ns.IconType.STANDBY);
             this.updateButtonText('busy');
@@ -158,6 +166,7 @@
         }
 
         switchToLimitReached() {
+            console.log(`[ButtonController] switch to reach limit.`)
             this.toggleButtonState(ns.ButtonState.busy);
             this.setIcon(ns.IconType.STANDBY);
             this.updateButtonText('limitReached');
