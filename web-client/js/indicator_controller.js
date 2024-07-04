@@ -20,12 +20,16 @@
         }
 
         update({index, length, thickness, color, duration, delay, curve, reverse = true}) {
+            console.log(`[IndicatorController update] Updating dial at index ${index}`);
             const dial = this.dials[index];
             if (dial) {
+                console.log(`[IndicatorController update] Found dial at index ${index}, starting update process.`);
                 // Capture current styles
                 const currentColor = getComputedStyle(dial).backgroundColor;
                 const currentWidth = getComputedStyle(dial).width;
                 const currentHeight = getComputedStyle(dial).height;
+
+                console.log(`[IndicatorController update] Current styles - Color: ${currentColor}, Width: ${currentWidth}, Height: ${currentHeight}`);
 
                 dial.style.animation = '';
 
@@ -58,6 +62,8 @@
                 const ruleIndex = this.styleSheet.insertRule(keyframes, this.styleSheet.cssRules.length);
                 this.ruleIndices.set(index, ruleIndex);
 
+                console.log(`[IndicatorController update] Inserted keyframe rule at index ${ruleIndex}.`);
+
                 // Set up new CSS animation
                 dial.style.animationName = animationName;
                 dial.style.animationDuration = `${duration}s`;
@@ -66,6 +72,10 @@
                 dial.style.animationDirection = reverse ? 'alternate' : 'normal';
                 dial.style.animationIterationCount = '1';
                 dial.style.animationFillMode = 'forwards';
+
+                console.log(`[IndicatorController update] Animation settings applied to dial at index ${index}.`);
+            }  else {
+                console.error(`[IndicatorController update] No dial found at index ${index}. Update aborted.`);
             }
         }
 
@@ -190,15 +200,23 @@
         }
 
         speakingAnimation(spectrum) {
-            console.log('[Indicator controller] start speaking animation')
+            console.log('[Indicator controller] start speaking animation with spectrum size:', spectrum.length)
             let i = 0;
             spectrum.forEach(spec => {
                 if (i < ns.configs[this.buttonId].N) {
-                    const length = spectrum[i]/10; // TODO: need adjust
+                    const length = spectrum[i]/3; // TODO: need adjust
                     const thickness = ns.configs[this.buttonId].dialThicknessSpeaking;
                     const duration = 0.2;
                     const color = ns.configs[this.buttonId].dialColorSpeaking;
-                    this.update(i, length, thickness, color, duration, 0, ns.configs[this.buttonId].animationCurve, true);
+                    this.update({
+                        index: i, 
+                        length: length, 
+                        thickness: thickness, 
+                        color: color, 
+                        duration: duration, 
+                        delay: 0, 
+                        curve: ns.configs[this.buttonId].animationCurve,
+                        reverse: true});
                     i++;
                 }
             })

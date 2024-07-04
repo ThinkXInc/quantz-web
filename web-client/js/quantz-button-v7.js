@@ -17,6 +17,7 @@
         defaultButtonTextContent: 'Connecting...',
         indicatorClassName: 'indicator',
         indicatorDiameterRate: 0.8,
+        iconSizeScaleFactor: 40/144,
         glowLightId: '',
         iconWrapperClassName: 'icon-wrapper',
         defaultIconImgSrc: 'https://quantz.thinkxinc.com/img/quantz_button/standby-icon-white.svg',
@@ -35,7 +36,7 @@
         dialColorUp: '#2F7A7C',//'#334d4e',//'#2F7A7C', // dial color
         dialColorReplyStart: '#78acad',//'#334d4e',//'#2F7A7C', // dial color
         dialColorListening: '#205354',//'#334d4e',//'#2F7A7C', // dial color
-        dialColorSpeaking: '#37afe8',//#2F7A7C',
+        dialColorSpeaking: '#71f1f4',//'#2F7A7C', //'#a7ae54',//'#2F7A7C',//'#37afe8',//#2F7A7C',
         dialThickness: '1.4px', // dial thickness
         dialThicknessConnected: '2px', // dial thickness
         dialThicknessSpeaking: '5px', // dial thickness
@@ -80,7 +81,8 @@
         const centerY = parseFloat(buttonWidth) / 2;
 
         // Scale the icon size relative to the button size (assumed 50px is for 144px button size)
-        const iconSize = (buttonWidth / 144) * 50; // Scaling factor for the icon
+        //const iconSize = (buttonWidth / 144) * 50; // Scaling factor for the icon
+        const iconSize = buttonWidth * ns.configs[buttonId].iconSizeScaleFactor;
         icon.style.width = `${iconSize}px`;
         icon.style.height = `${iconSize}px`;
 
@@ -560,20 +562,20 @@
 
         $buttonLoader.addEventListener(ns.configs[buttonId].audioSignalEventName, function(event) {
             const { buttonId, spectrum } = event.detail;
-            console.log(`[Quantz Button ${buttonId}] spectrum size:`, spectrum.length, 'received')
+            console.log(`@[Quantz Button ${buttonId}] spectrum size:`, spectrum.length, 'received')
             //console.log('**** spectrum', spectrum);
-            ns.indicatorController.speakingAnimation(spectrum);
+            ns.indicatorControllers[buttonId].speakingAnimation(spectrum);
         })
 
         $buttonLoader.addEventListener(ns.configs[buttonId].endAudioSignalEventName, function(event) {
-            console.log(`[Quantz Button ${buttonId}] **** (finish) spectrum`);
+            console.log(`@[Quantz Button ${buttonId}] **** (finish) spectrum`);
             if (ns.configs[buttonId].buttonType === ns.ButtonType.A) {
                 ns.indicatorControllers[buttonId].resetToConnectedAnimation();
             }
         })
 
         $buttonLoader.addEventListener(ns.configs[buttonId].endTurnEventName, function(event) {
-            console.log(`[Quantz Button ${buttonId}] end turn event received`);
+            console.log(`@[Quantz Button ${buttonId}] end turn event received`);
             ns.buttonControllers[buttonId].switchToPushSpeak();
             if (ns.configs[buttonId].buttonType === ns.ButtonType.A) {
                 ns.indicatorControllers[buttonId].endTurnAnimation();
@@ -581,21 +583,21 @@
         });
 
         $buttonLoader.addEventListener(ns.configs[buttonId].reachToLimitEventName, function(event) {
-            console.log(`[Quantz Button ${buttonId}] reach to limit event received`);
+            console.log(`@[Quantz Button ${buttonId}] reach to limit event received`);
             ns.buttonControllers[buttonId].switchToStandby();
             ns.cores[buttonId].disconnect();
         })
 
         $buttonLoader.addEventListener(ns.configs[buttonId].languageChangeEventName, function(event) {
             const { buttonId, lang } = event.detail;
-            console.log(`[Quantz Button ${buttonId}] language change event received:`, lang);
+            console.log(`@[Quantz Button ${buttonId}] language change event received:`, lang);
             ns.buttonControllers[buttonId].changeLanguage(lang);
             ns.balloons[buttonId].changeLanguage(lang);
         });
 
         $buttonLoader.addEventListener(ns.configs[buttonId].failedToGetTokenEventName, function(event) {
             const { buttonId, error, status } = event.detail;
-            console.log(`[Quantz Button ${buttonId}] failed to get token event received:`, error);
+            console.log(`@[Quantz Button ${buttonId}] failed to get token event received:`, error);
             if (status == 429 || status == "429") {
                 ns.buttonControllers[buttonId].switchToLimitReached();
             } else {

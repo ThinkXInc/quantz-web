@@ -70,7 +70,7 @@
                             this.socket.send(blobWithHeader);
                             console.log("Audio blob with header sent to server.");
                         } else {
-                            console.error("WebSocket is not open. ReadyState:", socket.readyState);
+                            console.error("WebSocket is not open. ReadyState:", this.socket.readyState);
                         }
                     
                         console.log("Audio blob details:", {
@@ -107,7 +107,7 @@
                             this.socket.send(blobWithHeader);
                             console.log("Audio blob with header sent to server.");
                         } else {
-                            console.error("WebSocket is not open. ReadyState:", socket.readyState);
+                            console.error("WebSocket is not open. ReadyState:", this.socket.readyState);
                         }
                     
                         console.log("Audio blob details:", {
@@ -375,6 +375,7 @@
         }
 
         dispatchResponseStartEvent(message) {
+            console.log(`[Core] Dispatching ResponseStartEvent - buttonId: ${this.buttonId} with message: ${message}`);
             const event = new CustomEvent(ns.configs[this.buttonId].responseStartEventName, {
                 detail: {
                     buttonId: this.buttonId,
@@ -385,24 +386,28 @@
         }
 
         dispatchAudioSignalEvent() {
+            console.log(`[Core] Dispatching AudioSignalEvent - buttonId: ${this.buttonId}`);
             this.spectrumInterval = setInterval(() => {
                 const dataArray = new Uint8Array(this.analyser.frequencyBinCount);
                 this.analyser.getByteFrequencyData(dataArray);
                 const hasData = dataArray.some(value => value > 0);
                 if (hasData) {
                     const event = new CustomEvent(ns.configs[this.buttonId].audioSignalEventName, {detail: { buttonId: this.buttonId, spectrum: dataArray }});
-                    document.dispatchEvent(event);
+                    this.$buttonLoader.dispatchEvent(event);
+                    console.log(`[Core] Dispatched audioSignalEvent with spectrum data - buttonId: ${this.buttonId}`);
                 }
             }, ns.configs[this.buttonId].dispatchSpectrumFrequencyMs);
         }
 
         finishSpectrumAnalyze() {
+            console.log(`[Core] Finishing Spectrum Analysis for buttonId: ${this.buttonId}`);
             clearInterval(this.spectrumInterval);  // Ensure to clear the interval when no more audio is to play
             this.spectrumInterval = null;
             this.dispatchEndAudioSignalEvent();
         }
 
         dispatchEndAudioSignalEvent() {
+            console.log(`[Core] Dispatching EndAudioSignalEvent - buttonId: ${this.buttonId}`);
             const event = new CustomEvent(ns.configs[this.buttonId].endAudioSignalEventName, {
                 detail: {
                     buttonId: this.buttonId
@@ -412,6 +417,7 @@
         }
 
         dispatchEndTurnEvent() {
+            console.log(`[Core] Dispatching EndTurnEvent - buttonId: ${this.buttonId}`);
             const event = new CustomEvent(ns.configs[this.buttonId].endTurnEventName, {
                 detail: {
                     buttonId: this.buttonId
@@ -421,6 +427,7 @@
         }
 
         dispatchReachToLimitEvent(message) {
+            console.log(`[Core] Dispatching ReachToLimitEvent - buttonId: ${this.buttonId} with message: ${message}`);
             const event = new CustomEvent(ns.configs[this.buttonId].reachToLimitEventName, {
                 detail: {
                     buttonId: this.buttonId,

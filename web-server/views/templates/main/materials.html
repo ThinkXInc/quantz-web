@@ -5,8 +5,12 @@
     <div id="MaterialListContainer" class="MaterialListContainer"></div>
     <div id="MaterialCreateView" class="materialCreateView"></div>
 </section>
+<script src="https://quantz.thinkxinc.com/js/dist/quantz-button.min.js"></script>
+{#
+<!-- DEBUG -->
+<script src="https://quantz.thinkxinc.com/js/dist/quantz-button-v7-dev.js"></script>
+#}
 <script src="https://js.stripe.com/v3/"></script>
-<script src=/js/view_controllers/root_view_controller.js></script>
 <script src=/js/view_controllers/material_create_view_controller.js></script>
 <script src=/js/view_components/material_list.js></script>
 <script src=/js/view_components/material_delete_modal_view.js></script>
@@ -22,7 +26,8 @@
 <script src=/js/view_components/material_sample_answer_view.js></script>
 <script src=/js/pages/material_create_page.js></script>
 <script src="/js/libs/highlight.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/base16/darkmoss.min.css">
+{#<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/base16/darkmoss.min.css">#}
+<link rel="stylesheet" href="/css/darkmoss.min.css">
 <!--<script src="/js/dist/quantz-button.min.js"></script>-->
 <script>
 {
@@ -53,7 +58,6 @@
 }
 </script>
 <script src=/js/view_controllers/materials.js></script>
-<script src="/js/dist/quantz-button-v7-dev.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const SMARTPHONE_WIDTH = 480;
