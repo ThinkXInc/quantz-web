@@ -34,7 +34,7 @@ gulp.task('scripts', function() {
       disableConsoleOutput: true,
       //debugProtection: true,
       log: true,//false,
-      renameGlobals: true,
+      //renameGlobals: true, // This uneble to access to Quantz namespace
       selfDefending: true,
       stringArray: true,
       rotateStringArray: true,
