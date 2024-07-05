@@ -136,3 +136,14 @@ def samples_sushijp_with_button_handler(lang, lang_name):
         lang=lang,
         lang_name=lang_name)
 
+# jessica online store
+
+@blueprint_sample_sites.route('/jessicas')
+@language_wrapper
+def samples_jessica_onlinestore_handler(lang, lang_name):
+    return render_template(
+        'sample_sites/jessica_onlinestore.html',
+        lang=lang,
+        lang_name=lang_name)
+
+

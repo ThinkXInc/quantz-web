@@ -1,0 +1,55 @@
+{%extends "general/base.html" %}
+
+{% block head %}
+<link rel=stylesheet href=/css/main.css>
+<link rel="stylesheet" href="https://use.typekit.net/aje5dfr.css">
+{% endblock %}
+
+{% block content %}
+<script>
+{
+    const lang = "{{ lang }}"
+    const langName = "{{ lang_name }}"
+
+    window.lang = lang;
+    window.langName = langName;
+}
+</script>
+
+<section id="jessica">
+    <nav class="navbar">
+        <img class="head" src="/img/sample_sites/jessicas/head.png" alt="">
+    </nav>
+    
+    <div class="main-wrapper">
+        <div class="header">
+            <img class="search" src="/img/sample_sites/jessicas/search.png" alt="">
+            <div class="info">
+                <img class="flag" src="/img/sample_sites/jessicas/flags.png">
+                <p class="description">
+                    Discover high-quality imports from Italy, Japan, Switzerland, and France at our shop. Check your size before ordering; size charts are available in the footer. Need help? Our customer service is available from 10:00 AM to 6:00 PM on weekdays. Enjoy a 7-day return policy. We deliver to 43 countries.
+                </p>
+            </div>
+        </div>
+        <div class="items">
+            <img src="/img/sample_sites/jessicas/items.png">
+        </div>
+    
+        <div class="main">
+            <div class="main-head">
+                <h3>Over 81 new products have arrived this season!</h3>
+                <img class="button" src="/img/sample_sites/jessicas/button.png">
+            </div>
+            <div class="main-images">
+                <img class="photo1" src="/img/sample_sites/jessicas/photo1.png">
+                <img class="new" src="/img/sample_sites/jessicas/new.png">
+                <img class="photo23" src="/img/sample_sites/jessicas/photo23.png">
+            </div>
+        </div>
+    </div>
+
+</section>
+{% endblock %}
+
+{% block foot %}
+{% endblock %}

@@ -666,3 +666,98 @@
         }
   }
 }
+
+// jessica online
+#jessica {
+    font-family: "myriad-pro", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+
+    &.jp {
+        //font-family: "Hiragino-Mincho";
+    }
+
+    nav.navbar {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #000;
+        //background-color: #333;
+        padding: 10px 20px;
+        img.head {
+            height: 40px;
+        }
+    }
+    
+    div.main-wrapper {
+        div.header {
+            position: relative;
+            text-align: center;
+            color: white;
+    
+            img.search {
+                height: 72px;
+            }
+            div.info {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-end;
+                img.flag {
+                    height: 40px;
+                }
+                p.description {
+                    font-size: 14px;
+                    color: #000;
+                    width: 600px;
+                    text-align: left;
+                }
+            }
+        }
+        div.items {
+            img {
+                height: 252px;
+            }
+        }
+        div.main {
+            div.main-head {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                h3 {
+                    font-size: 18px;
+                    font-weight: bold;
+                }
+                img.button {
+                    height: 50px;
+                }
+            }
+            div.main-images {
+                display: flex;
+                flex-direction: row;
+                align-items: flex-start;
+                justify-content: space-between;
+                img {
+                    height: 538px;
+                }
+                img:not(:last-child) {
+                    margin-right: 20px;
+                }
+                img.photo1 {
+                }
+                img.new {
+                }
+                img.photo23 {
+
+                }
+            }
+        }
+    }
+}
