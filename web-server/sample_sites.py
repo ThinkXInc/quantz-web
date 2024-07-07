@@ -147,3 +147,13 @@ def samples_jessica_onlinestore_handler(lang, lang_name):
         lang_name=lang_name)
 
 
+@blueprint_sample_sites.route('/jessicasonline')
+@language_wrapper
+def samples_jessica_onlinestore_2_handler(lang, lang_name):
+    return render_template(
+        'sample_sites/jessica_onlinestore_2.html',
+        lang=lang,
+        lang_name=lang_name)
+
+
+

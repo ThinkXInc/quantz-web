@@ -68,10 +68,25 @@
             dialogue.className = ns.configs[buttonId].prefix + 'dialogue';
             this.dialogue = dialogue; // Store for updating
 
+            // Create anchor element to wrap the logo
+            let linkLogo = document.createElement('a');
+            if (ns.configs[buttonId] && ns.locales[buttonId]) {
+                let host = ns.configs[buttonId].host;
+                let lang = ns.locales[buttonId].lang;
+                linkLogo.href = `https://${host}/${lang}`;
+                linkLogo.target = "_blank";
+                linkLogo.rel = "noopener noreferrer"; 
+            } else {
+                console.error('Configuration error: Missing host or lang definitions');
+            }
+
             // Logo
             let logo = document.createElement('img');
             logo.src = ns.configs[buttonId].balloonPowerdByImageSrc;
             logo.className = ns.configs[buttonId].prefix + 'poweredby';
+
+            // Append the logo image to the link element
+            linkLogo.appendChild(logo);
         
             // Annotation text
             let annotationText = document.createElement('div');
@@ -81,7 +96,7 @@
 
             balloonRect.appendChild(balloonLeg);
             balloonRect.appendChild(dialogue);
-            balloonRect.appendChild(logo);
+            balloonRect.appendChild(linkLogo);
             balloonRect.appendChild(annotationText);
             this.balloonElement.appendChild(balloonRect);
             this.container.appendChild(this.balloonElement);
