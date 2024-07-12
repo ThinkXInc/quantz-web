@@ -1273,25 +1273,38 @@ class SettingsView {
         const buttonKey = `QBTN-preview`;//`QBTN-${this.user._id}`;
         console.log(`Find quantz button with key ${buttonKey}`);
 
-        let $btn = document.querySelector(`[data-button-key='${buttonKey}']`);
+        let $buttonLoader = document.querySelector(`[data-button-key='${buttonKey}']`);
 
-        if (!$btn) {
+        if (!$buttonLoader) {
             console.log(`Create new button loader.`)
-            $btn = document.createElement('div');
-            $btn.classList.add('QBTN-button-loader');
-            $btn.setAttribute('data-button-key', buttonKey);
-            $btn.setAttribute('data-publisher-id', `${this.user._id}`);
+            $buttonLoader = document.createElement('div');
+            $buttonLoader.classList.add('QBTN-button-loader');
+            $buttonLoader.setAttribute('data-button-key', buttonKey);
+            $buttonLoader.setAttribute('data-publisher-id', `${this.user._id}`);
 
             const configString = this.configStringFromLatestValues();
-            $btn.setAttribute('data-quantz-config', configString);
+            $buttonLoader.setAttribute('data-quantz-config', configString);
 
             // Once DOM is appended, the addition is observed by script and setup starts
-            this.$previewWrapper.appendChild($btn)
+            this.$previewWrapper.appendChild($buttonLoader)
 
         } else {
+            // FIXME: response doubles if not removed
+            $buttonLoader.remove()
+            console.log(`Create new button loader.`)
+            $buttonLoader = document.createElement('div');
+            $buttonLoader.classList.add('QBTN-button-loader');
+            $buttonLoader.setAttribute('data-button-key', buttonKey);
+            $buttonLoader.setAttribute('data-publisher-id', `${this.user._id}`);
             const configString = this.configStringFromLatestValues();
-            $btn.setAttribute('data-quantz-config', configString);
-            Quantz.initializeButton({$buttonLoader: $btn});
+            $buttonLoader.setAttribute('data-quantz-config', configString);
+            this.$previewWrapper.appendChild($buttonLoader)
+
+            // FIXME: if we explicitly call initializeButton since it is called automatically when node added
+            //        and event duplicates and response doubles
+            //const configString = this.configStringFromLatestValues();
+            //$buttonLoader.setAttribute('data-quantz-config', configString);
+            //Quantz.initializeButton({$buttonLoader: $buttonLoader});
         }
     }
 

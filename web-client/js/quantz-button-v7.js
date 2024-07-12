@@ -398,10 +398,10 @@
 
     ns.initializeButton = function({$buttonLoader}) {
         const buttonId = ns.generateButtonId();
-        console.log(`[Quantz Button] Start initializing button with id ${buttonId}`);
-        console.log('[Quantz Button] $buttonLoader:', $buttonLoader);
+        console.log(`[Quantz Button ${buttonId}] Start initializing button with id ${buttonId}`);
+        console.log(`[Quantz Button ${buttonId}] $buttonLoader:`, $buttonLoader);
         if (!$buttonLoader) {
-            console.error('[Quantz Button] Button loader element not found.');
+            console.error(`[Quantz Button ${buttonId}] Button loader element not found.`);
         }
         let config = ns.parseConfig({buttonId: buttonId, $buttonLoader: $buttonLoader});
 
@@ -550,7 +550,8 @@
 
         })
 
-        $buttonLoader.addEventListener(ns.configs[buttonId].messageReceiveEventName, function(event) {
+        // FIXME: prevent multiple events added even when called initializeButton to the same buttonloader
+        function handleMessageReceive(event) {
             const { buttonId, type, message } = event.detail;
             console.log(`[Quantz Button ${buttonId}] new message received:`, buttonId, type, message);
         
@@ -559,13 +560,17 @@
                 type: type,
                 text: message,
                 lang: ns.cores[buttonId].lang});
-        });
+        }
+        $buttonLoader.removeEventListener(ns.configs[buttonId].messageReceiveEventName, handleMessageReceive);
+        $buttonLoader.addEventListener(ns.configs[buttonId].messageReceiveEventName, handleMessageReceive);
 
         $buttonLoader.addEventListener(ns.configs[buttonId].audioSignalEventName, function(event) {
             const { buttonId, spectrum } = event.detail;
             console.log(`[Quantz Button ${buttonId}] spectrum size:`, spectrum.length, 'received')
             //console.log('**** spectrum', spectrum);
-            ns.indicatorControllers[buttonId].speakingAnimation(spectrum);
+            if (ns.configs[buttonId].buttonType == ns.ButtonType.A) {
+                ns.indicatorControllers[buttonId].speakingAnimation(spectrum);
+            }
         })
 
         $buttonLoader.addEventListener(ns.configs[buttonId].endAudioSignalEventName, function(event) {
