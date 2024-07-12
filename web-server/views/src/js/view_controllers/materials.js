@@ -3,7 +3,10 @@ const MaterialsEventKeys = {
     CLICKED_CREATE_NEW_BUTTON: "clickedCreateNewButton",
     CLICKED_MATERIAL_TABLE_VIEW_CELL: "clickedMaterialTableViewCell",
     CONFIRMED_DELETE_MATERIAL: "confirmedDeleteMaterial",
+    TEXT_UPDATED: "textUpdated",
     TITLE_UPDATED: "titleUpdated",
+    KEYWORDS_UPDATE: "keywordsUpdated",
+    UPDATE_FALIED: "updateFailed",
     CLICKED_SETTINGS_ICON: "clickedSettingsIcon"
 };
 
@@ -84,6 +87,10 @@ class MaterialsView {
             }),
             alertMessage: new AlertMessage('MaterialCreateView__AlertMessage'),
         });
+
+        // notification
+        this.notification = new Notification({id: 'MaterialsNotification', position: NotificationPosition.topCenter})
+        this.notification.mount('#MainContent');
     }
 
     handleCreateViewEvents() {
@@ -97,12 +104,48 @@ class MaterialsView {
             _this.materialList.addNewCell(title, text, materialId, this.insertCellDelay);
         });
 
+        // TEXT_UPDATED
+        this.materialCreateViewController.$view.addEventListener(MaterialsEventKeys.TEXT_UPDATED, (event) => {
+            console.log("Title updated:", event.detail);
+            const { materialId, text } = event.detail;
+
+            // show success notification
+            this.notification.show({
+                message: locale.get("Material_update_success", lang),
+                type: NotificationType.success,
+                animationType: NotificationAnimationType.fadeIn,
+                duration: NotificationDuration.short
+            })
+        })
+
         // TITLE_UPDATED
         this.materialCreateViewController.$view.addEventListener(MaterialsEventKeys.TITLE_UPDATED, (event) => {
             console.log("Title updated:", event.detail);
             const { materialId, title } = event.detail;
             // Update title in cell
             _this.materialList.updateTitleWithMaterialId(materialId, title);
+
+            // show success notification
+            this.notification.show({
+                message: locale.get("Material_update_success", lang),
+                type: NotificationType.success,
+                animationType: NotificationAnimationType.fadeIn,
+                duration: NotificationDuration.short
+            })
+        })
+
+        // UPDATE_FAILED
+        this.materialCreateViewController.$view.addEventListener(MaterialsEventKeys.UPDATE_FALIED, (event) => {
+            console.log("Update failed:", event.detail);
+            const { materialId, fieldName, message } = event.detail;
+
+            // show falied notification
+            this.notification.show({
+                message: locale.get("Material_update_failed", lang),
+                type: NotificationType.failed,
+                animationType: NotificationAnimationType.fadeIn,
+                duration: NotificationDuration.short
+            })
         })
     }
 

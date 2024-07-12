@@ -215,5 +215,23 @@
         "es": "Revisión",
         "ar": "مراجعة",
         "ru": "Обзор"
+    },
+    "Material_update_success": {
+        "en": "Successfully updated.",
+        "ja": "正常に更新されました。",
+        "zh": "成功更新。",
+        "fr": "Mise à jour réussie.",
+        "es": "Actualización exitosa.",
+        "ar": "تم التحديث بنجاح.",
+        "ru": "Успешно обновлено."
+    },
+    "Material_update_failed": {
+        "en": "Update failed. Please try again later.",
+        "ja": "更新に失敗しました。時間を置いて再度お試しください。",
+        "zh": "更新失败，请稍后再试。",
+        "fr": "Échec de la mise à jour. Veuillez réessayer plus tard.",
+        "es": "La actualización falló. Por favor, inténtelo de nuevo más tarde.",
+        "ar": "فشل التحديث. يرجى المحاولة لاحقاً.",
+        "ru": "Не удалось обновить. Пожалуйста, попробуйте позже."
     }
 }

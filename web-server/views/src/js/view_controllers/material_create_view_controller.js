@@ -464,20 +464,41 @@ class MaterialCreateViewController extends InputPageViewController {
                     }
                     if ('keywords' in updates) {
                         const { keywords } = updates;
-                        //this.$view.dispatchEvent(new CustomEvent(
-                        //    MaterialsEventKeys.KEYWORDS_UPDATED,
-                        //    { detail: { materialId: this.materialId, title: title } }));
+                        this.$view.dispatchEvent(new CustomEvent(
+                            MaterialsEventKeys.KEYWORDS_UPDATED,
+                            { detail: { materialId: this.materialId, keywords: keywords } }));
                     }
                     if ('text' in updates) {
                         const { text } = updates;
-                        //this.$view.dispatchEvent(new CustomEvent(
-                        //    MaterialsEventKeys.TEXT_UPDATED, // -> update cell through RootViewController
-                        //    { detail: { materialId: this.materialId, title: title } }));
+                        this.$view.dispatchEvent(new CustomEvent(
+                            MaterialsEventKeys.TEXT_UPDATED, // -> update cell through RootViewController
+                            { detail: { materialId: this.materialId, text: text } }));
                     }
                 }
             }, 
-            (res) => {
-                this._onError(res, this.titleField);
+            (error) => {
+                const { errors, field_name, message } = error;
+
+                if (shouldDispatchEvent) {
+                    this.$view.dispatchEvent(new CustomEvent(
+                        MaterialsEventKeys.UPDATE_FALIED, // -> to RootViewController
+                        { detail: { materialId: this.materialId, fieldName: field_name, message: message } }));
+                }
+ 
+                switch (field_name) {
+                    case 'title':
+                        this._onError(error, this.titleField);
+                        break
+                    case 'text':
+                        this._onError(error, this.textField);
+                        break
+                    case 'review':
+                       this._onError(error, this.reviewField);
+                       break
+                    case 'keywords':
+                      this._onError(error, this.keywordsField);
+                      break
+                }
             });
     }
 
