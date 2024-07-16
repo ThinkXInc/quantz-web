@@ -12,7 +12,7 @@ sys.path.append('../')
 # logger
 from libcommon.logger import Logger
 logger = Logger('access_record_manager.py')
-logLevel = logger.DEBUG
+logLevel = logger.INFO
 logger.setLevel(logLevel)
 from libcommon.color import *
 
@@ -27,13 +27,13 @@ class AccessRecord:
     client_id: str = ''
 
     def to_redis(self) -> Dict[str, Any]:
-        return {field.name: getattr(self, field.name) if not isinstance(getattr(self, field.name), str) else str(getattr(self, field.name)) for field in fields(self)}
+        return {field.name: getattr(self, field.name) for field in fields(self)}
 
     @staticmethod
     def from_redis(data: Dict[str, str]) -> 'AccessRecord':
         return AccessRecord(
             origin=data.get('origin', ''),
-            host_id=int(data.get('host_id', 0)),
+            host_id=data.get('host_id', ''),
             access_time=float(data.get('access_time', 0.0)),
             ip=data.get('ip', ''),
             client_id=data.get('client_id', ''),
@@ -120,13 +120,29 @@ class AccessRecordManager:
         try:
             current_time_ms = int(time.time() * 1000)
             start_time_ms = current_time_ms - last_ms
+            logger.debug(f"Current time ms: {current_time_ms}, Start time ms: {start_time_ms}")
+
             records = []
 
-            key_pattern = "access_log::*"
+            key_pattern = "access_log::client_id::*"
             for key in self.redis.scan_iter(match=key_pattern):
+                all_records_with_scores = self.redis.zrange(key, 0, -1, withscores=True)
+                logger.debug(f"Inspecting key: {key.decode()}, Total records: {len(all_records_with_scores)}")
+
+                for record, score in all_records_with_scores:
+                    logger.debug(f"Record: {record.decode()}, Score: {score}")
+
                 serialized_records = self.redis.zrangebyscore(key, start_time_ms, '+inf')
+                logger.debug(f"Key: {key.decode()}, Records found: {len(serialized_records)}")
+
                 for record in serialized_records:
-                    records.append(AccessRecord.from_redis(json.loads(record.decode('utf-8'))))
+                    try:
+                        decoded_record = json.loads(record.decode('utf-8'))
+                        records.append(AccessRecord.from_redis(decoded_record))
+                    except json.JSONDecodeError as e:
+                        logger.error(f"JSON decode error: {e}")
+                    except Exception as e:
+                        logger.error(f"Error processing record: {e}")
 
             logger.info(light_green(f'{len(records)} latest access records found in last {last_ms} ms.'))
             return records

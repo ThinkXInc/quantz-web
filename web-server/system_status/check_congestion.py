@@ -81,7 +81,9 @@ def check_congestion():
     congestions = []
     for i in range(len(sorted_records) - 1):
         # Check if the next record is within 0.5 seconds of the current one
-        if sorted_records[i + 1].access_time - sorted_records[i].access_time <= 0.5:
+        one = sorted_records[i + 1]
+        another = sorted_records[i]
+        if (one.access_time - another.access_time <= 0.5) and (one.client_id != another.client_id):
             start_time = sorted_records[i].access_time
             end_time = sorted_records[i + 1].access_time
             host_ids = [sorted_records[i].host_id, sorted_records[i + 1].host_id]
