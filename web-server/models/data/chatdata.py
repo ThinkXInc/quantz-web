@@ -46,8 +46,8 @@ class Chatdata(MongoModel):
 
     meta = {
         'collection': 'chatdata',
-        'max_size': 2000000, # 200 MB  TODO: use Config
-        'max_documents': 1000,  # 1000 entries  TODO: use Config
+        'max_size': 10485760*100, # max size of the collection in bytes 10MB *100 = 1GB TODO: use Config
+        'max_documents': 1000000,  # old documents are removed when reached to this limit  TODO: use Config
         'indexes': [
             '$history', # text index (full-text search / partial word mathing)
         ],

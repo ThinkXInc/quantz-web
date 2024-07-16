@@ -101,6 +101,9 @@ locale = Locale([BILLING_RESPONSES_LOCALE_FILE_PATH])
 ## Define tasks
 from web_tasks_server.celery_instance import celery_app
 
+# Celery
+from celery import current_task
+
 
 DESCRIPTION_DATE_FORMAT = "%Y-%m-%d"
 
@@ -171,16 +174,17 @@ def run_payment(user_id, lang):
 
         logger.debug(f"Description compiled -> {description}")
 
-        # stripe charge
-        intent = user.execute_billing_charge(
-            price=price,
-            currency='usd',
-            description=description)
-
-        logger.info(green(f"Payment executed for user {user_id}: {intent} [Description] {description}"))
-
+        intent = None
         if price <= 0:
             user.last_payment_status = PaymentStatus.NO_CHARGE.value
+            logger.info(yellow(f"Usage fee is 0. Payment not executed for user {user_id} ."))
+        else:
+            # stripe charge
+            intent = user.execute_billing_charge(
+                price=price,
+                currency='usd',
+                description=description)
+            logger.info(green(f"Payment executed for user {user_id}: {intent} [Description] {description}"))
 
         user.last_payment_intent_id = intent.id if intent and 'id' in intent else None
         user.save()
@@ -212,7 +216,7 @@ def run_payment(user_id, lang):
     except stripe.error.StripeError as e:
         # Retry tomorrow
         logger.error(red(f"Stripe API error for user {user_id}: {e}"))
-        raise self.retry(exc=e)
+        return current_task.retry(exc=e)
 
     except Exception as e:
         logger.error(red(f'Unexpected error: {e}'))
@@ -293,6 +297,7 @@ def process_chatdata(client_id):
         # Parse history
         try:
             parsed_history = parse_history(chat_data.history, "<human>", "<bot>")
+            parsed_history = [turn for turn in parsed_history if len(turn['text'].strip()) > 0]
             logger.info(f'history parsed =>')
             for turn in parsed_history:
                 logger.info(f"{turn}")

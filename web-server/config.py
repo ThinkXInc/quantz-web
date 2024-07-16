@@ -229,6 +229,10 @@ class Config:
 
     VERIFICATION_CODE_EXPIRED_HOUR = 1
 
+    CONGESTION_CHECK_INTERVAL_SEC = 5
+    CONGESTION_THRESHOLD = 2
+    CONGESTION_TIMEFRAME_SEC = 0.5
+
     if env == "production":
         HOST_URL = "https://quantz.thinkxinc.com"
         LOG_LEVEL = logging.INFO

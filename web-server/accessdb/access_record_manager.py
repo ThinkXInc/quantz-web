@@ -1,6 +1,7 @@
 import json
 import time
 import redis
+from redis import Redis, ConnectionPool
 from datetime import datetime
 from dataclasses import dataclass, field, fields
 from typing import Dict, List, Any
@@ -38,25 +39,45 @@ class AccessRecord:
             client_id=data.get('client_id', ''),
         )
 
+def init_access_record_manager(host, port, db_number, max_connections=10, use_unix_socket=False, unix_socket_path=None):
+    try:
+        access_record_manager = AccessRecordManager(
+            host=host,
+            port=port,
+            db_number=db_number,
+            max_connections=max_connections,
+            use_unix_socket=use_unix_socket,
+            unix_socket_path=unix_socket_path
+        )
+        logger.info(green("AccessRecordManager initialized successfully."))
+        return access_record_manager
+    except Exception as e:
+        logger.error(red("Failed to initialize AccessRecordManager: " + str(e)))
+        raise
+
 class AccessRecordManager:
-    def __init__(self, host: str, port: int, db_number: int, use_unix_socket=False, redis_address=''):
+    def __init__(self, host: str, port: int, db_number: int, max_connections: int = 10, use_unix_socket: bool = False, unix_socket_path: str = ''):
         """
-        Initialize AccessTable class with a Redis connection.
+        Initialize AccessRecordManager class with a Redis connection pool.
         """
         self.host = host
         self.port = port
         self.db_number = db_number
+        self.max_connections = max_connections
         self.use_unix_socket = use_unix_socket
-        self.redis_address = redis_address
+        self.unix_socket_path = unix_socket_path
+        
         try:
             if use_unix_socket:
-                self.redis = redis.Redis(unix_socket_path=redis_address)
-                logger.info(light_green(f"Redis connection established successfully [address: {redis_address}]"))
+                connection_pool = ConnectionPool(unix_socket_path=unix_socket_path, db=db_number, max_connections=max_connections)
+                logger.info(light_green(f"Redis connection pool established successfully via Unix socket [path: {unix_socket_path}]"))
             else:
-                self.redis = redis.Redis(host=host, port=port, db=db_number)
-                logger.info(light_green(f"Redis connection established successfully [host: {host} port: {port} db: {db_number}]"))
+                connection_pool = ConnectionPool(host=host, port=port, db=db_number, max_connections=max_connections)
+                logger.info(light_green(f"Redis connection pool established successfully [host: {host}, port: {port}, db: {db_number}]"))
+            
+            self.redis = Redis(connection_pool=connection_pool)
         except Exception as e:
-            logger.error(red(f"Failed to connect to Redis: {e}"))
+            logger.error(red(f"Failed to establish Redis connection pool: {e}"))
             raise e
 
     def write_access_log(self, origin: str, ip: str, client_id: str):
@@ -69,61 +90,103 @@ class AccessRecordManager:
             client_id (str): Client ID of the user.
         """
         try:
-            # Fetch the host ID based on the origin
-            host_manager = HostManager(
-                self.host, self.port, self.db_number, self.use_unix_socket, self.redis_address)  # Adjust parameters as needed
+            host_manager = HostManager(self.host, self.port, self.db_number, self.use_unix_socket, self.redis_address)  
             host = host_manager.get_host(origin)
             if not host:
                 logger.error(red(f"Host not found for origin: {origin}"))
-                return  # Exit if host ID is not found to prevent logging without host ID
+                return  
 
             access_record = AccessRecord(origin=origin, host_id=host.host_id, ip=ip, client_id=client_id, access_time=time.time())
             serialized_record = json.dumps(access_record.to_redis())
 
-            self.redis.rpush(f"access_log::ip::{ip}", serialized_record)
-            self.redis.rpush(f"access_log::client_id::{client_id}", serialized_record)
+            # Use timestamp as the score for the sorted set
+            score = access_record.access_time
+            self.redis.zadd(f"access_log::ip::{ip}", {serialized_record: score})
+            self.redis.zadd(f"access_log::client_id::{client_id}", {serialized_record: score})
             logger.debug(green(f"Logged access for IP: {ip}, Client ID: {client_id}, and Origin: {origin}"))
         except Exception as e:
             logger.error(red(f"Error logging access for IP {ip} and Client ID {client_id}: {e}"))
 
-
-    def get_access_log_by_ip(self, ip: str) -> List[AccessRecord]:
+    def get_latest_access_log(self, last_ms: int) -> List[AccessRecord]:
         """
-        Retrieve access log for a specific IP address.
+        Retrieve all AccessRecords from the last specified milliseconds.
+
+        Args:
+            last_ms (int): Milliseconds ago to start fetching records from.
+
+        Returns:
+            List[AccessRecord]: List of access records.
+        """
+        try:
+            current_time_ms = int(time.time() * 1000)
+            start_time_ms = current_time_ms - last_ms
+            records = []
+
+            key_pattern = "access_log::*"
+            for key in self.redis.scan_iter(match=key_pattern):
+                serialized_records = self.redis.zrangebyscore(key, start_time_ms, '+inf')
+                for record in serialized_records:
+                    records.append(AccessRecord.from_redis(json.loads(record.decode('utf-8'))))
+
+            logger.info(light_green(f'{len(records)} latest access records found in last {last_ms} ms.'))
+            return records
+        except Exception as e:
+            logger.error(red(f"Error retrieving access records from the last {last_ms} milliseconds: {e}"))
+            return []
+
+    def get_access_log_by_ip(self, ip: str, last_ms: int = None) -> List[AccessRecord]:
+        """
+        Retrieve access log for a specific IP address using a sorted set, optionally within the last specified milliseconds.
 
         Args:
             ip (str): IP address to retrieve access log for.
+            last_ms (int, optional): Milliseconds ago to start fetching records from. Default is None, fetching all records.
 
         Returns:
             List[AccessRecord]: List of access records.
         """
         try:
-            records = self.redis.lrange(f"access_log::ip::{ip}", 0, -1)
-            return [AccessRecord.from_redis(json.loads(record.decode('utf-8'))) for record in records]
+            key = f"access_log::ip::{ip}"
+            if last_ms is not None:
+                current_time_ms = int(time.time() * 1000)
+                start_time_ms = current_time_ms - last_ms
+                serialized_records = self.redis.zrangebyscore(key, start_time_ms, '+inf')
+            else:
+                serialized_records = self.redis.zrange(key, 0, -1)
+
+            return [AccessRecord.from_redis(json.loads(record.decode('utf-8'))) for record in serialized_records]
         except Exception as e:
             logger.error(red(f"Error retrieving access log for IP {ip}: {e}"))
             return []
-    
-    def get_access_log_by_client_id(self, client_id: str) -> List[AccessRecord]:
+
+    def get_access_log_by_client_id(self, client_id: str, last_ms: int = None) -> List[AccessRecord]:
         """
-        Retrieve access log for a specific client ID.
+        Retrieve access log for a specific client ID using a sorted set, optionally within the last specified milliseconds.
 
         Args:
             client_id (str): Client ID to retrieve access log for.
+            last_ms (int, optional): Milliseconds ago to start fetching records from. Default is None, fetching all records.
 
         Returns:
             List[AccessRecord]: List of access records.
         """
         try:
-            records = self.redis.lrange(f"access_log::client_id::{client_id}", 0, -1)
-            return [AccessRecord.from_redis(json.loads(record.decode('utf-8'))) for record in records]
+            key = f"access_log::client_id::{client_id}"
+            if last_ms is not None:
+                current_time_ms = int(time.time() * 1000)
+                start_time_ms = current_time_ms - last_ms
+                serialized_records = self.redis.zrangebyscore(key, start_time_ms, '+inf')
+            else:
+                serialized_records = self.redis.zrange(key, 0, -1)
+
+            return [AccessRecord.from_redis(json.loads(record.decode('utf-8'))) for record in serialized_records]
         except Exception as e:
             logger.error(red(f"Error retrieving access log for Client ID {client_id}: {e}"))
             return []
 
     def check_rate_limit(self, client_id: str, time_range: int, limit: int) -> bool:
         """
-        Check if a client ID has exceeded a specified rate limit.
+        Check if a client ID has exceeded a specified rate limit using sorted sets in Redis.
 
         Args:
             client_id (str): Client ID to check rate limit for.
@@ -135,10 +198,14 @@ class AccessRecordManager:
         """
         try:
             current_time = time.time()
-            accesses = self.get_access_log_by_client_id(client_id)
-            recent_accesses = [record for record in accesses if current_time - record.access_time <= time_range]
-            return len(recent_accesses) > limit
+            start_time = current_time - time_range
+            key = f"access_log::client_id::{client_id}"
+
+            # Fetch records from sorted set within the given time range
+            count = self.redis.zcount(key, start_time, current_time)
+            return count > limit
         except Exception as e:
             logger.error(red(f"Error checking rate limit for Client ID {client_id}: {e}"))
             return True
+
 

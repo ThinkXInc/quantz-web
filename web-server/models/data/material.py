@@ -27,7 +27,7 @@ TEXT_MAX_LENGTH = 500
 KEYWORD_MAX_LENGTH = 120
 QUESTION_MAX_LENGTH = 200
 ANSWER_MAX_LENGTH = 500
-REVIEW_MAX_LENGTH = 500
+REVIEW_MAX_LENGTH = 1000
 
 class MaterialSaveError(Exception):
     pass
@@ -70,8 +70,8 @@ class Material(MongoModel):
 
     meta = {
         'collection': 'material',
-        'max_size': 2000000, # 200 MB  TODO: use Config
-        'max_documents': 1000,  # 1000 entries  TODO: use Config
+        'max_size': 10485760*100, # max size of the collection in bytes 10MB *100 = 1GB TODO: use Config
+        'max_documents': 1000000,  # old documents are removed when reached to this limit  TODO: use Config
         'indexes': [
             '$text', # text index (full-text search / partial word mathing)
         ],
