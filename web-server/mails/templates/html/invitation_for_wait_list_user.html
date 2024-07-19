@@ -1,0 +1,23 @@
+{%extends "html/base.html" %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+<section style="color: #333; margin-bottom: 20px; padding: 30px 37px;">
+  <div style="color: #616161;; font-size: 1.1em; font-weight: 300; padding: 40px 10px;">
+    <div style="font-size: 1.2em; margin-bottom: 10px; font-weight: bold;">{{ body1 }}</div>
+    <div style="margin-bottom: 5px; color: #616161;">
+      {{ body2 }}
+    </div>
+    <a href="{{ link }}" style="text-decoration: none;">
+      <div style="padding: 10px 12px; background-color: #000; width: max-content; border-radius: 3px; margin-bottom: 10px; font-size: 0.9em; margin-top: 10px; color: #fff;">
+        {{ button }}
+      </div>
+    </a>
+    <div style="margin-top: 20px; font-weight: 700;" clas="team">
+      {{ team }}
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -241,5 +241,41 @@
         "fr": "Opérateur",
         "ar": "المشغل",
         "ru": "Оператор"
+    },
+    "invitation_for_wait_list_user_subject": {
+        "ja": "Quantzの待ちリストが解放されました。",
+        "en": "Your Quantz invite is here",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "invitation_for_wait_list_user_body1": {
+        "ja": "あなたのQuantzの使用を確保できました！",
+        "en": "You're invited to use Quantz!",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "invitation_for_wait_list_user_body2": {
+        "ja": "下記のボタンからセットアップを進めてください。今すぐQuantzを始められます。",
+        "en": "You can now start using Quantz. ",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "invitation_for_wait_list_user_button": {
+        "ja": "利用開始",
+        "en": "Get started",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
     }
 }

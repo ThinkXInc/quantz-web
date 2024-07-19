@@ -1,4 +1,5 @@
 from datetime import datetime
+import pytz
 from os.path import dirname, abspath
 from flask import Flask, render_template
 from models.data.user import User
@@ -339,7 +340,7 @@ def send_chatdata_report_email(parsed_history: list, start_time: datetime, user:
             team=locale.get('team', lang)
             )
         text_content = render_template(
-            'html/chatdata_report.html',
+            'plain/chatdata_report.txt',
             #body1=locale.get('chatdata_report_body1', lang),
             time_label=locale.get('chatdata_report_time_label', lang),
             time_str=start_time.strftime("%Y %m/%d %H:%M"),
@@ -361,7 +362,41 @@ def send_chatdata_report_email(parsed_history: list, start_time: datetime, user:
         except MailSendError as e:
             raise MailSendError
 
-
+def send_invitation_for_wait_list_user_email(user: User):
+    lang = user.lang
+    flask_app = Flask(__name__, template_folder='templates')  # mails/ is root
+    logger.debug(flask_app.jinja_loader.searchpath)
+    with flask_app.app_context(): # celery worker process needs context
+        subject = locale.get('invitation_for_wait_list_user_subject', lang)
+        html_content = render_template(
+            'html/invitation_for_wait_list_user.html',
+            body1=locale.get('invitation_for_wait_list_user_body1', lang),
+            body2=locale.get('invitation_for_wait_list_user_body2', lang),
+            link=f'https://quantz.thinkxinc.com/v1/{lang}/signup',
+            button=locale.get('invitation_for_wait_list_user_button', lang),
+            team=locale.get('team', lang)
+            )
+        text_content = render_template(
+            'plain/invitation_for_wait_list_user.txt',
+            body1=locale.get('invitation_for_wait_list_user_body1', lang),
+            body2=locale.get('invitation_for_wait_list_user_body2', lang),
+            link=f'https://quantz.thinkxinc.com/v1/{lang}/signup',
+            button=locale.get('invitation_for_wait_list_user_button', lang),
+            team=locale.get('team', lang)
+            )
+        try:
+            mail.send(
+                sender=SENDER,
+                reply_to=REPLY_TO,
+                recipient=user.email,
+                subject=subject,
+                text=text_content,
+                html=html_content,
+                bcc=[MAIL_SYSTEM]
+            )
+            logger.info(light_green(f'Email "{subject}" sent to {user.email}'))
+        except MailSendError as e:
+            raise MailSendError
 
 
 #def render_email_change_verification(
