@@ -50,6 +50,7 @@ class Chatdata(MongoModel):
         'max_documents': 1000000,  # old documents are removed when reached to this limit  TODO: use Config
         'indexes': [
             '$history', # text index (full-text search / partial word mathing)
+            'start_time'
         ],
         'ordering': ['-updated']
     }

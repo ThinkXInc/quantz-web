@@ -4,6 +4,7 @@ import sys
 
 # Logger
 sys.path.append('../')
+sys.path.append('/src/quantz-web/web-server') 
 from libcommon.logger import Logger
 from libcommon.color import *
 logger = Logger('check_congestion.py')
@@ -50,9 +51,8 @@ def check_congestion():
     The DailySystemStatus is newly saved if there's no data for the date.
     Group records by host_id to check congestion per host
     """
-    logger.info(magenta(f'Start checking congestion.'))
-
-    logger.info(f'{DailySystemStatus.count()} statuses.')
+    logger.info('-'*80)
+    logger.info(magenta(f'[{datetime.datetime.now().strftime("%m/%d %H:%M:%S")}] Start checking congestion.'))
 
     today = datetime.datetime.utcnow().date()
     today_date = datetime.datetime(today.year, today.month, today.day)

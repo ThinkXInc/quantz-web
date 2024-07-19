@@ -1,0 +1,12 @@
+[Unit]
+Description=Run check_congestion task every 5 seconds
+
+[Service]
+Type=simple
+ExecStart=/src/quantz-web/web-server/venv/bin/python /src/quantz-web/web-server/system_status/check_congestion.py
+WorkingDirectory=/src/quantz-web/web-server
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

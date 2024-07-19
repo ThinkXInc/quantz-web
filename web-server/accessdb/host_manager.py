@@ -3,7 +3,7 @@ import json
 from urllib.parse import urlparse
 from datetime import datetime, timedelta
 from pydantic import BaseModel
-import redis
+from redis import Redis, ConnectionPool
 import pytz
 from dataclasses import dataclass, field, fields
 from typing import Dict, Optional, List, Tuple, Any
@@ -56,20 +56,42 @@ class Host:
             suspend=data.get('suspend', 'False') == 'True'
         )
 
+def init_host_manager(host, port, db_number, max_connections=10, use_unix_socket=False, unix_socket_path=None):
+    try:
+        host_manager = HostManager(
+            host=host,
+            port=port,
+            db_number=db_number,
+            max_connections=max_connections,
+            use_unix_socket=use_unix_socket,
+            unix_socket_path=unix_socket_path
+        )
+        logger.info(green("HostManager initialized successfully."))
+        return host_manager
+    except Exception as e:
+        logger.error(red("Failed to initialize HostManager: " + str(e)))
+        raise
 
 class HostManager:
-    def __init__(self, host: str, port, db_number=0, use_unix_socket=False, redis_address=''):
-        """
-        Initialize AccessTable class with a Redis connection.
-        """
+    def __init__(self, host: str, port: int, db_number: int, max_connections: int = 10, use_unix_socket: bool = False, unix_socket_path: str = ''):
+        self.host = host
+        self.port = port
+        self.db_number = db_number
+        self.max_connections = max_connections
+        self.use_unix_socket = use_unix_socket
+        self.unix_socket_path = unix_socket_path
+ 
         try:
             if use_unix_socket:
-                self.redis = redis.Redis(unix_socket_path=redis_address)
+                connection_pool = ConnectionPool(unix_socket_path=unix_socket_path, db=db_number, max_connections=max_connections)
+                logger.info(light_green(f"Redis connection pool established successfully via Unix socket [path: {unix_socket_path}]"))
             else:
-                self.redis = redis.Redis(host=host, port=port, db=db_number)
-            logger.info(green(f"Redis connection established successfully [address: {redis_address}]"))
+                connection_pool = ConnectionPool(host=host, port=port, db=db_number, max_connections=max_connections)
+                logger.info(light_green(f"Redis connection pool established successfully [host: {host}, port: {port}, db: {db_number}]"))
+            
+            self.redis = Redis(connection_pool=connection_pool)
         except Exception as e:
-            logger.error(red(f"Failed to connect to Redis: {e}"))
+            logger.error(red(f"Failed to establish Redis connection pool: {e}"))
             raise e
 
     def set_host(self, origin: str, host_id: str, monthly_limit: int, start_billing: datetime, next_billing: datetime) -> None:
@@ -193,33 +215,39 @@ class HostManager:
         except Exception as e:
             logger.error(f"Error clearing host usage for {origin}: {e}")
 
-    def retrieve_usage_for_billing_period(self, origin: str, start_timestamp: int, end_timestamp: int):
-        """
-        Retrieve the number of accesses for a host within a specific billing period.
-        """
+    def count_usage_in_period(self, start_timestamp: int, end_timestamp: int, origin='*'):
+        """Retrieve the number of accesses for a host or all hosts within a specific billing period."""
         try:
-            start_date = datetime.utcfromtimestamp(start_timestamp).strftime('%Y-%m-%d %HH:%mm')
-            end_date = datetime.utcfromtimestamp(end_timestamp).strftime('%Y-%m-%d %HH:%mm')
+            # Format the start and end dates
+            start_date = datetime.utcfromtimestamp(start_timestamp).strftime('%Y-%m-%d %H:%M')
+            end_date = datetime.utcfromtimestamp(end_timestamp).strftime('%Y-%m-%d %H:%M')
 
-            # Generate keys pattern for the given period
+            # Generate the Redis key pattern for the given period and origin
             keys_pattern = f"host_usage::{origin}::*"
             keys = self.redis.keys(keys_pattern)
             usage_count = 0
-            logger.debug(f"Checking keys for origin {origin} ({start_date} ~ {end_date})")
+            logger.debug(f"Checking keys for origin pattern {origin} ({start_date} ~ {end_date})")
 
             for key in keys:
                 key_str = key.decode('utf-8')
                 _, _, key_timestamp = key_str.rpartition('::')
-                if start_timestamp <= int(key_timestamp) <= end_timestamp:
+                key_timestamp = int(key_timestamp)
+                if start_timestamp <= key_timestamp <= end_timestamp:
                     count = int(self.redis.get(key))
                     usage_count += count
-                    logger.debug(f"Usage retrieved -> key:{key.decode('utf-8')} usage:{count} ({start_date} ~ {end_date})")
+                    logger.debug(f"Usage retrieved -> key:{key.decode('utf-8')} usage:{count}")
 
-            logger.info(yellow(f"Total usage for {origin} in the period: {usage_count} ({start_date} ~ {end_date})"))
+            logger.info(yellow(f"Total usage for origin pattern '{origin}' in the period: \n{usage_count} ({start_date} ~ {end_date})"))
             return usage_count
         except Exception as e:
-            logger.error(red(f"Error retrieving usage for origin:{origin} ({start_date} ~ {end_date}): {e}"))
+            logger.error(red(f"Error retrieving usage for origin pattern:{origin} ({start_date} ~ {end_date}): {e}"))
             return 0
+
+    def retrieve_usage_for_billing_period(self, origin: str, start_timestamp: int, end_timestamp: int):
+        """
+        Retrieve the number of accesses for a host within a specific billing period.
+        """
+        return self.count_usage_in_period(start_timestamp, end_timestamp, origin)
 
     def is_host_usage_exceeded(self, origin: str) -> bool:
         """
