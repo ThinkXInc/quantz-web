@@ -81,7 +81,7 @@ def delete_orphan_chatdata():
     orphan_chatdata_count = 0
 
     for chatdata in all_chatdata:
-        if str(chatdata.user.id) not in all_user_ids:
+        if chatdata.user.id not in all_user_ids:
             logger.debug(f'{str(chatdata.user.id)} is not in the user id list {all_user_ids}')
             try:
                 chatdata.delete()

@@ -5,6 +5,8 @@ import pytz
 import sys
 import argparse
 
+DEBUG = True
+
 # Logger
 sys.path.append('/src/quantz-web/web-server') 
 from libcommon.logger import Logger
@@ -77,6 +79,14 @@ host_manager = init_host_manager(
     port=REDIS_ACCESS_PORT,
     db_number=REDIS_ACCESS_DB_NUMBER
 )
+
+# Clean orphan data
+from system_status.clean_orphan_data import (
+    delete_orphan_material,
+    delete_orphan_chatdata
+)
+
+
 
 # Stats
 
@@ -338,7 +348,8 @@ def release_users_from_waiting_list(active_users_count: int, dryrun=False):
     logger.info(bold(f'Calculate users released from waiting list.'))
     try:
         general_status, _ = GeneralSystemStatus.get_or_create()
-        # general_status.wait_list_emails += ['kaz@thinkxinc.com']  # DEBUG
+        if DEBUG:
+            general_status.wait_list_emails += ['kaz@thinkxinc.com']  # DEBUG
     except Exception as e:
         logger.error(red(f"Failed to get GeneralStatus: {str(e)}"))
 
@@ -351,7 +362,8 @@ def release_users_from_waiting_list(active_users_count: int, dryrun=False):
             latest_daily_status_with_congestion = DailySystemStatus.objects(
                 congestions__not__size=0
             ).order_by('-created').first()
-            # latest_daily_status_with_congestion.n_active_users = 3  # DEBUG
+            if DEBUG:
+                latest_daily_status_with_congestion.n_active_users = 3  # DEBUG
             logger.info(f'latest daily status with congestion : {latest_daily_status_with_congestion.response_json()}')
         except Exception as e:
             logger.error(red(f"Failed to get GeneralStatus: {str(e)}"))
@@ -396,7 +408,7 @@ def check_recent_congestions(active_users_count: int, dryrun=False):
     logger.info('\n\n')
     logger.info(bold('Checking for recent congestions to determine signup restrictions...'))
     daily_system_statuses_with_congestion = congestion_count(last_days=7)
-    if daily_system_statuses_with_congestion.count() == 0:
+    if daily_system_statuses_with_congestion.count() == 0 or DEBUG:
         switch_restrict_signup(restrict=False, dryrun=dryrun)
         logger.info(green("No congestions in the last 7 days. Disable signup restrictions."))
         release_users_from_waiting_list(active_users_count, dryrun=dryrun)
@@ -442,3 +454,7 @@ if __name__ == '__main__':
     logger.debug(f'[Text]\n{mail_text}')
     logger.debug(f'-------------------------------------------------------')
     send_mail(subject, mail_text)
+
+    # clean orphan data
+    delete_orphan_material()
+    delete_orphan_chatdata()

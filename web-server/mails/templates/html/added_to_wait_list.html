@@ -1,0 +1,19 @@
+{%extends "html/base.html" %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+<section style="color: #333; margin-bottom: 20px; padding: 30px 37px;">
+  <div style="color: #616161;; font-size: 1.1em; font-weight: 300; padding: 40px 10px;">
+    <div style="font-size: 1.3em; margin-bottom: 20px; font-weight: bold">{{ subject | replace('\n', '<br>') | safe }}</div>
+    <div style="font-size: 1em; margin-bottom: 40px;">{{ body1 | replace('\n', '<br>') | safe }}</div>
+    <div style="margin-bottom: 5px; color: #616161;">
+      {{ body2 | replace('\n', '<br>') | safe }}
+    </div>
+    <div style="margin-top: 20px; font-weight: 700;" clas="team">
+      {{ team }}
+    </div>
+  </div>
+</section>
+{% endblock %}

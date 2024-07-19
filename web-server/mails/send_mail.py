@@ -2,7 +2,12 @@ from datetime import datetime
 import pytz
 from os.path import dirname, abspath
 from flask import Flask, render_template
+import sys
+sys.path.append('../')
 from models.data.user import User
+from system_status.models.system_status import GeneralSystemStatus
+
+import argparse
 
 # Config
 from config import Config, check_config
@@ -371,7 +376,7 @@ def send_invitation_for_wait_list_user_email(user: User):
         html_content = render_template(
             'html/invitation_for_wait_list_user.html',
             body1=locale.get('invitation_for_wait_list_user_body1', lang),
-            body2=locale.get('invitation_for_wait_list_user_body2', lang),
+            body2=locale.get('invitation_for_wait_list_user_body2', lang, [user.email]),
             link=f'https://quantz.thinkxinc.com/v1/{lang}/signup',
             button=locale.get('invitation_for_wait_list_user_button', lang),
             team=locale.get('team', lang)
@@ -379,7 +384,7 @@ def send_invitation_for_wait_list_user_email(user: User):
         text_content = render_template(
             'plain/invitation_for_wait_list_user.txt',
             body1=locale.get('invitation_for_wait_list_user_body1', lang),
-            body2=locale.get('invitation_for_wait_list_user_body2', lang),
+            body2=locale.get('invitation_for_wait_list_user_body2', lang, [user.email]),
             link=f'https://quantz.thinkxinc.com/v1/{lang}/signup',
             button=locale.get('invitation_for_wait_list_user_button', lang),
             team=locale.get('team', lang)
@@ -398,6 +403,70 @@ def send_invitation_for_wait_list_user_email(user: User):
         except MailSendError as e:
             raise MailSendError
 
+def send_added_to_wait_list_email(general_status: GeneralSystemStatus, user: User):
+    lang = 'ja'#user.lang
+    n_wait_list = len(general_status.wait_list_emails)
+    flask_app = Flask(__name__, template_folder='templates')  # mails/ is root
+    logger.debug(flask_app.jinja_loader.searchpath)
+    with flask_app.app_context(): # celery worker process needs context
+        subject = locale.get('added_to_wait_list_subject', lang, [n_wait_list])
+        html_content = render_template(
+            'html/added_to_wait_list.html',
+            subject=subject,
+            body1=locale.get('added_to_wait_list_body1', lang, [n_wait_list]),
+            body2=locale.get('added_to_wait_list_body2', lang),
+            team=locale.get('team', lang)
+            )
+        text_content = render_template(
+            'plain/added_to_wait_list.txt',
+            subject=subject,
+            body1=locale.get('added_to_wait_list_body1', lang, [n_wait_list]),
+            body2=locale.get('added_to_wait_list_body2', lang),
+            team=locale.get('team', lang)
+            )
+        try:
+            mail.send(
+                sender=SENDER,
+                reply_to=REPLY_TO,
+                recipient=user.email,
+                subject=subject,
+                text=text_content,
+                html=html_content,
+                bcc=[MAIL_SYSTEM]
+            )
+            logger.info(light_green(f'Email "{subject}" sent to {user.email}'))
+        except MailSendError as e:
+            raise MailSendError
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Send various types of emails.")
+    parser.add_argument('--welcome', action='store_true', help="Send a welcome email.")
+    parser.add_argument('--invitation', action='store_true', help="Send an invitation email to a user on the wait list.")
+    parser.add_argument('--added_to_wait_list', action='store_true', help="Send email notifying a user they are added to wait list.")
+    parser.add_argument('--email', type=str, required=True, help="Email of the user to send the email to.")
+    parser.add_argument('--verification_code', type=str, default='123456', help="Verification code for the email, if applicable.")
+    
+    args = parser.parse_args()
+
+    # MongoDB
+    from init_mongodb import connect
+
+    user = User.find_user_by_email(args.email)
+    if user is None:
+        logger.error(red("User not found."))
+        exit(1)
+
+    if args.welcome:
+        send_welcome_email(user, args.verification_code)
+    if args.invitation:
+        send_invitation_for_wait_list_user_email(user)
+    if args.added_to_wait_list:
+        try:
+            general_status, created = GeneralSystemStatus.get_or_create()
+        except Exception as e:
+            logger.error(red(f'failed to get GeneralSystemStatus'))
+        send_added_to_wait_list_email(general_status, user)
 
 #def render_email_change_verification(
 #        user: User, mail_confirmation_code: str,
