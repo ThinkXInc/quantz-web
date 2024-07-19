@@ -2,6 +2,7 @@ import time
 from datetime import datetime, timedelta
 import pytz
 import sys
+import argparse
 
 # Logger
 sys.path.append('/src/quantz-web/web-server') 
@@ -50,6 +51,8 @@ host_manager = init_host_manager(
     port=REDIS_ACCESS_PORT,
     db_number=REDIS_ACCESS_DB_NUMBER
 )
+
+# Stats
 
 def num_new_users(last_hours=24) -> int:
     """the number of User's creates in the last 24 hours."""
@@ -127,7 +130,37 @@ def num_new_materials(last_hours=24):
         logger.error(red(f"Error counting new materials: {e}"))
         return 0
 
-def daily_check():
+def update_daily_status(new_users_count: int, new_materials_count: int, daily_active_users_count: int, active_users_count: int, total_usage_count: int, dryrun=False):
+    logger.info('Updating daily status with new statistics...')
+
+    today = datetime.utcnow().replace(tzinfo=pytz.utc)
+    yesterday = today - timedelta(days=1)
+    today_date = datetime(today.year, today.month, today.day)
+    yesterday_date = datetime(yesterday.year, yesterday.month, yesterday.day)
+
+    try:
+        yesterday_status, created = DailySystemStatus.get_or_create(created=yesterday_date)
+        if yesterday_status:
+            logger.info(green(f"Found yesterday's system status: {yesterday_status.response_json()}"))
+        else:
+            logger.info(yellow("No system status found for yesterday."))
+
+        yesterday_status.n_new_signups = new_users_count
+        yesterday_status.n_new_materials = new_materials_count
+        yesterday_status.n_daily_active_users = daily_active_users_count
+        yesterday_status.n_active_users = active_users_count
+        yesterday_status.n_total_usage = total_usage_count
+        if not dryrun:
+            yesterday_status.save()
+        
+        logger.info(green(f"Daily system status updated successfully. {'[dryrun]' if dryrun else ''}"))
+        logger.info('->')
+        logger.info(yesterday_status.response_json())
+
+    except Exception as e:
+        logger.error(red(f"Failed to update daily system status: {e}"))
+
+def stats():
     """
     - The number of new registrations
     - The number of times used
@@ -136,8 +169,8 @@ def daily_check():
     - the number of saved Materials
     are aggregated and reported by e-mail.
     """
-    logger.info('-'*80)
-    logger.info(magenta(f'[{datetime.now().replace(tzinfo=pytz.utc).strftime("%m/%d %H:%M:%S")}] Start daily check.'))
+    logger.info('='*80)
+    logger.info(bold(f'[{datetime.now().replace(tzinfo=pytz.utc).strftime("%m/%d %H:%M:%S")}] Start daily check.'))
 
     today = datetime.utcnow().replace(tzinfo=pytz.utc).date()
     today_date = datetime(today.year, today.month, today.day)
@@ -154,7 +187,7 @@ def daily_check():
     # Gather statistics
     new_users_count = num_new_users()
     total_usage_count = num_usage()
-    users_used_count = num_users_used() 
+    daily_active_users_count = num_users_used() 
     active_users_count = num_active_users() 
     new_materials_count = num_new_materials()
 
@@ -164,9 +197,72 @@ def daily_check():
     logger.info(light_blue("Summary of Daily Statistics:"))
     logger.info(yellow(f"Total new users today: {new_users_count}"))
     logger.info(yellow(f"Total usage counts today: {total_usage_count}"))
-    logger.info(yellow(f"Number of active users today: {users_used_count}"))
+    logger.info(yellow(f"Number of active users (today): {daily_active_users_count}"))
     logger.info(yellow(f"Number of active users (last 3 days): {active_users_count}"))
     logger.info(yellow(f"Number of new materials saved today: {new_materials_count}"))
 
+    logger.info('-'*80)
 
-daily_check()
+    # Update database
+    update_daily_status(
+        new_users_count,
+        new_materials_count,
+        daily_active_users_count,
+        active_users_count,
+        total_usage_count)
+
+    # Send report email
+
+
+# Restrict Signup
+
+def exist_congestion(last_days=7) -> bool:
+    end_date = datetime.utcnow().replace(tzinfo=pytz.utc)
+    start_date = end_date - timedelta(days=last_days)
+    
+    daily_system_statuses_with_congestion = DailySystemStatus.objects(
+        created__gte=start_date,
+        congestions__not__size=0
+    )
+    logger.info(f'{daily_system_statuses_with_congestion.count()} congestions in {last_days} days found in daily system status.')
+    for status in daily_system_statuses_with_congestion:
+        logger.info(status.response_json())
+
+    return daily_system_statuses_with_congestion.count() > 0
+
+def switch_restrict_signup(restrict=True, dryrun=False):
+    """Switch the signup restriction flag in GeneralSystemStatus."""
+    try:
+        general_status, _ = GeneralSystemStatus.get_or_create()
+        general_status.is_signup_restricted = restrict
+        if not dryrun:
+            general_status.save()
+        if restrict:
+            logger.info(cyan(f"Set True for GeneralSystemStatus.is_signup_restricted. {'[dryrun]' if dryrun else ''}"))
+        else:
+            logger.info(green(f"Set False for GeneralSystemStatus.is_signup_restricted. {'[dryrun]' if dryrun else ''}"))
+    except Exception as e:
+        logger.error(red(f"Failed to update signup restrictions: {str(e)}"))
+
+def check_recent_congestions(dryrun=False):
+    """Check recent congestions and switch the signup restriction based on the result."""
+    logger.info('\n\n')
+    logger.info(bold('Checking for recent congestions to determine signup restrictions...'))
+    if not exist_congestion(last_days=7):
+        switch_restrict_signup(restrict=False, dryrun=dryrun)
+        logger.info(green("No congestions in the last 7 days. Disable signup restrictions."))
+    else:
+        #switch_restrict_signup(restrict=True, dryrun=dryrun)
+        logger.info(yellow("Congestions detected in the last 7 days. Not disalbe restriction."))
+
+
+
+def parse_arguments():
+    parser = argparse.ArgumentParser(description="Run daily system checks with optional dry run.")
+    parser.add_argument('--dryrun', action='store_true', help="Run the script in dry run mode without making actual changes.")
+    return parser.parse_args()
+
+if __name__ == '__main__':
+    args = parse_arguments()
+    stats()
+    check_recent_congestions(dryrun=args.dryrun)

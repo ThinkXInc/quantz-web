@@ -48,6 +48,7 @@ class Congestion(MongoModel):
 class DailySystemStatus(MongoModel):
     n_new_signups = IntField(required=True, default=0)  # created user count
     n_new_materials = IntField(required=True, default=0)  # created material count
+    n_daily_active_users = IntField(required=True, default=0)  # active users count
     n_active_users = IntField(required=True, default=0)  # active users count
     n_total_usage = IntField(required=True, default=0)  # total chat usage
     congestions = ListField(ReferenceField(Congestion))
