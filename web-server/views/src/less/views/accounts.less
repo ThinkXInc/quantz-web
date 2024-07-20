@@ -127,7 +127,7 @@
                         }
                     }
                 }
-                button.nextButton {
+                button.nextButton, button.backToTopButton {
                     margin-top: 18px;
                     background: #000;
                     border-radius: 3px;
@@ -144,301 +144,314 @@
             }
         }
     }
+}
 
-    .PageViewContainer.EmailPage {
-        div.container {
-            a.signInLink {
-                cursor: pointer;
-                color: #0055ff;
-                margin-top: 12px;
+div.PageViewContainer.EmailPage {
+    div.container {
+        a.signInLink {
+            cursor: pointer;
+            color: #0055ff;
+            margin-top: 12px;
+            font-size: 0.8em;
+            border-radius: 18px;
+            padding: 8px 20px;
+            transition: background-color 0.2s @ease;
+        }
+        a:hover {
+            background-color: #f0f5ff;
+        }
+    }
+}
+
+div.PageViewContainer.VerifyCodePage {
+    div.container {
+        div.VerifyCodeForm {
+            margin: 20px 0;
+        }
+    }
+}
+
+div.PageViewContainer.VerifiedPage {
+    div.container {
+        img.icon {
+            margin-top: 40px;
+            width: 62px;
+        }
+        h4.verifiedMessage {
+            margin-top: 11px;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+        div.presentNoticeContainer {
+            margin-top: 24px;
+            span.presentNoticeMain {
+                display: flex;
+                flex-direction: row;
+                p.mainHighlightText {
+                    font-weight: 600;
+                    color: #2c74e8;
+                }
+                p.mainUnhighlightText {
+                    color: #565656;
+                    margin-left: 3px;
+                }
+            }
+            p.subText {
+                margin-top: 17px;
+                margin-bottom: 14px;
+                text-align: center;
                 font-size: 0.8em;
-                border-radius: 18px;
-                padding: 8px 20px;
-                transition: background-color 0.2s @ease;
-            }
-            a:hover {
-                background-color: #f0f5ff;
+                color: #848484;
             }
         }
     }
+}
 
-    .PageViewContainer.VerifyCodePage {
-        div.container {
-            div.VerifyCodeForm {
-                margin: 20px 0;
-            }
-        }
-    }
-
-    .PageViewContainer.VerifiedPage {
-        div.container {
-            img.icon {
-                margin-top: 40px;
-                width: 62px;
-            }
-            h4.verifiedMessage {
-                margin-top: 11px;
-                font-size: 1.2em;
-                font-weight: 600;
-            }
-            div.presentNoticeContainer {
-                margin-top: 24px;
-                span.presentNoticeMain {
-                    display: flex;
-                    flex-direction: row;
-                    p.mainHighlightText {
-                        font-weight: 600;
-                        color: #2c74e8;
-                    }
-                    p.mainUnhighlightText {
-                        color: #565656;
-                        margin-left: 3px;
-                    }
-                }
-                p.subText {
-                    margin-top: 17px;
-                    margin-bottom: 14px;
-                    text-align: center;
-                    font-size: 0.8em;
-                    color: #848484;
-                }
-            }
-        }
-    }
-
-    .PageViewContainer.OriginPage {
-        div.container {
-            div.originWrapper {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                width: 100%;
-                margin-bottom: 50px;
-                div.OriginForm {
-                    width: 43%;
-                    margin-right: 25px;
-                    div.inputOuter {
-                        // FIXME: default font size is somehow large
-                        h6.title {
-                            color: #3d3d3d;
-                            font-weight: 700;
-                            font-size: 12px;
-                            margin-bottom: 7px;
-                        }
-                        div.footer {
-                            margin-top: 4px;
-                            p.alertMessage {
-                                font-size: 11px;
-                            }
-                        }
-                    }
-                }
-                div.explanation {
-                    background-color: #f0f0f0;
-                    padding: 10px 25px;
-                    width: 50%;
-                    border-radius: 4px;
-                    display: flex;
-                    flex-direction: row;
-                    img {
-                        width: 20px;
-                        margin-right: 17px;
-                    }
-                    p {
+div.PageViewContainer.OriginPage {
+    div.container {
+        div.originWrapper {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 50px;
+            div.OriginForm {
+                width: 43%;
+                margin-right: 25px;
+                div.inputOuter {
+                    // FIXME: default font size is somehow large
+                    h6.title {
+                        color: #3d3d3d;
+                        font-weight: 700;
                         font-size: 12px;
-                        font-weight: 600;
-                        color: #2d2d2d;
+                        margin-bottom: 7px;
                     }
-                    p.alert {
-                        color: @alert-red;
+                    div.footer {
+                        margin-top: 4px;
+                        p.alertMessage {
+                            font-size: 11px;
+                        }
                     }
                 }
             }
-        }
-    }
-
-    .PageViewContainer.CardPage {
-        max-height: 640px;
-        overflow-y: auto;
-        div.container {
-            div.CardInputView {
-                padding: 0 60px;
-                width: 100%;
-                margin-bottom: 15px;
-                img.loading {
-                    width: 60px;
-                    padding: 50px 0px 100px 0;
-                    margin: 0 auto;
-                    display: block;
-                }
-            }
-            img.stripeLogo {
-                width: 120px;
-            }
-        }
-    }
-
-    .PageViewContainer.LimitPage {
-        div.container {
-            padding: 28px 114px;
-            div.line1 {
+            div.explanation {
+                background-color: #f0f0f0;
+                padding: 10px 25px;
+                width: 50%;
+                border-radius: 4px;
                 display: flex;
                 flex-direction: row;
-                align-items: center;
-                span.max {
-                    margin-right: 11px;
-                    min-width: 33px;
-                    text-align: center;
+                img {
+                    width: 20px;
+                    margin-right: 17px;
                 }
-                div.LimitForm {
-                    width: 150px;
-                    div.inputOuter {
-                        div.inputWrapper {
-                            border: 1px solid #dfdfdf;
-                            border-radius: 4px;
-                            box-shadow: 0 1px 3px #f1f1f1;
-                            input {
-                                border: none;
-                                height: 45px;
-                                width: 130px;
-                                font-size: 1em;
-                                margin: 0;
-                            }
+                p {
+                    font-size: 12px;
+                    font-weight: 600;
+                    color: #2d2d2d;
+                }
+                p.alert {
+                    color: @alert-red;
+                }
+            }
+        }
+    }
+}
+
+div.PageViewContainer.CardPage {
+    max-height: 640px;
+    overflow-y: auto;
+    div.container {
+        div.CardInputView {
+            padding: 0 60px;
+            width: 100%;
+            margin-bottom: 15px;
+            img.loading {
+                width: 60px;
+                padding: 50px 0px 100px 0;
+                margin: 0 auto;
+                display: block;
+            }
+        }
+        img.stripeLogo {
+            width: 120px;
+        }
+    }
+}
+
+div.PageViewContainer.LimitPage {
+    div.container {
+        padding: 28px 114px;
+        div.line1 {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            span.max {
+                margin-right: 11px;
+                min-width: 33px;
+                text-align: center;
+            }
+            div.LimitForm {
+                width: 150px;
+                div.inputOuter {
+                    div.inputWrapper {
+                        border: 1px solid #dfdfdf;
+                        border-radius: 4px;
+                        box-shadow: 0 1px 3px #f1f1f1;
+                        input {
+                            border: none;
+                            height: 45px;
+                            width: 130px;
+                            font-size: 1em;
+                            margin: 0;
                         }
-                        div.inputAfter {
-                            div.incrementButton {
-                                width: 28px;
-                                button {
-                                    img {
-                                        width: 13px;
-                                    }
+                    }
+                    div.inputAfter {
+                        div.incrementButton {
+                            width: 28px;
+                            button {
+                                img {
+                                    width: 13px;
                                 }
                             }
                         }
-                        div.footer {
-                            p.alertMessage {
-                                font-size: 0.75em;
-                            }
+                    }
+                    div.footer {
+                        p.alertMessage {
+                            font-size: 0.75em;
                         }
                     }
                 }
-                span.maxDesc {
-                    min-width: 44px;
-                    text-align: center;
-                }
             }
-            div.line2 {
-                display: flex;
-                flex-direction: row;
-                justify-content: flex-start;
-                align-items: center;
-                width: 100%;
-                margin-top: 25px;
-                background-color: #fafafa;
-                padding: 12px 18px;
-                border-radius: 5px;
-                span.maxCharge {
-                    font-size: 0.9em;
-                    margin-right: 24px;
-                }
-                span.maxChargePrice {
-                    font-size: 1em;
-                    font-weight: 500;
-                    color: #214fe5;
-                }
-            }
-            div.notes {
-                font-size: 0.75em;
-                margin-top: 30px;
-                color: #787878;
-                p {
-                    margin-bottom: 2px;
-                }
+            span.maxDesc {
+                min-width: 44px;
+                text-align: center;
             }
         }
-    }
-
-    .PageViewContainer.TermsPage {
-        h4.title {
-            font-weight: 700;
-            margin-bottom: 31px;
-        }
-        div.TermsScrollView {
-            margin-bottom: 30px;
-        }
-    }
-
-    .PageViewContainer.CompletePage {
-        div.container {
-            padding: 44px 31px;
-            img.icon {
-                margin-top: 40px;
-                width: 62px;
-            }
-            h4 {
-                font-size: 1.2em;
-                margin-bottom: 26px;
-            }
-            p {
+        div.line2 {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            margin-top: 25px;
+            background-color: #fafafa;
+            padding: 12px 18px;
+            border-radius: 5px;
+            span.maxCharge {
                 font-size: 0.9em;
-                margin-top: 4px;
-                color: #8f8f8f;
+                margin-right: 24px;
+            }
+            span.maxChargePrice {
+                font-size: 1em;
+                font-weight: 500;
+                color: #214fe5;
             }
         }
-        button.nextButton {
-            span.LoadButtonLabel {
-                width: 200px;
-            }
-        }
-    }
-
-    .PageViewContainer.SentPage,
-    .PageViewContainer.DonePage {
-        div.container {
-            padding: 34px 31px;
-            img.icon {
-                margin-bottom: 10px;
-                width: 62px;
-            }
-            h4 {
-                font-size: 1.2em;
-                margin-bottom: 20px;
-            }
+        div.notes {
+            font-size: 0.75em;
+            margin-top: 30px;
+            color: #787878;
             p {
-                font-size: 0.9em;
-                margin-top: 4px;
-                color: #8f8f8f;
-            }
-        }
-        button.nextButton {
-            span.LoadButtonLabel {
-                width: 150px;
+                margin-bottom: 2px;
             }
         }
     }
+}
 
-    .PageViewContainer.EmailPage.LoginPage {
-        div.container {
-            p.passwordForgotLink {
-                cursor: pointer;
-                color: #0055ff;
-                margin-top: 12px;
-                font-size: 0.8em;
-                border-radius: 18px;
-                padding: 8px 20px;
-                transition: background-color 0.2s @ease;
-            }
-            p:hover {
-                background-color: #f0f5ff;
-            }
+div.PageViewContainer.TermsPage {
+    h4.title {
+        font-weight: 700;
+        margin-bottom: 31px;
+    }
+    div.TermsScrollView {
+        margin-bottom: 30px;
+    }
+}
+
+div.PageViewContainer.CompletePage {
+    div.container {
+        padding: 44px 31px;
+        img.icon {
+            margin-top: 40px;
+            width: 62px;
+        }
+        h4 {
+            font-size: 1.2em;
+            margin-bottom: 26px;
+        }
+        p {
+            font-size: 0.9em;
+            margin-top: 4px;
+            color: #8f8f8f;
         }
     }
-
-    .PageViewContainer.ResetPage {
-        div.container {
+    button.nextButton {
+        span.LoadButtonLabel {
+            width: 200px;
         }
     }
+}
 
+div.PageViewContainer.RestrictedPage {
+    div.container {
+        h4.restrictedMessage {
+            white-space: pre-wrap;
+            text-align: center;;
+        }
+        button.backToTopButton {
+        }
+    }
+}
+
+div.PageViewContainer.SentPage,
+div.PageViewContainer.DonePage {
+    div.container {
+        padding: 34px 31px;
+        img.icon {
+            margin-bottom: 10px;
+            width: 62px;
+        }
+        h4 {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 0.9em;
+            margin-top: 4px;
+            color: #8f8f8f;
+        }
+    }
+    button.nextButton {
+        span.LoadButtonLabel {
+            width: 150px;
+        }
+    }
+}
+
+div.PageViewContainer.EmailPage.LoginPage {
+    div.container {
+        p.passwordForgotLink {
+            cursor: pointer;
+            color: #0055ff;
+            margin-top: 12px;
+            font-size: 0.8em;
+            border-radius: 18px;
+            padding: 8px 20px;
+            transition: background-color 0.2s @ease;
+        }
+        p:hover {
+            background-color: #f0f5ff;
+        }
+    }
+}
+
+div.PageViewContainer.ResetPage {
+    div.container {
+    }
+}
+
+div.PageViewContainer {
     .btn-loading() {
         transition: 
             width 0.2s @ease,
@@ -511,202 +524,203 @@
                     }
                 }
             }
+        }
+    }
 
-            .PageViewContainer.EmailPage, .PageViewContainer.ForgotPage, .PageViewContainer.ResetPage {
-                div.container {
-                    #emailForm, #passwordForm, #passwordConfirmForm, #forgotForm, #passwordResetForm, #passwordResetConfirmForm {
-                        width: 100%;
-                    }
-                }
-            }
-    
-            .PageViewContainer.VerifyCodePage {
-                div.container {
-                    div.VerifyCodeForm {
-                    }
-                }
-            }
-    
-            .PageViewContainer.VerifiedPage {
-                div.container {
-                    img.icon {
-                    }
-                    h4.verifiedMessage {
-                    }
-                    div.presentNoticeContainer {
-                        span.presentNoticeMain {
-                            display: block;
-                            p.mainHighlightText, p.mainUnhighlightText {
-                                display: inline-block;
-                            }
-                        }
-                        p.subText {
-                            text-align: left;
-                        }
-                    }
-                }
-            }
-    
-            .PageViewContainer.OriginPage {
-                div.container {
-                    div.originWrapper {
-                        flex-direction: column;
-                        margin-bottom: 17px;
-                        div.OriginForm {
-                            width: 100%;
-                            margin-right: 0;
-                            margin-bottom: 27px;
-                            div.inputOuter {
-                                padding: 0;
-                                h6.title {
-                                }
-                                div.footer {
-                                    p.alertMessage {
-                                    }
-                                }
-                            }
-                        }
-                        div.explanation {
-                            width: 100%;
-                            img {
-                            }
-                            p {
-                            }
-                            p.alert {
-                            }
-                        }
-                    }
-                }
-            }
-    
-            .PageViewContainer.CardPage {
-                div.container {
-                    div.CardInputView {
-                        padding: 0;
-                        img.loading {
-                        }
-                    }
-                    img.stripeLogo {
-                    }
-                }
-            }
-    
-            .PageViewContainer.LimitPage {
-                div.container {
-                    padding: 0px 0;
-                    div.line1 {
-                        span.max {
-                            flex: 1.5;
-                            margin-right: 5px;
-                            font-size: 0.9em;
-                        }
-                        div.LimitForm {
-                            flex: 2;
-                            margin-right: 4px;
-                            div.inputOuter {
-                                padding: 4px 0 4px 0px;
-                                div.inputWrapper {
-                                    input {
-                                    }
-                                }
-                                div.inputAfter {
-                                    div.incrementButton {
-                                        button {
-                                            img {
-                                            }
-                                        }
-                                    }
-                                }
-                                div.footer {
-                                    p.alertMessage {
-                                    }
-                                }
-                            }
-                        }
-                        span.maxDesc {
-                            flex: 1;
-                            font-size: 0.9em;
-                        }
-                    }
-                    div.line2 {
-                        span.maxCharge {
-                        }
-                        span.maxChargePrice {
-                        }
-                    }
-                    div.notes {
-                        p {
-                        }
-                    }
-                }
-            }
-    
-            .PageViewContainer.TermsPage {
-                h4.title {
-                }
-                div.TermsScrollView {
-                    div.termsViewContainer {
-                        width: 100%;
-                        div.termsView {
-                            div.terms {
-                                padding: 10px;
-                            }
-                        }
-                    }
-                }
-            }
-    
-            .PageViewContainer.CompletePage {
-                div.container {
-                    padding: 19px 0px;
-                    img.icon {
-                    }
-                    h4 {
-                        margin-bottom: 17px;
-                    }
-                    p {
-                    }
-                }
-                button.nextButton {
-                    span.LoadButtonLabel {
-                    }
-                }
-            }
-    
-            .PageViewContainer.SentPage,
-            .PageViewContainer.DonePage {
-                div.container {
-                    img.icon {
-                    }
-                    h4 {
-                    }
-                    p {
-                    }
-                }
-                button.nextButton {
-                    span.LoadButtonLabel {
-                    }
-                }
-            }
-    
-            .PageViewContainer.EmailPage.LoginPage {
-                div.container {
-                    p.passwordForgotLink:hover {
-                    }
-                }
-            }
-    
-            .PageViewContainer.ResetPage {
-                div.container {
-                }
-            }
-    
-            button.btn-loading:hover {
-            }
-            button.btn-loading.load {
+    div.PageViewContainer.EmailPage, div.PageViewContainer.ForgotPage, div.PageViewContainer.ResetPage {
+        div.container {
+            #emailForm, #passwordForm, #passwordConfirmForm, #forgotForm, #passwordResetForm, #passwordResetConfirmForm {
+                width: 100%;
             }
         }
     }
     
+    div.PageViewContainer.VerifyCodePage {
+        div.container {
+            div.VerifyCodeForm {
+            }
+        }
+    }
+    
+    div.PageViewContainer.VerifiedPage {
+        div.container {
+            img.icon {
+            }
+            h4.verifiedMessage {
+            }
+            div.presentNoticeContainer {
+                span.presentNoticeMain {
+                    display: block;
+                    p.mainHighlightText, p.mainUnhighlightText {
+                        display: inline-block;
+                    }
+                }
+                p.subText {
+                    text-align: left;
+                }
+            }
+        }
+    }
+    
+    div.PageViewContainer.OriginPage {
+        div.container {
+            div.originWrapper {
+                flex-direction: column;
+                margin-bottom: 17px;
+                div.OriginForm {
+                    width: 100%;
+                    margin-right: 0;
+                    margin-bottom: 27px;
+                    div.inputOuter {
+                        padding: 0;
+                        h6.title {
+                        }
+                        div.footer {
+                            p.alertMessage {
+                            }
+                        }
+                    }
+                }
+                div.explanation {
+                    width: 100%;
+                    img {
+                    }
+                    p {
+                    }
+                    p.alert {
+                    }
+                }
+            }
+        }
+    }
+    
+    div.PageViewContainer.CardPage {
+        div.container {
+            div.CardInputView {
+                padding: 0;
+                img.loading {
+                }
+            }
+            img.stripeLogo {
+            }
+        }
+    }
+    
+    div.PageViewContainer.LimitPage {
+        div.container {
+            padding: 0px 0;
+            div.line1 {
+                span.max {
+                    flex: 1.5;
+                    margin-right: 5px;
+                    font-size: 0.9em;
+                }
+                div.LimitForm {
+                    flex: 2;
+                    margin-right: 4px;
+                    div.inputOuter {
+                        padding: 4px 0 4px 0px;
+                        div.inputWrapper {
+                            input {
+                            }
+                        }
+                        div.inputAfter {
+                            div.incrementButton {
+                                button {
+                                    img {
+                                    }
+                                }
+                            }
+                        }
+                        div.footer {
+                            p.alertMessage {
+                            }
+                        }
+                    }
+                }
+                span.maxDesc {
+                    flex: 1;
+                    font-size: 0.9em;
+                }
+            }
+            div.line2 {
+                span.maxCharge {
+                }
+                span.maxChargePrice {
+                }
+            }
+            div.notes {
+                p {
+                }
+            }
+        }
+    }
+    
+    div.PageViewContainer.TermsPage {
+        h4.title {
+        }
+        div.TermsScrollView {
+            div.termsViewContainer {
+                width: 100%;
+                div.termsView {
+                    div.terms {
+                        padding: 10px;
+                    }
+                }
+            }
+        }
+    }
+    
+    div.PageViewContainer.CompletePage {
+        div.container {
+            padding: 19px 0px;
+            img.icon {
+            }
+            h4 {
+                margin-bottom: 17px;
+            }
+            p {
+            }
+        }
+        button.nextButton {
+            span.LoadButtonLabel {
+            }
+        }
+    }
+    
+    div.PageViewContainer.SentPage,
+    div.PageViewContainer.DonePage {
+        div.container {
+            img.icon {
+            }
+            h4 {
+            }
+            p {
+            }
+        }
+        button.nextButton {
+            span.LoadButtonLabel {
+            }
+        }
+    }
+    
+    div.PageViewContainer.EmailPage.LoginPage {
+        div.container {
+            p.passwordForgotLink:hover {
+            }
+        }
+    }
+    
+    div.PageViewContainer.ResetPage {
+        div.container {
+        }
+    }
+    
+    div.PageViewContainer {
+        button.btn-loading:hover {
+        }
+        button.btn-loading.load {
+        }
+    }
 }
  

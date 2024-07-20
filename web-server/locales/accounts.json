@@ -98,6 +98,33 @@
         "ar": "تسجيل الدخول",
         "ru": "Вход"
     },
+    "signup_restricted": {
+        "en": "We apologize, but due to high demand, we are currently limiting new registrations.\nYou are placed as number $0 on our waiting list.\nWe will contact you via email as soon as space becomes available.\n\nThank you for your patience and understanding.",
+        "ja": "申し訳ありません、現在使用過多のため、新規登録に制限を設けております。\nあなたの待ちリストの順番は $0 番目です。\n使用スペースが確保でき次第メールにてご連絡差し上げます。\n\nご不憫をお掛けします。",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "signin_restricted": {
+        "en": "We apologize, but due to high demand, we are currently limiting new registrations.\nWe will contact you via email as soon as space becomes available.\n\nThank you for your patience and understanding.",
+        "ja": "申し訳ありません、現在使用過多のため、新規登録に制限を設けております。\n使用スペースが確保でき次第メールにてご連絡差し上げます。\n\nご不憫をお掛けします。",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "back_to_top": {
+        "en": "Back to top",
+        "ja": "トップに戻る",
+        "zh": "返回顶部",
+        "fr": "Retour en haut",
+        "es": "Volver arriba",
+        "ar": "العودة إلى الأعلى",
+        "ru": "Вернуться наверх"
+    },
     "signup_verify_code_title": {
         "en": "Enter Verification Code",
         "ja": "認証コードの入力",

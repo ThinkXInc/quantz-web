@@ -87,11 +87,15 @@ from models.data.material_vectordb import (
     MaterialVectorDBCreateCollectionError
 )
 
+# System Status
+from system_status.models.system_status import GeneralSystemStatus
+
 # Email
 from mails.send_mail import (
     send_welcome_email,
     send_verification_email,
     send_password_reset_email,
+    send_added_to_wait_list_email,
     MailSendError
 )
 
@@ -169,6 +173,37 @@ def users_flush():
         return UnexpectedAPIErrorFormat(lang="en", message=f"{e}").http_response()
 
 
+def check_signup_restriction(lang: str, user: User):
+    # Check signup restriction
+    try:
+        general_status, created = GeneralSystemStatus.get_or_create()
+    except Except as e:
+        logger.error(red(f'Failed to fetch GeneralSystemStatus. skip restriction check. : {e}'))
+    if general_status and (user.email in general_status.wait_list_emails):
+        # already in wait list
+        logger.info(yellow(f'{user.email} is already in wait list. Send RateLimitExceededAPIError (429).'))
+        message = locale.get('signin_restricted', lang)
+        return RateLimitExceededAPIErrorFormat(lang=lang, message=message).http_response()
+    if general_status and (general_status.is_signup_restricted or len(general_status.wait_list_emails) > 0):
+        # add to wait list
+        logger.info(magenta(f'Now signup is restricted. Send RateLimitExceededAPIError (429).'))
+        # update wait list
+        try:
+            general_status.wait_list_emails += [user.email]
+            general_status.save()
+        except Exception as e:
+            logger.error(red(f'Failed to update GeneralSystemStatus.wait_list_emails. skip. : {e}'))
+        # send email
+        try:
+            send_added_to_wait_list_email(general_status, user)
+        except Exception as e:
+            logger.error(red(f'Failed to send added_to_wait_list_email. {e}'))
+        n_wait_list = len(general_status.wait_list_emails)
+        message = locale.get('signup_restricted', lang, [n_wait_list])
+        return RateLimitExceededAPIErrorFormat(lang=lang, message=message).http_response()
+    else:
+        return None
+
 # User create
 @blueprint_accounts.route('/v1/users/create', methods=['POST'])
 @blueprint_accounts.route('/v1/<lang>/users/create', methods=['POST'])
@@ -215,6 +250,11 @@ def users_create(lang, lang_name):
         message = locale.get('user_save_error', lang)
         logger.error(red({message}))
         return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+
+    # Check signup restriction
+    result_restriction = check_signup_restriction(lang, user)
+    if result_restriction:
+        return result_restriction
 
     # Send verification mail
     try:
@@ -274,6 +314,7 @@ def users_create_googleoauth(email, google_id, lang, lang_name):
             return UnexpectedAPIErrorFormat(lang=lang, message="task schedule faild").http_response()
         MaterialVectorDB.create_collection(user)
     except UserAlreadyExistsError:
+        logger.error(red(f'user with {email} already exists.'))
         return UserAlreadyExistsErrorFormat(lang=lang).http_response()
     except CeleryError as e:
         logger.error(red({str(e)}))
@@ -283,6 +324,11 @@ def users_create_googleoauth(email, google_id, lang, lang_name):
         message = locale.get('user_save_error', lang)
         logger.error(red({message}))
         return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+
+    # Check signup restriction
+    result_restriction = check_signup_restriction(lang, user)
+    if result_restriction:
+        return result_restriction
 
     # Send verification mail
     try:
@@ -334,6 +380,7 @@ def users_verify_code(user, lang, lang_name):
             message = locale.get('code_verification_success', lang)  # Assuming you have such a localization key
             return OKAPISuccessFormat(message=message, data=user.response_json()).http_response()
     except UserAlreadyExistsError as e:
+        logger.error(red(f"User {user.email} already exist: {e}"))
         return UserAlreadyExistsErrorFormat(lang=lang).http_response()
     except VerificationCodeExpiredError as ve:
         logger.error(red(f"Verification code expired: {ve}"))
@@ -378,6 +425,21 @@ def users_verification_resend(user, lang, lang_name):
     return AcceptedAPISuccessFormat(
         message=locale.get('verification_mail_send_success', lang),
         data=user.response_json()).http_response()
+
+    
+def check_signin_restriction(lang: str, user: User):
+    try:
+        general_status, created = GeneralSystemStatus.get_or_create()
+    except Except as e:
+        logger.error(red(f'Failed to fetch GeneralSystemStatus. skip restriction check. : {e}'))
+    if user.email in general_status.wait_list_emails:
+        logger.info(magenta(f'Now signup is restricted. Send RateLimitExceededAPIError (429).'))
+        message = locale.get('signin_restricted', lang)
+        return RateLimitExceededAPIErrorFormat(lang=lang, message=message).http_response()
+    else:
+        logger.info(f'{user.email} not in the wait list {general_status.wait_list_emails}.')
+        return None
+
 # Signin
 @blueprint_accounts.route('/v1/users/signin', methods=['POST'])
 @blueprint_accounts.route('/v1/<lang>/users/signin', methods=['POST'])
@@ -404,6 +466,11 @@ def users_signin(lang, lang_name):
     except UserQueryError:
         message = locale.get('user_find_single_failed', lang)
         return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+
+    # Check signup restriction
+    result_restriction = check_signin_restriction(lang, user)
+    if result_restriction:
+        return result_restriction
 
     # Check password
     try:
@@ -445,6 +512,11 @@ def users_signin_googleoauth(email, google_id, lang, lang_name):
     except UserQueryError:
         message = locale.get('user_find_single_failed', lang)
         return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+
+    # Check signup restriction
+    result_restriction = check_signin_restriction(lang, user)
+    if result_restriction:
+        return result_restriction
 
     # Return Response
     Session.start(str(user.id))

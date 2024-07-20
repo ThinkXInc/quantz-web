@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 });
 
 const SignupPageIndex = Object.freeze({
-    email: 0, code: 1, verified: 2, origin: 3, card: 4, limit: 5, terms: 6, complete: 7
+    email: 0, code: 1, verified: 2, origin: 3, card: 4, limit: 5, terms: 6, complete: 7, restricted: 8
 })
 
 class Signup {
@@ -56,6 +56,9 @@ class Signup {
             case 'complete':
                 this.pageView.show(SignupPageIndex.complete);
                 break;
+            case 'restricted':
+                this.pageView.show(SignupPageIndex.restricted);
+                break;
             default:
                 break;
         }
@@ -65,7 +68,7 @@ class Signup {
     setupView() {
         const pageView = new PageView({
             id: 'signupPageView',
-            numPages: 8
+            numPages: 9
         })
         this.pageView = pageView;
 
@@ -108,6 +111,10 @@ class Signup {
         // Page 8: Complete
         this.createCompletePage() 
         this.handleEventCompletePage()
+
+        // Page 9: Restricted
+        this.createRestrictedPage()
+        this.handleEventRestrictedPage()
 
         this.pageView.mount('#signup');
     }
@@ -404,6 +411,12 @@ class Signup {
                             const { message } = error;
                             this.emailForm.alert(message);
                         }
+                        if (error.code == 429) {
+                            // signup restriction
+                            const { message } = error;
+                            this.setRestrictedMessage(message);
+                            this.pageView.show(SignupPageIndex.restricted);
+                        }
                         if (error.code == 500) {
                             const { message } = error;
                             this.$emailPageAlert.style.display = 'block';
@@ -434,7 +447,7 @@ class Signup {
             },
             (error) => {
                 if (error && error.code) {
-                    console.log(`[error] code:${error.code} reason:${error.reason}`);
+                    console.log(`[error] code:${error.code} reason: ${error.reason}`);
                     if (error.code == 400 || error.code == 401 || error.code == 403) {
                         // validation error || token invalid
                         const { errors } = error; 
@@ -449,6 +462,13 @@ class Signup {
                                 }
                             });
                         }
+                    }
+                    else if (error.code == 429) {
+                        // signup restriction
+                        const { message } = error;
+                        this.setRestrictedMessage(message);
+                        console.log('go to restricted page.')
+                        this.pageView.show(SignupPageIndex.restricted);
                     }
                     else if (error.code == 409 || error.code == 500) {
                         // already exists error || internal server error
@@ -1318,6 +1338,53 @@ class Signup {
             window.location.href = `/v1/${lang}/home`;
         })
     }
+
+    createRestrictedPage() {
+        const pageIndex = SignupPageIndex.restricted;
+        this.pageView.pages[pageIndex].container.classList.add('RestrictedPage');
+
+        this.appendLogo(this.pageView, pageIndex);
+
+        const $restrictedMessage = document.createElement('h4');
+        $restrictedMessage.classList.add('restrictedMessage');
+        $restrictedMessage.textContent = locale.get('signup_restricted', lang);  // default message (must be overridden)
+
+        const $restrictedPageBackToTopButton = document.createElement('button');
+        $restrictedPageBackToTopButton.classList.add('backToTopButton');
+        $restrictedPageBackToTopButton.textContent = locale.get('back_to_top', lang);
+
+        const $restrictedPageAlert = document.createElement('p');
+        $restrictedPageAlert.id = 'restrictedPageAlert';
+        $restrictedPageAlert.classList.add('pageAlert');
+        $restrictedPageAlert.style.display = 'none';
+
+        this.$restrictedPageBackToTopButton = $restrictedPageBackToTopButton;
+        this.$restrictedPageAlert = $restrictedPageAlert;
+        this.$restrictedMessage = $restrictedMessage;
+
+        const $container = document.createElement('div');
+        $container.classList.add('container');
+
+        //$container.appendChild($restrictedMark);
+        $container.appendChild($restrictedMessage);
+        $container.appendChild($restrictedPageBackToTopButton);
+        $container.appendChild($restrictedPageAlert);
+       
+        this.pageView.appendChild($container, pageIndex)
+    }
+
+    setRestrictedMessage(message) {
+        this.$restrictedMessage.textContent = message;
+    }
+
+    handleEventRestrictedPage() {
+        const _this = this;
+        this.$restrictedPageBackToTopButton.addEventListener('click', ()=> {
+            console.log('Redirecting to top page...');
+            window.location.href = `/${lang}`;
+        })
+    }
+
 
     // helpers
 

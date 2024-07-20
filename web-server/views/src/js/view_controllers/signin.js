@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 });
 
 const SigninPageIndex = Object.freeze({
-    login: 0, forgot: 1, sent: 2, reset: 3, done: 4
+    login: 0, forgot: 1, sent: 2, reset: 3, done: 4, restricted: 5
 })
 
 class Signin {
@@ -50,6 +50,9 @@ class Signin {
             case 'done':
                 this.pageView.show(SigninPageIndex.done)
                 break;
+            case 'restricted':
+                this.pageView.show(SigninPageIndex.restricted)
+                break;
             default:
                 break;
         }
@@ -58,7 +61,7 @@ class Signin {
     setupView() {
         const pageView = new PageView({
             id: 'signinPageView',
-            numPages: 5
+            numPages: 6
         })
         this.pageView = pageView;
 
@@ -85,6 +88,10 @@ class Signin {
         // Page 5: Done
         this.createResetDonePage() 
         this.handleEventResetDonePage()
+
+        // Page 6: Restricted
+        this.createRestrictedPage()
+        this.handleEventRestrictedPage()
 
         this.pageView.mount('#signin');
     }
@@ -326,6 +333,10 @@ class Signin {
                         } else if (error.code == 409 || error.code == 404) {
                             const { message } = error;
                             this.emailForm.alert(message);
+                        } else if (error.code == 429) {
+                            // signup restriction
+                            const { message } = error;
+                            this.pageView.show(SigninPageIndex.restricted);
                         } else if (field_name) {
                             switch (field_name) {
                                 case 'email':
@@ -382,6 +393,10 @@ class Signin {
                     } else if (error.code == 409 || error.code == 404) {
                         const { message } = error;
                         this.emailForm.alert(message);
+                    } else if (error.code == 429) {
+                        // signup restriction
+                        const { message } = error;
+                        this.pageView.show(SigninPageIndex.restricted);
                     } else if (error.code == 500) {
                         // already exists error || internal server error
                         const { message } = error;
@@ -831,6 +846,49 @@ class Signin {
         })
 
     }
+
+    createRestrictedPage() {
+        const pageIndex = SigninPageIndex.restricted;
+        this.pageView.pages[pageIndex].container.classList.add('RestrictedPage');
+
+        this.appendLogo(this.pageView, pageIndex);
+
+        const $restrictedMessage = document.createElement('h4');
+        $restrictedMessage.classList.add('restrictedMessage');
+        $restrictedMessage.textContent = locale.get('signin_restricted', lang);
+
+        const $restrictedPageBackToTopButton = document.createElement('button');
+        $restrictedPageBackToTopButton.classList.add('backToTopButton');
+        $restrictedPageBackToTopButton.textContent = locale.get('back_to_top', lang);
+
+        const $restrictedPageAlert = document.createElement('p');
+        $restrictedPageAlert.id = 'restrictedPageAlert';
+        $restrictedPageAlert.classList.add('pageAlert');
+        $restrictedPageAlert.style.display = 'none';
+
+        this.$restrictedPageBackToTopButton = $restrictedPageBackToTopButton;
+        this.$restrictedPageAlert = $restrictedPageAlert;
+        this.$restrictedMessage = $restrictedMessage;
+
+        const $container = document.createElement('div');
+        $container.classList.add('container');
+
+        //$container.appendChild($restrictedMark);
+        $container.appendChild($restrictedMessage);
+        $container.appendChild($restrictedPageBackToTopButton);
+        $container.appendChild($restrictedPageAlert);
+       
+        this.pageView.appendChild($container, pageIndex)
+    }
+
+    handleEventRestrictedPage() {
+        const _this = this;
+        this.$restrictedPageBackToTopButton.addEventListener('click', ()=> {
+            console.log('Redirecting to top page...');
+            window.location.href = `/${lang}`;
+        })
+    }
+
 
     // helpers
 

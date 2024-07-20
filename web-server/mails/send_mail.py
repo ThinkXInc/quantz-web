@@ -413,15 +413,17 @@ def send_added_to_wait_list_email(general_status: GeneralSystemStatus, user: Use
         html_content = render_template(
             'html/added_to_wait_list.html',
             subject=subject,
-            body1=locale.get('added_to_wait_list_body1', lang, [n_wait_list]),
-            body2=locale.get('added_to_wait_list_body2', lang),
+            body1=locale.get('added_to_wait_list_body1', lang),
+            body2=locale.get('added_to_wait_list_body2', lang, [n_wait_list]),
+            body3=locale.get('added_to_wait_list_body3', lang),
             team=locale.get('team', lang)
             )
         text_content = render_template(
             'plain/added_to_wait_list.txt',
             subject=subject,
-            body1=locale.get('added_to_wait_list_body1', lang, [n_wait_list]),
-            body2=locale.get('added_to_wait_list_body2', lang),
+            body1=locale.get('added_to_wait_list_body1', lang),
+            body2=locale.get('added_to_wait_list_body2', lang, [n_wait_list]),
+            body3=locale.get('added_to_wait_list_body3', lang),
             team=locale.get('team', lang)
             )
         try:

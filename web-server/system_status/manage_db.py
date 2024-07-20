@@ -30,7 +30,7 @@ from models.data.chatdata import Chatdata
 # GeneralSystemStatus
 from system_status.models.system_status import GeneralSystemStatus
 
-def update_general_status(restricted=None, email=None):
+def update_general_status(restricted=None, email=None, pop_wait_list=None):
     try:
         general_status, created = GeneralSystemStatus.get_or_create()
         if restricted is not None:
@@ -40,6 +40,9 @@ def update_general_status(restricted=None, email=None):
         if email:
             general_status.wait_list_emails.append(email)
             logger.info(green(f"Email {email} added to wait list."))
+        if pop_wait_list:
+            emails_popped = [general_status.wait_list_emails.pop(0) for _ in range(min(pop_wait_list, len(general_status.wait_list_emails)))]
+            logger.info(green(f"Popped emails from wait list: {emails_popped}"))
         general_status.save()
     except Exception as e:
         logger.error(red(f"Failed to update General System Status: {str(e)}"))
@@ -92,6 +95,7 @@ def main():
     parser.add_argument('--is_signup_restricted', type=str, choices=['true', 'false'], help='Set signup restriction status')
     parser.add_argument('--get', action='store_true', help='Get current General System Status')
     parser.add_argument('--wait_list_emails', type=str, help='Email to append to wait list')
+    parser.add_argument('--pop_wait_list', type=int, help='Number of emails to pop from the wait list')
 
     args = parser.parse_args()
 
@@ -105,6 +109,8 @@ def main():
             update_general_status(restricted=(args.is_signup_restricted == 'true'))
         elif args.wait_list_emails:
             update_general_status(email=args.wait_list_emails)
+        elif args.pop_wait_list:
+            update_general_status(pop_wait_list=args.pop_wait_list)
         elif args.get:
             pass
         else:

@@ -5,7 +5,6 @@ import pytz
 import sys
 import argparse
 
-DEBUG = True
 
 # Logger
 sys.path.append('/src/quantz-web/web-server') 
@@ -40,6 +39,8 @@ MAIL_REPLYTO = MAIL_SUPPORT
 AWS_ACCESS_KEY_ID = Config.AWS_ACCESS_KEY_ID
 AWS_SECRET_ACCESS_KEY = Config.AWS_SECRET_ACCESS_KEY
 AWS_DEFAULT_REGION = Config.AWS_DEFAULT_REGION
+
+DEBUG = False
 
 # Mail
 from libcommon.mail import Mail, MailSendError
@@ -344,7 +345,11 @@ def switch_restrict_signup(restrict=True, dryrun=False):
     except Exception as e:
         logger.error(red(f"Failed to update signup restrictions: {str(e)}"))
 
-def release_users_from_waiting_list(active_users_count: int, dryrun=False):
+def release_users_from_waiting_list(active_users_count: int, dryrun=False) -> int:
+    """
+    returns: 
+        - n_wait_list (int) : number of the rest of wait list 
+    """
     logger.info(bold(f'Calculate users released from waiting list.'))
     try:
         general_status, _ = GeneralSystemStatus.get_or_create()
@@ -402,6 +407,8 @@ def release_users_from_waiting_list(active_users_count: int, dryrun=False):
             except Exception as e:
                logger.error(red(f"Failed to save GeneralStatus: {str(e)}"))
 
+        return len(general_status.wait_list_emails)
+
        
 def check_recent_congestions(active_users_count: int, dryrun=False):
     """Check recent congestions and switch the signup restriction based on the result."""
@@ -409,12 +416,14 @@ def check_recent_congestions(active_users_count: int, dryrun=False):
     logger.info(bold('Checking for recent congestions to determine signup restrictions...'))
     daily_system_statuses_with_congestion = congestion_count(last_days=7)
     if daily_system_statuses_with_congestion.count() == 0 or DEBUG:
-        switch_restrict_signup(restrict=False, dryrun=dryrun)
         logger.info(green("No congestions in the last 7 days. Disable signup restrictions."))
-        release_users_from_waiting_list(active_users_count, dryrun=dryrun)
+        n_wait_list = release_users_from_waiting_list(active_users_count, dryrun=dryrun)
+        if n_wait_list == 0:
+            logger.info(cyan("Wait list became empty. Disable restriction."))
+            switch_restrict_signup(restrict=False, dryrun=dryrun)
     else:
         #switch_restrict_signup(restrict=True, dryrun=dryrun)  # don't set True here
-        logger.info(yellow("Congestions detected in the last 7 days. Not disalbe restriction."))
+        logger.info(yellow("Congestions detected in the last 7 days. Not release wait list."))
     return daily_system_statuses_with_congestion
 
 def parse_arguments():

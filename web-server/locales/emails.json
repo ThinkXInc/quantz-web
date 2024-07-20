@@ -252,6 +252,15 @@
         "ru": ""
     },
     "added_to_wait_list_body1": {
+        "en": "We apologize, but due to high demand, we are currently limiting new registrations.",
+        "ja": "申し訳ありません、現在使用過多のため、新規登録に制限を設けております。",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "added_to_wait_list_body2": {
         "ja": "Quantzではユーザーにとって常に快適な応答速度を提供できるよう、自動登録制限を設けています。\nあなたの現在の待ちリスト内の順番は $0 番です。\n使用スペースが空き次第、メールにてご連絡差し上げます。",
         "en": "Quantz has implemented an automatic registration limit to ensure a consistently comfortable response experience for all users.\nYour current position on the waiting list is number $0.\n\nWe will contact you via email as soon as space becomes available.",
         "zh": "",
@@ -260,7 +269,7 @@
         "ar": "",
         "ru": ""
     },
-    "added_to_wait_list_body2": {
+    "added_to_wait_list_body3": {
         "ja": "ご不憫をお掛けします。",
         "en": "Thank you for your patience.",
         "zh": "",

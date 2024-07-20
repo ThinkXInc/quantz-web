@@ -505,7 +505,7 @@ class User(MongoModel):
                     self.save()
                     return self
                 else:
-                    logger.error(f"Email conflict: {self.suspended_email} already registered with a different Google ID.")
+                    logger.error(red(f"Email conflict: {self.suspended_email} already registered with a different Google ID."))
                     raise UserAlreadyExistsError(f"User already exists with email: {self.suspended_email}")
             elif self.email:
                 logger.warning(yellow(f"User {self.email} already verified."))
