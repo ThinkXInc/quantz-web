@@ -2,145 +2,145 @@
     "top_main_title": {
         "en": "Turn Your Website Into a Sales Machine With the Simplest AI Voice Help Center",
         "ja": "世界で最もシンプルでクイックな音声AI、Quantzがあなたに代わって問い合わせに対応",
-        "zh": "",
-        "fr": "",
-        "es": "",
-        "ar": "",
-        "ru": ""
+        "zh": "利用最简单的AI语音帮助中心将您的网站转变成销售机器",
+        "fr": "Transformez votre site web en une machine à vendre avec le centre d'aide vocal AI le plus simple",
+        "es": "Convierte tu sitio web en una máquina de ventas con el centro de ayuda de voz AI más simple",
+        "ar": "حوّل موقعك إلى آلة بيع بمساعدة أبسط مركز مساعدة صوتي بالذكاء الاصطناعي",
+        "ru": "Превратите ваш сайт в продажную машину с помощью простейшего голосового AI центра помощи"
     },
     "top_main_subtitle": {
         "en": "Save time. Get more leads. Increase sales.",
         "ja": "あなたの時間を増やし、大事な仕事に集中させる。",
-        "zh": "",
-        "fr": "",
-        "es": "",
-        "ar": "",
-        "ru": ""
+        "zh": "节省时间。获得更多潜在客户。提升销售。",
+        "fr": "Économisez du temps. Obtenez plus de prospects. Augmentez les ventes.",
+        "es": "Ahorra tiempo. Consigue más clientes potenciales. Incrementa las ventas.",
+        "ar": "وفر الوقت. احصل على المزيد من العملاء المحتملين. زيادة المبيعات.",
+        "ru": "Экономьте время. Получайте больше клиентов. Увеличивайте продажи."
     },
     "top_main_try_label": {
         "en": "Get {} free credits when you sign up!",
         "ja": "今なら1ヶ月無料で試せる{}回分をプレゼント",
-        "zh": "",
-        "fr": "",
-        "es": "",
-        "ar": "",
-        "ru": ""
+        "zh": "注册即可获得{}次免费额度！",
+        "fr": "Obtenez {} crédits gratuits lors de votre inscription !",
+        "es": "¡Obtén {} créditos gratis al registrarte!",
+        "ar": "احصل على {} اعتمادات مجانية عند التسجيل!",
+        "ru": "Получите {} бесплатных кредитов при регистрации!"
     },
     "top_main_try_button": {
         "en": "Start Free Trial",
         "ja": "今すぐ無料で試してみる",
-        "zh": "",
-        "fr": "",
-        "es": "",
-        "ar": "",
-        "ru": ""
+        "zh": "开始免费试用",
+        "fr": "Commencez l'essai gratuit",
+        "es": "Iniciar prueba gratuita",
+        "ar": "بدء التجربة المجانية",
+        "ru": "Начать бесплатную пробную версию"
     },
     "top_step_title": {
         "en": "Set up your Voice AI in under 30 minutes.",
         "ja": "30分であなたのWebサイトに簡単に組み込める",
-        "zh": "",
-        "fr": "",
-        "es": "",
-        "ar": "",
-        "ru": ""
+        "zh": "在30分钟内设置您的语音AI。",
+        "fr": "Configurez votre AI vocal en moins de 30 minutes.",
+        "es": "Configura tu AI de voz en menos de 30 minutos.",
+        "ar": "قم بإعداد الذكاء الاصطناعي الصوتي في أقل من 30 دقيقة.",
+        "ru": "Настройте ваш голосовой AI за менее чем 30 минут."
     },
     "top_step_1": {
         "en": "Step 1",
         "ja": "ステップ1",
-        "zh": "",
-        "fr": "",
-        "es": "",
-        "ar": "",
-        "ru": ""
+        "zh": "步骤 1",
+        "fr": "Étape 1",
+        "es": "Paso 1",
+        "ar": "الخطوة 1",
+        "ru": "Шаг 1"
     },
     "top_step_1_desc": {
         "en": "Create an account, add a payment method, and set up usage limits.",
         "ja": "メールアドレスで登録、支払い方法、利用上限をセットアップ",
-        "zh": "",
-        "fr": "",
-        "es": "",
-        "ar": "",
-        "ru": ""
+        "zh": "创建账户，添加支付方式，并设置使用限额。",
+        "fr": "Créez un compte, ajoutez un moyen de paiement et définissez des limites d'utilisation.",
+        "es": "Crea una cuenta, añade un método de pago y establece límites de uso.",
+        "ar": "أنشئ حسابًا، أضف طريقة دفع واضبط حدود الاستخدام.",
+        "ru": "Создайте аккаунт, добавьте способ оплаты и установите лимиты использования."
     },
     "top_step_1_time": {
         "en": "5 min",
         "ja": "5分",
-        "zh": "",
-        "fr": "",
-        "es": "",
-        "ar": "",
-        "ru": ""
+        "zh": "5分钟",
+        "fr": "5 min",
+        "es": "5 min",
+        "ar": "5 دقائق",
+        "ru": "5 мин"
     },
     "top_step_2": {
         "en": "Step 2",
         "ja": "ステップ2",
-        "zh": "",
-        "fr": "",
-        "es": "",
-        "ar": "",
-        "ru": ""
+        "zh": "步骤 2",
+        "fr": "Étape 2",
+        "es": "Paso 2",
+        "ar": "الخطوة 2",
+        "ru": "Шаг 2"
     },
     "top_step_2_desc": {
         "en": "Collect relevant information about your business and paste it into Quantz.",
         "ja": "Quantzに教えるビジネスの説明をノートに書き込む",
-        "zh": "",
-        "fr": "",
-        "es": "",
-        "ar": "",
-        "ru": ""
+        "zh": "收集有关您的业务的相关信息，并粘贴到Quantz中。",
+        "fr": "Collectez les informations pertinentes sur votre entreprise et collez-les dans Quantz.",
+        "es": "Recopila información relevante sobre tu negocio y pégala en Quantz.",
+        "ar": "جمع المعلومات ذات الصلة حول عملك والصقها في Quantz.",
+        "ru": "Соберите актуальную информацию о вашем бизнесе и вставьте ее в Quantz."
     },
     "top_step_2_time": {
         "en": "10 min",
         "ja": "10分",
-        "zh": "",
-        "fr": "",
-        "es": "",
-        "ar": "",
-        "ru": ""
+        "zh": "10分钟",
+        "fr": "10 min",
+        "es": "10 min",
+        "ar": "10 دقائق",
+        "ru": "10 мин"
     },
     "top_step_3": {
         "en": "Step 3",
         "ja": "ステップ3",
-        "zh": "",
-        "fr": "",
-        "es": "",
-        "ar": "",
-        "ru": ""
+        "zh": "步骤 3",
+        "fr": "Étape 3",
+        "es": "Paso 3",
+        "ar": "الخطوة 3",
+        "ru": "Шаг 3"
     },
     "top_step_3_desc": {
         "en": "Copy and paste the HTML code snippet to add the Quantz button to your site.",
         "ja": "QuantzボタンのHTMLコードをコピーしてサイトに貼り付ける",
-        "zh": "",
-        "fr": "",
-        "es": "",
-        "ar": "",
-        "ru": ""
+        "zh": "复制并粘贴HTML代码片段，将Quantz按钮添加到您的网站。",
+        "fr": "Copiez et collez le morceau de code HTML pour ajouter le bouton Quantz à votre site.",
+        "es": "Copia y pega el fragmento de código HTML para añadir el botón de Quantz a tu sitio.",
+        "ar": "انسخ والصق قطعة الكود HTML لإضافة زر Quantz إلى موقعك.",
+        "ru": "Скопируйте и вставьте HTML-фрагмент, чтобы добавить кнопку Quantz на ваш сайт."
     },
     "top_step_3_time": {
         "en": "15 min",
         "ja": "15分",
-        "zh": "",
-        "fr": "",
-        "es": "",
-        "ar": "",
-        "ru": ""
+        "zh": "15分钟",
+        "fr": "15 min",
+        "es": "15 min",
+        "ar": "15 دقيقة",
+        "ru": "15 минут"
     },
     "top_demo_experience_1": {
         "en": "Experience Quantz as a user",
         "ja": "Quantzについて聞いてみてください",
-        "zh": "",
-        "fr": "",
-        "es": "",
-        "ar": "",
-        "ru": ""
+        "zh": "作为用户体验Quantz",
+        "fr": "Expérimentez Quantz en tant qu'utilisateur",
+        "es": "Experimenta Quantz como usuario",
+        "ar": "تجربة Quantz كمستخدم",
+        "ru": "Попробуйте Quantz в качестве пользователя"
     },
     "top_demo_experience_2": {
         "en": "Choose the button type to get started",
         "ja": "クリックして開始",
-        "zh": "",
-        "fr": "",
-        "es": "",
-        "ar": "",
-        "ru": ""
+        "zh": "选择按钮类型以开始",
+        "fr": "Choisissez le type de bouton pour commencer",
+        "es": "Elige el tipo de botón para empezar",
+        "ar": "اختر نوع الزر للبدء",
+        "ru": "Выберите тип кнопки, чтобы начать"
     }
 }
