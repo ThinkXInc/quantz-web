@@ -17,7 +17,7 @@ from mongoengine import (
     Document, StringField, EmailField, IntField, FloatField, ObjectIdField, ListField,
     BooleanField, DateTimeField, EmbeddedDocumentField, EmbeddedDocument,
     ReferenceField, ValidationError, Q, DoesNotExist, MultipleObjectsReturned,
-    NotUniqueError
+    NotUniqueError, CASCADE
 )
 from mongoengine.fields import DecimalField
 

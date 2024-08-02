@@ -3,23 +3,25 @@
   <head>
 	<meta charset=utf-8>
 	<meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
-	<title>Quantz</title>
+	<title>{{ metadata["title"] }}</title>
 	<meta name=Copyright content="ThinkX Inc." />
-	<meta name=viewport content="width=device-width, initial-scale=1">
-    <meta name=format-detection content="telephone=no">
-	<link rel="shortcut icon" href=/favicon.ico />
+	<meta name="title" content="{{ metadata['title'] }}" />
+	<meta name="author" content="ThinkX Inc." />
+	<meta name="description" content="{{ metadata['description'] }}" />
+	<meta name="keywords" content="{{ metadata['keywords'] }}" />
 
-	<meta name=twitter:card content=summary>
-	<meta name=twitter:site content=@Quantz>
-	<meta name=twitter:title content="Quantz Business">
-	<meta name=twitter:description content="">
-	<meta name=twitter:url content=https://quantz.thinkxinc.com>
 
-    <meta property=og:type content=website>
-    <meta property=og:title content=>
-    <meta property=og:description content=>
-    <meta property=og:url content=>
-    <meta property=og:image content=>
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:site" content="@QuantzAI">
+	<meta name="twitter:title" content="Quantz">
+	<meta name="twitter:description" content="{{ metadata['description'] }}">
+	<meta name="twitter:url" content="https://quantz.thinkxinc.com">
+
+  <meta property="og:type" content="website"> 
+  <meta property="og:title" content="Quantz">
+  <meta property="og:description" content="{{ metadata['description'] }}">
+  <meta property="og:url" content="https://quantz.thinkinc.com">
+  <meta property="og:image" content="https://quantz.thinkxinc.com/img/SNSImage.png">
 
     {% block head %}
     {% endblock %}

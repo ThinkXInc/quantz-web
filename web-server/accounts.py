@@ -54,10 +54,12 @@ from libcommon.web.regex_patterns import EMAIL_REGEX, PASSWORD_AT_LEAST_ONE_UPPE
 # Locale
 from libcommon.locale import Locale, COMMON_LOCALES_FILE_PATHS
 LOCALES_ROOT = Config.LOCALES_ROOT
+METADATA_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/metadata.json'
 ACCOUNTS_RESPONSES_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/accounts_responses.json'
 ACCOUNTS_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/accounts.json'
 EMAILS_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/emails.json'
 locale = Locale([
+    METADATA_LOCALE_FILE_PATH,
     EMAILS_LOCALE_FILE_PATH,
     ACCOUNTS_RESPONSES_LOCALE_FILE_PATH,
     ACCOUNTS_LOCALE_FILE_PATH,
@@ -122,7 +124,8 @@ def signup(lang, lang_name):
         lang_name=lang_name,
         free_call=FIRST_MONTH_FREE_CALL,
         unit_price=UNIT_PRICE_USD,
-        locale_json=locale.to_json_string())
+        locale_json=locale.to_json_string(),
+        metadata=locale.dict()["metadata_signup"][lang])
 
 @blueprint_accounts.route('/v1/signin', methods=['GET'])
 @blueprint_accounts.route('/v1/<lang>/signin', methods=['GET'])
@@ -135,7 +138,8 @@ def signin(lang, lang_name):
         lang=lang,
         lang_name=lang_name,
         locale_json=locale.to_json_string(),
-        redirect_url=redirect_url)
+        redirect_url=redirect_url,
+        metadata=locale.dict()["metadata_signin"][lang])
 
 @blueprint_accounts.route('/v1/logout', methods=['GET'])
 @blueprint_accounts.route('/v1/<lang>/logout', methods=['GET'])
@@ -153,7 +157,8 @@ def terms(lang, lang_name):
         f'terms/terms_{lang}.html',
         lang=lang,
         lang_name=lang_name,
-        locale_json=locale.to_json_string())
+        locale_json=locale.to_json_string(),
+        metadata=locale.dict()["metadata_terms"][lang])
 
 @blueprint_accounts.route('/users/flush', methods=['GET'])
 @requires_auth
@@ -172,6 +177,21 @@ def users_flush():
         logger.info(red('failed to flush {e}'))
         return UnexpectedAPIErrorFormat(lang="en", message=f"{e}").http_response()
 
+@blueprint_accounts.route('/users/delete', methods=['GET'])
+@requires_auth
+def users_delete():
+    try:
+        email = request.args.get('email')
+        if not email:
+            return {"error": "Email parameter is required."}, 400
+
+        from manage_mongodb import delete_user_by_email
+        delete_user_by_email(email)
+        logger.info(magenta(f'[IMPORTANT] user {email} deleted'))
+        return AcceptedAPISuccessFormat(message="user deleted", data={}).http_response()
+    except Exception as e:
+        logger.info(red('failed to delete {e}'))
+        return UnexpectedAPIErrorFormat(lang="en", message=f"{e}").http_response()
 
 def check_signup_restriction(lang: str, user: User):
     # Check signup restriction
@@ -825,7 +845,7 @@ def users_password_reset_send(lang, lang_name):
 #        return BadRequestAPIErrorFormat(lang=lang, message=message).http_response()
 
 # Password reset
-@blueprint_accounts.route('/v1/users/possword_reset/reset', methods=['POST'])
+@blueprint_accounts.route('/v1/users/password_reset/reset', methods=['POST'])
 @blueprint_accounts.route('/v1/<lang>/users/password_reset/reset', methods=['POST'])
 @language_wrapper
 @required_fields_check(['email', 'password', 'password_confirm', 'reset_code'])

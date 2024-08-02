@@ -1,0 +1,225 @@
+{
+    "metadata_top": {
+        "ja": {
+            "title": "Quantz",
+            "description": "Quantzは、あなたの代わりに顧客に応答する、最もシンプルなカスタム高速音声AI。プログラミング不要、30分で構築。あなたを大事な仕事に集中させる。",
+            "keywords": "Quantz, クオンツ, 音声AI, トップ, 高速, コールセンター, 問い合わせ, カスタマーサービス, ビジネス自動化, カスタマーサポート, ノーコード"
+        },
+        "en": {
+            "title": "Quantz",
+            "description": "Quantz—your lightning-fast voice AI 'alter ego'—responds to your customers on your behalf and frees you up for the really important things.",
+            "keywords": "Quantz, voice AI, lightning-fast, call center, inquiry, customer service, business automation, customer support, no code, no programming"
+        },
+        "zh": {
+            "title": "Quantz | 登录",
+            "description": "Quantz，为您的企业带来先进的语音AI技术。无需编程，30分钟即可部署，让AI成为您的语音'替身'，解放您的双手，专注于更重要的事务。",
+            "keywords": "Quantz, 语音AI, 闪电般的速度, 呼叫中心, 咨询, 客户服务, 企业自动化, 客户支持, 无代码"
+        },
+        "es": {
+            "title": "Quantz | Inicio",
+            "description": "Quantz democratiza la IA de voz de última generación. Los pequeños empresarios ahora pueden crear sus propios 'alter egos' de IA de voz rápidos por solo $10 al mes sin necesidad de programación.",
+            "keywords": "Quantz, IA de voz, ultrarrápido, centro de llamadas, consulta, servicio al cliente, automatización empresarial, soporte al cliente, sin código"
+        },
+        "fr": {
+            "title": "Quantz | Connexion",
+            "description": "Quantz, votre IA vocale ultra-rapide, répond à vos clients à votre place et vous libère pour les choses vraiment importantes. Aucune compétence en programmation requise, configuration en 30 minutes.",
+            "keywords": "Quantz, IA vocale, ultra-rapide, centre d'appel, demande, service client, automatisation des affaires, support client, sans code"
+        },
+        "ru": {
+            "title": "Quantz | Вход",
+            "description": "Quantz предоставляет передовую технологию голосового ИИ. Теперь малый бизнес может создать своих 'альтер эго' на базе голосового ИИ всего за $10 в месяц без навыков программирования.",
+            "keywords": "Quantz, голосовой ИИ, молниеносный, колл-центр, запрос, обслуживание клиентов, автоматизация бизнеса, поддержка клиентов, без программирования"
+        },
+        "ar": {
+            "title": "Quantz | تسجيل الدخول",
+            "description": "Quantz يديمقرط تقنية الذكاء الصناعي الصوتي. يمكن لأصحاب الأعمال الصغيرة الآن إنشاء بدائل الذكاء الصوتي الخاصة بهم بسرعة البرق مقابل $10 شهريًا فقط بدون مهارات برمجة.",
+            "keywords": "Quantz, الذكاء الصناعي الصوتي, سريع جداً, مركز الاتصال, استفسار, خدمة العملاء, أتمتة الأعمال, دعم العملاء, بدون برمجة"
+        }
+    },
+    "metadata_signup": {
+        "ja": {
+            "title": "Quantz | サインアップ",
+            "description": "世界で最もシンプルでクイックな音声AI Quantzにサインアップ。今すぐ無料で試す。1ヶ月無料で試せる50回分をプレゼント。",
+            "keywords": "Quantz, クオンツ, 音声AI, 登録, サインアップ, コールセンター, 問い合わせ, カスタマーサービス"
+        },
+        "en": {
+            "title": "Quantz | Sign up",
+            "description": "Start a free trial to see how Quantz can grow your business on your behalf.",
+            "keywords": "Quantz, Sign up, Register, voice AI, lightning-fast, call center, inquiry, customer service, business automation, customer support"
+        },
+        "zh": {
+            "title": "Quantz | 注册",
+            "description": "注册Quantz免费试用，探索如何轻松自动化您的客户服务。",
+            "keywords": "Quantz, 注册, 语音AI, 快速响应, 呼叫中心, 咨询, 客户服务, 企业自动化, 客户支持"
+        },
+        "es": {
+            "title": "Quantz | Registro",
+            "description": "Regístrate y prueba Quantz gratis para ver cómo puede transformar tu negocio.",
+            "keywords": "Quantz, Registro, Inscripción, IA de voz, respuesta rápida, centro de llamadas, consulta, servicio al cliente, automatización empresarial, soporte al cliente"
+        },
+        "fr": {
+            "title": "Quantz | Inscription",
+            "description": "Inscrivez-vous et essayez gratuitement Quantz pour découvrir comment il peut automatiser votre service clientèle.",
+            "keywords": "Quantz, Inscription, S'inscrire, IA vocale, ultra-rapide, centre d'appel, demande, service client, automatisation des affaires, support client"
+        },
+        "ru": {
+            "title": "Quantz | Регистрация",
+            "description": "Зарегистрируйтесь для бесплатной пробной версии Quantz и узнайте, как он может помочь вашему бизнесу.",
+            "keywords": "Quantz, Регистрация, Голосовой ИИ, молниеносный, колл-центр, запрос, обслуживание клиентов, автоматизация бизнеса, поддержка клиентов"
+        },
+        "ar": {
+            "title": "Quantz | التسجيل",
+            "description": "سجل لتجربة Quantz مجانًا واكتشف كيف يمكنه أتمتة خدمة العملاء لديك.",
+            "keywords": "Quantz, تسجيل, الذكاء الصناعي الصوتي, سريع الاستجابة, مركز الاتصال, استفسار, خدمة العملاء, أتمتة الأعمال, دعم العملاء"
+        }
+    },
+    "metadata_signin": {
+        "ja": {
+            "title": "Quantz | サインイン",
+            "description": "Quantzを使えば誰でも簡単に最先端の音声AIをプログラミングなしであなたのWebサイト上に構築できる。Quantzは最先端音声AIを民主化します。",
+            "keywords": "Quantz, クオンツ, 音声AI, ログイン, サインイン, コールセンター, 問い合わせ, カスタマーサービス"
+        },
+        "en": {
+            "title": "Quantz | Sign in",
+            "description": "Quantz democratizes state-of-the-art voice AI. Small business owners can now create their custom voice AI 'alter egos'—no programming or coding skills required.",
+            "keywords": "Quantz, Log in, Sign in, voice AI, lightning-fast, call center, inquiry, customer service, business automation, customer support"
+        },
+        "zh": {
+            "title": "Quantz | 登录",
+            "description": "Quantz使每个人都能在自己的网站上轻松构建先进的语音AI，无需编程。Quantz正在将先进的语音AI技术普及化。",
+            "keywords": "Quantz, 登录, 语音AI, 极速, 呼叫中心, 咨询, 客户服务, 企业自动化, 客户支持"
+        },
+        "es": {
+            "title": "Quantz | Inicio de sesión",
+            "description": "Quantz democratiza la inteligencia artificial de voz de última generación. Ahora, los pequeños empresarios pueden crear sus propios AI de voz 'alter egos' sin necesidad de programación.",
+            "keywords": "Quantz, Inicio de sesión, IA de voz, ultrarrápido, centro de llamadas, consulta, servicio al cliente, automatización empresarial, soporte al cliente"
+        },
+        "fr": {
+            "title": "Quantz | Connexion",
+            "description": "Quantz démocratise l'IA vocale de pointe. Les petits entrepreneurs peuvent maintenant créer leur propre IA vocale 'alter ego' sans compétences en programmation.",
+            "keywords": "Quantz, Connexion, IA vocale, ultra-rapide, centre d'appel, demande, service client, automatisation des affaires, support client"
+        },
+        "ru": {
+            "title": "Quantz | Вход",
+            "description": "Quantz делает доступным передовой голосовой ИИ для всех. Теперь малые предприятия могут создавать свои индивидуальные голосовые 'альтер эго' без навыков программирования.",
+            "keywords": "Quantz, Вход, голосовой ИИ, молниеносный, колл-центр, запрос, обслуживание клиентов, автоматизация бизнеса, поддержка клиентов"
+        },
+        "ar": {
+            "title": "Quantz | تسجيل الدخول",
+            "description": "Quantz يجعل تقنية الذكاء الصوتي المتقدمة متاحة للجميع. الآن، يمكن لأصحاب الأعمال الصغيرة إنشاء AI الصوتي 'الأنا البديل' الخاص بهم دون الحاجة إلى مهارات برمجة.",
+            "keywords": "Quantz, تسجيل الدخول, الذكاء الصوتي, سريع جداً, مركز الاتصال, استفسار, خدمة العملاء, أتمتة الأعمال, دعم العملاء"
+        }
+    },
+    "metadata_home": {
+        "ja": {
+            "title": "Quantz | ホーム",
+            "description": "コーディングなし、30分であなたのWebサイトにカスタム音声AIをセットアップ完了。",
+            "keywords": "Quantz, クオンツ, 音声AI, ホーム, 学習, 知識, コールセンター, 問い合わせ, カスタマーサービス"
+        },
+        "en": {
+            "title": "Quantz | Home",
+            "description": "Adds some business details and FAQs, adjusts the button design to fit your brand - and gets a custom-made AI voice clone in under 30 minutes.",
+            "keywords": "Quantz, Home, voice AI, lightning-fast, call center, inquiry, customer service, business automation, customer support"
+        },
+        "zh": {
+            "title": "Quantz | 首页",
+            "description": "在30分钟内，无需编程即可在您的网站上部署定制的语音AI。",
+            "keywords": "Quantz, 首页, 语音AI, 快速, 呼叫中心, 咨询, 客户服务, 企业自动化, 客户支持"
+        },
+        "es": {
+            "title": "Quantz | Inicio",
+            "description": "Añade detalles de tu negocio y preguntas frecuentes, ajusta el diseño de botones para que coincida con tu marca y obtén un clon de voz AI personalizado en menos de 30 minutos.",
+            "keywords": "Quantz, Inicio, IA de voz, ultrarrápido, centro de llamadas, consulta, servicio al cliente, automatización empresarial, soporte al cliente"
+        },
+        "fr": {
+            "title": "Quantz | Accueil",
+            "description": "Ajoutez des détails commerciaux et des FAQ, ajustez la conception des boutons pour qu'ils correspondent à votre marque et obtenez un clone vocal AI personnalisé en moins de 30 minutes.",
+            "keywords": "Quantz, Accueil, IA vocale, ultra-rapide, centre d'appel, demande, service client, automatisation des affaires, support client"
+        },
+        "ru": {
+            "title": "Quantz | Главная",
+            "description": "Добавьте информацию о вашем бизнесе и часто задаваемые вопросы, настройте дизайн кнопок под ваш бренд и получите персонализированный голосовой клон AI менее чем за 30 минут.",
+            "keywords": "Quantz, Главная, голосовой ИИ, молниеносный, колл-центр, запрос, обслуживание клиентов, автоматизация бизнеса, поддержка клиентов"
+        },
+        "ar": {
+            "title": "Quantz | الرئيسية",
+            "description": "أضف تفاصيل عملك وأسئلة متكررة، واضبط تصميم الأزرار ليتناسب مع علامتك التجارية واحصل على نسخة صوتية AI مخصصة في أقل من 30 دقيقة.",
+            "keywords": "Quantz, الرئيسية, AI الصوتي, سريع جداً, مركز الاتصال, استفسار, خدمة العملاء, أتمتة الأعمال, دعم العملاء"
+        }
+    },
+    "metadata_privacy": {
+        "ja": {
+            "title": "Quantz | プライバシーポリシー",
+            "description": "独自の音声エンジン、全てのモデルが専用のスーパーコンピューター上で動作し、大事な会話データの第三者APIへの露出から守る、最高レベルのプライバシー。",
+            "keywords": "Quantz, クオンツ, 音声AI, プライバシーポリシー, コールセンター, 問い合わせ, カスタマーサービス"
+        },
+        "en": {
+            "title": "Quantz | Privacy Policy",
+            "description": "We use our proprietary voice engine technology where all models run inside our own supercomputers. This provides the highest level of data security as no conversation details will be shared with any third parties.",
+            "keywords": "Quantz, Privacy Policy, voice AI, lightning-fast, call center, inquiry, customer service, business automation, customer support"
+        },
+        "zh": {
+            "title": "Quantz | 隐私政策",
+            "description": "我们采用自主研发的语音引擎技术，所有模型均在我们自有的超级计算机内运行，确保不会与任何第三方分享对话数据，提供最高级别的数据安全保护。",
+            "keywords": "Quantz, 隐私政策, 语音AI, 高速, 呼叫中心, 咨询, 客户服务, 企业自动化, 客户支持"
+        },
+        "es": {
+            "title": "Quantz | Política de Privacidad",
+            "description": "Utilizamos nuestra propia tecnología de motor de voz, donde todos los modelos operan dentro de nuestros supercomputadores. Esto asegura el máximo nivel de seguridad de los datos, ya que no se compartirán detalles de las conversaciones con terceros.",
+            "keywords": "Quantz, Política de Privacidad, IA de voz, ultrarrápida, centro de llamadas, consulta, servicio al cliente, automatización empresarial, soporte al cliente"
+        },
+        "fr": {
+            "title": "Quantz | Politique de Confidentialité",
+            "description": "Nous utilisons notre propre technologie de moteur vocal, où tous les modèles fonctionnent au sein de nos superordinateurs. Cela garantit le plus haut niveau de sécurité des données, sans partage des détails des conversations avec des tiers.",
+            "keywords": "Quantz, Politique de Confidentialité, IA vocale, ultra-rapide, centre d'appel, demande, service client, automatisation des affaires, support client"
+        },
+        "ru": {
+            "title": "Quantz | Политика Конфиденциальности",
+            "description": "Мы используем собственные технологии голосового двигателя, все модели работают внутри наших суперкомпьютеров. Это обеспечивает высочайший уровень безопасности данных, поскольку детали разговоров не передаются третьим сторонам.",
+            "keywords": "Quantz, Политика Конфиденциальности, голосовой ИИ, молниеносный, колл-центр, запрос, обслуживание клиентов, автоматизация бизнеса, поддержка клиентов"
+        },
+        "ar": {
+            "title": "Quantz | سياسة الخصوصية",
+            "description": "نستخدم تكنولوجيا محرك الصوت الخاص بنا حيث تعمل جميع النماذج داخل أجهزة الكمبيوتر الخارقة الخاصة بنا. هذا يوفر أعلى مستوى من أمان البيانات حيث لا يتم مشاركة تفاصيل المحادثات مع أي أطراف ثالثة.",
+            "keywords": "Quantz, سياسة الخصوصية, الذكاء الصوتي السريع, مركز الاتصال, الاستفسار, خدمة العملاء, أتمتة الأعمال, دعم العملاء"
+        }
+    },
+    "metadata_terms": {
+        "ja": {
+            "title": "Quantz | 利用規約",
+            "description": "Quantz利用規約",
+            "keywords": "Quantz, クオンツ, 音声AI, 利用規約, コールセンター, 問い合わせ, カスタマーサービス"
+        },
+        "en": {
+            "title": "Quantz | Terms of Service",
+            "description": "Business Users can embed the provided HTML code on their site to place the Quantz button at any location, enabling instant voice communication with End Users. ",
+            "keywords": "Quantz, Terms of Service, voice AI, lightning-fast, call center, inquiry, customer service, business automation, customer support"
+        },
+        "zh": {
+            "title": "",
+            "description": "",
+            "keywords": ""
+        },
+        "es": {
+            "title": "",
+            "description": "",
+            "keywords": ""
+        },
+        "fr": {
+            "title": "",
+            "description": "",
+            "keywords": ""
+        },
+        "ru": {
+            "title": "",
+            "description": "",
+            "keywords": ""
+        },
+        "ar": {
+            "title": "",
+            "description": "",
+            "keywords": ""
+        }
+ 
+    }
+}

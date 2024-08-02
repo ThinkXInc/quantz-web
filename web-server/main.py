@@ -45,6 +45,7 @@ from libcommon.web.flask_helpers import language_wrapper, content_type_check_jso
 # Local files
 COMMON_LOCALES_ROOT = join(abspath(__file__), 'libcommon/locales')
 LOCALES_ROOT = Config.LOCALES_ROOT
+METADATA_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/metadata.json'
 TOP_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/top.json'
 HEADER_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/header.json'
 FOOTER_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/footer.json'
@@ -53,6 +54,7 @@ SETTINGS_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/settings.json'
 MATERIALS_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/materials.json'
 MATERIALS_RESPONSES_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/materials_responses.json'
 locale = Locale([
+    METADATA_LOCALE_FILE_PATH,
     ERROR_PAGES_LOCALE_FILE_PATH,
     HEADER_LOCALE_FILE_PATH,
     FOOTER_LOCALE_FILE_PATH,
@@ -103,7 +105,8 @@ def top_handler(lang, lang_name):
         free_call=FIRST_MONTH_FREE_CALL,
         unit_price=UNIT_PRICE_USD,
         locale_json=locale.to_json_string(),
-        locale_dict=locale.dict())
+        locale_dict=locale.dict(),
+        metadata=locale.dict()["metadata_top"][lang])
 
 # get started
 @app.route('/<lang>/getstarted')
@@ -129,7 +132,8 @@ def terms(lang, lang_name):
         lang=lang,
         lang_name=lang_name,
         terms_file_name=terms_file_name,
-        locale_dict=locale.dict())
+        locale_dict=locale.dict(),
+        metadata=locale.dict()["metadata_terms"][lang])
 
 @app.route('/terms/agreement')
 @app.route('/<lang>/terms/agreement')
@@ -140,7 +144,8 @@ def terms_agreement(lang, lang_name):
         template_file_name,
         lang=lang,
         lang_name=lang_name,
-        locale_dict=locale.dict())
+        locale_dict=locale.dict(),
+        metadata=locale.dict()["metadata_terms"][lang])
 
 @app.route('/llama3_agreement')
 @language_wrapper
@@ -152,8 +157,8 @@ def llama3_agreement(lang, lang_name):
         lang=lang,
         lang_name=lang_name,
         terms_file_name=terms_file_name,
-        locale_dict=locale.dict())
-
+        locale_dict=locale.dict(),
+        metadata=locale.dict()["metadata_terms"][lang])
        
 
 # Privacy Policy
@@ -167,7 +172,8 @@ def privacy(lang, lang_name):
         mail_support=MAIL_SUPPORT,
         lang=lang,
         lang_name=lang_name,
-        locale_dict=locale.dict())
+        locale_dict=locale.dict(),
+        metadata=locale.dict()["metadata_privacy"][lang])
 
 # Commercial transactions info
 @app.route('/transaction_info')
@@ -180,7 +186,8 @@ def transaction_info(lang, lang_name):
         mail_support=MAIL_SUPPORT,
         lang=lang,
         lang_name=lang_name,
-        locale_dict=locale.dict())
+        locale_dict=locale.dict(),
+        metadata=locale.dict()["metadata_privacy"][lang])
 
 # User
 @app.route('/v1/<lang>/user')

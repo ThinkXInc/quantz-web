@@ -44,10 +44,12 @@ from libcommon.language import Language
 # Local files
 from libcommon.locale import Locale, COMMON_LOCALES_FILE_PATHS
 LOCALES_ROOT = Config.LOCALES_ROOT
+METADATA_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/metadata.json'
 SETTINGS_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/settings.json'
 MATERIALS_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/materials.json'
 MATERIALS_RESPONSES_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/materials_responses.json'
 locale = Locale([
+    METADATA_LOCALE_FILE_PATH,
     SETTINGS_LOCALE_FILE_PATH,
     MATERIALS_LOCALE_FILE_PATH,
     MATERIALS_RESPONSES_LOCALE_FILE_PATH] + COMMON_LOCALES_FILE_PATHS
@@ -97,7 +99,8 @@ def home(user, lang, lang_name):
         locale_json=locale.to_json_string(),
         unit_price=UNIT_PRICE_USD,
         settings_menu_title=locale.get('settings_menu_title', lang),
-        logout_menu_title=locale.get('logout_menu_title', lang))
+        logout_menu_title=locale.get('logout_menu_title', lang),
+        metadata=locale.dict()["metadata_home"][lang])
 
 # Material list
 @blueprint_materials.route('/v1/<lang>/materials/list', methods=['GET'])
