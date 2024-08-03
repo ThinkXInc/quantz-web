@@ -250,7 +250,8 @@ def page_not_found(error, lang, lang_name):
     logger.error(red(f"404 Page Not Found: {request.url}"))
     return render_template(
         '/errors/404.html',
-        message=locale.get("404", lang)), 404
+        message=locale.get("404", lang),
+        metadata=locale.dict()["metadata_top"][lang]), 404
 
 @app.errorhandler(500)
 @language_wrapper

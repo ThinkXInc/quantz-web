@@ -196,6 +196,43 @@
             "keywords": "Quantz, Terms of Service, voice AI, lightning-fast, call center, inquiry, customer service, business automation, customer support"
         },
         "zh": {
+            "title": "Quantz | 服务条款",
+            "description": "商业用户可以将提供的HTML代码嵌入到自己的网站中，任意位置放置Quantz按钮，实现与终端用户的即时语音通讯。",
+            "keywords": "Quantz, 服务条款, 语音AI, 快速响应, 呼叫中心, 咨询, 客户服务, 企业自动化, 客户支持"
+        },
+        "es": {
+            "title": "Quantz | Términos de Servicio",
+            "description": "Los usuarios empresariales pueden incorporar el código HTML proporcionado en su sitio para colocar el botón de Quantz en cualquier lugar, permitiendo la comunicación de voz instantánea con los usuarios finales.",
+            "keywords": "Quantz, Términos de Servicio, IA de voz, ultrarrápida, centro de llamadas, consulta, servicio al cliente, automatización empresarial, soporte al cliente"
+        },
+        "fr": {
+            "title": "Quantz | Conditions d'Utilisation",
+            "description": "Les utilisateurs professionnels peuvent intégrer le code HTML fourni sur leur site pour placer le bouton Quantz où ils le souhaitent, permettant ainsi une communication vocale instantanée avec les utilisateurs finaux.",
+            "keywords": "Quantz, Conditions d'Utilisation, IA vocale, ultra-rapide, centre d'appel, demande, service client, automatisation des affaires, support client"
+        },
+        "ru": {
+            "title": "Quantz | Условия использования",
+            "description": "Бизнес-пользователи могут встроить предоставленный HTML-код на свой сайт, чтобы разместить кнопку Quantz в любом месте, что позволит осуществлять мгновенное голосовое общение с конечными пользователями.",
+            "keywords": "Quantz, Условия использования, голосовой ИИ, молниеносный, колл-центр, запрос, обслуживание клиентов, автоматизация бизнеса, поддержка клиентов"
+        },
+        "ar": {
+            "title": "Quantz | شروط الخدمة",
+            "description": "يمكن للمستخدمين التجاريين تضمين الرمز البرمجي HTML المقدم في مواقعهم لوضع زر Quantz في أي مكان، مما يمكن من التواصل الصوتي الفوري مع المستخدمين النهائيين.",
+            "keywords": "Quantz, شروط الخدمة, الذكاء الصوتي, سريع جداً, مركز الاتصال, استفسار, خدمة العملاء, أتمتة الأعمال, دعم العملاء"
+        }
+    },
+    "metadata_jessicas": {
+        "ja": {
+            "title": "Jessica's",
+            "description": "",
+            "keywords": ""
+        },
+        "en": {
+            "title": "Jessica's",
+            "description": "",
+            "keywords": ""
+        },
+        "zh": {
             "title": "",
             "description": "",
             "keywords": ""
@@ -220,6 +257,5 @@
             "description": "",
             "keywords": ""
         }
- 
     }
 }
