@@ -175,6 +175,7 @@ class MaterialList extends TableView {
             , insertCellIndex, delay, (newCell)=> {
                 newCell.updateTitle(title)
                 this.selectCellAtIndex(newCell.index, newCell);
+                this.toggleButtonInteractionModeAtIndex(newCell.index, false);
             });
     }
 
