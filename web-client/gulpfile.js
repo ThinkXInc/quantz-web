@@ -21,8 +21,8 @@ gulp.task('scripts', function() {
       'js/core.js',
       `./js/quantz-button-v${version}.js`
     ])
-    //.pipe(concat('quantz-button.min.js')) // NOTE: should NOT be quantz-button.min.js
-    .pipe(concat('quantz-button-v7.min.js')) // NOTE: should NOT be quantz-button.min.js
+    .pipe(concat('quantz-button.min.js')) // NOTE: should NOT be quantz-button.min.js
+    //.pipe(concat('quantz-button-v7.min.js')) // NOTE: should NOT be quantz-button.min.js
     .pipe(terser())
     .pipe(javascriptObfuscator({
       // Obfuscation options can be specified here
