@@ -151,7 +151,7 @@ def terms_agreement(lang, lang_name):
 @language_wrapper
 def llama3_agreement(lang, lang_name):
     template_file_name = f'terms/terms_wrapper.html'
-    terms_file_name = f'terms/terms_{lang}.html'
+    terms_file_name = f'terms/llama3_agreement.html'
     return render_template(
         template_file_name,
         lang=lang,

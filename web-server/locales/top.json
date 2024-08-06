@@ -1,6 +1,6 @@
 {
     "top_main_title": {
-        "en": "Turn Your Website Into a Sales Machine With the Simplest AI Voice Help Center",
+        "en": "Turn Your Website Into a Sales Machine With the Quickest AI Voice Help Center",
         "ja": "世界で最もシンプルでクイックな音声AI、Quantzがあなたに代わって問い合わせに対応",
         "zh": "利用最简单的AI语音帮助中心将您的网站转变成销售机器",
         "fr": "Transformez votre site web en une machine à vendre avec le centre d'aide vocal AI le plus simple",
@@ -36,13 +36,13 @@
         "ru": "Начать бесплатную пробную версию"
     },
     "top_step_title": {
-        "en": "Set up your Voice AI in under 30 minutes.",
-        "ja": "30分であなたのWebサイトに簡単に組み込める",
-        "zh": "在30分钟内设置您的语音AI。",
-        "fr": "Configurez votre AI vocal en moins de 30 minutes.",
-        "es": "Configura tu AI de voz en menos de 30 minutos.",
-        "ar": "قم بإعداد الذكاء الاصطناعي الصوتي في أقل من 30 دقيقة.",
-        "ru": "Настройте ваш голосовой AI за менее чем 30 минут."
+        "en": "Set up your Voice AI in under 10 minutes.",
+        "ja": "10分であなたのWebサイトに簡単に組み込める",
+        "zh": "在10分钟内设置您的语音AI。",
+        "fr": "Configurez votre AI vocal en moins de 10 minutes.",
+        "es": "Configura tu AI de voz en menos de 10 minutos.",
+        "ar": "قم بإعداد الذكاء الاصطناعي الصوتي في أقل من 10 دقيقة.",
+        "ru": "Настройте ваш голосовой AI за менее чем 10 минут."
     },
     "top_step_1": {
         "en": "Step 1",
@@ -63,13 +63,13 @@
         "ru": "Создайте аккаунт, добавьте способ оплаты и установите лимиты использования."
     },
     "top_step_1_time": {
-        "en": "5 min",
-        "ja": "5分",
-        "zh": "5分钟",
-        "fr": "5 min",
-        "es": "5 min",
-        "ar": "5 دقائق",
-        "ru": "5 мин"
+        "en": "2 min",
+        "ja": "2分",
+        "zh": "2分钟",
+        "fr": "2 min",
+        "es": "2 min",
+        "ar": "2 دقائق",
+        "ru": "2 мин"
     },
     "top_step_2": {
         "en": "Step 2",
@@ -90,13 +90,13 @@
         "ru": "Соберите актуальную информацию о вашем бизнесе и вставьте ее в Quantz."
     },
     "top_step_2_time": {
-        "en": "10 min",
-        "ja": "10分",
-        "zh": "10分钟",
-        "fr": "10 min",
-        "es": "10 min",
-        "ar": "10 دقائق",
-        "ru": "10 мин"
+        "en": "5 min",
+        "ja": "5分",
+        "zh": "5分钟",
+        "fr": "5 min",
+        "es": "5 min",
+        "ar": "5 دقائق",
+        "ru": "5 мин"
     },
     "top_step_3": {
         "en": "Step 3",
@@ -117,13 +117,13 @@
         "ru": "Скопируйте и вставьте HTML-фрагмент, чтобы добавить кнопку Quantz на ваш сайт."
     },
     "top_step_3_time": {
-        "en": "15 min",
-        "ja": "15分",
-        "zh": "15分钟",
-        "fr": "15 min",
-        "es": "15 min",
-        "ar": "15 دقيقة",
-        "ru": "15 минут"
+        "en": "3 min",
+        "ja": "3分",
+        "zh": "3分钟",
+        "fr": "3 min",
+        "es": "3 min",
+        "ar": "3 دقيقة",
+        "ru": "3 минут"
     },
     "top_demo_experience_1": {
         "en": "Experience Quantz as a user",
