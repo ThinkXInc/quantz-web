@@ -29,10 +29,10 @@
     window.freeCall = freeCall;
     window.unitPrice = unitPrice;
 
-    function redirectToSignup() {
+    function redirectToSignup(tag) {
       // Build the URL dynamically based on whether a language is set
       const signupUrl = lang ? `/v1/${lang}/signup` : '/v1/signup';
-      window.location.href = signupUrl;
+      window.location.href = signupUrl + `?tag=${tag}`;
   }
 }
 </script>
@@ -55,7 +55,7 @@
               <h1 class="title">{{ locale_dict["top_main_title"][lang] }}</h1>
               <h2 class="subtitle">{{ locale_dict["top_main_subtitle"][lang] }}</h2>
               <p class="try-button-label">{{ locale_dict["top_main_try_label"][lang].format(free_call) }}</p>
-              <button class="try-button" onclick="redirectToSignup()">{{ locale_dict["top_main_try_button"][lang] }}</button>
+              <button class="try-button" onclick="redirectToSignup('top-main')">{{ locale_dict["top_main_try_button"][lang] }}</button>
           </div>
           <div class="three-step">
             <div class="step-wrapper">
@@ -131,16 +131,17 @@
     </div>
   <div>
 
-  <div class="features-section">
+  <div id="top-feature-section" class="features-section">
     <h3 class="features-title">What Makes Quantz Different</h3>
     <ul class="features-list">
       <li class="feature">
         <img src="/img/top/verified-icon.svg" class="verified-icon">
         <div>
-          <h4>Simple Pricing Model</h4>
-          <p><b>$0.05 per user request</b> (up to 10 exchanges). <b>Set monthly usage limits</b> to stay within your budget.</p>
+          <h4>Easiest Setup</h4>
+          <p><b>No programming is needed</b>. <b>You'll be all set in just 10 minutes</b>.</p>
         </div>
       </li>
+
       <li class="feature">
           <img src="/img/top/verified-icon.svg" class="verified-icon">
           <div>
@@ -155,13 +156,15 @@
             <p>All models run inside our own servers and <b>doesn’t use any third-party APIs</b>. This ensures <b>the highest level of user data privacy</b>. Quantz is <b>the only AI call center that does not expose your conversation data</b> to third-party APIs.</p>
           </div>
       </li>
+
       <li class="feature">
         <img src="/img/top/verified-icon.svg" class="verified-icon">
         <div>
-          <h4>Easiest Setup</h4>
-          <p><b>No programming is needed</b>. <b>You'll be all set in just 10 minutes</b>.</p>
+          <h4>Simple Pricing Model</h4>
+          <p><b>$0.05 per user request</b> (up to 10 exchanges). <b>Set monthly usage limits</b> to stay within your budget.</p>
         </div>
       </li>
+
       <li class="feature">
           <img src="/img/top/verified-icon.svg" class="verified-icon">
           <div>
@@ -195,7 +198,7 @@
     -->
   </div>
 
-  <div class="promo-section">
+  <div id="top-promo-section" class="promo-section">
     <h2 class="heading">Save time for more important tasks.</h2>
     <h2 class="heading last">You focus on your business needs. Quantz will take care of the customers needs.</h2>
     <video class="promo-video" autoplay loop muted playsinline>
@@ -203,7 +206,7 @@
       Your browser does not support the video tag.
     </video>
     <p class="try-button-label">Try it now for free!</p>
-    <button class="try-button large" onclick="redirectToSignup()">Get {{ free_call }} Free Trials</button>
+    <button class="try-button large" onclick="redirectToSignup('top-promo')">Get {{ free_call }} Free Trials</button>
   </div>
 
   <!--
@@ -213,7 +216,7 @@
   </div>
   -->
 
-  <div class="interface-section">
+  <div id="top-interface-section" class="interface-section">
     <h2 class="heading">Making Quantz learn everything about your business is</h2>
     <h2 class="heading last">as simple as copying and pasting text.</h2>
     <!--<h2 class="heading last">As if you had hired 100 support staff, for only $1/h. Growth your business.</h2>-->
@@ -227,7 +230,7 @@
     -->
   </div>
 
-  <div class="custom-section">
+  <div id="top-custom-section" class="custom-section">
     <h2 class="heading">Customize the Quantz button to match your brand</h2>
     <h2 class="heading last">guidelines and ensure a seamless user experience.</h2>
     <video class="custom-video" autoplay loop muted playsinline>
@@ -240,7 +243,7 @@
     -->
   </div>
 
-  <div class="response-section">
+  <div id="top-response-section" class="response-section">
     <h2 class="heading">Respond to customer queries with conversational speed. </h2>
     <h2 class="heading last"> The world’s fastest AI voice engine generates responses without noticeable delay.</h2>
     <video class="response-video" autoplay loop muted playsinline>
@@ -248,13 +251,13 @@
         Your browser does not support the video tag.
     </video>
     <p class="try-button-label">Sign up now and get 50 free credits!</p>
-    <button class="try-button large" onclick="redirectToSignup()">Start Free Trial</button>
+    <button class="try-button large" onclick="redirectToSignup('top-UI')">Start Free Trial</button>
   </div>
 
-  <div class="tutorial-section">
+  <div id="top-tutorial-section" class="tutorial-section">
     <h2 class="heading">Setup tutorial</h2>
     <p>No programming skills required, anyone can set it up in just 10 minutes.</p>
-    <iframe width="700" height="393" src="https://www.youtube.com/embed/R0ciYDzMIEc?si=_rFveM91Fx9dN52Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe class="tutorial-video" width="700" height="393" src="https://www.youtube.com/embed/R0ciYDzMIEc?si=_rFveM91Fx9dN52Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     {#
     <video class="tutorial-video">
       <source srt="/video/top/TutorialJessicas v2_volumes2.mp4" type="video/mp4">
