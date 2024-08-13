@@ -295,36 +295,47 @@
     padding: 50px 20px;
     position: relative;
 
-    h1 {
-        color: #b4b4b4;// white;
-      font-size: 2.5rem;
-      font-weight: bold;
-      margin-bottom: 20px;
-    }
+    div.top-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        div.copies {
+            padding-bottom: 40px;
+            h1 {
+                color: #b4b4b4;// white;
+              font-size: 2.5rem;
+              font-weight: bold;
+              margin-bottom: 20px;
+            }
 
-    p {
-        color: #9f9f9f;//white;
-      font-size: 1.2rem;
-      max-width: 600px;
-      margin: 0 auto;
-    }
+            p {
+                color: #9f9f9f;//white;
+              font-size: 1.2rem;
+              max-width: 600px;
+              margin: 0 auto;
+            }
+            // Simulating the button style in the example
+            .button {
+              display: inline-block;
+              background-color: @keycolor;
+              color: @textcolor;
+              padding: 10px 20px;
+              border: none;
+              cursor: pointer;
+              border-radius: 5px;
+              text-transform: uppercase;
+              font-weight: bold;
+              margin-top: 20px;
+            
+              &:hover {
+                background-color: darken(@keycolor, 10%);
+              }
+            }
 
-    // Simulating the button style in the example
-    .button {
-      display: inline-block;
-      background-color: @keycolor;
-      color: @textcolor;
-      padding: 10px 20px;
-      border: none;
-      cursor: pointer;
-      border-radius: 5px;
-      text-transform: uppercase;
-      font-weight: bold;
-      margin-top: 20px;
+        }
+        div.QBTN-button-loader {
 
-      &:hover {
-        background-color: darken(@keycolor, 10%);
-      }
+        }
     }
   }
 
