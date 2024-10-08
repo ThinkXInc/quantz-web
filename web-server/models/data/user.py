@@ -223,8 +223,10 @@ class User(MongoModel):
         'collection': 'user',
         'max_size': 10485760*100, # max size of the collection in bytes 10MB *100 = 1GB TODO: use Config
         'max_documents': 1000000,  # old documents are removed when reached to this limit  TODO: use Config
+        'auto_create_index': False,
         'indexes': [
             '#email', # hashed index (complete match)
+            {'fields': ['email'], 'unique': True, 'sparse': True},
             {'fields': ['google_id'], 'unique': True, 'sparse': True}  # unique but null allowed
         ]
     }
