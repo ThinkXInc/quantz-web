@@ -1,0 +1,20 @@
+{
+    "interviews_list_success": {
+        "ja": "インタビューの取得に成功しました。",
+        "en": "Successfully retrieved the interview list.",
+        "zh": "成功获取面试列表。",
+        "es": "Lista de entrevistas obtenida con éxito.",
+        "fr": "Liste des entretiens récupérée avec succès.",
+        "ru": "Список интервью успешно получен.",
+        "ar": "تم استرجاع قائمة المقابلات بنجاح."
+    },
+    "interviews_list_failed": {
+        "ja": "インタビューの取得に失敗しました。",
+        "en": "Failed to retrieve the interview list.",
+        "zh": "获取面试列表失败。",
+        "es": "Error al obtener la lista de entrevistas.",
+        "fr": "Échec de la récupération de la liste des entretiens.",
+        "ru": "Не удалось получить список интервью.",
+        "ar": "فشل في استرجاع قائمة المقابلات."
+    }
+}

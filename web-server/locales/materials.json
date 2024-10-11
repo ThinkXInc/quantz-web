@@ -8,6 +8,15 @@
         "ar": "الإعدادات",
         "ru": "Настройки"
     },
+    "interview_menu_title": {
+        "en": "Interview",
+        "ja": "インタビュー",
+        "zh": "面试",
+        "fr": "Entretien",
+        "es": "Entrevista",
+        "ar": "مقابلة",
+        "ru": "Интервью"
+    },
     "logout_menu_title": {
         "en": "Log out",
         "ja": "ログアウト",
@@ -18,7 +27,7 @@
         "ru": "Выйти"
     },
     "MaterialList_header_title": {
-        "en": "Quantz's Knowledge Base",
+        "en": "Quantz's Knowledge Base 2",
         "ja": "Quantz's Knowledge Base",
         "zh": "Quantz的知识库",
         "fr": "Base de connaissances de Quantz",

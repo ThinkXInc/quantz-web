@@ -1,0 +1,29 @@
+{
+    "": {
+        "ja": "",
+        "en": "",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "create_interview_title_page_title": {
+        "ja": "インタビュータイトル",
+        "en": "Interview Title",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "create_interview_introduction_page_title": {
+        "ja": "インタビュー開始時の喋り出し",
+        "en": "Interview Opening Remarks",
+        "zh": "面试开始时的开场白",
+        "es": "Palabras de apertura de la entrevista",
+        "fr": "Propos d'ouverture de l'entretien",
+        "ru": "Вступительное слово на собеседовании",
+        "ar": "كلمة الافتتاح في المقابلة"
+    }
+}

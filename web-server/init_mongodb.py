@@ -28,7 +28,9 @@ check_config(Config, MONGO_DB_REQUIRED_KEYS)
 # Attempt to connect and log the outcome
 try:
     logger.info(magenta('Initializing MongoDB...'))
-    connect(host=f"mongodb://{MONGO_DB_USER}:{MONGO_DB_PASSWORD}@{MONGO_DB_HOST}:{MONGO_DB_PORT}/{MONGO_DB_NAME}")
+    host = f"mongodb://{MONGO_DB_USER}:{MONGO_DB_PASSWORD}@{MONGO_DB_HOST}:{MONGO_DB_PORT}/{MONGO_DB_NAME}?authSource=admin"
+    logger.info(host)
+    connect(host=host)
     logger.info(green('Successfully connected to MongoDB.'))
 except Exception as e:
     logger.error(red(f'Failed to connect to MongoDB: {e}'))
