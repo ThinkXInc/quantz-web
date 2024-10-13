@@ -25,5 +25,25 @@
         "fr": "Propos d'ouverture de l'entretien",
         "ru": "Вступительное слово на собеседовании",
         "ar": "كلمة الافتتاح في المقابلة"
+    },
+    "create_interview_step_page_title": {
+        "ja": "ステップ",
+        "en": "Step",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "create_interview_max_turns_title": {
+        "ja": "最大ターン数",
+        "en": "Max turns",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+ 
     }
+
 }

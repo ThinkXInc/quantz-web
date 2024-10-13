@@ -69,9 +69,16 @@ class InterviewHomeViewController {
 
                 if (this.interviews.length == 0) {
                     this.fetchUser((user)=> {
-                        this.openCreateInterviewModalView(user, this.locale, this.lang);
+                        this.openInterviewCreateModalView(user, this.locale, this.lang);
                     })
                 }
+                // DEBUG 
+                else {
+                    this.fetchUser((user)=> {
+                        this.openInterviewCreateModalView(user, this.locale, this.lang);
+                    })
+                }
+                // DEBUG
             },
             (error) => {
                 this.loading(false);
@@ -79,10 +86,10 @@ class InterviewHomeViewController {
             });
     }
     
-    openCreateInterviewModalView(user, locale, lang) {
+    openInterviewCreateModalView(user, locale, lang) {
 
-        this.createInterviewModalView = new CreateInterviewModalView({
-            id: 'CreateInterviewModalView', 
+        this.interviewCreateModalView = new InterviewCreateModalView({
+            id: 'InterviewCreateModalView', 
             user: user,
             locale: locale,
             lang: lang,
@@ -92,8 +99,8 @@ class InterviewHomeViewController {
             doneButtonText: "Done", //locale.get(MaterialsLocaleKeys.SETTINGS_MODAL_VIEW_DONE, lang),
             shouldCloseOnTapBG: true,
         });
-        this.createInterviewModalView.mount('#MainContent');
-        this.createInterviewModalView.show();
+        this.interviewCreateModalView.mount('#MainContent');
+        this.interviewCreateModalView.show();
     }
 
     loading(isLoading) {

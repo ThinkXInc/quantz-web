@@ -116,3 +116,80 @@ def interviews_list(user, lang, lang_name):
         message=locale.get('interviews_list_success', lang),
         data=response_data).http_response()
 
+# Interview create
+@blueprint_interviews.route('/v1/<lang>/interviews/create', methods=['POST'])
+@language_wrapper
+@content_type_check_json
+@required_fields_check(['title', 'introduction', 'steps'])
+@session_helper
+def interviews_create(user, lang, lang_name):
+    
+    # Validate request
+    logger.info(cyan(f'request: {request.url} => {request.json}'))
+    validation_error = validate_request(lang, locale)
+    if validation_error:
+        return validation_error.http_response()
+
+    title = request.json.get('title')
+    introduction = request.json.get('introduction')
+    steps = request.json.get('steps')
+    logger.info(magenta(f'[POST] interviews/create => \n'+'-'*100+f'\n{title}'+'-'*100))
+
+    # Save results in the database using the create_new method
+    try:
+        interview = Interview.create_new(
+            title=title, introduction=introduction, steps=steps, user=user)
+        if not interview:
+            raise InterviewSaveError("Failed to create interview")
+    except InterviewSaveError:
+        message = locale.get('interview_save_error', lang)
+        logger.error(red({message}))
+        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+    
+   # Return Response
+    return AcceptedAPISuccessFormat(
+        message=locale.get('interview_created', lang, [str(interview.id)]),
+        data=interview.response_json()).http_response()
+
+
+# Interview update
+@blueprint_interviews.route('/v1/<lang>/interviews/<interview_id>/update', methods=['POST'])
+@language_wrapper
+@content_type_check_json
+@session_helper
+@required_fields_check([])
+def interviews_update(user, lang, lang_name, interview_id):
+
+    # Validate request
+    logger.info(cyan(f'request: {request.url} => {request.json}'))
+    validation_error = validate_request(lang, locale)
+    if validation_error:
+        return validation_error.http_response()
+
+    # Gather updates from the request
+    updates = {}
+    for field in ['title', 'text', 'lang', 'keywords', 'question', 'review', 'answer']:
+        if field in request.json:
+            updates[field] = request.json[field]
+
+    if not updates:
+        return BadRequestAPIErrorFormat(lang).http_response()
+
+    logger.info(magenta(f'[POST] interviews/{interview_id}/update => \n'+'-'*100+f'\n{updates}'+'-'*100))
+
+    # Update interview 
+    try:
+        interview = Interview.update(
+            user, interview_id, updates)
+    except InterviewNotFoundError:
+        return ResourceNotFoundError(
+            lang=lang, message=locale.get('interview_not_found', lang)).http_response()
+    except interviewUpdateError:
+        return UnexpectedAPIErrorFormat(
+            lang=lang, message=locale.get('interview_update_error', lang)).http_response()
+
+    return OKAPISuccessFormat(
+        message=locale.get('interview_updated', lang, [interview_id]),
+        data={'interview_id': interview_id, 'updates': updates}
+    ).http_response()
+

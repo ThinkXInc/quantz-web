@@ -28,7 +28,7 @@ START_MESSAGE_MAX_LENGTH = 300
 # interview step
 FINISH_CONDITION_MAX_LENGTH = 100
 QUESTION_MAX_LENGTH = 120
-INSTRUCTION_MAX_LENGTH = 100
+INSTRUCTION_MAX_LENGTH = 300
 
 class InterviewSaveError(Exception):
     pass
@@ -68,7 +68,7 @@ class Interview(MongoModel):
     title = StringField(max_length=TITLE_MAX_LENGTH)
     introduction = StringField(max_length=START_MESSAGE_MAX_LENGTH)
 
-    interview_steps = ListField(ReferenceField(InterviewStep))
+    steps = ListField(ReferenceField(InterviewStep))
 
     user = ReferenceField('User', reverse_delete_rule=CASCADE)
     meta = {
@@ -103,10 +103,28 @@ class Interview(MongoModel):
             raise InterviewListError("An error occurred while listing the interviews.")
 
     @classmethod
-    def create_new(cls, text: str, user: 'User') -> 'Interview':
+    def create_new(cls, title: str, introduction: str, steps: list, user: 'User') -> 'Interview':
         try:
-            interview = Interview(text=text, user=user).save()
-            logger.info(light_green(f"[created] interview {interview.id}.\ntext: {text}\nuser: {user.email}"))
+            # Create and save InterviewStep instances
+            step_documents = []
+            for step_data in steps:
+                step_document = InterviewStep(
+                    question=step_data['question'],
+                    finish_condition=step_data['finish_condition'],
+                    max_turns=step_data['max_turns'],
+                    instructions=step_data['instructions'],
+                    user=user
+                ).save()
+                step_documents.append(step_document)
+
+            # Now create the main Interview document with references to these InterviewStep instances
+            interview = Interview(
+                title=title,
+                introduction=introduction,
+                steps=step_documents,  # This now uses the saved InterviewStep documents
+                user=user
+            ).save()
+            logger.info(light_green(f"[created] interview {interview.id}.\ntitle: {title}\nintroduction: {introduction}\nuser: {user.email}"))
             return interview
         except Exception as e:
             logger.error(e)
@@ -120,6 +138,26 @@ class Interview(MongoModel):
                 logger.error(red(f"No Interview found with id: {interview_id} user: {user.email}"))
                 raise InterviewNotFoundError("Interview not found")
 
+            # Handle updating steps separately
+            if 'steps' in updates:
+                # First, delete the current steps to avoid orphan documents
+                for step in interview.steps:
+                    step.delete()
+                # Now create new InterviewStep instances
+                new_steps = []
+                for step_data in updates['steps']:
+                    new_step = InterviewStep(
+                        question=step_data['question'],
+                        finish_condition=step_data['finish_condition'],
+                        max_turns=step_data['max_turns'],
+                        instructions=step_data['instructions'],
+                        user=user
+                    ).save()
+                    new_steps.append(new_step)
+                interview.steps = new_steps
+                del updates['steps']  # Remove 'steps' from updates as it's already handled
+
+            # Update other fields
             for key, value in updates.items():
                 if hasattr(interview, key):
                     setattr(interview, key, value)
@@ -127,8 +165,9 @@ class Interview(MongoModel):
                     logger.warning(yellow(f"Attempting to update non-existing field '{key}'."))
 
             interview.save()
+            logger.info(light_green(f"Updated interview {interview.id}.\nUser: {user.email}"))
             return interview
-        
+
         except Exception as e:
             logger.error(red(f"Error updating Interview with id: {interview_id}. Error: {e}"))
             raise InterviewUpdateError("Error updating interview")
@@ -147,6 +186,27 @@ class Interview(MongoModel):
             logger.error(red(f"Error deleting Interview with id: {interview_id}. Error: {e}"))
             raise InterviewDeleteError("Error deleting interview")
 
+
+    def response_json(self):
+        # Convert each InterviewStep ObjectId in steps to a string
+        steps_data = []
+        for step in self.steps:
+            step_detail = {
+                'question': step.question,
+                'finish_condition': step.finish_condition,
+                'max_turns': step.max_turns,
+                'instructions': step.instructions
+            }
+            steps_data.append(step_detail)
+
+        # Serialize the main Interview document
+        return {
+            'id': str(self.id),  # Convert ObjectId to string
+            'title': self.title,
+            'introduction': self.introduction,
+            'steps': steps_data,
+            'user_id': str(self.user.id)  # Assuming user also has an ObjectId
+        }
 
     #@classmethod
     #def update_with_task_results(cls, result: Dict, user: 'User', interview_id: str) -> None:
