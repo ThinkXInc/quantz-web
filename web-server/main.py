@@ -76,8 +76,11 @@ from init_flask_app import app
 from accounts import blueprint_accounts
 from materials import blueprint_materials
 from payments import blueprint_payments
+from interviews import blueprint_interviews
 from sample_sites import blueprint_sample_sites  # NOTE: needs consideration to be in this app
-for blueprint in [blueprint_accounts, blueprint_materials, blueprint_payments, blueprint_sample_sites]:
+for blueprint in [
+        blueprint_accounts, blueprint_materials, blueprint_payments, blueprint_interviews, \
+        blueprint_sample_sites]:
     app.register_blueprint(blueprint)
 
 # Check initialization

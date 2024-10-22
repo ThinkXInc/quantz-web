@@ -1,0 +1,70 @@
+div.MeetingView {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 100vh;
+
+    div.VideoContainer {
+        display: flex;
+        flex-direction: column;
+        width: calc(100% - 300px);
+        height: 100%;
+        padding: 30px 30px 30px 62px;
+        background-color: #252525;
+
+        div.VideoView, video.VideoView {
+            background-color: black;
+            width: 600px;
+            height: 400px;
+ 
+            div.NameLabel {
+                position: absolute;
+                color: #000;
+                bottom: 0;
+                left: 0;
+                background-color: white;
+                padding: 2px 3px;
+                font-size: 10px;
+            }
+
+        }
+
+        div.OtherPersonView {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 10px;
+            position: relative;
+            margin-bottom: 18px;
+        }
+
+        div.SelfViewContainer {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            video.SelfView {
+                object-fit: cover;
+                margin-right: 59px;
+            }
+
+            div.QBTN-balloon-container {
+                //display: none;
+                top: -553px !important;
+                left: 377px !important;
+                div.QBTN-balloon-rect {
+                    width: 423px !important;
+                    height: 92vh !important;
+                }
+            }
+        }
+    }
+
+    div.ChatView {
+        width: 500px;
+        //background-color: #f1f1f1;
+        background-color: #202020;
+        overflow-y: auto;
+        padding: 10px;
+    }
+}

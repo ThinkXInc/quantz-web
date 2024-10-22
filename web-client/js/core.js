@@ -5,6 +5,7 @@
         WAV_STREAM: 2
     });
 
+    ns.START_MESSAGE = '\\START';
     ns.END_OF_MESSAGE = '\\END';
     ns.endOfMessageBytes = new TextEncoder().encode(ns.END_OF_MESSAGE);
     ns.FFT_SIZE = 64;
@@ -95,28 +96,7 @@
                         this.audioChunks.push(e.data);
                     };
                     this.mediaRecorder.onstop = (e) => {
-                        const messageType = new Uint8Array([ns.MessageType.WAV_STREAM]);
-                        const langBytes = new TextEncoder().encode(this.lang); // 2 bytes, ensure lang is 2 characters
-                    
-                        const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
-                    
-                        // Combine all parts into a single Blob
-                        const blobWithHeader = new Blob([messageType, langBytes, audioBlob, ns.endOfMessageBytes], { type: 'audio/wav' });
-                    
-                        if (this.socket.readyState === WebSocket.OPEN) {
-                            this.socket.send(blobWithHeader);
-                            console.log("Audio blob with header sent to server.");
-                        } else {
-                            console.error("WebSocket is not open. ReadyState:", this.socket.readyState);
-                        }
-                    
-                        console.log("Audio blob details:", {
-                            size: blobWithHeader.size,
-                            type: blobWithHeader.type,
-                            chunksCount: this.audioChunks.length
-                        });
-                    
-                        this.audioChunks = [];
+                        this.sendWav();
                     };
                 })
                 .catch(e => console.error("Error getting user media:", e));
@@ -200,6 +180,49 @@
             } catch (e) {
                 console.error("Error initializing OpusDecoder:", e);
             }
+        }
+
+        sendStartMessage() {
+            if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
+                console.error("Cannot send start message: WebSocket is not connected.");
+                return;
+            }
+        
+            const messageType = new Uint8Array([ns.MessageType.WAV_STREAM]); // Adjust messageType if necessary
+            const langBytes = new TextEncoder().encode(this.lang);
+            const startMessageBytes = new TextEncoder().encode(ns.START_MESSAGE);
+            const endOfMessageBytes = new TextEncoder().encode(ns.END_OF_MESSAGE);
+        
+            // Combine all parts into a single Blob
+            const messageBlob = new Blob([messageType, langBytes, startMessageBytes, endOfMessageBytes], { type: 'application/octet-stream' });
+        
+            this.socket.send(messageBlob);
+            console.log("Start message sent to server:", ns.START_MESSAGE);
+        }
+
+        sendWav() {
+            const messageType = new Uint8Array([ns.MessageType.WAV_STREAM]);
+            const langBytes = new TextEncoder().encode(this.lang); // 2 bytes, ensure lang is 2 characters
+            
+            const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+            
+            // Combine all parts into a single Blob
+            const blobWithHeader = new Blob([messageType, langBytes, audioBlob, ns.endOfMessageBytes], { type: 'audio/wav' });
+            
+            if (this.socket.readyState === WebSocket.OPEN) {
+                this.socket.send(blobWithHeader);
+                console.log("Audio blob with header sent to server.");
+            } else {
+                console.error("WebSocket is not open. ReadyState:", this.socket.readyState);
+            }
+            
+            console.log("Audio blob details:", {
+                size: blobWithHeader.size,
+                type: blobWithHeader.type,
+                chunksCount: this.audioChunks.length
+            });
+            
+            this.audioChunks = [];
         }
 
         startRecording() {

@@ -1,0 +1,66 @@
+{
+    "": {
+        "ja": "",
+        "en": "",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "create_interview_title_page_title": {
+        "ja": "インタビュータイトル",
+        "en": "Interview Title",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "create_interview_introduction_page_title": {
+        "ja": "インタビュー開始時の喋り出し",
+        "en": "Interview Opening Remarks",
+        "zh": "面试开始时的开场白",
+        "es": "Palabras de apertura de la entrevista",
+        "fr": "Propos d'ouverture de l'entretien",
+        "ru": "Вступительное слово на собеседовании",
+        "ar": "كلمة الافتتاح في المقابلة"
+    },
+    "create_interview_step_page_title": {
+        "ja": "ステップ",
+        "en": "Step",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "create_interview_max_turns_title": {
+        "ja": "最大ターン数",
+        "en": "Max turns",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+ 
+    },
+    "interview_create_url_copy_tooltip": {
+        "ja": "埋め込みコードをコピー",
+        "en": "Copy embed code",
+        "zh": "复制嵌入代码",
+        "fr": "Copier le code intégré",
+        "es": "Copiar el código embebido",
+        "ar": "نسخ الكود المضمن",
+        "ru": "Скопировать встроенный код"
+    },
+    "interview_create_url_copy_done_tooltip": {
+        "ja": "クリップボードにコピーしました。",
+        "en": "Copied to clipboard.",
+        "zh": "已复制到剪贴板。",
+        "fr": "Copié dans le presse-papiers.",
+        "es": "Copiado al portapapeles.",
+        "ar": "تم النسخ إلى الحافظة.",
+        "ru": "Скопировано в буфер обмена."
+    }
+}

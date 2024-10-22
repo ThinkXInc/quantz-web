@@ -1,0 +1,66 @@
+{
+    "interviews_list_success": {
+        "ja": "インタビューの取得に成功しました。",
+        "en": "Successfully retrieved the interview list.",
+        "zh": "成功获取面试列表。",
+        "es": "Lista de entrevistas obtenida con éxito.",
+        "fr": "Liste des entretiens récupérée avec succès.",
+        "ru": "Список интервью успешно получен.",
+        "ar": "تم استرجاع قائمة المقابلات بنجاح."
+    },
+    "interviews_list_failed": {
+        "ja": "インタビューの取得に失敗しました。",
+        "en": "Failed to retrieve the interview list.",
+        "zh": "获取面试列表失败。",
+        "es": "Error al obtener la lista de entrevistas.",
+        "fr": "Échec de la récupération de la liste des entretiens.",
+        "ru": "Не удалось получить список интервью.",
+        "ar": "فشل في استرجاع قائمة المقابلات."
+    },
+    "interview_not_found": {
+        "ja": "Interviewがデータベースに見つかりませんでした",
+        "en": "Interview data not found.",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "interview_update_error": {
+        "ja": "Interviewの更新に失敗しました。",
+        "en": "Interview update failed.",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "interview_updated": {
+        "ja": "Interview $0 が正常に更新されました。",
+        "en": "Interview $0 updated successfully.",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "interview_save_error": {
+        "ja": "Interviewの作成に失敗しました。",
+        "en": "Interview create failed.",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+ 
+    },
+    "interview_created": {
+        "ja": "Interview $0 が正常に作成されました。",
+        "en": "Interview $0 created successfully.",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    }
+}
