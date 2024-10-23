@@ -40,6 +40,7 @@ class InterviewCreateModalView extends ModalView {
         lang = 'en',
         title = "",
         text = "",
+        interviewId = "",
         cancelButtonText = "Cancel",
         doneButtonText = "Done",
         shouldCloseOnTapBG = true,
@@ -64,7 +65,7 @@ class InterviewCreateModalView extends ModalView {
         this.locale = locale;
         this.lang = lang;
 
-        this.interviewId = '670dcf37aa9bfc2db50d1574';//null;//'670b89cf740b61aa1bf16761';//null;
+        this.interviewId = interviewId; //'670dcf37aa9bfc2db50d1574';//null;//'670b89cf740b61aa1bf16761';//null;
 
         this.createElements();
         //this.setupSettingsInputPageView();
@@ -145,7 +146,9 @@ class InterviewCreateView {
         this.pageView = pageView;
 
         // URL View
-        this.createUrlView(this.interviewId);
+        if (this.interviewId) {
+            this.createUrlView(this.interviewId);
+        }
 
         // Page 1: Title
 
@@ -208,6 +211,10 @@ class InterviewCreateView {
                 console.log(`[${code} success] ${message}`);
                 $message.classList.add('success');
                 $message.textContent = message;
+
+                this.interviewId = res.data.interview_id;
+                // show url
+                this.createUrlView(this.interviewId);
             },
             (error) => {
                 if (error && error.code) {

@@ -143,7 +143,7 @@ def interviews_list(user, lang, lang_name):
         message=locale.get('interviews_list_success', lang),
         data=response_data).http_response()
 
-# Interview create
+# New interview create
 @blueprint_interviews.route('/v1/<lang>/interviews/create', methods=['POST'])
 @language_wrapper
 @content_type_check_json
@@ -211,7 +211,7 @@ def interviews_update(user, lang, lang_name, interview_id):
     except InterviewNotFoundError:
         return ResourceNotFoundError(
             lang=lang, message=locale.get('interview_not_found', lang)).http_response()
-    except interviewUpdateError:
+    except InterviewUpdateError:
         return UnexpectedAPIErrorFormat(
             lang=lang, message=locale.get('interview_update_error', lang)).http_response()
 

@@ -39,6 +39,7 @@ USE_UNIX_SOCKET = False
 origins_data = [
     OriginData(origin="localhost", host_id="a123456789abcdef12345678", monthly_limit=1000),
     OriginData(origin="quantz.thinkxinc.com", host_id="b23456789abcdef123456789", monthly_limit=9999999999999999),
+    OriginData(origin="interviews:670dcf37aa9bfc2db50d1574", host_id="", monthly_limit=9999999999999999999999999999999999999999),
     OriginData(origin="rakuten.com/shop/1", host_id="c3456789abcdef1234567890", monthly_limit=20),
 ]
 

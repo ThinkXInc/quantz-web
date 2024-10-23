@@ -8,9 +8,63 @@
         "ru": "",
         "ar": ""
     },
+    "interview_create_page_title_new": {
+        "ja": "",
+        "en": "Create New Interview",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "interview_create_page_title_edit": {
+        "ja": "",
+        "en": "Edit Interview",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
     "create_interview_title_page_title": {
         "ja": "インタビュータイトル",
         "en": "Interview Title",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "create_new_interview_button_title": {
+        "ja": "",
+        "en": "Create New",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "interview_list_header_title": {
+        "ja": "",
+        "en": "Your Interviews",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "interview_list_count_singular": {
+        "ja": "インタビュー",
+        "en": "Interview",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "interview_list_count_plural": {
+        "ja": "インタビュー",
+        "en": "Interviews",
         "zh": "",
         "es": "",
         "fr": "",
