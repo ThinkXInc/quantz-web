@@ -28,8 +28,8 @@ class OriginData(BaseModel):
 
 @dataclass
 class Host:
-    origin: str = ''
     host_id: str = ''
+    origin: str = ''
     monthly_limit: int = 0
     start_billing: datetime = field(default_factory=datetime.now(pytz.utc))
     next_billing: datetime = field(default_factory=datetime.now(pytz.utc))
@@ -94,20 +94,20 @@ class HostManager:
             logger.error(red(f"Failed to establish Redis connection pool: {e}"))
             raise e
 
-    def set_host(self, origin: str, host_id: str, monthly_limit: int, start_billing: datetime, next_billing: datetime) -> None:
+    def set_host(self, host_id: str, origin: str, monthly_limit: int, start_billing: datetime, next_billing: datetime) -> None:
         start_billing = self.ensure_utc(start_billing)
         next_billing = self.ensure_utc(next_billing)
 
         try:
             host = Host(
-                origin=origin,
                 host_id=host_id,
+                origin=origin,
                 monthly_limit=monthly_limit,
                 start_billing=start_billing,
                 next_billing=next_billing
             )
             serialized_host = json.dumps(host.to_redis())
-            self.redis.set(f"host::{origin}", serialized_host)
+            self.redis.set(f"host::{host_id}", serialized_host)
             logger.info(green(f"Host set successfully for user ID {host_id} origin {origin} with start billing {start_billing} and next billing {next_billing} host limit {monthly_limit}."))
         except Exception as e:
             logger.error(red(f"Failed to set host for user ID {host_id}. Error: {e}"))
@@ -116,75 +116,109 @@ class HostManager:
     def ensure_utc(self, dt: datetime):
         return dt if dt.tzinfo else pytz.utc.localize(dt)
 
-    def get_host(self, origin: str) -> Optional[Host]:
-        serialized_host = self.redis.get(f"host::{origin}")
+    def get_host(self, host_id: str) -> Optional[Host]:
+        serialized_host = self.redis.get(f"host::{host_id}")
         if serialized_host:
             return Host.from_redis(json.loads(serialized_host.decode('utf-8')))
         return None
 
-    def set_host_usage_limit(self, origin: str, max_accesses: int):
-        """
-        Set the maximum number of accesses allowed for a host in a month.
-
-        Args:
-            origin (str): Origin or host ID.
-            max_accesses (int): Maximum number of allowed accesses.
-        """
+    def set_id_in_service_with_host_id(self, service_key: str, id: str, host_id: str) -> None:
         try:
-            host = self.get_host(origin)
+            key = f"{service_key}::{id}"
+            self.redis.set(key, host_id)
+            logger.info(green(f"Host ID {host_id} set successfully for service key {service_key} and ID {id}."))
+        except Exception as e:
+            message = f"Failed to set host ID {host_id} for service key {service_key} and ID {id}: {e}"
+            logger.error(red(message))
+            raise HostSettingError(message)
+
+    def get_host_id_from_id_in_service(self, service_key: str, id: str) -> Optional[str]:
+        try:
+            key = f"{service_key}::{id}"
+            host_id = self.redis.get(key)
+            if host_id:
+                return host_id.decode('utf-8')
+            else:
+                logger.info(yellow(f"No host ID found for service key {service_key} and ID {id}."))
+                return None
+        except Exception as e:
+            message = f"Error retrieving host ID for {service_key}::{id}: {e}"
+            logger.error(red(message))
+            raise HostSettingError(message)
+
+#    def set_id_in_service_with_origin(self, service_key: str, id: str, origin: str) -> None:
+#        """
+#        Note: storing host_id looks simple but not work. then origin is stored.
+#        """
+#        try:
+#            key = f"{service_key}::{id}"
+#            self.redis.set(key, origin)
+#            logger.info(green(f"Origin {origin} set successfully for service key {service_key} and ID {id}."))
+#        except Exception as e:
+#            message = f"Failed to set host ID {origin} for service key {service_key} and ID {id}: {e}"
+#            logger.error(red(message))
+#            raise HostSettingError(message)
+#
+#    def get_origin_from_id_in_service(self, service_key: str, id: str) -> Optional[str]:
+#        """
+#        Note: storing host_id looks simple but not work. then origin is stored.
+#        """
+#        try:
+#            key = f"{service_key}::{id}"
+#            origin = self.redis.get(key)
+#            if origin:
+#                return origin.decode('utf-8')
+#            else:
+#                logger.info(yellow(f"No origin found for service key {service_key} and ID {id}."))
+#                return None
+#        except Exception as e:
+#            message = f"Error retrieving origin for {service_key}::{id}: {e}"
+#            logger.error(red(message))
+#            raise HostSettingError(message)
+
+    def set_host_usage_limit(self, host_id: str, max_accesses: int):
+        try:
+            host = self.get_host(host_id)
             if host:
                 host.monthly_limit = max_accesses
-                self.set_host(host.origin, host.host_id, host.monthly_limit)
+                self.set_host(host.host_id, host.origin, host.monthly_limit)
         except Exception as e:
             logger.error(red(f"Error setting host usage limit for {origin}: {e}"))
 
-    def increment_host_usage(self, origin: str):
+    def increment_host_usage(self, host_id: str):
         """
         Increment the usage count for a host, recording each access with a timestamp.
         """
         try:
             timestamp = int(datetime.now(pytz.utc).timestamp())
-            key = f"host_usage::{origin}::{timestamp}"
+            key = f"host_usage::{host_id}::{timestamp}"
             self.redis.incr(key)  # Use INCR to increment count; you might alternatively use a list or set if counting isn't needed.
-            logger.debug(green(f"Incremented host usage for {origin} at {timestamp}"))
+            logger.debug(green(f"Incremented host usage for {host_id} at {timestamp}"))
         except Exception as e:
-            logger.error(red(f"Error incrementing host usage for {origin}: {e}"))
+            logger.error(red(f"Error incrementing host usage for {host_id}: {e}"))
 
-    def set_host_usage(self, origin: str, usage: int):
-        """
-        Set the usage count for a host to a specified value.
-        
-        Args:
-            origin (str): The origin identifier for the host.
-            usage (int): The usage count to set for the host.
-        """
+    def set_host_usage(self, host_id: str, usage: int):
         try:
             timestamp = int(datetime.now(pytz.utc).timestamp())
-            key = f"host_usage::{origin}::{timestamp}"
+            key = f"host_usage::{host_id}::{timestamp}"
             self.redis.set(key, usage)
-            logger.debug(green(f"Set host usage -> origin:{origin} usage:{usage} timestamp:{timestamp}"))
+            logger.debug(green(f"Set host usage -> origin:{host_id} usage:{usage} timestamp:{timestamp}"))
         except Exception as e:
-            logger.error(red(f"Error setting host usage for {origin}: {e}"))
+            logger.error(red(f"Error setting host usage for {host_id}: {e}"))
 
-    def delete_host(self, origin: str) -> None:
-        """
-        Delete a host's data from Redis.
-    
-        Args:
-            origin (str): The origin identifier for the host to be deleted.
-        """
+    def delete_host(self, host_id: str) -> None:
         try:
-            key = f"host::{origin}"
+            key = f"host::{host_id}"
             result = self.redis.delete(key)
             if result:
-                logger.info(green(f"Host successfully deleted for origin {origin}."))
+                logger.info(green(f"Host successfully deleted for host_id {host_id}."))
             else:
-                logger.warning(yellow(f"No host found for origin {origin}, nothing to delete."))
+                logger.warning(yellow(f"No host found for host_id {host_id}, nothing to delete."))
         except Exception as e:
-            logger.error(red(f"Error deleting host for origin {origin}: {e}"))
+            logger.error(red(f"Error deleting host for host_id {host_id}: {e}"))
             raise
 
-    def delete_host_usage(self, origin: str, start_timestamp: int, end_timestamp: int):
+    def delete_host_usage(self, host_id: str, start_timestamp: int, end_timestamp: int):
         """
         Clear the usage data for a host within a specific period.
         
@@ -198,10 +232,10 @@ class HostManager:
 
         try:
             # Generate keys pattern for the given period
-            keys_pattern = f"host_usage::{origin}::*"
+            keys_pattern = f"host_usage::{host_id}::*"
             keys = self.redis.keys(keys_pattern)
             deleted_count = 0
-            logger.debug(f"Initiating clearing keys for origin {origin} between {start_date} ~ {end_date}")
+            logger.debug(f"Initiating clearing keys for host_id {host_id} between {start_date} ~ {end_date}")
 
             for key in keys:
                 key_str = key.decode('utf-8')
@@ -209,24 +243,24 @@ class HostManager:
                 if start_timestamp <= int(key_timestamp) <= end_timestamp:
                     self.redis.delete(key)
                     deleted_count += 1
-                    logger.debug(f"Deleted key {key_str} for origin {origin}")
+                    logger.debug(f"Deleted key {key_str} for host_id {host_id}")
 
-            logger.info(green(f"{deleted_count} keys deleted for origin {origin} in the specified period."))
+            logger.info(green(f"{deleted_count} keys deleted for host_id {host_id} in the specified period."))
         except Exception as e:
-            logger.error(f"Error clearing host usage for {origin}: {e}")
+            logger.error(f"Error clearing host usage for {host_id}: {e}")
 
-    def count_usage_in_period(self, start_timestamp: int, end_timestamp: int, origin='*'):
+    def count_usage_in_period(self, start_timestamp: int, end_timestamp: int, host_id='*'):
         """Retrieve the number of accesses for a host or all hosts within a specific billing period."""
         try:
             # Format the start and end dates
             start_date = datetime.utcfromtimestamp(start_timestamp).strftime('%Y-%m-%d %H:%M')
             end_date = datetime.utcfromtimestamp(end_timestamp).strftime('%Y-%m-%d %H:%M')
 
-            # Generate the Redis key pattern for the given period and origin
-            keys_pattern = f"host_usage::{origin}::*"
+            # Generate the Redis key pattern for the given period and host_id
+            keys_pattern = f"host_usage::{host_id}::*"
             keys = self.redis.keys(keys_pattern)
             usage_count = 0
-            logger.debug(f"Checking keys for origin pattern {origin} ({start_date} ~ {end_date})")
+            logger.debug(f"Checking keys for host_id pattern {host_id} ({start_date} ~ {end_date})")
 
             for key in keys:
                 key_str = key.decode('utf-8')
@@ -237,50 +271,58 @@ class HostManager:
                     usage_count += count
                     logger.debug(f"Usage retrieved -> key:{key.decode('utf-8')} usage:{count}")
 
-            logger.info(yellow(f"Total usage for origin pattern '{origin}' in the period: \n{usage_count} ({start_date} ~ {end_date})"))
+            logger.info(yellow(f"Total usage for host_id pattern '{host_id}' in the period: \n{usage_count} ({start_date} ~ {end_date})"))
             return usage_count
         except Exception as e:
-            logger.error(red(f"Error retrieving usage for origin pattern:{origin} ({start_date} ~ {end_date}): {e}"))
+            logger.error(red(f"Error retrieving usage for host_id pattern:{host_id} ({start_date} ~ {end_date}): {e}"))
             return 0
 
-    def retrieve_usage_for_billing_period(self, origin: str, start_timestamp: int, end_timestamp: int):
+    def retrieve_usage_for_billing_period(self, host_id: str, start_timestamp: int, end_timestamp: int):
         """
         Retrieve the number of accesses for a host within a specific billing period.
         """
-        return self.count_usage_in_period(start_timestamp, end_timestamp, origin)
+        return self.count_usage_in_period(start_timestamp, end_timestamp, host_id)
 
-    def is_host_usage_exceeded(self, origin: str) -> bool:
+    def is_host_usage_exceeded(self, host_id: str) -> bool:
         """
         Check if the current host usage has exceeded the set limit within the billing period.
         """
         try:
-            host = self.get_host(origin)
+            host = self.get_host(host_id)
             if not host:
-                logger.debug(f"No host settings found for {origin}")
+                logger.debug(f"No host settings found for {host_id}")
                 return False
 
             start_timestamp = int(host.start_billing.timestamp())
             end_timestamp = int(host.next_billing.timestamp())
-            usage_count = self.retrieve_usage_for_billing_period(origin, start_timestamp, end_timestamp)
+            usage_count = self.retrieve_usage_for_billing_period(host_id, start_timestamp, end_timestamp)
 
-            logger.debug(f"Usage for {origin} from {host.start_billing} to {host.next_billing}: {usage_count}/{host.monthly_limit}")
+            logger.debug(f"Usage for {host_id} from {host.start_billing} to {host.next_billing}: {usage_count}/{host.monthly_limit}")
             return usage_count > host.monthly_limit
         except Exception as e:
-            logger.error(red(f"Error checking if host usage is exceeded for {origin}: {e}"))
+            logger.error(red(f"Error checking if host usage is exceeded for {host_id}: {e}"))
             return False
 
-    def get_all_origins(self) -> List[str]:
+    def get_all_hosts(self) -> List[str]:
         """
         Retrieve all origins from the stored Host instances.
 
         Returns:
-            List[str]: A list of all host origins.
+            List[str]: A list of all hosts.
         """
         try:
-            origin_keys = self.redis.keys('host::*')
-            origins = [key.decode('utf-8').split('::', 1)[1] for key in origin_keys]
-            logger.info(green(f"Successfully retrieved all host origins. {origins}"))
-            return origins
+            host_keys = self.redis.keys('host::*')
+            hosts = [key.decode('utf-8').split('::', 1)[1] for key in host_keys]
+            logger.info(green(f"Successfully retrieved all hosts. {hosts}"))
+            return hosts
+        except Exception as e:
+            logger.error(red(f"Error retrieving all hosts: {e}"))
+            raise e
+
+    def get_all_origins(self) -> List[str]:
+        try:
+            hosts = self.get_all_hosts()
+            return [host.origin for host in hosts]
         except Exception as e:
             logger.error(red(f"Error retrieving all host origins: {e}"))
             raise e
@@ -339,34 +381,34 @@ class HostManager:
             print(cyan(f"{origin} (normalized to {normalized_origin}) is in the allowed list."))
             return True
 
-    def set_suspend(self, origin: str, suspend: bool) -> None:
+    def set_suspend(self, host_id: str, suspend: bool) -> None:
         """
         Set the suspension state of the host.
 
         Args:
-            origin (str): The origin of the host to modify.
+            host_id (str): The host to modify.
             suspend (bool): True to suspend the host, False to unsuspend.
 
         Raises:
             HostSettingError: If the host does not exist.
         """
-        host = self.get_host(origin)
+        host = self.get_host(host_id)
         if host:
             host.suspend = suspend
             serialized_host = json.dumps(host.to_redis())
-            self.redis.set(f"host::{origin}", serialized_host)
-            logger.info(green(f"Suspension state set for {origin}. Now suspended: {suspend}"))
+            self.redis.set(f"host::{host_id}", serialized_host)
+            logger.info(green(f"Suspension state set for {host_id}. Now suspended: {suspend}"))
         else:
-            logger.error(red(f"Host not found for origin: {origin}"))
+            logger.error(red(f"Host not found for host_id: {host_id}"))
             raise HostSettingError("Host not found.")
 
-    def is_host_suspended(self, origin: str) -> bool:
+    def is_host_suspended(self, host_id: str) -> bool:
         """
         Check if the host is suspended.
         """
-        host = self.get_host(origin)
+        host = self.get_host(host_id)
         if host:
             return host.suspend
         else:
-            logger.error(red(f"Host not found for origin: {origin}"))
+            logger.error(red(f"Host not found for host_id: {host_id}"))
             raise HostSettingError("Host not found.")

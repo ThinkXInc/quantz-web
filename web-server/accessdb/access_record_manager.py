@@ -20,8 +20,8 @@ from accessdb.host_manager import HostManager, OriginData
 
 @dataclass
 class AccessRecord:
-    origin: str = ''
     host_id: int = 0
+    origin: str = ''
     access_time: float = field(default_factory=time.time)
     ip: str = ''
     client_id: str = ''
@@ -32,8 +32,8 @@ class AccessRecord:
     @staticmethod
     def from_redis(data: Dict[str, str]) -> 'AccessRecord':
         return AccessRecord(
-            origin=data.get('origin', ''),
             host_id=data.get('host_id', ''),
+            origin=data.get('origin', ''),
             access_time=float(data.get('access_time', 0.0)),
             ip=data.get('ip', ''),
             client_id=data.get('client_id', ''),
@@ -80,23 +80,22 @@ class AccessRecordManager:
             logger.error(red(f"Failed to establish Redis connection pool: {e}"))
             raise e
 
-    def write_access_log(self, origin: str, ip: str, client_id: str):
+    def write_access_log(self, host_id: str, ip: str, client_id: str):
         """
         Log an access attempt by origin, IP address, and client ID.
 
         Args:
-            origin (str): Origin accessed by the client.
             ip (str): IP address of the client.
             client_id (str): Client ID of the user.
         """
         try:
             host_manager = HostManager(self.host, self.port, self.db_number, self.use_unix_socket, self.redis_address)  
-            host = host_manager.get_host(origin)
+            host = host_manager.get_host(host_id)
             if not host:
-                logger.error(red(f"Host not found for origin: {origin}"))
+                logger.error(red(f"Host not found for host_id: {host_id}"))
                 return  
 
-            access_record = AccessRecord(origin=origin, host_id=host.host_id, ip=ip, client_id=client_id, access_time=time.time())
+            access_record = AccessRecord(host_id=host.host_id, origin=origin, ip=ip, client_id=client_id, access_time=time.time())
             serialized_record = json.dumps(access_record.to_redis())
 
             # Use timestamp as the score for the sorted set

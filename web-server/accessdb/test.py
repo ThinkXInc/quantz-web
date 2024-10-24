@@ -17,9 +17,9 @@ from accessdb.host_manager import Host, HostManager, OriginData
 
 
 def cleanup_origin(host_manager: HostManager, access_manager: AccessRecordManager, origin_data: OriginData):
-    print(f"Cleaning up test data for origin: {origin_data.origin}")
-    host_manager.redis.delete(f"host::{origin_data.origin}")
-    host_manager.redis.delete(f"host_usage::{origin_data.origin}::{datetime.now().strftime('%Y-%m')}")
+    print(f"Cleaning up test data for host_id: {origin_data.host_id}")
+    host_manager.redis.delete(f"host::{origin_data.host_id}")
+    host_manager.redis.delete(f"host_usage::{origin_data.host_id}::{datetime.now().strftime('%Y-%m')}")
     host_manager.redis.delete(f"access_log::ip::{ip}")
     host_manager.redis.delete(f"access_log::client_id::{client_id}")
 
@@ -27,12 +27,12 @@ def initialize_origin(host_manager: HostManager, access_manager: AccessRecordMan
     # Test logic for the specified origin
     print(f"Testing HostManager for origin: {origin_data.origin}")
     host_manager.set_host(
-        origin_data.origin, origin_data.host_id, origin_data.monthly_limit,
+        origin_data.host_id, origin_data.origin, origin_data.monthly_limit,
         datetime.now(), datetime.now()+timedelta(days=30))
-    print(f"Set host for origin: {origin_data.origin}, host_id: {origin_data.host_id}, monthly_limit: {origin_data.monthly_limit}")
+    print(f"Set host: host_id: {origin_data.host_id}, origin: {origin_data.origin}, monthly_limit: {origin_data.monthly_limit}")
 
-    host_manager.increment_host_usage(origin_data.origin)
-    print(f"Incremented usage for origin: {origin_data.origin}")
+    host_manager.increment_host_usage(origin_data.host_id)
+    print(f"Incremented usage for host: {origin_data.host_id}")
 
 
 if __name__ == "__main__":
@@ -58,7 +58,7 @@ if __name__ == "__main__":
 
         # Test AccessRecordManager
         print("\nTesting AccessRecordManager...")
-        access_manager.write_access_log(origin_data.origin, ip, client_id)
+        access_manager.write_access_log(origin_data.host_id, ip, client_id)
         print(f"Logged access for IP: {ip} and Client ID: {client_id}")
 
         # Retrieving access log by IP
@@ -80,7 +80,7 @@ if __name__ == "__main__":
         limit = 5  # Let's assume the limit is 5 accesses
         time_range = 60  # Time range in seconds
         for _ in range(limit + 1):  # Log one more access than the limit
-            access_manager.write_access_log(origin_data.origin, ip, client_id)
+            access_manager.write_access_log(origin_data.host_id, ip, client_id)
             print(f"Logged access for IP: {ip} and Client ID: {client_id}")
 
         # Retrieving access log by Client ID
@@ -96,17 +96,17 @@ if __name__ == "__main__":
         # Simulate access increment
         print("Incrementing host usage...")
         for _ in range(10):  # Simulate 10 accesses
-            host_manager.increment_host_usage(origin_data.origin)
+            host_manager.increment_host_usage(origin_data.host_id)
 
         # Retrieving usage for a specific period
         start_timestamp = int((datetime.now() - timedelta(days=1)).timestamp())
         end_timestamp = int(datetime.now().timestamp())
         usage_for_period = host_manager.retrieve_usage_for_billing_period(
-            origin_data.origin, start_timestamp, end_timestamp)
+            origin_data.host_id, start_timestamp, end_timestamp)
         print(yellow(f"Retrieved usage for billing period: {usage_for_period}"))
 
-        exceeded = host_manager.is_host_usage_exceeded(origin_data.origin)
-        print(cyan(f"Has {origin_data.origin} exceeded its limit? {'Yes' if exceeded else 'No'}"))
+        exceeded = host_manager.is_host_usage_exceeded(origin_data.host_id)
+        print(cyan(f"Has {origin_data.host_id} exceeded its limit? {'Yes' if exceeded else 'No'}"))
 
     for origin_data in origins_data:
         print(magenta(f'cleanup origin [{origin_data}] -------------------------------------->'))

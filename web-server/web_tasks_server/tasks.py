@@ -152,7 +152,7 @@ def run_payment(user_id, lang):
         end_timestamp = int(User.ensure_utc(user.next_billing).timestamp())
 
         usage = host_manager.retrieve_usage_for_billing_period(
-            user.origin, start_timestamp, end_timestamp)
+            str(user.id), start_timestamp, end_timestamp)
         billing_usage = max(usage - user.free_call, 0)
         price = round_price(UNIT_PRICE_USD * billing_usage)
 
@@ -207,7 +207,7 @@ def run_payment(user_id, lang):
     except stripe.error.CardError as e:
         try:
             send_notify_card_issue_email(user)
-            host_manager.set_suspend(user.origin, suspend=True)
+            host_manager.set_suspend(str(user.id), suspend=True)
             logger.error(red(f"Card issue for user {user_id}: {e.user_message}"))
         except MailSendError as e:
             logger.error(red(e))

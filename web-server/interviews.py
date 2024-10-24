@@ -2,6 +2,9 @@ from os.path import dirname, abspath, join
 from flask import Flask, render_template, request, g, jsonify, Blueprint, url_for
 from flask_httpauth import HTTPBasicAuth
 
+# AccessDB
+from accessdb.host_manager import HostManager, HostSettingError
+
 auth = HTTPBasicAuth()
 basic_auth_users = {
     "citywalk": "klawytic"
@@ -13,11 +16,17 @@ blueprint_interviews = Blueprint('interviews', __name__)
 from config import Config, check_config
 REQUIRED_KEYS_IN_CONFIG = [
     'LOCALES_ROOT',
-    'UNIT_PRICE_USD'
+    'UNIT_PRICE_USD',
+    'REDIS_ACCESS_HOST',
+    'REDIS_ACCESS_PORT',
+    'REDIS_ACCESS_DB_NUMBER',
 ]
 check_config(Config, REQUIRED_KEYS_IN_CONFIG)
 
 UNIT_PRICE_USD = Config.UNIT_PRICE_USD
+REDIS_ACCESS_HOST = Config.REDIS_ACCESS_HOST
+REDIS_ACCESS_PORT = Config.REDIS_ACCESS_PORT
+REDIS_ACCESS_DB_NUMBER = Config.REDIS_ACCESS_DB_NUMBER
 
 # Set logger
 from libcommon.logger import Logger
@@ -168,7 +177,16 @@ def interviews_create(user, lang, lang_name):
             title=title, introduction=introduction, steps=steps, user=user)
         if not interview:
             raise InterviewSaveError("Failed to create interview")
-    except InterviewSaveError:
+        host_manager = HostManager(
+            host=REDIS_ACCESS_HOST,
+            port=REDIS_ACCESS_PORT,
+            db_number=REDIS_ACCESS_DB_NUMBER)
+        host_manager.set_id_in_service_with_host_id("interviews", str(interview.id), str(user.id))
+    except HostSettingError as e:
+        message = str(e)
+        logger.error(red({message}))
+        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+    except InterviewSaveError as e:
         message = locale.get('interview_save_error', lang)
         logger.error(red({message}))
         return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
