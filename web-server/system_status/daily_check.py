@@ -114,7 +114,7 @@ def num_usage(last_hours=24):
         start_timestamp = int(start_time.timestamp())
         end_timestamp = int(end_time.timestamp())
 
-        total_usage = host_manager.count_usage_in_period(start_timestamp, end_timestamp, origin='*')
+        total_usage = host_manager.count_usage_in_period(start_timestamp, end_timestamp, host_id='*')
         logger.info(green(f"Total usage for all origins in the last {last_hours} hours: => {total_usage}"))
         return total_usage
     except Exception as e:

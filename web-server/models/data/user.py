@@ -596,29 +596,9 @@ class User(MongoModel):
                         logger.info(cyan(f"[DEV] add 100 usage."))
                         host_manager.increment_host_usage(new_origin)
             else:
-                # migrate current usage when origin is updated
-                host_manager = HostManager(
-                    host=REDIS_ACCESS_HOST,
-                    port=REDIS_ACCESS_PORT,
-                    db_number=REDIS_ACCESS_DB_NUMBER)
-
-                start_timestamp = int(User.ensure_utc(user.start_billing).timestamp())
-                end_timestamp = int(User.ensure_utc(user.next_billing).timestamp())
-                current_usage = host_manager.retrieve_usage_for_billing_period(
-                    last_origin, start_timestamp, end_timestamp)
-
-                host_manager.delete_host(last_origin)
-                host_manager.set_host(
-                    new_origin, str(user.id), user.usage_limit, user.start_billing, user.next_billing)
-
-                if current_usage > 0:
-                    host_manager.delete_host_usage(last_origin, start_timestamp, end_timestamp)
-                    host_manager.set_host_usage(new_origin, current_usage)
-
                 user.update(origin=new_origin)
-
                 usage = host_manager.retrieve_usage_for_billing_period(
-                    new_origin, start_timestamp, end_timestamp)
+                    str(user.id), start_timestamp, end_timestamp)
                 logger.info(green(f"Origin updated successfully for user {user.email} to {new_origin} [usage {usage}]"))
 
         except Exception as e:
@@ -634,7 +614,7 @@ class User(MongoModel):
                 port=REDIS_ACCESS_PORT,
                 db_number=REDIS_ACCESS_DB_NUMBER)
             host_manager.set_host(
-                user.origin, str(user.id), new_limit, user.start_billing, user.next_billing)
+                str(user.id), user.origin, new_limit, user.start_billing, user.next_billing)
         except Exception as e:
             logger.error(red(f"Failed to update origin for user {user.email}: {e}"))
             raise UserUpdateError(f"An unexpected error occurred while updating the origin: {e}")
