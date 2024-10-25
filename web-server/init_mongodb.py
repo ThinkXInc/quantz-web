@@ -1,6 +1,5 @@
 # mongodb
 from mongoengine import connect
-from models.data.user import User, ApplyChangeDelayInSec, ColorTheme
 from config import Config, check_config
 
 # logger
