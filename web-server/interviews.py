@@ -71,12 +71,16 @@ from models.data.user import (
 )
 
 # Redis InteractionModel
-from llm.interaction_model import (
+from llm.models.interaction_model import (
     InteractionModel,
+    InteractionModelStep,
     InteractionModelDB,
-    InteractionModelNotFoundError,
     InteractionModelSaveError,
-    InteractionModelUpdateError
+    InteractionModelNotFoundError,
+    InteractionModelQueryError,
+    InteractionModelUpdateError,
+    InteractionModelDeleteError,
+    NoUpdateFieldError
 )
 interaction_model_db = InteractionModelDB(redis_address=f"redis://{Config.REDIS_ACCESS_HOST}:{Config.REDIS_ACCESS_PORT}/{Config.REDIS_ACCESS_DB_NUMBER}")
 
@@ -108,10 +112,10 @@ def interview_window(lang, interview_id, lang_name):
     #Session.start('6608eee0010a17bff9abcd0c')
     #Session.start('660fb470cdab5917fb9023e6')
     try:
-        interview = interaction_model_db.get_one(interaction_model_id)
+        interview = interaction_model_db.get_one(interview_id)
         #interview = Interview.get_one(interview_id)
         logger.info(f'interview found: {interview}')
-    except InterviewNotFoundError:
+    except InteractionModelNotFoundError:
         return UnexpectedAPIErrorFormat(
             lang=lang,
             message=locale.get('interview_not_found', lang)
@@ -135,7 +139,7 @@ def interviews_list(user, lang, lang_name):
 
     # List interviews
     try:
-        interviews, count = Interview.get_many(user.id, limit=100)
+        interviews, count = interaction_model_db.get_many(str(user.id), limit=100)
         logger.debug(f'fetched {count} interviews => {interviews}')
     except InteractionModelQueryError:
         return UnexpectedAPIErrorFormat(
@@ -174,11 +178,11 @@ def interviews_create(user, lang, lang_name):
     # Save results in the database using the create_new method
     try:
         interview = InteractionModel(
-            title=title, introduction=introduction, user_id=user.id, steps=[Step(**step) for step in steps])
-        interview_id = interaction_model_db.create(interaction_model)
+            title=title, introduction=introduction, user_id=str(user.id), steps=[InteractionModelStep(**step) for step in steps])
+        interview_id = interaction_model_db.create(interview)
         if not interview_id:
             raise InteractionModelSaveError("Failed to create interview")
-        logger.info(cyan(f"Interview created successfully {interview.to_redis()}"))
+        logger.info(cyan(f"Interview created successfully {interview.response_json()}"))
         host_manager = HostManager(
             host=REDIS_ACCESS_HOST,
             port=REDIS_ACCESS_PORT,
