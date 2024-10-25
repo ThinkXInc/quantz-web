@@ -228,4 +228,3 @@ class Interview(MongoModel):
     #    # Logging the updates
     #    updated_fields = [f"{key}: {', '.join(result[key])}" if key == 'keywords' else f"{key}: {result[key]}" for key in fields_to_update if key in result]
     #    logger.info(yellow(f"[updated] interview {interview_id}.\n" + '\n'.join(updated_fields)))
-

@@ -70,16 +70,15 @@ from models.data.user import (
     UserNotFoundError
 )
 
-from models.data.interview import (
-    Interview,
-    InterviewStep,
-    InterviewSaveError,
-    InterviewNotFoundError,
-    InterviewQueryError,
-    InterviewUpdateError,
-    InterviewDeleteError,
-    NoUpdateFieldError
+# Redis InteractionModel
+from llm.interaction_model import (
+    InteractionModel,
+    InteractionModelDB,
+    InteractionModelNotFoundError,
+    InteractionModelSaveError,
+    InteractionModelUpdateError
 )
+interaction_model_db = InteractionModelDB(redis_address=f"redis://{Config.REDIS_ACCESS_HOST}:{Config.REDIS_ACCESS_PORT}/{Config.REDIS_ACCESS_DB_NUMBER}")
 
 # main page
 @blueprint_interviews.route('/v1/<lang>/interviews', methods=['GET'])
@@ -109,8 +108,9 @@ def interview_window(lang, interview_id, lang_name):
     #Session.start('6608eee0010a17bff9abcd0c')
     #Session.start('660fb470cdab5917fb9023e6')
     try:
-        interview = Interview.get_one(interview_id)
-        logger.info(f'interview found: {interview.response_json()}')
+        interview = interaction_model_db.get_one(interaction_model_id)
+        #interview = Interview.get_one(interview_id)
+        logger.info(f'interview found: {interview}')
     except InterviewNotFoundError:
         return UnexpectedAPIErrorFormat(
             lang=lang,
@@ -135,9 +135,9 @@ def interviews_list(user, lang, lang_name):
 
     # List interviews
     try:
-        interviews, count = Interview.get_many(user, limit=100)
+        interviews, count = Interview.get_many(user.id, limit=100)
         logger.debug(f'fetched {count} interviews => {interviews}')
-    except InterviewQueryError:
+    except InteractionModelQueryError:
         return UnexpectedAPIErrorFormat(
             lang=lang,
             message=locale.get('interviews_list_failed', lang)
@@ -173,27 +173,29 @@ def interviews_create(user, lang, lang_name):
 
     # Save results in the database using the create_new method
     try:
-        interview = Interview.create_new(
-            title=title, introduction=introduction, steps=steps, user=user)
-        if not interview:
-            raise InterviewSaveError("Failed to create interview")
+        interview = InteractionModel(
+            title=title, introduction=introduction, user_id=user.id, steps=[Step(**step) for step in steps])
+        interview_id = interaction_model_db.create(interaction_model)
+        if not interview_id:
+            raise InteractionModelSaveError("Failed to create interview")
+        logger.info(cyan(f"Interview created successfully {interview.to_redis()}"))
         host_manager = HostManager(
             host=REDIS_ACCESS_HOST,
             port=REDIS_ACCESS_PORT,
             db_number=REDIS_ACCESS_DB_NUMBER)
-        host_manager.set_id_in_service_with_host_id("interviews", str(interview.id), str(user.id))
+        host_manager.set_id_in_service_with_host_id("interviews", str(interview_id), str(user.id))
     except HostSettingError as e:
         message = str(e)
         logger.error(red({message}))
         return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
-    except InterviewSaveError as e:
+    except InteractionModelSaveError as e:
         message = locale.get('interview_save_error', lang)
         logger.error(red({message}))
         return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
     
-   # Return Response
+    # Return Response
     return AcceptedAPISuccessFormat(
-        message=locale.get('interview_created', lang, [str(interview.id)]),
+        message=locale.get('interview_created', lang, [str(interview_id)]),
         data=interview.response_json()).http_response()
 
 
@@ -211,25 +213,29 @@ def interviews_update(user, lang, lang_name, interview_id):
     if validation_error:
         return validation_error.http_response()
 
-    # Gather updates from the request
+    # Gather updates from the request, including handling steps if they are part of the update
     updates = {}
-    for field in ['title', 'text', 'lang', 'keywords', 'question', 'review', 'answer']:
-        if field in request.json:
-            updates[field] = request.json[field]
+    if 'title' in request.json:
+        updates['title'] = request.json['title']
+    if 'introduction' in request.json:
+        updates['introduction'] = request.json['introduction']
+    if 'steps' in request.json:
+        updates['steps'] = request.json['steps']
 
     if not updates:
         return BadRequestAPIErrorFormat(lang).http_response()
 
     logger.info(magenta(f'[POST] interviews/{interview_id}/update => \n'+'-'*100+f'\n{updates}'+'-'*100))
 
-    # Update interview 
+    # Update interaction model in Redis
     try:
-        interview = Interview.update(
-            user, interview_id, updates)
-    except InterviewNotFoundError:
-        return ResourceNotFoundError(
+        interview = interaction_model_db.update(interview_id, updates)
+        interview_serialized = interview.to_redis()  # Optionally, serialize back to check what was updated
+        logger.info(light_green(f'updated interview {interview_serialized}'))
+    except InteractionModelNotFoundError:
+        return ResourceNotFoundAPIErrorFormat(
             lang=lang, message=locale.get('interview_not_found', lang)).http_response()
-    except InterviewUpdateError:
+    except InteractionModelUpdateError:
         return UnexpectedAPIErrorFormat(
             lang=lang, message=locale.get('interview_update_error', lang)).http_response()
 
