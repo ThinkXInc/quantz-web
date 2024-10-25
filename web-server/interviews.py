@@ -140,7 +140,7 @@ def interview_window(lang, interview_id, lang_name):
         lang=lang,
         lang_name=lang_name,
         interview_id=interview_id,
-        interview_title=interview.title,
+        interview_title=interview['title'],
         locale_json=locale.to_json_string(),
         metadata=locale.dict()["metadata_home"][lang])
 
@@ -153,7 +153,8 @@ def interviews_list(user, lang, lang_name):
 
     # List interviews
     try:
-        interviews, count = interaction_model_db.get_many(str(user.id), limit=100)
+        interviews = interaction_model_db.get_many(str(user.id), limit=100)
+        count = len(interviews)
         logger.debug(f'fetched {count} interviews => {interviews}')
     except InteractionModelQueryError:
         return UnexpectedAPIErrorFormat(
@@ -162,7 +163,7 @@ def interviews_list(user, lang, lang_name):
         ).http_response()
 
     response_data = {
-        'interviews': [interview.response_json() for interview in interviews],
+        'interviews': interviews,
         'count': count
     }
     logger.debug(f'response data: {response_data}')
@@ -224,22 +225,13 @@ def interviews_create(user, lang, lang_name):
 @session_helper
 @required_fields_check([])
 def interviews_update(user, lang, lang_name, interview_id):
-
-    # Validate request
     logger.info(cyan(f'request: {request.url} => {request.json}'))
     validation_error = validate_request(lang, locale)
     if validation_error:
         return validation_error.http_response()
 
     # Gather updates from the request, including handling steps if they are part of the update
-    updates = {}
-    if 'title' in request.json:
-        updates['title'] = request.json['title']
-    if 'introduction' in request.json:
-        updates['introduction'] = request.json['introduction']
-    if 'steps' in request.json:
-        updates['steps'] = request.json['steps']
-
+    updates = {key: request.json[key] for key in ['title', 'introduction', 'steps'] if key in request.json}
     if not updates:
         return BadRequestAPIErrorFormat(lang).http_response()
 
@@ -248,8 +240,7 @@ def interviews_update(user, lang, lang_name, interview_id):
     # Update interaction model in Redis
     try:
         interview = interaction_model_db.update(interview_id, updates)
-        interview_serialized = interview.to_redis()  # Optionally, serialize back to check what was updated
-        logger.info(light_green(f'updated interview {interview_serialized}'))
+        logger.info(light_green(f'updated interview {interview}'))
     except InteractionModelNotFoundError:
         return ResourceNotFoundAPIErrorFormat(
             lang=lang, message=locale.get('interview_not_found', lang)).http_response()
@@ -259,6 +250,6 @@ def interviews_update(user, lang, lang_name, interview_id):
 
     return OKAPISuccessFormat(
         message=locale.get('interview_updated', lang, [interview_id]),
-        data={'interview_id': interview_id, 'updates': updates}
+        data=interview.response_json()
     ).http_response()
 
