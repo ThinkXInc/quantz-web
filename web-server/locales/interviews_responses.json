@@ -62,5 +62,15 @@
         "fr": "",
         "ru": "",
         "ar": ""
+    },
+    "interviews_delete_success": {
+        "ja": "$0 つのInterviewが正常に削除されました。",
+        "en": "$0 interviews deleted successfully.",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+ 
     }
 }

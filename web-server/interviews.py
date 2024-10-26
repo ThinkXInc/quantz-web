@@ -140,7 +140,7 @@ def interview_window(lang, interview_id, lang_name):
         lang=lang,
         lang_name=lang_name,
         interview_id=interview_id,
-        interview_title=interview['title'],
+        interview_title=interview.title,
         locale_json=locale.to_json_string(),
         metadata=locale.dict()["metadata_home"][lang])
 
@@ -194,15 +194,15 @@ def interviews_create(user, lang, lang_name):
     try:
         interview = InteractionModel(
             title=title, introduction=introduction, user_id=str(user.id), steps=[InteractionModelStep(**step) for step in steps])
-        interview_id = interaction_model_db.create(interview)
-        if not interview_id:
+        interview = interaction_model_db.create(interview)
+        if not interview:
             raise InteractionModelSaveError("Failed to create interview")
-        logger.info(cyan(f"Interview created successfully {interview.response_json()}"))
+        logger.info(cyan(f"Interview created successfully {interview}"))
         host_manager = HostManager(
             host=REDIS_ACCESS_HOST,
             port=REDIS_ACCESS_PORT,
             db_number=REDIS_ACCESS_DB_NUMBER)
-        host_manager.set_id_in_service_with_host_id("interviews", str(interview_id), str(user.id))
+        host_manager.set_id_in_service_with_host_id("interviews", str(interview.id), str(user.id))
     except HostSettingError as e:
         message = str(e)
         logger.error(red({message}))
@@ -214,7 +214,7 @@ def interviews_create(user, lang, lang_name):
     
     # Return Response
     return AcceptedAPISuccessFormat(
-        message=locale.get('interview_created', lang, [str(interview_id)]),
+        message=locale.get('interview_created', lang, [str(interview.id)]),
         data=interview.response_json()).http_response()
 
 
@@ -253,3 +253,17 @@ def interviews_update(user, lang, lang_name, interview_id):
         data=interview.response_json()
     ).http_response()
 
+@blueprint_interviews.route('/v1/<lang>/interviews/deleteall', methods=['GET'])
+@language_wrapper
+@session_helper
+def delete_all_interviews(user, lang, lang_name):
+    logger.info(magenta(f'[DELETE] /v1/{lang}/interviews/{user.id}/deleteall'))
+
+    try:
+        count = interaction_model_db.delete_all_for_user(str(user.id))
+        message = f'Successfully deleted {count} interviews for user ID: {user.id}'
+        logger.info(green(message))
+        return OKAPISuccessFormat(message=locale.get('interviews_delete_success', lang, [count]), data={'deleted_count': count}).http_response()
+    except InteractionModelDeleteError as e:
+        logger.error(red(f"Error while deleting interviews: {e}"))
+        return UnexpectedAPIErrorFormat(lang=lang, message=locale.get('interviews_delete_failed', lang)).http_response()
