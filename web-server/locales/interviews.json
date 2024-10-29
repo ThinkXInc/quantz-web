@@ -72,13 +72,76 @@
         "ar": ""
     },
     "create_interview_introduction_page_title": {
-        "ja": "インタビュー開始時の喋り出し",
-        "en": "Interview Opening Remarks",
+        "ja": "開始時の喋り出し",
+        "en": "Opening Remarks",
         "zh": "面试开始时的开场白",
         "es": "Palabras de apertura de la entrevista",
         "fr": "Propos d'ouverture de l'entretien",
         "ru": "Вступительное слово на собеседовании",
         "ar": "كلمة الافتتاح في المقابلة"
+    },
+    "create_interview_introduction_form_title": {
+        "ja": "開始時の喋り出し",
+        "en": "Opening Remarks",
+        "zh": "面试开始时的开场白",
+        "es": "Palabras de apertura de la entrevista",
+        "fr": "Propos d'ouverture de l'entretien",
+        "ru": "Вступительное слово на собеседовании",
+        "ar": "كلمة الافتتاح في المقابلة"
+    },
+    "create_interview_introduction_page_description": {
+        "ja": "ミーティング開始時に最初にこれを話します。",
+        "en": "This is what you will say at the beginning of the meeting.",
+        "zh": "这是您在面试开始时将说的话。",
+        "es": "Esto es lo que dirá al inicio de la entrevista.",
+        "fr": "Ceci est ce que vous direz au début de l'entretien.",
+        "ru": "Это то, что вы скажете в начале встречи.",
+        "ar": "هذا ما ستقوله في بداية اللقاء."
+    },
+    "create_interview_introduction_form_placeholder": {
+        "ja": "ミーティング開始時に最初にこれを話します。",
+        "en": "Opening Remarks",
+        "zh": "面试开始时的开场白",
+        "es": "Palabras de apertura de la entrevista",
+        "fr": "Propos d'ouverture de l'entretien",
+        "ru": "Вступительное слово на собеседовании",
+        "ar": "كلمة الافتتاح في المقابلة"
+    },
+    "create_interview_end_page_title": {
+        "ja": "終了時のメッセージ",
+        "en": "Closing Remarks",
+        "zh": "面试结束时的总结",
+        "es": "Palabras de cierre de la entrevista",
+        "fr": "Remarques de clôture de l'entretien",
+        "ru": "Заключительное слово на собеседовании",
+        "ar": "كلمة الختام في المقابلة"
+    },
+    "create_interview_end_form_title": {
+        "ja": "終了時のメッセージ",
+        "en": "Closing Remarks",
+        "zh": "面试结束时的总结",
+        "es": "Palabras de cierre de la entrevista",
+        "fr": "Remarques de clôture de l'entretien",
+        "ru": "Заключительное слово на собеседовании",
+        "ar": "كلمة الختام في المقابلة"
+    },
+    "create_interview_end_page_description": {
+        "ja": "全てのステップ終了時にこれを話して終了します。",
+        "en": "This is what you will say at the end of all steps to conclude the meeting.",
+        "zh": "这是您在面试所有步骤结束时将说的总结话语。",
+        "es": "Esto es lo que dirá al final de todos los pasos para concluir la entrevista.",
+        "fr": "Ceci est ce que vous direz à la fin de tous les étapes pour conclure l'entretien.",
+        "ru": "Это то, что вы скажете в конце всех этапов для завершения встречи.",
+        "ar": "هذا ما ستقوله في نهاية جميع الخطوات لختام اللقاء."
+    },
+    "create_interview_end_form_placeholder": {
+        "ja": "全てのステップ終了時にこれを話して終了します。",
+        "en": "This is what you will say at the end of all steps to conclude the meeting.",
+        "zh": "这是您在面试所有步骤结束时将说的总结话语。",
+        "es": "Esto es lo que dirá al final de todos los pasos para concluir la entrevista.",
+        "fr": "Ceci est ce que vous direz à la fin de tous les étapes pour conclure l'entretien.",
+        "ru": "Это то, что вы скажете в конце всех этапов для завершения встречи.",
+        "ar": "هذا ما ستقوله في نهاية جميع الخطوات لختام اللقاء."
     },
     "create_interview_step_page_title": {
         "ja": "ステップ",

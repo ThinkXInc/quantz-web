@@ -110,10 +110,26 @@ class InterviewHomeViewController {
         this.interviewList.loading(false);
     }
 
+    getInterview(interviewId) {
+        let result = null;
+        this.interviews.forEach((interview) => {
+            if(interview.id == interviewId) {
+                result = interview
+            }
+        })
+        if (result) {
+            return result
+        } else {
+            console.error(`[WARNING] interivew not found in list by id ${interviewId}`)
+        }
+    }
+
     openInterviewCreateModalView(user, interviewId, locale, lang) {
         let title = "";
+        let interview = null;
         if (interviewId) {
             title = locale.get("interview_create_page_title_edit", lang);
+            interview = this.getInterview(interviewId);
         } else {
             title = locale.get("interview_create_page_title_new", lang);
         }
@@ -126,6 +142,7 @@ class InterviewHomeViewController {
             //locale.get(MaterialsLocaleKeys.SETTINGS_MODAL_VIEW_TITLE, lang),
             text: "",
             interviewId: interviewId, //'670dcf37aa9bfc2db50d1574'
+            interview: interview,
             cancelButtonText: "Cancel",
             //locale.get(MaterialsLocaleKeys.SETTINGS_MODAL_VIEW_CANCEL, lang),
             doneButtonText: "Done",

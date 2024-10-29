@@ -1,6 +1,8 @@
 const defaults = {
     "title": "Interview 001",
-    "introduction": "Hello, {name}. I would like to conduct a simple interview with you now. Are you ready?",
+    //"introduction": "Hello, {name}. I would like to conduct a simple interview with you now. Are you ready?",
+    "introduction": "Hello, {name}. Are you ready?",
+    "end": "Thank you {name}. This is the end. Please write the note to supply this interview if you want. Bye.",
     "steps": [
         {
             "question": "Introduce yourself in about 1 minutes.",
@@ -41,6 +43,7 @@ class InterviewCreateModalView extends ModalView {
         title = "",
         text = "",
         interviewId = "",
+        interview = null,
         cancelButtonText = "Cancel",
         doneButtonText = "Done",
         shouldCloseOnTapBG = true,
@@ -66,6 +69,12 @@ class InterviewCreateModalView extends ModalView {
         this.lang = lang;
 
         this.interviewId = interviewId; //'670dcf37aa9bfc2db50d1574';//null;//'670b89cf740b61aa1bf16761';//null;
+        this.interview = interview;
+        console.warn(this.interview)
+        console.warn(this.interview)
+        console.warn(this.interview)
+        console.warn(this.interview)
+
 
         this.createElements();
         //this.setupSettingsInputPageView();
@@ -75,6 +84,7 @@ class InterviewCreateModalView extends ModalView {
             lang: lang,
             user: this.user,
             interviewId: this.interviewId,
+            interview: this.interview,
         });
         this.interviewCreateView.mount(this.$mainContent);
  
@@ -118,7 +128,7 @@ class InterviewCreateModalView extends ModalView {
 }
 
 const InterviewCreatePageIndex = Object.freeze({
-    title: 0, introduction: 1, step1: 2, step2: 3, step3: 4
+    title: 0, introduction: 1, step1: 2, step2: 3, step3: 4, end: 5
 })
 
 class InterviewCreateView {
@@ -128,12 +138,14 @@ class InterviewCreateView {
         lang,
         user,
         interviewId,
+        interview,
     }) {
         this.id = id;
         this.locale = locale;
         this.lang = lang;
         this.user = user;
         this.interviewId = interviewId;
+        this.interview = interview;
 
         this.setupView();
     }
@@ -141,7 +153,7 @@ class InterviewCreateView {
     setupView(){
         const pageView = new PageView({
             id: 'InterviewCreatePageView',
-            numPages: 5
+            numPages: 6
         })
         this.pageView = pageView;
 
@@ -173,6 +185,11 @@ class InterviewCreateView {
         }
 
         this.pageView.showAll();
+
+        // Page 3: Introduction
+
+        this.createEndPage();
+        this.handleEventEndPage();
     }
 
     mount(element) {
@@ -182,6 +199,7 @@ class InterviewCreateView {
     interviewObjectFromFormData() {
         const title = this.titleForm.value;
         const introduction = this.introductionForm.value;
+        const end = this.endForm.value;
 
         const steps = this.questionForms.map((form, index) => ({
             question: form.value,
@@ -193,6 +211,7 @@ class InterviewCreateView {
         return {
             title: title,
             introduction: introduction,
+            end: end,
             steps: steps
         };
     }
@@ -370,7 +389,7 @@ class InterviewCreateView {
                     maxLength: 100 
                 }),
             ],
-            defaultValue: defaults.title,
+            defaultValue: this.interview ? this.interview.title : defaults.title,
             hasTitle: true,
             title: "Title",
             placeholder: "Enter the interview title.",
@@ -401,7 +420,7 @@ class InterviewCreateView {
 
         const $description = document.createElement('p');
         $description.classList.add('description');
-        $description.textContent = "インタビュー開始時にこれをまず話します。"
+        $description.textContent = locale.get('create_interview_introduction_page_description', lang);
 
         const $container = document.createElement('div');
         $container.classList.add('container');
@@ -420,10 +439,10 @@ class InterviewCreateView {
                     maxLength: 100 
                 }),
             ],
-            defaultValue: defaults.introduction,
+            defaultValue: this.interview ? this.interview.introduction : defaults.introduction,
             hasTitle: true,
-            title: "Opening Remarks",
-            placeholder: "Enter the opening remarks the AI says when the interview starts.",
+            title: locale.get('create_interview_introduction_form_title', lang),
+            placeholder: locale.get('create_interview_introduction_form_placeholder', lang),
             isCounter: false,
         });
 
@@ -478,7 +497,7 @@ class InterviewCreateView {
                     maxLength: 300 
                 }),
             ],
-            defaultValue: defaults.steps[step]["question"],
+            defaultValue: this.interview ? this.interview.steps[step]["question"] : defaults.steps[step]["question"],
             hasTitle: true,
             title: "Question/Message",
             placeholder: "Enter the question.",
@@ -505,7 +524,7 @@ class InterviewCreateView {
                     maxLength: 100 
                 }),
             ],
-            defaultValue: defaults.steps[step]["finish_condition"],
+            defaultValue: this.interview ? this.interview.steps[step]["finish_condition"] : defaults.steps[step]["finish_condition"],
             hasTitle: true,
             title: "Finish condition",
             placeholder: "Choose the condition to finish this step.",
@@ -535,7 +554,7 @@ class InterviewCreateView {
                     max: max
                 })
             ],
-            defaultValue: String(defaults.steps[step]["max_turns"]),
+            defaultValue: this.interview ? String(this.interview.steps[step]["max_turns"]) : String(defaults.steps[step]["max_turns"]),
             isCounter: false,
             isIncrementer: true,
             incrementButtonPlace: TextFieldPlaceTo.inputAfter,
@@ -586,4 +605,57 @@ class InterviewCreateView {
     handleEventStepPage() {
 
     }
+
+    // Page 4: End
+
+    createEndPage() {
+        const pageIndex = InterviewCreatePageIndex.end;
+        this.pageView.pages[pageIndex].container.classList.add('EndPage');
+
+        const $endPageTitle = document.createElement('h3');
+        $endPageTitle.classList.add('title');
+        $endPageTitle.textContent = locale.get('create_interview_end_page_title', lang);
+
+        const $description = document.createElement('p');
+        $description.classList.add('description');
+        $description.textContent = locale.get('create_interview_end_page_description', lang);
+
+        const $container = document.createElement('div');
+        $container.classList.add('container');
+
+        const endForm = new TextField({
+            id: 'endForm',
+            fieldName: 'end',
+            validators: [
+                new Validator({
+                    errorType: ValidationErrorType.required,
+                    errorMessage: locale.get(ValidationErrorType.required, lang)
+                }),
+                new Validator({
+                    errorType: ValidationErrorType.maxLength,
+                    errorMessage: locale.get(ValidationErrorType.maxLength, lang),
+                    maxLength: 100 
+                }),
+            ],
+            defaultValue: this.interview ? this.interview.end : defaults.end,
+            hasTitle: true,
+            title: locale.get('create_interview_end_form_title', lang),
+            placeholder: locale.get('create_interview_end_form_placeholder', lang),
+            isCounter: false,
+        });
+
+        $container.appendChild(endForm.$view);
+        this.endForm = endForm;
+
+        this.pageView.appendChild($endPageTitle, pageIndex);
+        //this.pageView.appendChild($description, pageIndex);
+        this.pageView.appendChild($container, pageIndex);
+ 
+    }
+    handleEventEndPage() {
+
+
+    }
+
+
 }
