@@ -175,7 +175,7 @@ def interviews_list(user, lang, lang_name):
 @blueprint_interviews.route('/v1/<lang>/interviews/create', methods=['POST'])
 @language_wrapper
 @content_type_check_json
-@required_fields_check(['title', 'introduction', 'steps'])
+@required_fields_check(['title', 'introduction', 'steps', 'end'])
 @session_helper
 def interviews_create(user, lang, lang_name):
     
@@ -187,13 +187,19 @@ def interviews_create(user, lang, lang_name):
 
     title = request.json.get('title')
     introduction = request.json.get('introduction')
+    end = request.json.get('end')
     steps = request.json.get('steps')
     logger.info(magenta(f'[POST] interviews/create => \n'+'-'*100+f'\n{title}'+'-'*100))
 
     # Save results in the database using the create_new method
     try:
         interview = InteractionModel(
-            title=title, introduction=introduction, user_id=str(user.id), steps=[InteractionModelStep(**step) for step in steps])
+            title=title,
+            introduction=introduction,
+            end=end,
+            user_id=str(user.id),
+            steps=[InteractionModelStep(**step) for step in steps if step['question'].strip() != '']
+        )
         interview = interaction_model_db.create(interview)
         if not interview:
             raise InteractionModelSaveError("Failed to create interview")
@@ -231,7 +237,7 @@ def interviews_update(user, lang, lang_name, interview_id):
         return validation_error.http_response()
 
     # Gather updates from the request, including handling steps if they are part of the update
-    updates = {key: request.json[key] for key in ['title', 'introduction', 'steps'] if key in request.json}
+    updates = {key: request.json[key] for key in ['title', 'introduction', 'end', 'steps'] if key in request.json}
     if not updates:
         return BadRequestAPIErrorFormat(lang).http_response()
 
