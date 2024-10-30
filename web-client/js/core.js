@@ -255,7 +255,8 @@
 
             if (this.audioBufferQueue.length === 0) {
                 this.isAudioPlaying = false;
-                this.finishSpectrumAnalyze();
+                this.finishDispatchingAssistantAudioSignalEvent();
+                this.dispatchAssistantEndAudioSignalEvent();
                 //DEBUG: console.log("audioBufferQueue is empty, checking playbackQueue...");
                 if (this.playbackQueue.length > 0) {
                     //DEBUG: console.log("Moving next item from playbackQueue to audioBufferQueue");
@@ -289,7 +290,7 @@
 
             // Dispatch event after setting up the source
             if (!this.spectrumInterval) {
-                this.dispatchAudioSignalEvent();
+                this.assistantDidStartPlayingAudioBuffer(); // start dispatching assistantAudioSignalEvent
             }
         
             // When audio finishes playing, check for more audio in the queue
@@ -301,7 +302,8 @@
                     this.audioBufferQueue = this.playbackQueue.shift();
                     this.playBufferedAudio();
                 } else {
-                    this.finishSpectrumAnalyze();
+                    this.finishDispatchingAssistantAudioSignalEvent();
+                    this.dispatchAssistantEndAudioSignalEvent();
                     console.log("No more audio in playbackQueue");
                 }
 
@@ -344,7 +346,7 @@
                         console.log('System message received:', systemMessage);
                         if (this.history.length > 0 && this.history[this.history.length - 1].type === ns.SenderType.USER) {
                             // dispatch "responseStartEvent" when it is the beggining
-                            this.dispatchResponseStartEvent(systemMessage);
+                            this.dispatchAssistantResponseStartEvent(systemMessage);
                         }
                         this.appendToHistory(ns.SenderType.SYSTEM, systemMessage); // Splitting for example, modify as needed
                     } else if (messageString === '\\END' || messageString === '\\NEXT') {
@@ -359,7 +361,7 @@
                             this.playBufferedAudio();
                         }
                         if (messageString === '\\END') {
-                            this.dispatchEndTurnEvent();
+                            this.dispatchAssistantEndTurnEvent();
                         }
                         // No immediate call to playBufferedAudio()
                     } else if (messageString.startsWith('\\LIMIT_EXCEEDED')) {
@@ -397,9 +399,9 @@
             //this.displayMessages();
         }
 
-        dispatchResponseStartEvent(message) {
-            console.log(`[Core] Dispatching ResponseStartEvent - buttonId: ${this.buttonId} with message: ${message}`);
-            const event = new CustomEvent(ns.configs[this.buttonId].responseStartEventName, {
+        dispatchAssistantResponseStartEvent(message) {
+            console.log(`[Core] Dispatching assistantResponseStartEvent - buttonId: ${this.buttonId} with message: ${message}`);
+            const event = new CustomEvent(ns.configs[this.buttonId].assistantResponseStartEventName, {
                 detail: {
                     buttonId: this.buttonId,
                     message: message
@@ -408,30 +410,15 @@
             this.$buttonLoader.dispatchEvent(event);
         }
 
-        dispatchAudioSignalEvent() {
-            console.log(`[Core] Dispatching AudioSignalEvent - buttonId: ${this.buttonId}`);
-            this.spectrumInterval = setInterval(() => {
-                const dataArray = new Uint8Array(this.analyser.frequencyBinCount);
-                this.analyser.getByteFrequencyData(dataArray);
-                const hasData = dataArray.some(value => value > 0);
-                if (hasData) {
-                    const event = new CustomEvent(ns.configs[this.buttonId].audioSignalEventName, {detail: { buttonId: this.buttonId, spectrum: dataArray }});
-                    this.$buttonLoader.dispatchEvent(event);
-                    console.log(`[Core] Dispatched audioSignalEvent with spectrum data - buttonId: ${this.buttonId}`);
-                }
-            }, ns.configs[this.buttonId].dispatchSpectrumFrequencyMs);
+        assistantDidStartPlayingAudioBuffer() {
+            console.log(`[Core] assistant started playing audio buffer - buttonId: ${this.buttonId}`);
+            this.dispatchAssistantStartPlayingAudioBufferEvent();
+            this.startDispatchingAssistantAudioSignalEvent();
         }
 
-        finishSpectrumAnalyze() {
-            console.log(`[Core] Finishing Spectrum Analysis for buttonId: ${this.buttonId}`);
-            clearInterval(this.spectrumInterval);  // Ensure to clear the interval when no more audio is to play
-            this.spectrumInterval = null;
-            this.dispatchEndAudioSignalEvent();
-        }
-
-        dispatchEndAudioSignalEvent() {
-            console.log(`[Core] Dispatching EndAudioSignalEvent - buttonId: ${this.buttonId}`);
-            const event = new CustomEvent(ns.configs[this.buttonId].endAudioSignalEventName, {
+        dispatchAssistantStartPlayingAudioBufferEvent() {
+            console.log(`[Core] Dispatching assistantStartPlayingAudioBufferEvent - buttonId: ${this.buttonId}`);
+            const event = new CustomEvent(ns.configs[this.buttonId].assistantStartPlayingAudioBufferEventName, {
                 detail: {
                     buttonId: this.buttonId
                 }
@@ -439,9 +426,39 @@
             this.$buttonLoader.dispatchEvent(event);
         }
 
-        dispatchEndTurnEvent() {
-            console.log(`[Core] Dispatching EndTurnEvent - buttonId: ${this.buttonId}`);
-            const event = new CustomEvent(ns.configs[this.buttonId].endTurnEventName, {
+        startDispatchingAssistantAudioSignalEvent() {
+            console.log(`[Core] Start Dispatching assistantAudioSignalEvent - buttonId: ${this.buttonId}`);
+            this.spectrumInterval = setInterval(() => {
+                const dataArray = new Uint8Array(this.analyser.frequencyBinCount);
+                this.analyser.getByteFrequencyData(dataArray);
+                const hasData = dataArray.some(value => value > 0);
+                if (hasData) {
+                    const event = new CustomEvent(ns.configs[this.buttonId].assistantAudioSignalEventName, {detail: { buttonId: this.buttonId, spectrum: dataArray }});
+                    this.$buttonLoader.dispatchEvent(event);
+                    console.log(`[Core] Dispatched assistantAudioSignalEvent with spectrum data - buttonId: ${this.buttonId}`);
+                }
+            }, ns.configs[this.buttonId].dispatchSpectrumFrequencyMs);
+        }
+
+        finishDispatchingAssistantAudioSignalEvent() {
+            console.log(`[Core] Finishing Dispatching assistantAudioSignalEvent for buttonId: ${this.buttonId}`);
+            clearInterval(this.spectrumInterval);  // Ensure to clear the interval when no more audio is to play
+            this.spectrumInterval = null;
+        }
+
+        dispatchAssistantEndAudioSignalEvent() {
+            console.log(`[Core] Dispatching assistantEndAudioSignalEvent - buttonId: ${this.buttonId}`);
+            const event = new CustomEvent(ns.configs[this.buttonId].assistantEndAudioSignalEventName, {
+                detail: {
+                    buttonId: this.buttonId
+                }
+            });
+            this.$buttonLoader.dispatchEvent(event);
+        }
+
+        dispatchAssistantEndTurnEvent() {
+            console.log(`[Core] Dispatching assistantEndTurnEvent - buttonId: ${this.buttonId}`);
+            const event = new CustomEvent(ns.configs[this.buttonId].assistantEndTurnEventName, {
                 detail: {
                     buttonId: this.buttonId
                 }
