@@ -44,8 +44,7 @@
         animationDuration: 0.3,
         animationDelay: 0,
         animationCurve: 'cubic-bezier(.65,0,.34,1)',
-        assistantSpectrumFrequencyMs: 100,
-        humanSpectrumFrequencyMs: 100,
+        spectrumFrequencyMs: 50,
         languages: [
             new ns.Language("English", ns.LanguageCode.en, true),
             new ns.Language("日本語", ns.LanguageCode.ja, false),
@@ -64,13 +63,16 @@
         humanAudioSignalEventName: 'quantz-humanAudioSignal',
         reachToLimitEventName: 'quantz-reachToLimit',
         languageChangeEventName: 'quantz-languageChange',
-        failedToGetTokenEventName: 'quantz-failedToGetToken'
+        failedToGetTokenEventName: 'quantz-failedToGetToken',
+        autoInteraction: true,
+        enableRestart: true,
     };
 
     ns.configs = {};
 
     ns.indicatorControllers = {};
     ns.buttonControllers = {};
+    ns.interactionControllers = {};
     ns.locales = {};
     ns.balloons = {};
     ns.signs = {};
@@ -207,6 +209,24 @@
             buttonContainer.appendChild(buttonControl);
         }
 
+        if (config.buttonType === ns.ButtonType.C) {
+            buttonContainer.classList.add('QBTN-TYPE-C');
+
+            const button = document.createElement('button');
+            button.id = ns.configs[buttonId].buttonElementId;
+            button.classList.add(ns.configs[buttonId].prefix + ns.configs[buttonId].buttonElementClassName);
+            ns.insertButtonTextContainer({container: button, buttonId: buttonId});
+            ns.insertIconWrapper({container: button, buttonId: buttonId});
+            buttonContainer.appendChild(button);
+
+            // Create button control
+            const buttonControl = document.createElement('div');
+            buttonControl.id = ns.configs[buttonId].buttonControlId;
+            buttonControl.classList.add(ns.configs[buttonId].prefix + 'button-control');
+            ns.insertSpacer({container: buttonControl, buttonId: buttonId});
+            buttonContainer.appendChild(buttonControl);
+        }
+
         // Apply dynamic styles after creating the button
         ns.applyDynamicStyles({buttonId: buttonId, config: config});
     }
@@ -293,7 +313,7 @@
 
         // Customize size
         const styleGenerator = new ns.StyleGenerator({buttonId: buttonId, buttonType: ns.configs[buttonId].buttonType});
-        if (ns.configs[buttonId].buttonType == ns.ButtonType.B) {
+        if (ns.configs[buttonId].buttonType == ns.ButtonType.B || ns.configs[buttonId].buttonType == ns.ButtonType.C) {
             styleGenerator.generate({
                 iconSize: ns.configs[buttonId].iconSize,
                 fontSize: ns.configs[buttonId].fontSize,
@@ -350,7 +370,6 @@
                 }
             }
         }
-
 
         // Start observing the body for added elements.
         observer.observe(document.body, { childList: true, subtree: true });
@@ -437,13 +456,24 @@
                 indicatorController: ns.indicatorController,
                 lang: ns.locales[buttonId].lang});
             const $btn = $buttonLoader.querySelector(`#${ns.configs[buttonId].buttonElementId}`);
-            buttonController.switchToStandby();
+            if (ns.configs[buttonId].autoInteraction) {
+                buttonController.switchToStart();
+            } else {
+                buttonController.switchToStandby();
+            }
             ns.buttonControllers[buttonId] = buttonController;
             ns.setupInteractions({buttonId: buttonId, $buttonLoader: $buttonLoader, $btn: $btn});
 
             // Setup core engine
             ns.cores[buttonId] = new ns.Core({buttonId: buttonId, defaultLang: config.defaultLang});
+            if (ns.configs[buttonId].autoInteraction) {
+                ns.setupAutoInteraction(buttonId, config)
+            }
         }});
+    }
+
+    ns.setupAutoInteraction = function(buttonId, config) {
+        ns.interactionControllers[buttonId] = new ns.InteractionController({buttonId: buttonId, frequencyMs: ns.configs[buttonId].spectrumFrequencyMs, defaultLang: config.defaultLang});
     }
 
 
@@ -467,6 +497,29 @@
             console.log(`[Quantz Button ${buttonId}] Button pressed - buttonState ${ns.buttonControllers[buttonId].buttonState}`);
 
             switch (ns.buttonControllers[buttonId].buttonState) {
+                case ns.ButtonState.start: // autoInteraction mode
+                    // Connect to server
+                    ns.cores[buttonId].initializeAudio();
+                    ns.cores[buttonId].connect(() => {
+                        console.log(`[Quantz Button ${buttonId}] Connection established.`);
+                        ns.buttonControllers[buttonId].switchToConnected(); // Switch to the connected state
+                        ns.cores[buttonId].sendStartMessage();
+                        ns.interactionControllers[buttonId].start();
+                    });
+                    break;
+
+                case ns.ButtonState.restart:
+                    // Restart 
+                    // TODO: Display "Are you sure" dialogue
+                    ns.cores[buttonId].initializeAudio();
+                    ns.cores[buttonId].connect(() => {
+                        console.log(`[Quantz Button ${buttonId}] Connection established.`);
+                        ns.buttonControllers[buttonId].switchToConnected(); // Switch to the connected state
+                        ns.cores[buttonId].sendStartMessage();
+                        ns.interactionControllers[buttonId].start();
+                    });
+                    break;
+ 
                 case ns.ButtonState.standby:
                     // Connect to server
                     ns.cores[buttonId].initializeAudio();
@@ -576,8 +629,11 @@
         })
 
         $buttonLoader.addEventListener(ns.configs[buttonId].assistantAudioSignalEventName, function(event) {
-            const { buttonId, spectrum } = event.detail;
-            console.log(`[Quantz Button ${buttonId}] assistant spectrum size:`, spectrum.length, 'received')
+            const { buttonId, spectrum, volume } = event.detail;
+            console.log(`[Quantz Button ${buttonId}] assistant spectrum size:`, spectrum.length, ' volume:', volume, 'received')
+            if (ns.configs[buttonId].autoInteraction) {
+                ns.interactionControllers[buttonId].appendAssistantSignalData(volume);
+            }
             //console.log('**** spectrum', spectrum);
             if (ns.configs[buttonId].buttonType == ns.ButtonType.A) {
                 ns.indicatorControllers[buttonId].speakingAnimation(spectrum);
@@ -586,6 +642,11 @@
 
         $buttonLoader.addEventListener(ns.configs[buttonId].assistantEndAudioSignalEventName, function(event) {
             console.log(`[Quantz Button ${buttonId}] **** (finish) assistant spectrum`);
+            if (ns.configs[buttonId].autoInteraction) {
+                ns.buttonControllers[buttonId].switchToRecording(); // Switch to the recording state
+                ns.cores[buttonId].startRecording();
+                ns.interactionControllers[buttonId].setAssistantStopSpeaking();
+            }
             if (ns.configs[buttonId].buttonType === ns.ButtonType.A) {
                 ns.indicatorControllers[buttonId].resetToConnectedAnimation();
             }
@@ -593,15 +654,20 @@
 
         $buttonLoader.addEventListener(ns.configs[buttonId].assistantEndTurnEventName, function(event) {
             console.log(`[Quantz Button ${buttonId}] assistant end turn event received`);
-            ns.buttonControllers[buttonId].switchToPushSpeak();
-            if (ns.configs[buttonId].buttonType === ns.ButtonType.A) {
-                ns.indicatorControllers[buttonId].endTurnAnimation();
+            if (ns.configs[buttonId].autoInteraction) {
+                ns.buttonControllers[buttonId].switchToRestart();
+            } else {
+                ns.buttonControllers[buttonId].switchToPushSpeak();
+                if (ns.configs[buttonId].buttonType === ns.ButtonType.A) {
+                    ns.indicatorControllers[buttonId].endTurnAnimation();
+                }
             }
         });
 
         $buttonLoader.addEventListener(ns.configs[buttonId].humanAudioSignalEventName, function(event) {
-            const { buttonId, spectrum } = event.detail;
-            console.log(`[Quantz Button ${buttonId}] human spectrum size:`, spectrum.length, 'received')
+            const { buttonId, spectrum, volume, fundamentalFreq } = event.detail;
+            console.log(`[Quantz Button ${buttonId}] human spectrum size:`, spectrum.length, ' volume:', volume, ' fundamental freq:', fundamentalFreq, 'received')
+            ns.interactionControllers[buttonId].appendHumanSignalData(volume, fundamentalFreq);
             //console.log('**** spectrum', spectrum);
         })
 

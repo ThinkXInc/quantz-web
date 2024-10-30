@@ -1,12 +1,15 @@
 (function(ns) {
     ns.IconType = {
+        START: 'https://quantz.thinkxinc.com/img/quantz_button/standby-icon-white.svg',
         STANDBY: 'https://quantz.thinkxinc.com/img/quantz_button/standby-icon-white.svg',
         PUSHSPEAK: 'https://quantz.thinkxinc.com/img/quantz_button/push-speak-icon-white.svg',
         RECORDING: 'https://quantz.thinkxinc.com/img/quantz_button/recording-icon-white.svg',
         REPLYING: 'https://quantz.thinkxinc.com/img/quantz_button/replying-icon-white.svg',
+        RESTART: '',
     };
 
     ns.ButtonState = {
+        start: 'start',
         standby: 'standby',
         connected: 'connected',
         pushSpeak: 'pushSpeak',
@@ -14,6 +17,7 @@
         loading: 'loading',
         replying: 'replying',
         busy: 'busy',
+        restart: 'restart',
     }
 
     ns.ButtonController = class {
@@ -112,6 +116,22 @@
             } else {
                 console.error(`Invalid button state: "${buttonState}".`);
             }
+        }
+
+        switchToStart() {
+            console.log(`[ButtonController] switch to start.`)
+            this.toggleButtonState(ns.ButtonState.start);
+            this.updateButtonText('start');
+            this.setIcon(ns.IconType.START);
+            this.sign.changeTo(ns.SignType.start);
+        }
+
+        switchToRestart() {
+            console.log(`[ButtonController] switch to restart.`)
+            this.toggleButtonState(ns.ButtonState.restart);
+            this.updateButtonText('restart');
+            this.setIcon(ns.IconType.RESTART);
+            this.sign.changeTo(ns.SignType.restart);
         }
 
         switchToStandby() {
