@@ -1,6 +1,8 @@
 (function(ns) {    
     ns.ButtonTextLocales = {
         en: {
+            start: "Start Meeting",
+            restart: "Restart Meeting Again",
             standby: "Resolve your question now",
             connected: "Connected",
             pushSpeak: "Speak while pushing",
@@ -11,6 +13,8 @@
             limitReached: "Usage limit reached."
         },
         ja: {
+            start: "ミーティングを開始",
+            restart: "最初からやり直す",
             standby: "今すぐ疑問を解決",
             connected: "接続済み",
             pushSpeak: "押しながら話してください",
@@ -21,6 +25,8 @@
             limitReached: "利用回数の上限に達しました。"
         },
         zh: {
+            start: "开始会议",
+            restart: "重新开始会议",
             standby: "立即解决您的问题",
             connected: "已连接",
             pushSpeak: "按住说话",
@@ -31,6 +37,8 @@
             limitReached: "已达到使用限制。"
         },
         es: {
+            start: "Iniciar reunión",
+            restart: "Reiniciar la reunión",
             standby: "Resuelve tu pregunta ahora",
             connected: "Conectado",
             pushSpeak: "Habla mientras pulsas",
@@ -41,6 +49,8 @@
             limitReached: "Se alcanzó el límite de uso."
         },
         fr: {
+            start: "Commencer la réunion",
+            restart: "Relancer la réunion",
             standby: "Résolvez votre question maintenant",
             connected: "Connecté",
             pushSpeak: "Parlez en appuyant",
@@ -51,6 +61,8 @@
             limitReached: "Limite d'utilisation atteinte."
         },
         ar: {
+            start: "ابدأ الاجتماع",
+            restart: "ابدأ الاجتماع مجدداً",
             standby: "حل سؤالك الآن",
             connected: "متصل",
             pushSpeak: "تحدث أثناء الضغط",

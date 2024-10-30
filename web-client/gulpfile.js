@@ -19,6 +19,7 @@ gulp.task('scripts', function() {
       'js/style_generator.js',
       'js/opus-decoder.js',
       'js/core.js',
+      'js/interaction_controller.js',
       `./js/quantz-button-v${version}.js`
     ])
     //.pipe(concat('quantz-button.min.js')) // NOTE: should NOT be quantz-button.min.js
@@ -56,6 +57,7 @@ gulp.task('scripts-dev', function() {
       'js/style_generator.js',
       'js/opus-decoder.js',
       'js/core.js',
+      'js/interaction_controller.js',
       `./js/quantz-button-v${version}.js`
     ])
     .pipe(sourcemaps.init())  // Initializes sourcemaps

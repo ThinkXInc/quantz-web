@@ -8,7 +8,7 @@
     ns.START_MESSAGE = '\\START';
     ns.END_OF_MESSAGE = '\\END';
     ns.endOfMessageBytes = new TextEncoder().encode(ns.END_OF_MESSAGE);
-    ns.FFT_SIZE = 64;
+    ns.FFT_SIZE = 2048;//64;  // 64 fails to accurate frequency
     ns.SMOOTHING_TIME = 0.1;
     ns.MIN_DECIBELS = -70;
     ns.MAX_DECIBELS = -10;
@@ -498,15 +498,26 @@
         startDispatchingAssistantAudioSignalEvent() {
             console.log(`[Core] Start Dispatching assistantAudioSignalEvent - buttonId: ${this.buttonId}`);
             this.assistantSpectrumInterval = setInterval(() => {
-                const dataArray = new Uint8Array(this.assistantAudioAnalyzer.frequencyBinCount);
-                this.assistantAudioAnalyzer.getByteFrequencyData(dataArray);
-                const hasData = dataArray.some(value => value > 0);
-                if (hasData) {
-                    const event = new CustomEvent(ns.configs[this.buttonId].assistantAudioSignalEventName, {detail: { buttonId: this.buttonId, spectrum: dataArray }});
+                const frequencyDataArray = new Uint8Array(this.assistantAudioAnalyzer.frequencyBinCount);
+                this.assistantAudioAnalyzer.getByteFrequencyData(frequencyDataArray);
+        
+                const timeDomainDataArray = new Float32Array(this.assistantAudioAnalyzer.fftSize);
+                this.assistantAudioAnalyzer.getFloatTimeDomainData(timeDomainDataArray);
+                let decibels = this.calculateDecibels(timeDomainDataArray);
+        
+                const hasSignificantData = frequencyDataArray.some(value => value > 0);
+                if (hasSignificantData) {
+                    const event = new CustomEvent(ns.configs[this.buttonId].assistantAudioSignalEventName, {
+                        detail: {
+                            buttonId: this.buttonId,
+                            spectrum: frequencyDataArray,
+                            volume: decibels
+                        }
+                    });
                     this.$buttonLoader.dispatchEvent(event);
-                    console.log(`[Core] Dispatched assistantAudioSignalEvent with spectrum data - buttonId: ${this.buttonId}`);
+                    console.log(`Dispatched assistantAudioSignalEvent with spectrum and volume - buttonId: ${this.buttonId}, volume: ${decibels.toFixed(2)} dB`);
                 }
-            }, ns.configs[this.buttonId].assistantSpectrumFrequencyMs);
+            }, ns.configs[this.buttonId].spectrumFrequencyMs);
         }
 
         finishDispatchingAssistantAudioSignalEvent() {
@@ -548,21 +559,37 @@
         
             // Setup a repeating interval to dispatch the frequency data
             this.humanAudioSignalInterval = setInterval(() => {
-                const dataArray = new Uint8Array(this.humanAudioAnalyzer.frequencyBinCount);
-                this.humanAudioAnalyzer.getByteFrequencyData(dataArray); // Get frequency data from analyzer
+                const frequencyDataArray = new Uint8Array(this.humanAudioAnalyzer.frequencyBinCount);
+                this.humanAudioAnalyzer.getByteFrequencyData(frequencyDataArray);
+        
+                const timeDomainDataArray = new Float32Array(this.humanAudioAnalyzer.fftSize);
+                this.humanAudioAnalyzer.getFloatTimeDomainData(timeDomainDataArray); // Get time-domain data
+                let decibels = this.calculateDecibels(timeDomainDataArray);
 
-                const hasSignificantData = dataArray.some(value => value > 0);
+                // Estimate the fundamental frequency using autocorrelation
+                // const sampleRate = this.audioCtx.sampleRate;
+                // const fundamentalFreq = this.fundamentalFrequencyByACF(timeDomainDataArray, sampleRate);
+
+                // Estimate the fundamental frequency
+                const sampleRate = this.audioCtx.sampleRate;
+                const fftSize = this.humanAudioAnalyzer.fftSize;
+                const fundamentalFreq = this.estimateFundamentalFrequency(frequencyDataArray, sampleRate, fftSize);
+
+                const hasSignificantData = frequencyDataArray.some(value => value > 0);
                 if (hasSignificantData) {
                     const event = new CustomEvent(ns.configs[this.buttonId].humanAudioSignalEventName, {
                         detail: {
                             buttonId: this.buttonId,
-                            spectrum: dataArray
+                            spectrum: frequencyDataArray,
+                            volume: decibels,
+                            fundamentalFreq: fundamentalFreq
                         }
                     });
                     this.$buttonLoader.dispatchEvent(event);
-                    console.log(`Dispatched humanAudioSignalEvent with spectrum data - buttonId: ${this.buttonId}`);
+                    console.log(`Dispatched humanAudioSignalEvent with spectrum and volume - buttonId: ${this.buttonId}, volume: ${decibels.toFixed(2)} dB`);
                 }
-            }, ns.configs[this.buttonId].humanSpectrumFrequencyMs);
+
+            }, ns.configs[this.buttonId].spectrumFrequencyMs);
         }
 
         finishDispatchingHumanAudioSignalEvent() {
@@ -572,6 +599,63 @@
         }
 
         // ↑↑↑ human turn event
+
+        calculateDecibels(timeDomainDataArray) {
+            let sumSquares = 0;
+            for (let i = 0; i < timeDomainDataArray.length; i++) {
+                sumSquares += timeDomainDataArray[i] * timeDomainDataArray[i];
+            }
+            let rms = Math.sqrt(sumSquares / timeDomainDataArray.length);
+            let decibels = rms > 0 ? 20 * Math.log10(rms) : -100;
+            return decibels;
+        }
+
+        fundamentalFrequencyByACF(timeDomainDataArray, sampleRate) {
+            const size = timeDomainDataArray.length;
+            const autocorr = new Float32Array(size);
+        
+            // Calculate autocorrelation
+            for (let lag = 0; lag < size; lag++) {
+                let sum = 0;
+                for (let i = 0; i < size - lag; i++) {
+                    sum += timeDomainDataArray[i] * timeDomainDataArray[i + lag];
+                }
+                autocorr[lag] = sum;
+            }
+        
+            // Find the lag with the highest autocorrelation (after lag 0)
+            let peakIndex = -1;
+            let maxValue = -Infinity;
+            for (let i = 1; i < size; i++) {
+                if (autocorr[i] > maxValue) {
+                    maxValue = autocorr[i];
+                    peakIndex = i;
+                }
+            }
+        
+            // Calculate the fundamental frequency
+            const fundamentalFreq = sampleRate / peakIndex;
+            return fundamentalFreq;
+        }
+
+        estimateFundamentalFrequency(frequencyDataArray, sampleRate, fftSize) {
+            // Find the index of the peak in the frequency data
+            let maxIndex = -1;
+            let maxValue = -Infinity;
+            for (let i = 0; i < frequencyDataArray.length; i++) {
+                if (frequencyDataArray[i] > maxValue) {
+                    maxValue = frequencyDataArray[i];
+                    maxIndex = i;
+                }
+            }
+        
+            // Calculate the frequency corresponding to the peak index
+            const nyquist = sampleRate / 2;
+            const frequencyBinWidth = nyquist / (frequencyDataArray.length);
+            const fundamentalFreq = maxIndex * frequencyBinWidth;
+        
+            return fundamentalFreq;
+        }
 
         dispatchReachToLimitEvent(message) {
             console.log(`[Core] Dispatching ReachToLimitEvent - buttonId: ${this.buttonId} with message: ${message}`);

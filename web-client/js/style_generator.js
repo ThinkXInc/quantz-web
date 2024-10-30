@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         
-            if (this.buttonType == ns.ButtonType.B) {
+            if (this.buttonType == ns.ButtonType.B || this.buttonType == ns.ButtonType.C) {
                 if (config.iconSize !== undefined) {
                     this.applyIconSize(config.iconSize);
                 }

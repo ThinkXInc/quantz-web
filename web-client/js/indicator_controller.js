@@ -201,25 +201,48 @@
 
         speakingAnimation(spectrum) {
             console.log('[Indicator controller] start speaking animation with spectrum size:', spectrum.length)
-            let i = 0;
-            spectrum.forEach(spec => {
-                if (i < ns.configs[this.buttonId].N) {
-                    const length = spectrum[i]/ns.configs[this.buttonId].dialSpectrumAnimationScaleFactor; // TODO: need adjust
-                    const thickness = ns.configs[this.buttonId].dialThicknessSpeaking;
-                    const duration = 0.2;
-                    const color = ns.configs[this.buttonId].dialColorSpeaking;
-                    this.update({
-                        index: i, 
-                        length: length, 
-                        thickness: thickness, 
-                        color: color, 
-                        duration: duration, 
-                        delay: 0, 
-                        curve: ns.configs[this.buttonId].animationCurve,
-                        reverse: true});
-                    i++;
+            const N = ns.configs[this.buttonId].N;
+            let adjustedSpectrum = [];
+        
+            if (spectrum.length > N) {
+                // Downsample the spectrum to length N by averaging
+                const binSize = spectrum.length / N;
+                for (let i = 0; i < N; i++) {
+                    const start = Math.floor(i * binSize);
+                    const end = Math.floor((i + 1) * binSize);
+                    let sum = 0;
+                    let count = 0;
+                    for (let j = start; j < end && j < spectrum.length; j++) {
+                        sum += spectrum[j];
+                        count++;
+                    }
+                    adjustedSpectrum.push(count > 0 ? sum / count : 0);
                 }
-            })
+            } else {
+                // If spectrum.length <= N, use the spectrum as is and fill the rest with zeros if needed
+                adjustedSpectrum = spectrum.slice(0, N);
+                while (adjustedSpectrum.length < N) {
+                    adjustedSpectrum.push(0);
+                }
+            }
+        
+            for (let i = 0; i < N; i++) {
+                const spec = adjustedSpectrum[i];
+                const length = spec / ns.configs[this.buttonId].dialSpectrumAnimationScaleFactor;
+                const thickness = ns.configs[this.buttonId].dialThicknessSpeaking;
+                const duration = 0.2;
+                const color = ns.configs[this.buttonId].dialColorSpeaking;
+                this.update({
+                    index: i, 
+                    length: length, 
+                    thickness: thickness, 
+                    color: color, 
+                    duration: duration, 
+                    delay: 0, 
+                    curve: ns.configs[this.buttonId].animationCurve,
+                    reverse: true
+                });
+            }
         }
 
         resetToConnectedAnimation() {
