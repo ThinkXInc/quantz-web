@@ -708,8 +708,7 @@ def users_update_limit(user, lang, lang_name):
             host=REDIS_ACCESS_HOST,
             port=REDIS_ACCESS_PORT,
             db_number=REDIS_ACCESS_DB_NUMBER)
-        host_manager.set_host(
-            user.origin, str(user.id), new_limit, user.start_billing, user.next_billing)
+        host_manager.set_host_usage_limit(str(user.id), new_limit)
         return OKAPISuccessFormat(
             message=locale.get('usage_limit_update_success', lang),
             data=user.response_json()).http_response()

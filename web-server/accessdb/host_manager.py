@@ -181,9 +181,11 @@ class HostManager:
             host = self.get_host(host_id)
             if host:
                 host.monthly_limit = max_accesses
-                self.set_host(host.host_id, host.origin, host.monthly_limit)
+                self.set_host(host.host_id, host.origin, host.monthly_limit, host.start_billing, host.next_billing)
+            else:
+                logger.error(red(f"no host found from {host_id}"))
         except Exception as e:
-            logger.error(red(f"Error setting host usage limit for {origin}: {e}"))
+            logger.error(red(f"Error setting host usage limit for {host_id}: {e}"))
 
     def increment_host_usage(self, host_id: str):
         """
