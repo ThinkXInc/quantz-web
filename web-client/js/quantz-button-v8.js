@@ -55,10 +55,11 @@
             new ns.Language("العربية", ns.LanguageCode.ar, false)
         ],
         messageReceiveEventName: 'quantz-messageReceived',
-        responseStartEventName: 'quantz-startResponse',
-        audioSignalEventName: 'quantz-audioSignal',
-        endAudioSignalEventName: 'quantz-endAudioSignal',
-        endTurnEventName: 'quantz-endTurn',
+        assistantResponseStartEventName: 'quantz-assistantStartResponse',
+        assistantStartPlayingAudioBufferEventName: 'quantz-assistantStartPlayingAudioBuffer',
+        assistantAudioSignalEventName: 'quantz-assistantAudioSignal',
+        assistantEndAudioSignalEventName: 'quantz-assistantEndAudioSignal',
+        assistantEndTurnEventName: 'quantz-assistantEndTurn',
         reachToLimitEventName: 'quantz-reachToLimit',
         languageChangeEventName: 'quantz-languageChange',
         failedToGetTokenEventName: 'quantz-failedToGetToken'
@@ -546,9 +547,9 @@
             onMouseUp(); // Handle it like a touchend or mouseup
         });
 
-        $buttonLoader.addEventListener(ns.configs[buttonId].responseStartEventName, function(event) {
+        $buttonLoader.addEventListener(ns.configs[buttonId].assistantResponseStartEventName, function(event) {
             const { buttonId, message } = event.detail;
-            console.log(`[Quantz Button ${buttonId}] response started:`, message);
+            console.log(`[Quantz Button ${buttonId}] assistant response started:`, message);
             //ns.indicatorController.sequentialColorUpdate(1, ['#fff'])
 
         })
@@ -567,24 +568,29 @@
         $buttonLoader.removeEventListener(ns.configs[buttonId].messageReceiveEventName, handleMessageReceive);
         $buttonLoader.addEventListener(ns.configs[buttonId].messageReceiveEventName, handleMessageReceive);
 
-        $buttonLoader.addEventListener(ns.configs[buttonId].audioSignalEventName, function(event) {
+        $buttonLoader.addEventListener(ns.configs[buttonId].assistantStartPlayingAudioBufferEventName, function(event) {
+            const { buttonId } = event.detail;
+            console.log(`[Quantz Button ${buttonId}] assistant start playing audio buffer event received`);
+        })
+
+        $buttonLoader.addEventListener(ns.configs[buttonId].assistantAudioSignalEventName, function(event) {
             const { buttonId, spectrum } = event.detail;
-            console.log(`[Quantz Button ${buttonId}] spectrum size:`, spectrum.length, 'received')
+            console.log(`[Quantz Button ${buttonId}] assistant spectrum size:`, spectrum.length, 'received')
             //console.log('**** spectrum', spectrum);
             if (ns.configs[buttonId].buttonType == ns.ButtonType.A) {
                 ns.indicatorControllers[buttonId].speakingAnimation(spectrum);
             }
         })
 
-        $buttonLoader.addEventListener(ns.configs[buttonId].endAudioSignalEventName, function(event) {
-            console.log(`[Quantz Button ${buttonId}] **** (finish) spectrum`);
+        $buttonLoader.addEventListener(ns.configs[buttonId].assistantEndAudioSignalEventName, function(event) {
+            console.log(`[Quantz Button ${buttonId}] **** (finish) assistant spectrum`);
             if (ns.configs[buttonId].buttonType === ns.ButtonType.A) {
                 ns.indicatorControllers[buttonId].resetToConnectedAnimation();
             }
         })
 
-        $buttonLoader.addEventListener(ns.configs[buttonId].endTurnEventName, function(event) {
-            console.log(`[Quantz Button ${buttonId}] end turn event received`);
+        $buttonLoader.addEventListener(ns.configs[buttonId].assistantEndTurnEventName, function(event) {
+            console.log(`[Quantz Button ${buttonId}] assistant end turn event received`);
             ns.buttonControllers[buttonId].switchToPushSpeak();
             if (ns.configs[buttonId].buttonType === ns.ButtonType.A) {
                 ns.indicatorControllers[buttonId].endTurnAnimation();
