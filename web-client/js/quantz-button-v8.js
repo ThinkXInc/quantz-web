@@ -44,7 +44,8 @@
         animationDuration: 0.3,
         animationDelay: 0,
         animationCurve: 'cubic-bezier(.65,0,.34,1)',
-        dispatchSpectrumFrequencyMs: 100,
+        assistantSpectrumFrequencyMs: 100,
+        humanSpectrumFrequencyMs: 100,
         languages: [
             new ns.Language("English", ns.LanguageCode.en, true),
             new ns.Language("日本語", ns.LanguageCode.ja, false),
@@ -60,6 +61,7 @@
         assistantAudioSignalEventName: 'quantz-assistantAudioSignal',
         assistantEndAudioSignalEventName: 'quantz-assistantEndAudioSignal',
         assistantEndTurnEventName: 'quantz-assistantEndTurn',
+        humanAudioSignalEventName: 'quantz-humanAudioSignal',
         reachToLimitEventName: 'quantz-reachToLimit',
         languageChangeEventName: 'quantz-languageChange',
         failedToGetTokenEventName: 'quantz-failedToGetToken'
@@ -596,6 +598,12 @@
                 ns.indicatorControllers[buttonId].endTurnAnimation();
             }
         });
+
+        $buttonLoader.addEventListener(ns.configs[buttonId].humanAudioSignalEventName, function(event) {
+            const { buttonId, spectrum } = event.detail;
+            console.log(`[Quantz Button ${buttonId}] human spectrum size:`, spectrum.length, 'received')
+            //console.log('**** spectrum', spectrum);
+        })
 
         $buttonLoader.addEventListener(ns.configs[buttonId].reachToLimitEventName, function(event) {
             console.log(`[Quantz Button ${buttonId}] reach to limit event received`);

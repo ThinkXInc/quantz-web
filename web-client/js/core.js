@@ -20,7 +20,8 @@
             this.$buttonLoader = document.getElementById(`${ns.configs[buttonId].prefix}button-loader-${buttonId}`)
             this.lang = defaultLang;
             this.audioCtx = null;
-            this.analyser = null;
+            this.assistantAudioAnalyzer = null;
+            this.humanAudioAnalyzer = null;
             this.decoder; // OpusDecoder instance
             this.socket;  // WebSocket instance
 
@@ -38,69 +39,129 @@
         
             this.history = []; // Initialize an empty array to store the dialogue history
 
-            this.spectrumInterval = null;
+            this.assistantSpectrumInterval = null;
+            this.humanSpectrumInterval = null;
         }
 
         async initializeAudio() {
             if (!this.audioCtx) {
                 this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                this.analyser = this.audioCtx.createAnalyser();
-                this.analyser.fftSize = ns.FFT_SIZE;
-                this.analyser.smoothingTimeConstant = ns.SMOOTHING_TIME;
-                this.analyser.minDecibels = ns.MIN_DECIBELS;
-                this.analyser.maxDecibels = ns.MAX_DECIBELS;
+
+                this.assistantAudioAnalyzer = this.audioCtx.createAnalyser();
+                this.assistantAudioAnalyzer.fftSize = ns.FFT_SIZE;
+                this.assistantAudioAnalyzer.smoothingTimeConstant = ns.SMOOTHING_TIME;
+                this.assistantAudioAnalyzer.minDecibels = ns.MIN_DECIBELS;
+                this.assistantAudioAnalyzer.maxDecibels = ns.MAX_DECIBELS;
+
+                this.humanAudioAnalyzer = this.audioCtx.createAnalyser();
+                this.humanAudioAnalyzer.fftSize = ns.FFT_SIZE;
+                this.humanAudioAnalyzer.smoothingTimeConstant = ns.SMOOTHING_TIME;
+                this.humanAudioAnalyzer.minDecibels = ns.MIN_DECIBELS;
+                this.humanAudioAnalyzer.maxDecibels = ns.MAX_DECIBELS;
             }
 
             if (!this.mediaRecorder) {
-                try {
-                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                    this.mediaRecorder = new MediaRecorder(stream);
-                    this.mediaRecorder.ondataavailable = (e) => {
-                        this.audioChunks.push(e.data);
-                    };
-                    this.mediaRecorder.onstop = (e) => {
-                        const messageType = new Uint8Array([ns.MessageType.WAV_STREAM]);
-                        const langBytes = new TextEncoder().encode(this.lang); // 2 bytes, ensure lang is 2 characters
-                    
-                        const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
-                    
-                        // Combine all parts into a single Blob
-                        const blobWithHeader = new Blob([messageType, langBytes, audioBlob, ns.endOfMessageBytes], { type: 'audio/wav' });
-                    
-                        if (this.socket.readyState === WebSocket.OPEN) {
-                            this.socket.send(blobWithHeader);
-                            console.log("Audio blob with header sent to server.");
-                        } else {
-                            console.error("WebSocket is not open. ReadyState:", this.socket.readyState);
-                        }
-                    
-                        console.log("Audio blob details:", {
-                            size: blobWithHeader.size,
-                            type: blobWithHeader.type,
-                            chunksCount: this.audioChunks.length
-                        });
-                    
-                        this.audioChunks = [];
-                    };
-                } catch (e) {
-                    console.error("Error getting user media:", e);
-                }
+                this.initializeMediaRecorder();
+                //try {
+                //    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                //    this.mediaRecorder = new MediaRecorder(stream);
+                //    this.mediaRecorder.ondataavailable = (e) => {
+                //        this.audioChunks.push(e.data);
+                //    };
+                //    this.mediaRecorder.onstop = (e) => {
+                //        const messageType = new Uint8Array([ns.MessageType.WAV_STREAM]);
+                //        const langBytes = new TextEncoder().encode(this.lang); // 2 bytes, ensure lang is 2 characters
+                //    
+                //        const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+                //    
+                //        // Combine all parts into a single Blob
+                //        const blobWithHeader = new Blob([messageType, langBytes, audioBlob, ns.endOfMessageBytes], { type: 'audio/wav' });
+                //    
+                //        if (this.socket.readyState === WebSocket.OPEN) {
+                //            this.socket.send(blobWithHeader);
+                //            console.log("Audio blob with header sent to server.");
+                //        } else {
+                //            console.error("WebSocket is not open. ReadyState:", this.socket.readyState);
+                //        }
+                //    
+                //        console.log("Audio blob details:", {
+                //            size: blobWithHeader.size,
+                //            type: blobWithHeader.type,
+                //            chunksCount: this.audioChunks.length
+                //        });
+                //    
+                //        this.audioChunks = [];
+                //    };
+
+                //    // connect the microphone to the analyzer
+                //    this.sourceNode = this.audioCtx.createMediaStreamSource(stream);
+                //    this.sourceNode.connect(this.humanAudioAnalyzer);
+                //} catch (e) {
+                //    console.error("Error getting user media:", e);
+                //}
             }
         }
 
-        initializeMediaRecorder() {
-            navigator.mediaDevices.getUserMedia({ audio: true })
-                .then(stream => {
-                    this.mediaRecorder = new MediaRecorder(stream);
-                    this.mediaRecorder.ondataavailable = (e) => {
-                        this.audioChunks.push(e.data);
-                    };
-                    this.mediaRecorder.onstop = (e) => {
-                        this.sendWav();
-                    };
-                })
-                .catch(e => console.error("Error getting user media:", e));
+        async initializeMediaRecorder() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                this.mediaRecorder = new MediaRecorder(stream);
+                this.mediaRecorder.ondataavailable = (e) => {
+                    this.audioChunks.push(e.data);
+                };
+                this.mediaRecorder.onstop = (e) => {
+                    const messageType = new Uint8Array([ns.MessageType.WAV_STREAM]);
+                    const langBytes = new TextEncoder().encode(this.lang); // 2 bytes, ensure lang is 2 characters
+                
+                    const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+                
+                    // Combine all parts into a single Blob
+                    const blobWithHeader = new Blob([messageType, langBytes, audioBlob, ns.endOfMessageBytes], { type: 'audio/wav' });
+                
+                    if (this.socket.readyState === WebSocket.OPEN) {
+                        this.socket.send(blobWithHeader);
+                        console.log("Audio blob with header sent to server.");
+                    } else {
+                        console.error("WebSocket is not open. ReadyState:", this.socket.readyState);
+                    }
+                
+                    console.log("Audio blob details:", {
+                        size: blobWithHeader.size,
+                        type: blobWithHeader.type,
+                        chunksCount: this.audioChunks.length
+                    });
+                
+                    this.audioChunks = [];
+                };
+
+                // connect the microphone to the analyzer
+                this.sourceNode = this.audioCtx.createMediaStreamSource(stream);
+                this.sourceNode.connect(this.humanAudioAnalyzer);
+            } catch (e) {
+                console.error("Error getting user media:", e);
+            }
         }
+
+        //initializeMediaRecorder() {
+        //    navigator.mediaDevices.getUserMedia({ audio: true })
+        //        .then(stream => {
+        //            this.mediaRecorder = new MediaRecorder(stream);
+        //            this.mediaRecorder.ondataavailable = (e) => {
+        //                this.audioChunks.push(e.data);
+        //                console.warn('**************************>>>>>>>>>>>>>>>>>>>>>>>push')
+        //            };
+        //            this.mediaRecorder.onstop = (e) => {
+        //                this.sendWav();
+        //                console.warn('**************************>>>>>>>>>>>>>>>>>>>>>>>stop')
+        //            };
+
+        //            // connect the microphone to the analyzer
+        //            this.sourceNode = this.audioCtx.createMediaStreamSource(stream);
+        //            this.sourceNode.connect(this.humanAudioAnalyzer);
+        //            console.warn('**************************>>>>>>>>>>>>>>>>>>>>>>>setup')
+        //        })
+        //        .catch(e => console.error("Error getting user media:", e));
+        //}
 
         async getToken() {
             // Request a token from Quantz server
@@ -238,6 +299,9 @@
                     this.audioCtx.resume();
                     console.log(`audioCtx resumed`);
                 }
+
+                // Start dispatching the human audio signal event
+                this.startDispatchingHumanAudioSignalEvent();
             }
         }
 
@@ -247,6 +311,9 @@
                 this.mediaRecorder.stop();
                 this.isRecording = false;
                 console.log(`MediaRecorder stopped. State after stop: ${this.mediaRecorder.state}`);
+
+                // Finish dispatching the human audio signal event
+                this.finishDispatchingHumanAudioSignalEvent();
             }
         }
 
@@ -284,12 +351,12 @@
             // Play the combined buffer
             let source = this.audioCtx.createBufferSource();
             source.buffer = combinedBuffer;
-            source.connect(this.analyser);
+            source.connect(this.assistantAudioAnalyzer);
             source.connect(this.audioCtx.destination);
             source.start();
 
             // Dispatch event after setting up the source
-            if (!this.spectrumInterval) {
+            if (!this.assistantSpectrumInterval) {
                 this.assistantDidStartPlayingAudioBuffer(); // start dispatching assistantAudioSignalEvent
             }
         
@@ -399,6 +466,8 @@
             //this.displayMessages();
         }
 
+        // ↓↓↓ assistant turn event
+
         dispatchAssistantResponseStartEvent(message) {
             console.log(`[Core] Dispatching assistantResponseStartEvent - buttonId: ${this.buttonId} with message: ${message}`);
             const event = new CustomEvent(ns.configs[this.buttonId].assistantResponseStartEventName, {
@@ -428,22 +497,22 @@
 
         startDispatchingAssistantAudioSignalEvent() {
             console.log(`[Core] Start Dispatching assistantAudioSignalEvent - buttonId: ${this.buttonId}`);
-            this.spectrumInterval = setInterval(() => {
-                const dataArray = new Uint8Array(this.analyser.frequencyBinCount);
-                this.analyser.getByteFrequencyData(dataArray);
+            this.assistantSpectrumInterval = setInterval(() => {
+                const dataArray = new Uint8Array(this.assistantAudioAnalyzer.frequencyBinCount);
+                this.assistantAudioAnalyzer.getByteFrequencyData(dataArray);
                 const hasData = dataArray.some(value => value > 0);
                 if (hasData) {
                     const event = new CustomEvent(ns.configs[this.buttonId].assistantAudioSignalEventName, {detail: { buttonId: this.buttonId, spectrum: dataArray }});
                     this.$buttonLoader.dispatchEvent(event);
                     console.log(`[Core] Dispatched assistantAudioSignalEvent with spectrum data - buttonId: ${this.buttonId}`);
                 }
-            }, ns.configs[this.buttonId].dispatchSpectrumFrequencyMs);
+            }, ns.configs[this.buttonId].assistantSpectrumFrequencyMs);
         }
 
         finishDispatchingAssistantAudioSignalEvent() {
             console.log(`[Core] Finishing Dispatching assistantAudioSignalEvent for buttonId: ${this.buttonId}`);
-            clearInterval(this.spectrumInterval);  // Ensure to clear the interval when no more audio is to play
-            this.spectrumInterval = null;
+            clearInterval(this.assistantSpectrumInterval);  // Ensure to clear the interval when no more audio is to play
+            this.assistantSpectrumInterval = null;
         }
 
         dispatchAssistantEndAudioSignalEvent() {
@@ -465,6 +534,44 @@
             });
             this.$buttonLoader.dispatchEvent(event);
         }
+
+        // ↑↑↑ assistant turn event
+
+        // ↓↓↓ human turn event
+
+        startDispatchingHumanAudioSignalEvent() {
+            console.log(`[Core] Start Dispatching humanAudioSignalEvent - buttonId: ${this.buttonId}`);
+            if (!this.humanAudioAnalyzer) {
+                console.error("Analyser is not initialized.");
+                return;
+            }
+        
+            // Setup a repeating interval to dispatch the frequency data
+            this.humanAudioSignalInterval = setInterval(() => {
+                const dataArray = new Uint8Array(this.humanAudioAnalyzer.frequencyBinCount);
+                this.humanAudioAnalyzer.getByteFrequencyData(dataArray); // Get frequency data from analyzer
+
+                const hasSignificantData = dataArray.some(value => value > 0);
+                if (hasSignificantData) {
+                    const event = new CustomEvent(ns.configs[this.buttonId].humanAudioSignalEventName, {
+                        detail: {
+                            buttonId: this.buttonId,
+                            spectrum: dataArray
+                        }
+                    });
+                    this.$buttonLoader.dispatchEvent(event);
+                    console.log(`Dispatched humanAudioSignalEvent with spectrum data - buttonId: ${this.buttonId}`);
+                }
+            }, ns.configs[this.buttonId].humanSpectrumFrequencyMs);
+        }
+
+        finishDispatchingHumanAudioSignalEvent() {
+            console.log(`[Core] Finishing Dispatching humanAudioSignalEvent for buttonId: ${this.buttonId}`);
+            clearInterval(this.humanAudioSignalInterval);  // Ensure to clear the interval when no more audio is to play
+            this.humanAudioSignalInterval = null;
+        }
+
+        // ↑↑↑ human turn event
 
         dispatchReachToLimitEvent(message) {
             console.log(`[Core] Dispatching ReachToLimitEvent - buttonId: ${this.buttonId} with message: ${message}`);
