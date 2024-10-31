@@ -85,7 +85,7 @@ class MeetingView {
         $quantzButtonLoader.setAttribute('data-button-key', 'QBTN-');
         $quantzButtonLoader.setAttribute('data-publisher-id', '6689ea61a69d7236505271d8');
         $quantzButtonLoader.setAttribute('data-quantz-config', JSON.stringify({
-            buttonType: "B",
+            buttonType: "C",
             iconSize: 30,
             fontSize: 13,
             buttonWidth: 260,

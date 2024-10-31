@@ -90,6 +90,7 @@
                         this.isHumanSpeaking = false;
                         this.silenceDurationMs = 0; // Reset the silence duration
                         console.log('[InteractionController] Human has stopped speaking.');
+                        this.dispatchHumanStopSpeakingEvent();
                     }
                 }
             }
@@ -120,6 +121,16 @@
                     '[InteractionController] Assistant speaking timeout reached. Assistant is now silent.'
                 );
             }, this.frequencyMs * 2); // Adjust as needed
+        }
+
+        dispatchHumanStopSpeakingEvent() {
+            console.log(`[Core] Dispatching humanStopSpeakingEvent - buttonId: ${this.buttonId}`);
+            const event = new CustomEvent(ns.configs[this.buttonId].humanStopSpeakingEventName, {
+                detail: {
+                    buttonId: this.buttonId,
+                }
+            });
+            this.$buttonLoader.dispatchEvent(event);
         }
 
         setAssistantStopSpeaking() {

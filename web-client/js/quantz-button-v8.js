@@ -61,6 +61,7 @@
         assistantEndAudioSignalEventName: 'quantz-assistantEndAudioSignal',
         assistantEndTurnEventName: 'quantz-assistantEndTurn',
         humanAudioSignalEventName: 'quantz-humanAudioSignal',
+        humanStopSpeakingEventName: 'quantz-humanStopSpeaking',
         reachToLimitEventName: 'quantz-reachToLimit',
         languageChangeEventName: 'quantz-languageChange',
         failedToGetTokenEventName: 'quantz-failedToGetToken',
@@ -606,7 +607,9 @@
             const { buttonId, message } = event.detail;
             console.log(`[Quantz Button ${buttonId}] assistant response started:`, message);
             //ns.indicatorController.sequentialColorUpdate(1, ['#fff'])
-
+            if (ns.configs[buttonId].autoInteraction) {
+                ns.balloons[buttonId].show();
+            }
         })
 
         // FIXME: prevent multiple events added even when called initializeButton to the same buttonloader
@@ -669,6 +672,19 @@
             console.log(`[Quantz Button ${buttonId}] human spectrum size:`, spectrum.length, ' volume:', volume, ' fundamental freq:', fundamentalFreq, 'received')
             ns.interactionControllers[buttonId].appendHumanSignalData(volume, fundamentalFreq);
             //console.log('**** spectrum', spectrum);
+        })
+
+        $buttonLoader.addEventListener(ns.configs[buttonId].humanStopSpeakingEventName, function(event) {
+            const { buttonId } = event.detail;
+            console.log(`[Quantz Button ${buttonId}] human stop speaking.`)
+            if (ns.configs[buttonId].autoInteraction) {
+                switch (ns.buttonControllers[buttonId].buttonState) {
+                    case ns.ButtonState.listening:
+                        // Start replying
+                        ns.cores[buttonId].stopRecording();
+                        ns.buttonControllers[buttonId].switchToReplying();
+                }
+            }
         })
 
         $buttonLoader.addEventListener(ns.configs[buttonId].reachToLimitEventName, function(event) {

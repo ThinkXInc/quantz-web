@@ -110,27 +110,7 @@
                     this.audioChunks.push(e.data);
                 };
                 this.mediaRecorder.onstop = (e) => {
-                    const messageType = new Uint8Array([ns.MessageType.WAV_STREAM]);
-                    const langBytes = new TextEncoder().encode(this.lang); // 2 bytes, ensure lang is 2 characters
-                
-                    const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
-                
-                    // Combine all parts into a single Blob
-                    const blobWithHeader = new Blob([messageType, langBytes, audioBlob, ns.endOfMessageBytes], { type: 'audio/wav' });
-                
-                    if (this.socket.readyState === WebSocket.OPEN) {
-                        this.socket.send(blobWithHeader);
-                        console.log("Audio blob with header sent to server.");
-                    } else {
-                        console.error("WebSocket is not open. ReadyState:", this.socket.readyState);
-                    }
-                
-                    console.log("Audio blob details:", {
-                        size: blobWithHeader.size,
-                        type: blobWithHeader.type,
-                        chunksCount: this.audioChunks.length
-                    });
-                
+                    this.submitHumanSpeach();
                     this.audioChunks = [];
                 };
 
@@ -140,6 +120,29 @@
             } catch (e) {
                 console.error("Error getting user media:", e);
             }
+        }
+
+        async submitHumanSpeach() {
+            const messageType = new Uint8Array([ns.MessageType.WAV_STREAM]);
+            const langBytes = new TextEncoder().encode(this.lang); // 2 bytes, ensure lang is 2 characters
+            
+            const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+            
+            // Combine all parts into a single Blob
+            const blobWithHeader = new Blob([messageType, langBytes, audioBlob, ns.endOfMessageBytes], { type: 'audio/wav' });
+            
+            if (this.socket.readyState === WebSocket.OPEN) {
+                this.socket.send(blobWithHeader);
+                console.log("Audio blob with header sent to server.");
+            } else {
+                console.error("WebSocket is not open. ReadyState:", this.socket.readyState);
+            }
+            
+            console.log("Audio blob details:", {
+                size: blobWithHeader.size,
+                type: blobWithHeader.type,
+                chunksCount: this.audioChunks.length
+            });
         }
 
         //initializeMediaRecorder() {
