@@ -17,7 +17,7 @@ class SignalMonitor {
         // Data ranges for normalization
         this.humanDecibelsRange = { min: -55, max: 0 };
         this.assistantDecibelsRange = { min: -55, max: 0 };
-        this.humanFundamentalFrequenciesRange = { min: 0, max: 500 }; // Adjusted range for human speech
+        this.humanFundamentalFrequenciesRange = { min: 0, max: 1000 }; // Adjusted range for human speech
 
         // Summarization group size
         this.groupSize = 3; // Default group size for averaging

@@ -11,6 +11,7 @@
 
             this.SPEECH_THRESHOLD = -35;
             this.SILENT_DECIBEL = -60;
+            this.SILENT_FREQUENCY = 0; // Define a silent frequency value
             this.HUMAN_SILENCE_THRESHOLD_MS = 5000;
 
             // Initialize data arrays
@@ -23,7 +24,7 @@
             this.isAssistantSpeaking = false;
 
             // Last known signal values
-            this.lastHumanFundamentalFreq = 0;
+            this.lastHumanFundamentalFreq = this.SILENT_FREQUENCY; // Initialize to silence
             this.lastHumanDecibel = this.SILENT_DECIBEL; // Initialize to silence
             this.lastAssistantDecibel = this.SILENT_DECIBEL;
 
@@ -54,7 +55,7 @@
                         : this.SILENT_DECIBEL
                 );
 
-                // Dispatch assistant signal data updated event
+                // Dispatch signal data updated event
                 this.dispatchSignalDataUpdatedEvent();
 
                 // Check for human silence
@@ -93,8 +94,18 @@
                         this.isHumanSpeaking = false;
                         this.silenceDurationMs = 0; // Reset the silence duration
                         console.log('[InteractionController] Human has stopped speaking.');
+
+                        // Reset last human signal values to silent values
+                        this.lastHumanDecibel = this.SILENT_DECIBEL;
+                        this.lastHumanFundamentalFreq = this.SILENT_FREQUENCY;
+
                         this.dispatchHumanStopSpeakingEvent();
                     }
+                } else {
+                    // Human is not speaking
+                    // Ensure last human signals are set to silent values
+                    this.lastHumanDecibel = this.SILENT_DECIBEL;
+                    this.lastHumanFundamentalFreq = this.SILENT_FREQUENCY;
                 }
             }
         }
