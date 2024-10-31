@@ -1,5 +1,11 @@
 class SignalMonitor {
-    constructor({ defaultLang = 'en', plotAllTimeLine = true }) {
+    constructor({
+        defaultLang = 'en',
+        plotAllTimeLine = true,
+        humanFundamentalFrequenciesRange = { min: 50, max: 500 }, // Default range adjusted
+        humanDecibelsRange = { min: -55, max: 0 },
+        assistantDecibelsRange = { min: -55, max: 0 },
+    }) {
         this.lang = defaultLang;
 
         console.log(`[SignalMonitor] Initializing with defaultLang: ${defaultLang}`);
@@ -15,9 +21,9 @@ class SignalMonitor {
         this.assistantDecibelsColor = 'rgba(9, 190, 239, 0.5)'; // Blue
 
         // Data ranges for normalization
-        this.humanDecibelsRange = { min: -55, max: 0 };
-        this.assistantDecibelsRange = { min: -55, max: 0 };
-        this.humanFundamentalFrequenciesRange = { min: 0, max: 1000 }; // Adjusted range for human speech
+        this.humanDecibelsRange = humanDecibelsRange;
+        this.assistantDecibelsRange = assistantDecibelsRange;
+        this.humanFundamentalFrequenciesRange = humanFundamentalFrequenciesRange;
 
         // Summarization group size
         this.groupSize = 3; // Default group size for averaging
@@ -208,14 +214,22 @@ class SignalMonitor {
     }
 
     normalizeFrequencyData(frequencyArray) {
+        // Clip frequencies to the specified range
+        const minFreq = this.humanFundamentalFrequenciesRange.min;
+        const maxFreq = this.humanFundamentalFrequenciesRange.max;
+
+        const clippedFrequencies = frequencyArray.map(freq =>
+            Math.min(Math.max(freq, minFreq), maxFreq)
+        );
+
         // Convert frequencies to Mel scale
-        const melValues = frequencyArray.map(freq => {
+        const melValues = clippedFrequencies.map(freq => {
             return 2595 * Math.log10(1 + freq / 700);
         });
 
         // Find min and max Mel values
-        const minMel = 2595 * Math.log10(1 + this.humanFundamentalFrequenciesRange.min / 700);
-        const maxMel = 2595 * Math.log10(1 + this.humanFundamentalFrequenciesRange.max / 700);
+        const minMel = 2595 * Math.log10(1 + minFreq / 700);
+        const maxMel = 2595 * Math.log10(1 + maxFreq / 700);
 
         const melRange = maxMel - minMel || 1;
 
@@ -224,6 +238,7 @@ class SignalMonitor {
 
         return normalizedData;
     }
+
 
     // Call this method when you no longer need the SignalMonitor
     destroy() {
