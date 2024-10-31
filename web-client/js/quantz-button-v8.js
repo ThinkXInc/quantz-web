@@ -54,6 +54,8 @@
             new ns.Language("中文", ns.LanguageCode.zh, false),
             new ns.Language("العربية", ns.LanguageCode.ar, false)
         ],
+        didClickStartEventName: 'quantz-didClickStart',
+        didClickRestartEventName: 'quantz-didClickRestart',
         messageReceiveEventName: 'quantz-messageReceived',
         assistantResponseStartEventName: 'quantz-assistantStartResponse',
         assistantStartPlayingAudioBufferEventName: 'quantz-assistantStartPlayingAudioBuffer',
@@ -62,6 +64,7 @@
         assistantEndTurnEventName: 'quantz-assistantEndTurn',
         humanAudioSignalEventName: 'quantz-humanAudioSignal',
         humanStopSpeakingEventName: 'quantz-humanStopSpeaking',
+        signalDataUpdatedEventName: 'quantz-signalDataUpdated',
         reachToLimitEventName: 'quantz-reachToLimit',
         languageChangeEventName: 'quantz-languageChange',
         failedToGetTokenEventName: 'quantz-failedToGetToken',
@@ -507,6 +510,8 @@
                         ns.cores[buttonId].sendStartMessage();
                         ns.interactionControllers[buttonId].start();
                     });
+                    // Dispatch start event
+                    document.dispatchEvent(new CustomEvent(ns.configs[buttonId].didClickStartEventName, {detail: {}}));
                     break;
 
                 case ns.ButtonState.restart:
@@ -519,6 +524,8 @@
                         ns.cores[buttonId].sendStartMessage();
                         ns.interactionControllers[buttonId].start();
                     });
+                    // Dispatch restart event
+                    document.dispatchEvent(new CustomEvent(ns.configs[buttonId].didClickRestartEventName, {detail: {}}));
                     break;
  
                 case ns.ButtonState.standby:
@@ -709,6 +716,19 @@
             } else {
                 ns.buttonControllers[buttonId].switchToBusy();
             }
+        });
+
+        $buttonLoader.addEventListener(ns.configs[buttonId].signalDataUpdatedEventName, function(event) {
+            const { humanDecibels, humanFundamentalFrequencies, assistantDecibels } = event.detail;
+            //console.log(`[Quantz Button ${buttonId}] Human & Assistant signal data updated event received.`);
+            // Dispatch signalDataUpdated event
+            document.dispatchEvent(new CustomEvent(ns.configs[buttonId].signalDataUpdatedEventName, {
+                detail: {
+                    humanDecibels: humanDecibels,
+                    humanFundamentalFrequencies: humanFundamentalFrequencies,
+                    assistantDecibels: assistantDecibels
+                }
+            }));
         });
 
         // Handling touch events for touch devices

@@ -11,7 +11,7 @@
 
             this.SPEECH_THRESHOLD = -35;
             this.SILENT_DECIBEL = -60;
-            this.HUMAN_SILENCE_THRESHOLD_MS = 1000;
+            this.HUMAN_SILENCE_THRESHOLD_MS = 5000;
 
             // Initialize data arrays
             this.assistantDecibels = [];
@@ -53,6 +53,9 @@
                         ? this.lastAssistantDecibel
                         : this.SILENT_DECIBEL
                 );
+
+                // Dispatch assistant signal data updated event
+                this.dispatchSignalDataUpdatedEvent();
 
                 // Check for human silence
                 this.checkHumanSilence();
@@ -121,6 +124,25 @@
                     '[InteractionController] Assistant speaking timeout reached. Assistant is now silent.'
                 );
             }, this.frequencyMs * 2); // Adjust as needed
+        }
+
+        dispatchSignalDataUpdatedEvent() {
+            const eventName = ns.configs[this.buttonId].signalDataUpdatedEventName;
+            if (eventName) {
+                //console.log(`[InteractionController] Dispatching ${eventName} event`);
+                const event = new CustomEvent(eventName, {
+                    detail: { 
+                        humanDecibels: this.humanDecibels,
+                        humanFundamentalFrequencies: this.humanFundamentalFrequencies,
+                        assistantDecibels: this.assistantDecibels,
+                    },
+                });
+                this.$buttonLoader.dispatchEvent(event);
+            } else {
+                console.warn(
+                    `[InteractionController] Event name for signalDataUpdatedEvent not defined in configs for buttonId ${this.buttonId}`
+                );
+            }
         }
 
         dispatchHumanStopSpeakingEvent() {
