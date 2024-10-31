@@ -14,6 +14,10 @@ class Interview {
         this.interviewTitle = interviewTitle;
 
         this.setupView();
+
+        this.setupSignalMonitor();
+
+        this.setupEventListeners();
     }
 
     setupView(){
@@ -23,6 +27,34 @@ class Interview {
             meta: this.interviewMeta
         });
         meetingView.setupView();
+    }
+
+    setupSignalMonitor() {
+        const monitorFrequencyMs = 50
+
+        const $signalMonitor = document.getElementById('SignalMonitor')
+        if($signalMonitor){
+            this.signalMonitor = new SignalMonitor({ frequencyMs: monitorFrequencyMs, defaultLang: this.lang})
+            this.signalMonitor.mount(document.getElementById('SignalMonitor'));
+        } else {
+            console.warn(`no DOM with id=SignalMonitor found.`)
+        }
+    }
+
+    setupEventListeners() {
+        document.addEventListener('quantz-didClickStart', (event) => {
+            console.warn('start click')
+            this.signalMonitor.startMonitoring();
+        }) 
+        document.addEventListener('quantz-didClickRestart', (event) => {
+            console.warn('restart click')
+        }) 
+        document.addEventListener('quantz-signalDataUpdated', (event) => {
+            console.warn('signal updated')
+            const { humanDecibels, humanFundamentalFrequencies, assistantDecibels } = event.detail;
+            this.signalMonitor.update(humanDecibels, humanFundamentalFrequencies, assistantDecibels);
+        })
+
     }
 }
 
@@ -37,26 +69,37 @@ class MeetingView {
         this.$view = document.createElement('div');
         this.$view.className = 'MeetingView';
  
-        this.createVideoViews();
+        this.createLeftView();
         this.createChatView();
 
         document.body.appendChild(this.$view);
         this.loadQuantzScript();
     }
 
-    createVideoViews() {
+    createMonitorView($parent) {
+        const $signalMonitor = document.createElement('div');
+        $signalMonitor.id = 'SignalMonitor';
+        $signalMonitor.classList.add('SignalMonitor');
+        $parent.appendChild($signalMonitor);
+    }
+
+    createLeftView() {
+        const $leftContainer = document.createElement('div');
+        $leftContainer.className = 'LeftContainer';
+
         const $videoContainer = document.createElement('div');
         $videoContainer.className = 'VideoContainer';
+        $leftContainer.appendChild($videoContainer);
 
         //const $title = document.createElement('h3');
         //$title.classList.add('InterviewTitle');
-        //$videoContainer.appendChild($title);
+        //$leftContainer.appendChild($title);
 
         // Another person's view
         const $otherPersonView = document.createElement('div');
         $otherPersonView.className = 'OtherPersonView';
         $otherPersonView.classList.add('VideoView');
-        $videoContainer.appendChild($otherPersonView);
+        $leftContainer.appendChild($otherPersonView);
 
         const $otherPersonLabel = document.createElement('div');
         $otherPersonLabel.className = 'NameLabel';
@@ -79,6 +122,8 @@ class MeetingView {
         $selfViewLabel.className = 'NameLabel';
         $selfViewLabel.textContent = 'Self';  // Dynamic name possible
         $selfView.appendChild($selfViewLabel);
+
+        this.createMonitorView($leftContainer);
 
         const $quantzButtonLoader = document.createElement('div');
         $quantzButtonLoader.className = 'QBTN-button-loader';
@@ -109,7 +154,7 @@ class MeetingView {
                 //    }
                 //});
 
-        navigator.mediaDevices.getUserMedia({ video: true })
+        navigator.mediaDevices.getUserMedia({ video: false})//true })
             .then(stream => {
                 $selfView.srcObject = stream;
             })
@@ -117,7 +162,7 @@ class MeetingView {
                 console.error('Failed to get video stream: ', err);
             });
 
-        this.$view.appendChild($videoContainer);
+        this.$view.appendChild($leftContainer);
     }
 
 
