@@ -66,6 +66,7 @@
         humanStopSpeakingEventName: 'quantz-humanStopSpeaking',
         signalDataUpdatedEventName: 'quantz-signalDataUpdated',
         reachToLimitEventName: 'quantz-reachToLimit',
+        closeMessageReceivedEventName: 'quantz-closeMessageReceived',
         languageChangeEventName: 'quantz-languageChange',
         failedToGetTokenEventName: 'quantz-failedToGetToken',
         autoInteraction: true,
@@ -701,6 +702,14 @@
                         ns.buttonControllers[buttonId].switchToReplying();
                 }
             }
+        })
+
+        $buttonLoader.addEventListener(ns.configs[buttonId].closeMessageReceivedEventName, function(event) {
+            console.log(`[Quantz Button ${buttonId}] close message received event received`);
+            setTimeout(() => {
+                ns.buttonControllers[buttonId].switchToStart();
+                ns.cores[buttonId].disconnect();
+            }, 10000)
         })
 
         $buttonLoader.addEventListener(ns.configs[buttonId].reachToLimitEventName, function(event) {
