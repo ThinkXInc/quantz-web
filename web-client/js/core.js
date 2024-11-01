@@ -409,18 +409,18 @@
                 
                     if (messageString.startsWith('\\USER')) {
                         let userMessage = messageString.substring(5); // Remove '\\USER' (5 characters)
-                        console.log('User message received:', userMessage);
+                        console.log('[Core] User message received:', userMessage);
                         this.appendToHistory(ns.SenderType.USER, userMessage);
                     } else if (messageString.startsWith('\\SYSTEM')) {
                         let systemMessage = messageString.substring(7); // Remove '\\SYSTEM' (7 characters)
-                        console.log('System message received:', systemMessage);
+                        console.log('[Core] System message received:', systemMessage);
                         if (this.history.length > 0 && this.history[this.history.length - 1].type === ns.SenderType.USER) {
                             // dispatch "responseStartEvent" when it is the beggining
                             this.dispatchAssistantResponseStartEvent(systemMessage);
                         }
                         this.appendToHistory(ns.SenderType.SYSTEM, systemMessage); // Splitting for example, modify as needed
                     } else if (messageString === '\\END' || messageString === '\\NEXT') {
-                        console.log(`Marker received: ${messageString}, current audioBufferQueue length: ${this.audioBufferQueue.length}`);
+                        console.log(`[Core] Marker received: ${messageString}, current audioBufferQueue length: ${this.audioBufferQueue.length}`);
                         if (this.audioBufferQueue.length > 0) {
                             //DEBUG: console.log("Adding current audioBufferQueue to playbackQueue");
                             this.playbackQueue.push([...this.audioBufferQueue]);
@@ -434,10 +434,13 @@
                             this.dispatchAssistantEndTurnEvent();
                         }
                         // No immediate call to playBufferedAudio()
+                    } else if (messageString == '\\CLOSE') {
+                        console.log(`[Core] Special message received: ${messageString}`);
+                        this.dispatchCloseMessageReceivedEvent();
                     } else if (messageString.startsWith('\\LIMIT_EXCEEDED')) {
                         // Here we log the detailed limit exceeded message
                         const message = messageString.split(':')[1].trim()
-                        console.log('[Limit exceeded]:', message);
+                        console.log('[Core] [Limit exceeded]:', message);
                         this.appendToHistory(ns.SenderType.ANNOUNCE, message);
                         this.dispatchReachToLimitEvent(message);
                     } else {
@@ -658,6 +661,15 @@
             const fundamentalFreq = maxIndex * frequencyBinWidth;
         
             return fundamentalFreq;
+        }
+
+        dispatchCloseMessageReceivedEvent() {
+            console.log(`[Core] Dispatching CloseMessageReceivedEvent - buttonId: ${this.buttonId}`);
+            const event = new CustomEvent(ns.configs[this.buttonId].closeMessageReceivedEventName, {
+                detail: {
+                    buttonId: this.buttonId                }
+            });
+            this.$buttonLoader.dispatchEvent(event);
         }
 
         dispatchReachToLimitEvent(message) {
