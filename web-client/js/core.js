@@ -518,7 +518,7 @@
                         }
                     });
                     this.$buttonLoader.dispatchEvent(event);
-                    console.log(`Dispatched assistantAudioSignalEvent with spectrum and volume - buttonId: ${this.buttonId}, volume: ${decibels.toFixed(2)} dB`);
+                    //console.log(`Dispatched assistantAudioSignalEvent with spectrum and volume - buttonId: ${this.buttonId}, volume: ${decibels.toFixed(2)} dB`);
                 }
             }, ns.configs[this.buttonId].spectrumFrequencyMs);
         }
@@ -589,7 +589,7 @@
                         }
                     });
                     this.$buttonLoader.dispatchEvent(event);
-                    console.log(`Dispatched humanAudioSignalEvent with spectrum and volume - buttonId: ${this.buttonId}, volume: ${decibels.toFixed(2)} dB`);
+                    //console.log(`[Core] Dispatched humanAudioSignalEvent with spectrum and volume - buttonId: ${this.buttonId}, volume: ${decibels.toFixed(2)} dB`);
                 }
 
             }, ns.configs[this.buttonId].spectrumFrequencyMs);
