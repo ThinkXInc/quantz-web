@@ -74,10 +74,90 @@ div.MeetingView {
     }
 
     div.ChatView {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
         width: 500px;
-        //background-color: #f1f1f1;
+        /* background-color: #f1f1f1; */
         background-color: #202020;
-        overflow-y: auto;
-        padding: 10px;
+    
+        div.ChatLog {
+            height: 100%;
+
+            ul.ChatLogMessageList {
+                height: calc(100% - 50px); /* Subtract ChatLogFooter height */
+                overflow-y: auto;
+                background-color: #fff;
+                margin: 0;
+                padding: 10px 5px;
+    
+                li.messageItem {
+                    padding: 5px 10px;
+                    display: flex;
+                    align-items: baseline;
+    
+                    span.speaker {
+                        font-weight: bold;
+                        margin-right: 5px;
+                        font-size: 9px;
+                    }
+    
+                    span.messageContainer {
+                        display: block;
+                        text-align: left;
+                        p.message {
+                            font-size: 14px;
+                        }
+                    }
+    
+                    /* Speaker color styles */
+                    &.user {
+                        span.speaker {
+                            color: #A5A5A5;
+                        }
+                        span.messageContainer {
+                            p.message {
+                                color: #000;
+                            }
+                        }
+                    }
+    
+                    &.system {
+                        span.speaker {
+                            color: #368fe8;
+                        }
+                        span.messageContainer {
+                            p.message {
+                                color: #368fe8;
+                            }
+                        }
+                    }
+    
+                    &.announce {
+                        span.speaker {
+                            color: #8a8a8a;
+                        }
+                        span.messageContainer {
+                            p.message {
+                                color: #8a8a8a;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    
+        div.ChatLogFooter {
+            height: 50px; /* Set the desired fixed height */
+            background-color: #232323;
+            padding: 10px;
+            box-sizing: border-box;
+    
+            div.ChatLogAnnotation {
+                font-size: 11px;
+                color: #888888;
+            }
+        }
+        
     }
 }

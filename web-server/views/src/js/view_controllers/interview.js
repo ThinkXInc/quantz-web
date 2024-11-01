@@ -14,19 +14,17 @@ class Interview {
         this.interviewTitle = interviewTitle;
 
         this.setupView();
-
         this.setupSignalMonitor();
-
         this.setupEventListeners();
     }
 
     setupView(){
-        const meetingView = new MeetingView({
+        this.meetingView = new MeetingView({
             locale: this.locale,
             lang: this.lang,
             meta: this.interviewMeta
         });
-        meetingView.setupView();
+        this.meetingView.setupView();
     }
 
     setupSignalMonitor() {
@@ -57,6 +55,14 @@ class Interview {
         document.addEventListener('quantz-messageReceived', (event) => {
             const { buttonId, senderType, message } = event.detail; // senderType 'system' 'user' 'announce'
             console.log(`[Interview] new message received from ${buttonId}: [${senderType}] `, message);
+
+            // Insert message into ChatLog
+            this.meetingView.chatLog.insertMessage({
+                buttonId,
+                type: senderType,
+                text: message,
+                lang: this.lang
+            });
         })
 
     }
@@ -180,6 +186,12 @@ class MeetingView {
         const $chatView = document.createElement('div');
         $chatView.className = 'ChatView';
         this.$view.appendChild($chatView);
+
+        // Initialize ChatLog and mount it to the ChatView
+        this.chatLog = new ChatLog({
+            defaultLang: this.lang
+        });
+        this.chatLog.mount($chatView);
     }
 }
 
