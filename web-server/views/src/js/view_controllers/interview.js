@@ -13,6 +13,8 @@ class Interview {
         this.interviewId = interviewId;
         this.interviewTitle = interviewTitle;
 
+        this.isInterviewEnd = false;
+
         this.setupView();
         this.setupSignalMonitor();
         this.setupEventListeners();
@@ -40,6 +42,7 @@ class Interview {
     }
 
     setupEventListeners() {
+        // Start clicked
         document.addEventListener('quantz-didClickStart', (event) => {
             console.warn('start click')
 
@@ -48,14 +51,21 @@ class Interview {
                 this.meetingView.openChatView();
             }
         }) 
+
+        // Restart clicked
         document.addEventListener('quantz-didClickRestart', (event) => {
             console.warn('restart click')
         }) 
+
+        // Signal updated
         document.addEventListener('quantz-signalDataUpdated', (event) => {
             const { humanDecibels, humanFundamentalFrequencies, assistantDecibels } = event.detail;
-            this.signalMonitor.update(humanDecibels, humanFundamentalFrequencies, assistantDecibels);
+            //if (!this.isInterviewEnd) {
+                this.signalMonitor.update(humanDecibels, humanFundamentalFrequencies, assistantDecibels);
+            //}
         })
 
+        // System/User/Annouce message received
         document.addEventListener('quantz-messageReceived', (event) => {
             const { buttonId, senderType, message } = event.detail; // senderType 'system' 'user' 'announce'
             console.log(`[Interview] new message received from ${buttonId}: [${senderType}] `, message);
@@ -68,6 +78,12 @@ class Interview {
                 lang: this.lang
             });
 
+        })
+
+        // \CLOSE received
+        document.addEventListener('quantz-closeMessageReceived', (event) => {
+            console.log(`[Interview] \\CLOSE received`);
+            this.isInterviewEnd = true;
         })
 
     }

@@ -710,6 +710,9 @@
                 ns.buttonControllers[buttonId].switchToStart();
                 ns.cores[buttonId].disconnect();
             }, 10000)
+
+            // dispatch to interface
+            document.dispatchEvent(new CustomEvent(ns.configs[buttonId].closeMessageReceivedEventName, {detail: {}}));
         })
 
         $buttonLoader.addEventListener(ns.configs[buttonId].reachToLimitEventName, function(event) {
