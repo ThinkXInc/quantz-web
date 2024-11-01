@@ -773,7 +773,11 @@
         
             // Clear history
             this.history = [];
-        
+
+            // Stop updating signal
+            this.finishDispatchingAssistantAudioSignalEvent();
+            this.finishDispatchingHumanAudioSignalEvent();
+
             console.log("Disconnected and resources reset.");
         }
     }

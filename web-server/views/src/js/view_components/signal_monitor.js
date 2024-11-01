@@ -239,7 +239,6 @@ class SignalMonitor {
         return normalizedData;
     }
 
-
     // Call this method when you no longer need the SignalMonitor
     destroy() {
         // Remove event listener for window resize
