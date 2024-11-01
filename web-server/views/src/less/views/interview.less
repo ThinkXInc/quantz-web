@@ -1,15 +1,28 @@
+@cubic-bezier1: cubic-bezier(.65,0,.34,1);
+@open-chatview-duration: 0.3s;
+
 div.MeetingView {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     height: 100vh;
 
+    &.openChatView {
+        div.LeftContainer {
+            width: calc(100% - 300px);
+        }
+        div.ChatView {
+            width: 300px;
+        }
+    }
+
     div.LeftContainer {
         display: flex;
         flex-direction: column;
-        width: calc(100% - 300px);
+        width: 100%;
         height: 100%;
         background-color: #252525;
+        transition: width @open-chatview-duration @cubic-bezier1;
 
         div.VideoContainer {
             display: flex;
@@ -77,17 +90,20 @@ div.MeetingView {
         display: flex;
         flex-direction: column;
         height: 100%;
-        width: 500px;
         /* background-color: #f1f1f1; */
         background-color: #202020;
-    
+        overflow: hidden; // Hide content when width is 0
+        width: 0;
+        transition: width @open-chatview-duration @cubic-bezier1; // Animate width change
+
         div.ChatLog {
             height: 100%;
 
             ul.ChatLogMessageList {
                 height: calc(100% - 50px); /* Subtract ChatLogFooter height */
                 overflow-y: auto;
-                background-color: #fff;
+                //background-color: #fff;
+                background-color: #3b3b3b;
                 margin: 0;
                 padding: 10px 5px;
     
@@ -100,12 +116,19 @@ div.MeetingView {
                         font-weight: bold;
                         margin-right: 5px;
                         font-size: 9px;
+                        font-weight: 700;
+                        width: 47px;
+                        min-width: 47px;
+                        max-width: 47px;
+                        text-align: left;
+                        word-wrap: break-word;
                     }
     
                     span.messageContainer {
                         display: block;
                         text-align: left;
                         p.message {
+                            display: inline;
                             font-size: 14px;
                         }
                     }
@@ -117,7 +140,8 @@ div.MeetingView {
                         }
                         span.messageContainer {
                             p.message {
-                                color: #000;
+                                color: #A5A5A5;
+                                //color: #000;
                             }
                         }
                     }
@@ -158,6 +182,5 @@ div.MeetingView {
                 color: #888888;
             }
         }
-        
     }
 }

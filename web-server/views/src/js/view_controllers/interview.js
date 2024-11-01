@@ -42,7 +42,11 @@ class Interview {
     setupEventListeners() {
         document.addEventListener('quantz-didClickStart', (event) => {
             console.warn('start click')
-            this.signalMonitor.startMonitoring();
+
+            // Open ChatView
+            if (!this.meetingView.isChatViewOpen()) {
+                this.meetingView.openChatView();
+            }
         }) 
         document.addEventListener('quantz-didClickRestart', (event) => {
             console.warn('restart click')
@@ -63,6 +67,7 @@ class Interview {
                 text: message,
                 lang: this.lang
             });
+
         })
 
     }
@@ -78,6 +83,7 @@ class MeetingView {
     setupView() {
         this.$view = document.createElement('div');
         this.$view.className = 'MeetingView';
+        this.$view.id = 'MeetingView';
  
         this.createLeftView();
         this.createChatView();
@@ -185,6 +191,7 @@ class MeetingView {
     createChatView() {
         const $chatView = document.createElement('div');
         $chatView.className = 'ChatView';
+        $chatView.id = 'ChatView';
         this.$view.appendChild($chatView);
 
         // Initialize ChatLog and mount it to the ChatView
@@ -192,6 +199,14 @@ class MeetingView {
             defaultLang: this.lang
         });
         this.chatLog.mount($chatView);
+    }
+
+    openChatView() {
+        this.$view.classList.add('openChatView');
+    }
+
+    isChatViewOpen() {
+        return this.$view.classList.contains('openChatView');
     }
 }
 
