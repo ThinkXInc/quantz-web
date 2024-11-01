@@ -50,9 +50,13 @@ class Interview {
             console.warn('restart click')
         }) 
         document.addEventListener('quantz-signalDataUpdated', (event) => {
-            console.warn('signal updated')
             const { humanDecibels, humanFundamentalFrequencies, assistantDecibels } = event.detail;
             this.signalMonitor.update(humanDecibels, humanFundamentalFrequencies, assistantDecibels);
+        })
+
+        document.addEventListener('quantz-messageReceived', (event) => {
+            const { buttonId, senderType, message } = event.detail; // senderType 'system' 'user' 'announce'
+            console.log(`[Interview] new message received from ${buttonId}: [${senderType}] `, message);
         })
 
     }

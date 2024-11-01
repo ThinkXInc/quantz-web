@@ -629,6 +629,15 @@
                 type: type,
                 text: message,
                 lang: ns.cores[buttonId].lang});
+
+            // Dispatch messageReceive event
+            document.dispatchEvent(new CustomEvent(ns.configs[buttonId].messageReceiveEventName, {
+                detail: {
+                    buttonId: buttonId,
+                    senderType: type, // 'system' 'user' 'announce'
+                    message: message,
+                }
+            }))
         }
         $buttonLoader.removeEventListener(ns.configs[buttonId].messageReceiveEventName, handleMessageReceive);
         $buttonLoader.addEventListener(ns.configs[buttonId].messageReceiveEventName, handleMessageReceive);
@@ -640,7 +649,7 @@
 
         $buttonLoader.addEventListener(ns.configs[buttonId].assistantAudioSignalEventName, function(event) {
             const { buttonId, spectrum, volume } = event.detail;
-            console.log(`[Quantz Button ${buttonId}] assistant spectrum size:`, spectrum.length, ' volume:', volume, 'received')
+            //console.log(`[Quantz Button ${buttonId}] assistant spectrum size:`, spectrum.length, ' volume:', volume, 'received')
             if (ns.configs[buttonId].autoInteraction) {
                 ns.interactionControllers[buttonId].appendAssistantSignalData(volume);
             }
@@ -676,7 +685,7 @@
 
         $buttonLoader.addEventListener(ns.configs[buttonId].humanAudioSignalEventName, function(event) {
             const { buttonId, spectrum, volume, fundamentalFreq } = event.detail;
-            console.log(`[Quantz Button ${buttonId}] human spectrum size:`, spectrum.length, ' volume:', volume, ' fundamental freq:', fundamentalFreq, 'received')
+            //console.log(`[Quantz Button ${buttonId}] human spectrum size:`, spectrum.length, ' volume:', volume, ' fundamental freq:', fundamentalFreq, 'received')
             ns.interactionControllers[buttonId].appendHumanSignalData(volume, fundamentalFreq);
             //console.log('**** spectrum', spectrum);
         })
@@ -721,6 +730,8 @@
         $buttonLoader.addEventListener(ns.configs[buttonId].signalDataUpdatedEventName, function(event) {
             const { humanDecibels, humanFundamentalFrequencies, assistantDecibels } = event.detail;
             //console.log(`[Quantz Button ${buttonId}] Human & Assistant signal data updated event received.`);
+            //console.log(`[humanDecibels] ${humanDecibels}`);
+            //console.log(`[humanFundamentalFrequencies] ${humanFundamentalFrequencies}`);
             // Dispatch signalDataUpdated event
             document.dispatchEvent(new CustomEvent(ns.configs[buttonId].signalDataUpdatedEventName, {
                 detail: {
