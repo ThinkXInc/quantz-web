@@ -160,7 +160,7 @@ class MeetingView {
         const $selfViewLabel = document.createElement('div');
         $selfViewLabel.className = 'NameLabel';
         $selfViewLabel.textContent = 'Self';  // Dynamic name possible
-        $selfView.appendChild($selfViewLabel);
+        $selfViewContainer.appendChild($selfViewLabel);
 
         this.$selfViewContainer = $selfViewContainer;
         this.$selfView = $selfView;
