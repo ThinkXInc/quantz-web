@@ -30,12 +30,6 @@ div.MeetingView {
             padding: 30px 30px 30px 62px;
             height: 100%;
 
-            div.VideoView, video.VideoView {
-                background-color: black;
-                width: 600px;
-                height: 340px;
-            }
-
             div.InterviewerView {
                 display: flex;
                 align-items: center;
@@ -45,6 +39,14 @@ div.MeetingView {
                 position: relative;
                 margin-bottom: 18px;
                 transition: box-shadow 0.1s @cubic-bezier1;
+                width: 600px;
+                height: 340px;
+
+                video {
+                    background-color: black;
+                    width: 100%;  /* Set width to 100% of parent */
+                    height: 100%;  /* Set height to 100% of parent */
+                }
 
                 div.NameLabel {
                     position: absolute;
@@ -76,6 +78,9 @@ div.MeetingView {
                     object-fit: cover;
                     margin-right: 59px;
                     transition: box-shadow 0.1s @cubic-bezier1;
+                    background-color: black;
+                    width: 600px;
+                    height: 340px;
                 }
 
                 div.QBTN-balloon-container {
