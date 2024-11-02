@@ -689,6 +689,13 @@
             //console.log(`[Quantz Button ${buttonId}] human spectrum size:`, spectrum.length, ' volume:', volume, ' fundamental freq:', fundamentalFreq, 'received')
             ns.interactionControllers[buttonId].appendHumanSignalData(volume, fundamentalFreq);
             //console.log('**** spectrum', spectrum);
+            document.dispatchEvent(new CustomEvent(ns.configs[buttonId].humanAudioSignalEventName, {
+                detail: {
+                    buttonId: buttonId,
+                    spectrum: spectrum,
+                    volume: volume,
+                    fundamentalFreq: fundamentalFreq
+                }}))
         })
 
         $buttonLoader.addEventListener(ns.configs[buttonId].humanStopSpeakingEventName, function(event) {

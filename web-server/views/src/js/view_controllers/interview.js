@@ -65,6 +65,13 @@ class Interview {
             //}
         })
 
+        // Human Audio Signal 
+        document.addEventListener('quantz-humanAudioSignal', (event) => {
+            const { buttonId, spectrum, volume, fundamentalFreq } = event.detail;
+
+            this.meetingView.updateSelfViewTalkingEffect(volume);
+        })
+
         // System/User/Annouce message received
         document.addEventListener('quantz-messageReceived', (event) => {
             const { buttonId, senderType, message } = event.detail; // senderType 'system' 'user' 'announce'
@@ -155,6 +162,8 @@ class MeetingView {
         $selfViewLabel.textContent = 'Self';  // Dynamic name possible
         $selfView.appendChild($selfViewLabel);
 
+        this.$selfViewContainer = $selfViewContainer;
+        this.$selfView = $selfView;
         this.createMonitorView($leftContainer);
 
         const $quantzButtonLoader = document.createElement('div');
@@ -223,6 +232,21 @@ class MeetingView {
 
     isChatViewOpen() {
         return this.$view.classList.contains('openChatView');
+    }
+
+    updateSelfViewTalkingEffect(volume) {
+        // Calculate shadow
+        const normalizedVolume = volume + 35;
+        const positiveVolume = Math.max(0, normalizedVolume);
+        const scaleFactor = 2; // More aggressive scaling
+        const volumeRatio = (positiveVolume / 35) / scaleFactor;
+        const maxShadowOpacity = 1;  // Full opacity
+        const maxShadowSize = 50;    // Larger shadow size
+
+        const shadowOpacity = Math.min(maxShadowOpacity, volumeRatio);
+        const shadowSize = Math.min(maxShadowSize, volumeRatio);
+        this.$selfView.style.boxShadow = `0 0 10px ${shadowSize}px rgba(255, 255, 255, ${shadowOpacity})`;
+        console.warn(`Volume: ${volume}, Normalized Volume: ${normalizedVolume}, Volume Ratio: ${volumeRatio}, Shadow Size: ${shadowSize}px, Opacity: ${shadowOpacity}`);
     }
 }
 
