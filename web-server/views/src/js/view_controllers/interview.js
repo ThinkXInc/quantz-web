@@ -21,12 +21,15 @@ class Interview {
     }
 
     setupView(){
+        const $interviewView = document.getElementById('Interview');
         this.meetingView = new MeetingView({
             locale: this.locale,
             lang: this.lang,
             meta: this.interviewMeta
         });
         this.meetingView.setupView();
+        this.meetingView.mount($interviewView);
+        this.meetingView.createConvexView();
     }
 
     setupSignalMonitor() {
@@ -111,8 +114,15 @@ class MeetingView {
         this.createLeftView();
         this.createChatView();
 
-        document.body.appendChild(this.$view);
         this.loadQuantzScript();
+    }
+
+    mount($parent) {
+        if (!$parent) {
+            console.error('Parent element not provided for Convex mount.');
+            return;
+        }
+        $parent.appendChild(this.$view);
     }
 
     createMonitorView($parent) {
@@ -120,6 +130,12 @@ class MeetingView {
         $signalMonitor.id = 'SignalMonitor';
         $signalMonitor.classList.add('SignalMonitor');
         $parent.appendChild($signalMonitor);
+    }
+
+    createConvexView() {
+        this.convex = new Convex({id: 'convex'});
+        this.convex.mount(this.$otherPersonView)
+        //this.convex.startAnimating()
     }
 
     createLeftView() {
@@ -145,6 +161,7 @@ class MeetingView {
         $otherPersonLabel.textContent = 'Interviewer';  // You might want to make this dynamic
         $otherPersonView.appendChild($otherPersonLabel);
         $videoContainer.appendChild($otherPersonView);
+        this.$otherPersonView = $otherPersonView;
 
         // Self view
         const $selfViewContainer = document.createElement('div');
