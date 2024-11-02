@@ -25,11 +25,19 @@ class Interview {
         this.meetingView = new MeetingView({
             locale: this.locale,
             lang: this.lang,
-            meta: this.interviewMeta
+            meta: this.interviewMeta,
+            interviewerMode: InterviewerMode.MAN1,
         });
         this.meetingView.setupView();
         this.meetingView.mount($interviewView);
-        this.meetingView.createConvexView();
+
+        switch (this.meetingView.interviewerMode) {
+            case InterviewerMode.GRAPHIC1:
+                this.meetingView.createConvexView();
+                break;
+            case InterviewerMode.MAN1:
+                break;
+        }
     }
 
     setupSignalMonitor() {
@@ -54,8 +62,15 @@ class Interview {
                 this.meetingView.openChatView();
             }
 
-            // Show convex
-            this.meetingView.showConvex();
+            switch (this.meetingView.interviewerMode) {
+                case InterviewerMode.GRAPHIC1:
+                    // Show convex
+                    this.meetingView.showConvex();
+                    break;
+                case InterviewerMode.MAN1:
+                    this.meetingView.playStay();
+                    break;
+            }
         }) 
 
         // Restart clicked
@@ -75,7 +90,14 @@ class Interview {
         document.addEventListener('quantz-assistantAudioSignal', (event) => {
             const { buttonId, spectrum, volume } = event.detail;
 
-            this.meetingView.updateConvexScale(volume);
+            switch (this.meetingView.interviewerMode) {
+                case InterviewerMode.GRAPHIC1:
+                    this.meetingView.updateConvexScale(volume);
+                    break;
+                case InterviewerMode.MAN1:
+                    break;
+            }
+ 
             this.meetingView.updateInterviewerViewTalkingEffect(volume);
         })
 
@@ -99,6 +121,18 @@ class Interview {
                 lang: this.lang
             });
 
+            switch (this.meetingView.interviewerMode) {
+                case InterviewerMode.GRAPHIC1:
+                    break;
+                case InterviewerMode.MAN1:
+                    if (message.length > 5) {
+                        this.meetingView.playSpeak1();
+                    } else {
+                        this.meetingView.playSpeak2();
+                    }
+                    break;
+            }
+
         })
 
         // \CLOSE received
@@ -110,11 +144,25 @@ class Interview {
     }
 }
 
+const VideoPath = Object.freeze({
+    MAN1_SPEAK1: '/video/interview/man1/Man1_speak3.mp4',
+    MAN1_SPEAK2: '/video/interview/man1/Man1_speak4.mp4',
+    MAN1_STAY: '/video/interview/man1/Man1_stay3.mp4',
+})
+
+const InterviewerMode = Object.freeze({
+    MAN1: 'man1',
+    GRAPHIC1: 'graphic1',
+});
+
 class MeetingView {
-    constructor({ locale, lang, meta }) {
+    constructor({ locale, lang, meta, interviewerMode = InterviewerMode.GRAPHIC1 }) {
         this.locale = locale;
         this.lang = lang;
         this.meta = meta;
+        this.interviewerMode = interviewerMode;
+        this.$videoElement = null;
+        this.currentVideo = '';
     }
 
     setupView() {
@@ -179,6 +227,13 @@ class MeetingView {
         $otherPersonView.className = 'InterviewerView';
         $otherPersonView.classList.add('VideoView');
         $leftContainer.appendChild($otherPersonView);
+
+        if (this.interviewerMode === InterviewerMode.MAN1) {
+            this.$videoElement = document.createElement('video');
+            this.$videoElement.autoplay = true;
+            this.$videoElement.onended = () => this.handleVideoEnd();
+            $otherPersonView.appendChild(this.$videoElement);
+        }
 
         const $otherPersonLabel = document.createElement('div');
         $otherPersonLabel.className = 'NameLabel';
@@ -296,6 +351,41 @@ class MeetingView {
         const shadowSize = Math.min(maxShadowSize, volumeRatio);
         $elem.style.boxShadow = `0 0 10px ${shadowSize}px rgba(255, 255, 255, ${shadowOpacity})`;
         console.warn(`Volume: ${volume}, Normalized Volume: ${normalizedVolume}, Volume Ratio: ${volumeRatio}, Shadow Size: ${shadowSize}px, Opacity: ${shadowOpacity}`);
+    }
+
+    // video mode
+
+    handleVideoEnd() {
+        if (this.currentVideo === VideoPath.MAN1_SPEAK1 || this.currentVideo === VideoPath.MAN1_SPEAK2) {
+            this.playStay();
+        }
+    }
+
+    playSpeak1() {
+        if (this.interviewerMode === InterviewerMode.MAN1 && this.$videoElement) {
+            this.$videoElement.src = VideoPath.MAN1_SPEAK1;
+            this.$videoElement.loop = false;
+            this.currentVideo = VideoPath.MAN1_SPEAK1;
+            this.$videoElement.play();
+        }
+    }
+
+    playSpeak2() {
+        if (this.interviewerMode === InterviewerMode.MAN1 && this.$videoElement) {
+            this.$videoElement.src = VideoPath.MAN1_SPEAK2;
+            this.$videoElement.loop = false;
+            this.currentVideo = VideoPath.MAN1_SPEAK2;
+            this.$videoElement.play();
+        }
+    }
+
+    playStay() {
+        if (this.interviewerMode === InterviewerMode.MAN1 && this.$videoElement) {
+            this.$videoElement.src = VideoPath.MAN1_STAY;
+            this.$videoElement.loop = true;
+            this.currentVideo = VideoPath.MAN1_STAY;
+            this.$videoElement.play();
+        }
     }
 }
 
