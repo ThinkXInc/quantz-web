@@ -139,6 +139,17 @@ class Interview {
         document.addEventListener('quantz-closeMessageReceived', (event) => {
             console.log(`[Interview] \\CLOSE received`);
             this.isInterviewEnd = true;
+            switch (this.meetingView.interviewerMode) {
+                case InterviewerMode.GRAPHIC1:
+                    break;
+                case InterviewerMode.MAN1:
+                    setTimeout(() => {
+                        this.meetingView.stopAllVideos();
+                    }, 7000);
+                    break;
+            }
+
+ 
         })
 
     }
@@ -371,15 +382,12 @@ class MeetingView {
 
     switchVideo(key) {
         // Stop all videos and hide them
-        Object.keys(this.videoElements).forEach(k => {
-            this.videoElements[k].style.display = 'none';
-            this.videoElements[k].pause();
-        });
+        this.stopAllVideos()
     
         // Display and play the requested video
         this.videoElements[key].style.display = 'block';
         this.videoElements[key].play();
-        console.warn(`Video switched to`, key)
+        //console.warn(`Video switched to`, key)
         this.currentVideo = key;
         this.isVideoPlaying = true;  // Set flag that video is currently playing
     
@@ -401,105 +409,42 @@ class MeetingView {
 
     enqueueVideo(key) {
         if (this.isVideoPlaying && this.currentVideo != 'MAN1_STAY') {
-            console.error(`Push to queue `, key)
+            //console.error(`Push to queue `, key)
             this.videoPlayQueue.push(key);
         } else {
-            console.error(`Switch to `, key)
+            //console.error(`Switch to `, key)
             this.switchVideo(key);
         }
     }
     
     playSpeak1() {
-        console.error('Play1')
+        console.log('Play1')
         if (this.interviewerMode === InterviewerMode.MAN1) {
             this.enqueueVideo('MAN1_SPEAK1');
         }
     }
     
     playSpeak2() {
-        console.error('Play2')
+        console.log('Play2')
         if (this.interviewerMode === InterviewerMode.MAN1) {
             this.enqueueVideo('MAN1_SPEAK2');
         }
     }
     
     playStay() {
-        console.error('Play3')
+        console.log('Play3')
         if (this.interviewerMode === InterviewerMode.MAN1) {
             this.enqueueVideo('MAN1_STAY');
         }
     }
 
-
-    //handleVideoEnd() {
-    //    if (this.currentVideo === VideoPath.MAN1_SPEAK1 || this.currentVideo === VideoPath.MAN1_SPEAK2) {
-    //        this.playStay();
-    //    }
-    //}
-
-    //handleVideoEnd() {
-    //    if (this.videoPlayQueue.length > 0) {
-    //        const nextVideo = this.videoPlayQueue.shift(); // Get the next video from the queue
-    //        this.switchVideo(nextVideo);
-    //    } else if (this.currentVideo === VideoPath.MAN1_SPEAK1 || this.currentVideo === VideoPath.MAN1_SPEAK2) {
-    //        this.playStay(); // Default back to STAY if no other videos are queued
-    //    }
-    //}
-
-    //switchVideo(key) {
-    //    console.warn(`switch to `, key)
-    //    //if (this.currentVideo && this.currentVideo !== key) {
-    //        console.warn(`push ${key} to queue ${this.videoPlayQueue}`)
-    //        this.videoPlayQueue.push(key); // Add the new video to the queue if one is already playing
-    //    //} else {
-    //    //    Object.keys(this.videoElements).forEach(k => {
-    //    //        this.videoElements[k].style.display = 'none';
-    //    //        this.videoElements[k].pause();
-    //    //    });
-    //    //    this.videoElements[key].style.display = 'block';
-    //    //    this.videoElements[key].play();
-    //    //    this.currentVideo = key; // Update the currently playing video
-    //    //}
-    //}
-    
-
-    //switchVideo(key) {
-    //    Object.keys(this.videoElements).forEach(k => {
-    //        this.videoElements[k].style.display = 'none';
-    //        this.videoElements[k].pause();
-    //    });
-    //    this.videoElements[key].style.display = 'block';
-    //    this.videoElements[key].play();
-    //    this.currentVideo = key;
-    //}
-    //switchVideo(key) {
-    //    Object.keys(this.videoElements).forEach(k => {
-    //        this.videoElements[k].style.display = 'none';
-    //    });
-    //    this.videoElements[key].style.display = 'block';
-    //    this.videoElements[key].play();
-    //    this.currentVideo = key;
-    //}
-
-    //playSpeak1() {
-    //    console.error('Play1')
-    //    if (this.interviewerMode === InterviewerMode.MAN1) {
-    //        this.switchVideo('MAN1_SPEAK1');
-    //    }
-    //}
-    
-    //playSpeak2() {
-    //    console.error('Play2')
-    //    if (this.interviewerMode === InterviewerMode.MAN1) {
-    //        this.switchVideo('MAN1_SPEAK2');
-    //    }
-    //}
-    
-    //playStay() {
-    //    console.error('Play S')
-    //    if (this.interviewerMode === InterviewerMode.MAN1) {
-    //        this.switchVideo('MAN1_STAY');
-    //    }
-    //}
+    stopAllVideos() {
+        // Stop all videos and hide them
+        Object.keys(this.videoElements).forEach(k => {
+            this.videoElements[k].style.display = 'none';
+            this.videoElements[k].pause();
+        });
+    }
 }
+
 
