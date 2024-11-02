@@ -64,6 +64,27 @@ div.MeetingView {
                 video.SelfView {
                     object-fit: cover;
                     margin-right: 59px;
+                    transition: box-shadow 0.1s @cubic-bezier1;
+                }
+
+                //&.talking video.SelfView {
+                //    box-shadow: 0 0 10px 4px rgba(255, 255, 255, 0.1) inset; /* Soft white glow inside the edges */
+                //    animation: fadeEdges 1.5s forwards; /* Animation to gradually make the shadow disappear */
+                //}
+
+                @keyframes fadeEdges {
+                    0% {
+                        box-shadow: 0 0 10px 1px rgba(255, 255, 255, 0.1); /* Initial small and more opaque shadow */
+                    }
+                    30% {
+                        box-shadow: 0 0 10px 4px rgba(255, 255, 255, 0.2); /* Middle step with larger and same opacity */
+                    }
+                    60% {
+                        box-shadow: 0 0 10px 4px rgba(255, 255, 255, 0.1); /* Middle step with larger and same opacity */
+                    }
+                    100% {
+                        box-shadow: 0 0 10px 1px rgba(255, 255, 255, 0); /* End step with small and transparent shadow */
+                    }
                 }
 
                 div.QBTN-balloon-container {
