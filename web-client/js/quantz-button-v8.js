@@ -658,6 +658,14 @@
             if (ns.configs[buttonId].buttonType == ns.ButtonType.A) {
                 ns.indicatorControllers[buttonId].speakingAnimation(spectrum);
             }
+
+            // dispatch event
+            document.dispatchEvent(new CustomEvent(ns.configs[buttonId].assistantAudioSignalEventName, {
+                detail: {
+                    buttonId: buttonId,
+                    spectrum: spectrum,
+                    volume: volume,
+                }}))
         })
 
         $buttonLoader.addEventListener(ns.configs[buttonId].assistantEndAudioSignalEventName, function(event) {

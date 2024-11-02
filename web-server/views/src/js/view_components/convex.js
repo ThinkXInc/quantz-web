@@ -2,6 +2,15 @@ class Convex {
     constructor({ id }) {
         this.id = id;
         this.setupView();
+        this.hide()
+
+        this.ROTATE_SPEED = 0.002;
+        this.MESH_DEFAULT_OPACITY = 0.5;
+        this.DEFAULT_SCALE = 0.8;//1.0;//0.5; 
+
+        this.currentScale = 1.0; // Start at default scale
+        this.targetScale = 1.0; // Target scale initialized to default
+        this.lerpFactor = 0.05;
     }
 
     setupView() {
@@ -17,13 +26,15 @@ class Convex {
         const ambient = new THREE.AmbientLight(0x666666);
         this.scene.add(ambient);
 
-        const light = new THREE.PointLight(0xffffff, 3);
+        //const light = new THREE.PointLight(0xffffff, 3, 0, 0);  // 2D look
+        const light = new THREE.PointLight(0xffffff, 3, 0, 0);
         this.camera.add(light);
 
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
         this.controls.minDistance = 20;
         this.controls.maxDistance = 50;
         this.controls.maxPolarAngle = Math.PI / 2;
+        this.controls.enabled = false;
 
         this.initGeometry();
     }
@@ -46,15 +57,16 @@ class Convex {
 		}
 
         //const vertices = new THREE.BufferGeometry().setFromPoints(geometry.vertices);
-        
+
         const material = new THREE.MeshLambertMaterial({
             color: 0xffffff,
-            opacity: 0.5,
+            opacity: 0.3,
             side: THREE.DoubleSide,
             transparent: true
         });
         this.mesh = new THREE.Mesh(new ConvexGeometry(vertices), material);
         this.scene.add(this.mesh);
+
     }
 
     mount($parent) {
@@ -80,15 +92,50 @@ class Convex {
         this.renderer.setSize(width, height);
     }
 
+    hide() {
+        this.mesh.scale.set(0, 0, 0);
+    }
+
+    show() {
+        const duration = 300; // Animation duration in milliseconds
+        const start = performance.now();
+        const targetScale = this.DEFAULT_SCALE; // Scale the mesh up to its original size
+        const initialScale = 0;
+
+        const animateScale = (now) => {
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / duration, 1);
+            const scale = initialScale + progress * (targetScale - initialScale);
+            this.mesh.scale.set(scale, scale, scale);
+
+            if (progress < 1) {
+                requestAnimationFrame(animateScale);
+            }
+        };
+
+        requestAnimationFrame(animateScale);
+    }
+
     startAnimating() {
         if (!this.frameId) {
             this.frameId = requestAnimationFrame(this.animate.bind(this));
         }
     }
 
+    //animate() {
+    //    // Update scale smoothly using lerp
+    //    if (this.mesh) {
+    //        this.currentScale += (this.targetScale - this.currentScale) * this.lerpFactor;
+    //        this.mesh.scale.set(this.currentScale, this.currentScale, this.currentScale);
+    //    }
+
+    //    this.renderer.render(this.scene, this.camera);
+    //    this.frameId = requestAnimationFrame(this.animate.bind(this));
+    //}
+
     animate() {
         this.controls.update();
-        this.mesh.rotation.y += 0.005;
+        this.mesh.rotation.y += this.ROTATE_SPEED;
         this.renderer.render(this.scene, this.camera);
         this.frameId = requestAnimationFrame(this.animate.bind(this));
     }
@@ -98,8 +145,20 @@ class Convex {
         this.frameId = null;
     }
 
-    updateSize(value) {
-        const scale = Math.log10(value + 1); // Using logarithmic scale for more natural visualization
-        this.mesh.scale.set(scale, scale, scale);
+    setTransparency(opacity) {
+        if (this.material) {
+            this.material.opacity = opacity;
+            this.material.transparent = opacity < 1.0;
+            this.material.needsUpdate = true; // Make sure Three.js updates the material
+        }
     }
+
+    updateScale(value) {
+        let newScale = Math.log10(value + 1);
+        newScale = Math.max(newScale, 1.0) * this.DEFAULT_SCALE; // Ensure the scale does not drop below 1.0
+        this.currentScale = this.currentScale * 0.9 + newScale * 0.1; // 90% old scale, 10% new scale
+        console.warn(`Update convex by scale: ${this.currentScale} <- value: ${value}`);
+        this.mesh.scale.set(this.currentScale, this.currentScale, this.currentScale);
+    }
+
 }
