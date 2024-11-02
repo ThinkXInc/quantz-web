@@ -53,6 +53,9 @@ class Interview {
             if (!this.meetingView.isChatViewOpen()) {
                 this.meetingView.openChatView();
             }
+
+            // Show convex
+            this.meetingView.showConvex();
         }) 
 
         // Restart clicked
@@ -66,6 +69,14 @@ class Interview {
             //if (!this.isInterviewEnd) {
                 this.signalMonitor.update(humanDecibels, humanFundamentalFrequencies, assistantDecibels);
             //}
+        })
+
+        // Assistant Audio Signal
+        document.addEventListener('quantz-assistantAudioSignal', (event) => {
+            const { buttonId, spectrum, volume } = event.detail;
+
+            this.meetingView.updateConvexScale(volume);
+            this.meetingView.updateInterviewerViewTalkingEffect(volume);
         })
 
         // Human Audio Signal 
@@ -136,6 +147,19 @@ class MeetingView {
         this.convex = new Convex({id: 'convex'});
         this.convex.mount(this.$otherPersonView)
         //this.convex.startAnimating()
+        //const int = setTimeout(() => {
+        //    this.convex.show();
+        //}, 2000)
+    }
+
+    showConvex() {
+        this.convex.show();
+    }
+
+    updateConvexScale(volume) {
+        //const value =  volume > -35 ? volume + 35 : 1;
+        const value =  Math.max(0, volume + 35);
+        this.convex.updateScale(value);
     }
 
     createLeftView() {
@@ -152,7 +176,7 @@ class MeetingView {
 
         // Another person's view
         const $otherPersonView = document.createElement('div');
-        $otherPersonView.className = 'OtherPersonView';
+        $otherPersonView.className = 'InterviewerView';
         $otherPersonView.classList.add('VideoView');
         $leftContainer.appendChild($otherPersonView);
 
@@ -252,6 +276,14 @@ class MeetingView {
     }
 
     updateSelfViewTalkingEffect(volume) {
+        this.updateTalkingEffect(this.$selfView, volume);
+    }
+
+    updateInterviewerViewTalkingEffect(volume) {
+        this.updateTalkingEffect(this.$otherPersonView, volume);
+    }
+
+    updateTalkingEffect($elem, volume) {
         // Calculate shadow
         const normalizedVolume = volume + 35;
         const positiveVolume = Math.max(0, normalizedVolume);
@@ -262,7 +294,7 @@ class MeetingView {
 
         const shadowOpacity = Math.min(maxShadowOpacity, volumeRatio);
         const shadowSize = Math.min(maxShadowSize, volumeRatio);
-        this.$selfView.style.boxShadow = `0 0 10px ${shadowSize}px rgba(255, 255, 255, ${shadowOpacity})`;
+        $elem.style.boxShadow = `0 0 10px ${shadowSize}px rgba(255, 255, 255, ${shadowOpacity})`;
         console.warn(`Volume: ${volume}, Normalized Volume: ${normalizedVolume}, Volume Ratio: ${volumeRatio}, Shadow Size: ${shadowSize}px, Opacity: ${shadowOpacity}`);
     }
 }
