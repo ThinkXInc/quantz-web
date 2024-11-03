@@ -26,7 +26,7 @@ class Interview {
             locale: this.locale,
             lang: this.lang,
             meta: this.interviewMeta,
-            interviewerMode: InterviewerMode.MAN1,
+            interviewerMode: InterviewerMode.GRAPHIC1,  //MAN1,
         });
         this.meetingView.setupView();
         this.meetingView.mount($interviewView);
@@ -316,7 +316,7 @@ class MeetingView {
                 //    }
                 //});
 
-        navigator.mediaDevices.getUserMedia({ video: false})//true })
+        navigator.mediaDevices.getUserMedia({ video: true }) // ***
             .then(stream => {
                 $selfView.srcObject = stream;
             })
