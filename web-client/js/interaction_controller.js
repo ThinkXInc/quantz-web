@@ -1,7 +1,14 @@
 (function(ns) {
+    ns.ResponseMode = Object.freeze({
+        TEMPO_ORIENTED: 0,
+        NORMAL: 1,
+        CAREFUL_LISTENING: 2
+    });
+
+
     ns.InteractionController = class {
 
-        constructor({ buttonId, frequencyMs = 100, analysisWindowMs = 500, defaultLang = 'en' }) {
+        constructor({ buttonId, frequencyMs = 100, analysisWindowMs = 500, responseMode = ns.ResponseMode.TEMPO_ORIENTED, defaultLang = 'en' }) {
             this.buttonId = buttonId;
             this.$buttonLoader = document.getElementById(
                 `${ns.configs[buttonId].prefix}button-loader-${buttonId}`
@@ -12,9 +19,24 @@
             this.SPEECH_THRESHOLD = -35;
             this.SILENT_DECIBEL = -60;
             this.SILENT_FREQUENCY = 0; // Define a silent frequency value
-            this.SHORT_HUMAN_SILENCE_THRESHOLD_MS = 3000;
-            this.DEFAULT_HUMAN_SILENCE_THRESHOLD_MS = 5000;
-            this.LONG_HUMAN_SILENCE_THRESHOLD_MS = 7000;
+            this.responseMode = responseMode;
+            switch (this.responseMode) {
+                case ns.ResponseMode.TEMPO_ORIENTED:
+                    this.SHORT_HUMAN_SILENCE_THRESHOLD_MS = 2000;
+                    this.DEFAULT_HUMAN_SILENCE_THRESHOLD_MS = 3000;
+                    this.LONG_HUMAN_SILENCE_THRESHOLD_MS = 4000;
+                    break;
+                case ns.ResponseMode.NORMAL:
+                    this.SHORT_HUMAN_SILENCE_THRESHOLD_MS = 3000;
+                    this.DEFAULT_HUMAN_SILENCE_THRESHOLD_MS = 5000;
+                    this.LONG_HUMAN_SILENCE_THRESHOLD_MS = 6000;
+                    break;
+                 case ns.ResponseMode.CAREFUL_LISTENING:
+                    this.SHORT_HUMAN_SILENCE_THRESHOLD_MS = 5000;
+                    this.DEFAULT_HUMAN_SILENCE_THRESHOLD_MS = 5000;
+                    this.LONG_HUMAN_SILENCE_THRESHOLD_MS = 7000;
+                    break;
+            }
             this.HUMAN_SILENCE_THRESHOLD_MS = this.DEFAULT_HUMAN_SILENCE_THRESHOLD_MS; // Initialize with default value
 
             this.analysisWindowMs = analysisWindowMs; // Configurable analysis window
