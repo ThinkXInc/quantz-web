@@ -157,7 +157,7 @@ class Convex {
         let newScale = Math.log10(value + 1);
         newScale = Math.max(newScale, 1.0) * this.DEFAULT_SCALE; // Ensure the scale does not drop below 1.0
         this.currentScale = this.currentScale * 0.9 + newScale * 0.1; // 90% old scale, 10% new scale
-        console.warn(`Update convex by scale: ${this.currentScale} <- value: ${value}`);
+        //console.log(`Update convex by scale: ${this.currentScale} <- value: ${value}`);
         this.mesh.scale.set(this.currentScale, this.currentScale, this.currentScale);
     }
 

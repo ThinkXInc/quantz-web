@@ -5,6 +5,15 @@
         CAREFUL_LISTENING: 2
     });
 
+    ns.HumanState = Object.freeze({
+        SPEAKING: 0,
+        WAITING_RESPONSE: 1,
+    });
+    ns.AssistantState = Object.freeze({
+        START_RESPONDING: 0,
+        SPEAKING: 1,
+        WAITING: 2,
+    });
 
     ns.InteractionController = class {
 
@@ -19,7 +28,9 @@
             this.SPEECH_THRESHOLD = -35;
             this.SILENT_DECIBEL = -60;
             this.SILENT_FREQUENCY = 0; // Define a silent frequency value
+
             this.responseMode = responseMode;
+
             switch (this.responseMode) {
                 case ns.ResponseMode.TEMPO_ORIENTED:
                     this.SHORT_HUMAN_SILENCE_THRESHOLD_MS = 2000;
@@ -37,6 +48,7 @@
                     this.LONG_HUMAN_SILENCE_THRESHOLD_MS = 7000;
                     break;
             }
+
             this.HUMAN_SILENCE_THRESHOLD_MS = this.DEFAULT_HUMAN_SILENCE_THRESHOLD_MS; // Initialize with default value
 
             this.analysisWindowMs = analysisWindowMs; // Configurable analysis window
@@ -49,6 +61,9 @@
             // Speaking status flags
             this.isHumanSpeaking = false;
             this.isAssistantSpeaking = false;
+
+            this.humanState = ns.HumanState.WAITING;
+            this.assistantState = ns.AssistantState.WAITING;
 
             // Last known signal values
             this.lastHumanFundamentalFreq = this.SILENT_FREQUENCY; // Initialize to silence
@@ -107,7 +122,8 @@
                 // Decibel is above threshold
                 if (!this.isHumanSpeaking) {
                     this.isHumanSpeaking = true;
-                    console.log('[InteractionController] Human has started speaking.');
+                    console.warn('[InteractionController] Human has started speaking.');
+                    this.dispatchHumanStartSpeakingEvent();
                 }
                 this.silenceDurationMs = 0;
             } else {
@@ -143,53 +159,6 @@
                     this.lastHumanFundamentalFreq = this.SILENT_FREQUENCY;
                 }
             }
-        }
-
-        analyzeFrequencyPattern2() {
-            const numDataPoints = Math.floor(this.analysisWindowMs / this.frequencyMs);
-
-            // Get the last numDataPoints from humanFundamentalFrequencies
-            const freqData = this.humanFundamentalFrequencies.slice(-numDataPoints);
-
-            // Remove zero or silent frequency values (if any)
-            const validFreqData = freqData.filter(freq => freq > 0);
-
-            if (validFreqData.length < 2) {
-                // Not enough valid data to analyze
-                return;
-            }
-
-            // Split validFreqData into first half and second half
-            const half = Math.floor(validFreqData.length / 2);
-            const firstHalf = validFreqData.slice(0, half);
-            const secondHalf = validFreqData.slice(half);
-
-            // Compute averages
-            const avgFirstHalf = firstHalf.reduce((sum, val) => sum + val, 0) / firstHalf.length;
-            const avgSecondHalf = secondHalf.reduce((sum, val) => sum + val, 0) / secondHalf.length;
-
-            // Calculate difference
-            const diff = avgSecondHalf - avgFirstHalf;
-
-            // Determine pattern based on difference
-            let pattern = '';
-
-            if (diff <= -50) {
-                pattern = 'A (suddenly declining)';
-                this.HUMAN_SILENCE_THRESHOLD_MS = this.SHORT_HUMAN_SILENCE_THRESHOLD_MS; // Shorter threshold
-            } else if (diff <= -10) {
-                pattern = 'B (gradually declining)';
-                this.HUMAN_SILENCE_THRESHOLD_MS = this.DEFAULT_HUMAN_SILENCE_THRESHOLD_MS;
-            } else if (diff >= 10) {
-                pattern = 'D (rising)';
-                this.HUMAN_SILENCE_THRESHOLD_MS = this.LONG_HUMAN_SILENCE_THRESHOLD_MS; // Longer threshold
-            } else {
-                pattern = 'C (almost constant)';
-                this.HUMAN_SILENCE_THRESHOLD_MS = this.LONG_HUMAN_SILENCE_THRESHOLD_MS; // Longer threshold
-            }
-
-            // Log the result
-            console.warn(`[InteractionController] F0 PATTERN: *** ${pattern} *** (diff: ${diff.toFixed(2)}) SILENCE_THRESHOLD_MS ${this.HUMAN_SILENCE_THRESHOLD_MS}`);
         }
 
         analyzeFrequencyPattern() {
@@ -300,8 +269,22 @@
             }
         }
 
+        // human action handler
+
+        dispatchHumanStartSpeakingEvent() {
+            console.log(`[InteractionController] Dispatching humanStartSpeakingEvent - buttonId: ${this.buttonId}`);
+            this.humanState = ns.HumanState.SPEAKING;
+            const event = new CustomEvent(ns.configs[this.buttonId].humanStartSpeakingEventName, {
+                detail: {
+                    buttonId: this.buttonId,
+                }
+            });
+            this.$buttonLoader.dispatchEvent(event);
+        }
+
         dispatchHumanStopSpeakingEvent() {
             console.log(`[InteractionController] Dispatching humanStopSpeakingEvent - buttonId: ${this.buttonId}`);
+            this.humanState = ns.HumanState.WAITING;
             const event = new CustomEvent(ns.configs[this.buttonId].humanStopSpeakingEventName, {
                 detail: {
                     buttonId: this.buttonId,
@@ -310,9 +293,45 @@
             this.$buttonLoader.dispatchEvent(event);
         }
 
-        setAssistantStopSpeaking() {
+        // assistant action handler
+
+        didAssistantResponseStart(message) {
+            console.log('[InteractionController] Did assistant response started.');
+            this.assistantState = ns.AssistantState.START_RESPONDING;
+
+        }
+
+        didAssistantStartPlayingAudioBuffer() {
+            console.log('[InteractionController] Did assistant start playing audio buffer.');
+            this.assistantState = ns.AssistantState.SPEAKING;
+        }
+
+        didAssistantEndTurn() {
+            console.log('[InteractionController] Did assistant turn end.');
+
+        }
+
+        didAssistantEndPlayingAudio() {
+            this.assistantState = ns.AssistantState.WAITING;
             this.isAssistantSpeaking = false;
             console.log('[InteractionController] Assistant has stopped speaking.');
         }
+
+        // message receive handler
+
+        didAssistantMessageReceive(message) {
+            console.log('[InteractionController] Assistant message received: ', message);
+        }
+        
+        
+        didHumanMessageReceive(message) {
+            console.log('[InteractionController] Human message received: ', message);
+        }
+        
+        
+        didAnnounceMessageReceive(message) {
+            console.log('[InteractionController] Announce message received: ', message);
+        }
+
     };
 })(Quantz);

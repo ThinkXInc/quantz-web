@@ -7,11 +7,14 @@
 
     ns.START_MESSAGE = '\\START';
     ns.END_OF_MESSAGE = '\\END';
+    ns.STOP_MESSAGE = '\\STOP';
+    ns.CLOSE_MESSAGE = '\\CLOSE';
     ns.endOfMessageBytes = new TextEncoder().encode(ns.END_OF_MESSAGE);
     ns.FFT_SIZE = 2048;//64;  // 64 fails to accurate frequency
     ns.SMOOTHING_TIME = 0.1;
     ns.MIN_DECIBELS = -70;
     ns.MAX_DECIBELS = -10;
+    ns.SILENT_DECIBEL = -60;
 
     ns.Core = class {
 
@@ -32,6 +35,7 @@
             this.mediaRecorder;
             this.audioChunks = [];
             this.isRecording = false;
+            this.hasSignificantSpeech = false; 
 
             this.audioBufferQueue = [];
             this.isAudioPlaying = false;
@@ -41,6 +45,9 @@
 
             this.assistantSpectrumInterval = null;
             this.humanSpectrumInterval = null;
+
+            this.assistantSpeechEnforcedStop = false; // Initialize the enforced stop flag
+            this.currentAssistantAudioSource = null;  // To keep track of the current audio source 
         }
 
         async initializeAudio() {
@@ -62,43 +69,6 @@
 
             if (!this.mediaRecorder) {
                 this.initializeMediaRecorder();
-                //try {
-                //    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                //    this.mediaRecorder = new MediaRecorder(stream);
-                //    this.mediaRecorder.ondataavailable = (e) => {
-                //        this.audioChunks.push(e.data);
-                //    };
-                //    this.mediaRecorder.onstop = (e) => {
-                //        const messageType = new Uint8Array([ns.MessageType.WAV_STREAM]);
-                //        const langBytes = new TextEncoder().encode(this.lang); // 2 bytes, ensure lang is 2 characters
-                //    
-                //        const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
-                //    
-                //        // Combine all parts into a single Blob
-                //        const blobWithHeader = new Blob([messageType, langBytes, audioBlob, ns.endOfMessageBytes], { type: 'audio/wav' });
-                //    
-                //        if (this.socket.readyState === WebSocket.OPEN) {
-                //            this.socket.send(blobWithHeader);
-                //            console.log("Audio blob with header sent to server.");
-                //        } else {
-                //            console.error("WebSocket is not open. ReadyState:", this.socket.readyState);
-                //        }
-                //    
-                //        console.log("Audio blob details:", {
-                //            size: blobWithHeader.size,
-                //            type: blobWithHeader.type,
-                //            chunksCount: this.audioChunks.length
-                //        });
-                //    
-                //        this.audioChunks = [];
-                //    };
-
-                //    // connect the microphone to the analyzer
-                //    this.sourceNode = this.audioCtx.createMediaStreamSource(stream);
-                //    this.sourceNode.connect(this.humanAudioAnalyzer);
-                //} catch (e) {
-                //    console.error("Error getting user media:", e);
-                //}
             }
         }
 
@@ -107,11 +77,10 @@
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 this.mediaRecorder = new MediaRecorder(stream);
                 this.mediaRecorder.ondataavailable = (e) => {
-                    this.audioChunks.push(e.data);
+                    this.handleMediaRecorerOnDataAvailable(e);
                 };
                 this.mediaRecorder.onstop = (e) => {
-                    this.submitHumanSpeach();
-                    this.audioChunks = [];
+                    this.handleMediaRecorderOnStop(e);
                 };
 
                 // connect the microphone to the analyzer
@@ -144,27 +113,6 @@
                 chunksCount: this.audioChunks.length
             });
         }
-
-        //initializeMediaRecorder() {
-        //    navigator.mediaDevices.getUserMedia({ audio: true })
-        //        .then(stream => {
-        //            this.mediaRecorder = new MediaRecorder(stream);
-        //            this.mediaRecorder.ondataavailable = (e) => {
-        //                this.audioChunks.push(e.data);
-        //                console.warn('**************************>>>>>>>>>>>>>>>>>>>>>>>push')
-        //            };
-        //            this.mediaRecorder.onstop = (e) => {
-        //                this.sendWav();
-        //                console.warn('**************************>>>>>>>>>>>>>>>>>>>>>>>stop')
-        //            };
-
-        //            // connect the microphone to the analyzer
-        //            this.sourceNode = this.audioCtx.createMediaStreamSource(stream);
-        //            this.sourceNode.connect(this.humanAudioAnalyzer);
-        //            console.warn('**************************>>>>>>>>>>>>>>>>>>>>>>>setup')
-        //        })
-        //        .catch(e => console.error("Error getting user media:", e));
-        //}
 
         async getToken() {
             // Request a token from Quantz server
@@ -264,37 +212,13 @@
             console.log("Start message sent to server:", ns.START_MESSAGE);
         }
 
-        sendWav() {
-            const messageType = new Uint8Array([ns.MessageType.WAV_STREAM]);
-            const langBytes = new TextEncoder().encode(this.lang); // 2 bytes, ensure lang is 2 characters
-            
-            const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
-            
-            // Combine all parts into a single Blob
-            const blobWithHeader = new Blob([messageType, langBytes, audioBlob, ns.endOfMessageBytes], { type: 'audio/wav' });
-            
-            if (this.socket.readyState === WebSocket.OPEN) {
-                this.socket.send(blobWithHeader);
-                console.log("Audio blob with header sent to server.");
-            } else {
-                console.error("WebSocket is not open. ReadyState:", this.socket.readyState);
-            }
-            
-            console.log("Audio blob details:", {
-                size: blobWithHeader.size,
-                type: blobWithHeader.type,
-                chunksCount: this.audioChunks.length
-            });
-            
-            this.audioChunks = [];
-        }
-
         startRecording() {
             console.log(`MediaRecorder state before start: ${this.mediaRecorder.state}`);
             if (!this.isRecording) {
                 this.audioChunks = [];
                 this.mediaRecorder.start();
                 this.isRecording = true;
+                this.hasSignificantSpeech = false;
                 console.log(`MediaRecorder started. State after start: ${this.mediaRecorder.state}`);
             
                 // Resume the audio context on user interaction
@@ -308,6 +232,10 @@
             }
         }
 
+        handleMediaRecorerOnDataAvailable(e) {
+            this.audioChunks.push(e.data);
+        }
+
         stopRecording() {
             console.log(`MediaRecorder state before stop: ${this.mediaRecorder.state}`);
             if (this.isRecording) {
@@ -319,6 +247,12 @@
                 this.finishDispatchingHumanAudioSignalEvent();
             }
         }
+
+        handleMediaRecorderOnStop(e) {
+            this.dispatchHumanStopRecordingEvent();
+            this.audioChunks = [];
+        }
+
 
         playBufferedAudio() {
             //DEBUG: console.log("playBufferedAudio called, audioBufferQueue length:", audioBufferQueue.length, "isAudioPlaying:", isAudioPlaying);
@@ -358,6 +292,9 @@
             source.connect(this.audioCtx.destination);
             source.start();
 
+            // Keep track of the current audio source
+            this.currentAssistantAudioSource = source;
+
             // Dispatch event after setting up the source
             if (!this.assistantSpectrumInterval) {
                 this.assistantDidStartPlayingAudioBuffer(); // start dispatching assistantAudioSignalEvent
@@ -367,16 +304,23 @@
             source.onended = () => {
                 console.log("Audio playback ended");
                 this.isAudioPlaying = false;
-                if (this.playbackQueue.length > 0) {
-                    console.log("Continuing with next audio in playbackQueue");
-                    this.audioBufferQueue = this.playbackQueue.shift();
-                    this.playBufferedAudio();
-                } else {
-                    this.finishDispatchingAssistantAudioSignalEvent();
-                    this.dispatchAssistantEndAudioSignalEvent();
-                    console.log("No more audio in playbackQueue");
-                }
+                this.currentAssistantAudioSource = null;
 
+                if (this.assistantSpeechEnforcedStop) {
+                    // If playback was enforced stopped, do not dispatch normal end events
+                    console.log("Assistant speech was enforced to stop.");
+                    this.assistantSpeechEnforcedStop = false; // Reset the flag
+                } else {
+                    if (this.playbackQueue.length > 0) {
+                        console.log("Continuing with next audio in playbackQueue");
+                        this.audioBufferQueue = this.playbackQueue.shift();
+                        this.playBufferedAudio();
+                    } else {
+                        this.finishDispatchingAssistantAudioSignalEvent();
+                        this.dispatchAssistantEndAudioSignalEvent();
+                        console.log("No more audio in playbackQueue");
+                    }
+                }
             };
         
             // Clear the buffer queue
@@ -395,6 +339,32 @@
                 this.audioBufferQueue.push(decodedData.channelData[0]);
             } catch (error) {
                 console.error('Error decoding Opus data:', error);
+            }
+        }
+
+        enforceStopAssistantSpeech() {
+            if (this.isAudioPlaying) {
+                console.log("Enforcing stop of assistant speech.");
+                this.assistantSpeechEnforcedStop = true;
+
+                // Stop the currently playing audio
+                if (this.currentAssistantAudioSource) {
+                    this.currentAssistantAudioSource.stop();
+                    this.currentAssistantAudioSource = null;
+                }
+
+                // Clear any pending audio buffers
+                this.audioBufferQueue = [];
+                this.playbackQueue = [];
+                this.isAudioPlaying = false;
+
+                // Finish dispatching assistant audio signal
+                this.finishDispatchingAssistantAudioSignalEvent();
+
+                // Dispatch the special enforced stop event
+                this.dispatchAssistantSpeechEnforcedStopEvent();
+            } else {
+                console.log("No assistant speech is currently playing to enforce stop.");
             }
         }
 
@@ -552,6 +522,16 @@
             this.$buttonLoader.dispatchEvent(event);
         }
 
+        dispatchAssistantSpeechEnforcedStopEvent() {
+            console.log(`[Core] Dispatching assistantSpeechEnforcedStopEvent - buttonId: ${this.buttonId}`);
+            const event = new CustomEvent(ns.configs[this.buttonId].assistantSpeechEnforcedStopEventName, {
+                detail: {
+                    buttonId: this.buttonId
+                }
+            });
+            this.$buttonLoader.dispatchEvent(event);
+        }
+
         // ↑↑↑ assistant turn event
 
         // ↓↓↓ human turn event
@@ -562,7 +542,7 @@
                 console.error("Analyser is not initialized.");
                 return;
             }
-        
+
             // Setup a repeating interval to dispatch the frequency data
             this.humanAudioSignalInterval = setInterval(() => {
                 const frequencyDataArray = new Uint8Array(this.humanAudioAnalyzer.frequencyBinCount);
@@ -583,6 +563,7 @@
 
                 const hasSignificantData = frequencyDataArray.some(value => value > 0);
                 if (hasSignificantData) {
+                    this.hasSignificantSpeech = true;
                     const event = new CustomEvent(ns.configs[this.buttonId].humanAudioSignalEventName, {
                         detail: {
                             buttonId: this.buttonId,
@@ -602,6 +583,16 @@
             console.log(`[Core] Finishing Dispatching humanAudioSignalEvent for buttonId: ${this.buttonId}`);
             clearInterval(this.humanAudioSignalInterval);  // Ensure to clear the interval when no more audio is to play
             this.humanAudioSignalInterval = null;
+        }
+
+        dispatchHumanStopRecordingEvent() {
+            console.log(`[Core] Dispatching humanStopRecordingEvent - buttonId: ${this.buttonId}`);
+            const event = new CustomEvent(ns.configs[this.buttonId].humanStopRecordingEventName, {
+                detail: {
+                    buttonId: this.buttonId
+                }
+            });
+            this.$buttonLoader.dispatchEvent(event);
         }
 
         // ↑↑↑ human turn event
