@@ -509,10 +509,14 @@
                     // Connect to server
                     ns.cores[buttonId].initializeAudio();
                     ns.cores[buttonId].connect(() => {
-                        console.log(`[Quantz Button ${buttonId}] Connection established.`);
                         ns.buttonControllers[buttonId].switchToConnected(); // Switch to the connected state
-                        ns.cores[buttonId].sendStartMessage();
-                        ns.interactionControllers[buttonId].start();
+                        if (ns.cores[buttonId].connectionRetryCount > 0) {
+                            console.log(`[Quantz Button ${buttonId}] Connection reestablished.`)
+                        } else {
+                            console.log(`[Quantz Button ${buttonId}] Connection established.`);
+                            ns.cores[buttonId].sendStartMessage();
+                            ns.interactionControllers[buttonId].start();
+                        }
                     });
                     // Dispatch start event
                     document.dispatchEvent(new CustomEvent(ns.configs[buttonId].didClickStartEventName, {detail: {}}));
@@ -525,8 +529,13 @@
                     ns.cores[buttonId].connect(() => {
                         console.log(`[Quantz Button ${buttonId}] Connection established.`);
                         ns.buttonControllers[buttonId].switchToConnected(); // Switch to the connected state
-                        ns.cores[buttonId].sendStartMessage();
-                        ns.interactionControllers[buttonId].start();
+                        if (ns.cores[buttonId].connectionRetryCount > 0) {
+                            console.log(`[Quantz Button ${buttonId}] Connection reestablished.`)
+                        } else {
+                            console.log(`[Quantz Button ${buttonId}] Connection established.`);
+                            ns.cores[buttonId].sendStartMessage();
+                            ns.interactionControllers[buttonId].start();
+                        }
                     });
                     // Dispatch restart event
                     document.dispatchEvent(new CustomEvent(ns.configs[buttonId].didClickRestartEventName, {detail: {}}));
@@ -544,9 +553,15 @@
                         //setTimeout(() => {
                             ns.buttonControllers[buttonId].switchStandbyToPushSpeak(); // Switch to the speaking state
                         //}, 1000);
-                        console.log('*****************************')
-                        ns.cores[buttonId].sendStartMessage();
-                        console.log('*****************************')
+                        if (ns.cores[buttonId].connectionRetryCount > 0) {
+                            console.log(`[Quantz Button ${buttonId}] Connection reestablished.`)
+                        } else {
+                            console.log(`[Quantz Button ${buttonId}] Connection established.`);
+                            console.log('*****************************')
+                            ns.cores[buttonId].sendStartMessage();
+                            console.log('*****************************')
+                        }
+ 
                     });
                     break;
                 
@@ -663,6 +678,8 @@
         $buttonLoader.addEventListener(ns.configs[buttonId].assistantStartPlayingAudioBufferEventName, function(event) {
             const { buttonId } = event.detail;
             console.log(`[Quantz Button ${buttonId}] assistant start playing audio buffer event received`);
+            ns.buttonControllers[buttonId].switchToReplying();
+
             if (ns.configs[buttonId].autoInteraction) {
                 if(ns.cores[buttonId].hasSignificantSpeech) {
                     // keep recording and stop assistant speach
@@ -784,12 +801,24 @@
             const { buttonId } = event.detail;
             console.log(`[Quantz Button ${buttonId}] human stop speaking.`)
             if (ns.configs[buttonId].autoInteraction) {
+                switch (ns.interactionControllers[buttonId].assistantState) {
+                    case ns.AssistantState.START_RESPONDING:
+                        ns.cores[buttonId].stopRecording();
+                        break;
+                    case ns.AssistantState.SPEAKING:
+                        ns.cores[buttonId].stopRecording();
+                        break;
+                    case ns.AssistantState.WAITING:
+                        ns.cores[buttonId].stopRecording();
+                        break;
+                }
                 switch (ns.buttonControllers[buttonId].buttonState) {
                     case ns.ButtonState.listening:
                         // Stop replying
                         ns.cores[buttonId].stopRecording();
                         ns.buttonControllers[buttonId].switchToReplying();
                         break;
+                    case ns.ButtonState.replying:
                 }
             }
         })

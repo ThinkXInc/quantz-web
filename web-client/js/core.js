@@ -31,6 +31,7 @@
             this.token;
 
             this.isConnected = false;
+            this.connectionRetryCount = 0;
 
             this.mediaRecorder;
             this.audioChunks = [];
@@ -149,17 +150,21 @@
         }
 
         async connect(onConnected) {
-            const result = await this.getToken();
+            if(!this.token) {
+                const result = await this.getToken();
 
-            if (result.error) {
-                console.error('Error obtaining token:', result.error);
-                this.dispatchFailedToGetTokenEvent(result.error, result.status);
-                return;
+                if (result.error) {
+                    console.error('[Core] Error obtaining token:', result.error);
+                    this.dispatchFailedToGetTokenEvent(result.error, result.status);
+                    return;
+                }
+
+
+                this.token = result.token;
+                console.log("[Core] Token obtained:", this.token);
+            } else {
+                console.log("[Core] Use token :", this.token);
             }
-
-
-            this.token = result.token;
-            console.log("Token obtained:", this.token);
 
             try {
                 // Initialize OpusDecoder
@@ -172,7 +177,7 @@
                 const serverUrl = `wss://${ns.configs[this.buttonId].host}/stream/ws?token=${encodeURIComponent(this.token)}`;
                 this.socket = new WebSocket(serverUrl);
                 this.socket.onopen = (e) => {
-                    console.log("Connection to server opened.");
+                    console.log("[Core] Connection to server opened.");
                     this.isConnected = true; // Set isConnected to true once the connection is open
                     if (typeof onConnected === 'function') {
                         onConnected();  // Call the callback function when connected
@@ -183,9 +188,15 @@
                 this.socket.onclose = (e) => {
                     this.isConnected = false;
                     if (e.wasClean) {
-                        console.log(`Connection closed cleanly, code=${e.code}, reason=${e.reason}`);
+                        console.log(`[Core] Connection closed cleanly, code=${e.code}, reason=${e.reason}`);
                     } else {
-                        console.log('Connection died', `Close event code: ${e.code}, reason: ${e.reason}`);
+                        console.error('[Core] Connection died', `Close event code: ${e.code}, reason: ${e.reason}`);
+                        const reconnectMs = 3000;
+                        setTimeout(() => {
+                            console.warn(`[Core] Websocket connection closed abruptly. Trying to reconnect in ${reconnectMs}ms ...`);
+                            this.connectionRetryCount++;
+                            this.connect(onConnected);
+                        }, reconnectMs);
                     }
                 };
 
