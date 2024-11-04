@@ -62,8 +62,11 @@
         assistantAudioSignalEventName: 'quantz-assistantAudioSignal',
         assistantEndAudioSignalEventName: 'quantz-assistantEndAudioSignal',
         assistantEndTurnEventName: 'quantz-assistantEndTurn',
+        assistantSpeechEnforcedStopEventName: 'quantz-assistantSpeechEnforcedStop',
         humanAudioSignalEventName: 'quantz-humanAudioSignal',
+        humanStartSpeakingEventName: 'quantz-humanStartSpeaking',
         humanStopSpeakingEventName: 'quantz-humanStopSpeaking',
+        humanStopRecordingEventName: 'quantz-humanStopRecording',
         signalDataUpdatedEventName: 'quantz-signalDataUpdated',
         reachToLimitEventName: 'quantz-reachToLimit',
         closeMessageReceivedEventName: 'quantz-closeMessageReceived',
@@ -616,6 +619,7 @@
             console.log(`[Quantz Button ${buttonId}] assistant response started:`, message);
             //ns.indicatorController.sequentialColorUpdate(1, ['#fff'])
             if (ns.configs[buttonId].autoInteraction) {
+                ns.interactionControllers[buttonId].didAssistantResponseStart(message);
                 ns.balloons[buttonId].show();
             }
         })
@@ -639,6 +643,19 @@
                     message: message,
                 }
             }))
+            if (ns.configs[buttonId].autoInteraction) {
+                switch (type) {
+                    case "system":
+                        ns.interactionControllers[buttonId].didAssistantMessageReceive(message);
+                        break;
+                    case "user":
+                        ns.interactionControllers[buttonId].didHumanMessageReceive(message);
+                        break;
+                    case "announce":
+                        ns.interactionControllers[buttonId].didAnnounceMessageReceive(message);
+                        break;
+                }
+            }
         }
         $buttonLoader.removeEventListener(ns.configs[buttonId].messageReceiveEventName, handleMessageReceive);
         $buttonLoader.addEventListener(ns.configs[buttonId].messageReceiveEventName, handleMessageReceive);
@@ -646,6 +663,17 @@
         $buttonLoader.addEventListener(ns.configs[buttonId].assistantStartPlayingAudioBufferEventName, function(event) {
             const { buttonId } = event.detail;
             console.log(`[Quantz Button ${buttonId}] assistant start playing audio buffer event received`);
+            if (ns.configs[buttonId].autoInteraction) {
+                if(ns.cores[buttonId].hasSignificantSpeech) {
+                    // keep recording and stop assistant speach
+
+                } else {
+                    // just stop recording (not submit)
+                    console.warn(`[Quantz Button ${buttonId}] assistant start playing and no significant human speech -> juset stop recording`)
+                    ns.cores[buttonId].stopRecording();
+                }
+                ns.interactionControllers[buttonId].didAssistantStartPlayingAudioBuffer();
+            }
         })
 
         $buttonLoader.addEventListener(ns.configs[buttonId].assistantAudioSignalEventName, function(event) {
@@ -673,7 +701,7 @@
             if (ns.configs[buttonId].autoInteraction) {
                 ns.buttonControllers[buttonId].switchToRecording(); // Switch to the recording state
                 ns.cores[buttonId].startRecording();
-                ns.interactionControllers[buttonId].setAssistantStopSpeaking();
+                ns.interactionControllers[buttonId].didAssistantEndPlayingAudio();
             }
             if (ns.configs[buttonId].buttonType === ns.ButtonType.A) {
                 ns.indicatorControllers[buttonId].resetToConnectedAnimation();
@@ -683,6 +711,7 @@
         $buttonLoader.addEventListener(ns.configs[buttonId].assistantEndTurnEventName, function(event) {
             console.log(`[Quantz Button ${buttonId}] assistant end turn event received`);
             if (ns.configs[buttonId].autoInteraction) {
+                ns.interactionControllers[buttonId].didAssistantEndTurn();
                 ns.buttonControllers[buttonId].switchToRestart();
             } else {
                 ns.buttonControllers[buttonId].switchToPushSpeak();
@@ -690,6 +719,11 @@
                     ns.indicatorControllers[buttonId].endTurnAnimation();
                 }
             }
+        });
+
+        $buttonLoader.addEventListener(ns.configs[buttonId].assistantSpeechEnforcedStopEventName, (e) => {
+            console.log(`[Quantz Button ${buttonId}] Assistant speech was enforced to stop:`, e.detail);
+            // Handle the enforced stop accordingly
         });
 
         $buttonLoader.addEventListener(ns.configs[buttonId].humanAudioSignalEventName, function(event) {
@@ -706,17 +740,81 @@
                 }}))
         })
 
+        $buttonLoader.addEventListener(ns.configs[buttonId].humanStartSpeakingEventName, function(event) {
+            const { buttonId } = event.detail;
+            console.log(`[Quantz Button ${buttonId}] human start speaking.`)
+            // TODO: 
+            // send \\STOP message in certain condition
+            // ユーザーが話し終えてからisAssistantSpeaking=trueになるまでの間をwaitingHumanResponse状態と定義する
+            // この間にこのイベントが発動したら\\STOPを送る
+            // \\STOPを受信したサーバーはshould_force_listening=Trueをセットしこの間常にC: listeningとなる
+            // 次回ユーザーのtranscribeを実行した際にshould_force_listeningはFalseにリセットされる
+            // isHumanSpeaking=trueとなるのでこの間assistantは発話しない
+
+            // このStartSpeakingEventがトリガーされるには
+            // startRecording()されている状態で
+            // hasSignificantData == trueのときhumanAudioSignalEventがdispatchされ
+            // appendHumanSignalData内のcheckHumanSilence()が実行される
+            // if(lastHumanDecibel >= THRESH)を満たすときisHumanSpeaking=trueに切り替わりこのイベントがdispatchされる
+
+            // まずstopRecording()で自動的にsubmitするのをやめる
+            // 代わりにdidRecordingStopEventをdispatchし条件を満たすときのみsubmitする
+            // 条件はaudoInteractionなら一度でも発話がなされたかどうか
+            // これはhasSignificantSpeech==trueかどうか
+            // -> hasSignificantSpeechを見なくても現在有効なspeechがありかつ発話終了検出するとstopRecroding()が走る
+            //      core.startRecording()
+            //         interactionController.checkHumanSilence()
+            //             -> 有効な発話がみつかる  interactionController.dispatchHumanStartSpeaking()
+            //                  -> interactionController.isHumanSpeaking
+            //             -> 発話停止判定true  interactionController.dispatchHumanStopSpeaking()
+            //         core.startDispatchingHumanAudioSignalEvent()
+            //             -> hasSignificantData -> core.humanAudioSignalEvent() 
+            //                  -> 有効な発話がみつかる hasSignificantSpeech = true
+            //                  -> interactionController.appendHumanSignalData()
+            //               -> interactionController.dispatchHumanStopSpeaking()
+            //                  -> core.stopRecoding()
+            //                  -> core.dispatchHumanStopRecordingEvent()
+            //                       -> if hasSignificantSpeech -> submit()
+            //                       -> if not -> 
+            // finishDispatchingHumanAudioSignalEvent()の直後に再度startRecording()を開始する
+            // このとき
+        })
+
         $buttonLoader.addEventListener(ns.configs[buttonId].humanStopSpeakingEventName, function(event) {
             const { buttonId } = event.detail;
             console.log(`[Quantz Button ${buttonId}] human stop speaking.`)
             if (ns.configs[buttonId].autoInteraction) {
                 switch (ns.buttonControllers[buttonId].buttonState) {
                     case ns.ButtonState.listening:
-                        // Start replying
+                        // Stop replying
                         ns.cores[buttonId].stopRecording();
                         ns.buttonControllers[buttonId].switchToReplying();
+                        break;
                 }
             }
+        })
+
+        $buttonLoader.addEventListener(ns.configs[buttonId].humanStopRecordingEventName, function(event) {
+            const { buttonId } = event.detail;
+            console.log(`[Quantz Button ${buttonId}] human stop recording.`)
+            if (ns.cores[buttonId].hasSignificantSpeech) {
+                console.warn(`[Quantz Button ${buttonId}] has significant speech. submit.`)
+                ns.cores[buttonId].submitHumanSpeach();
+            } else {
+                console.warn(`[Quantz Button ${buttonId}] no significant speech. skip.`)
+            }
+            if (ns.configs[buttonId].autoInteraction) {
+                ns.cores[buttonId].startRecording();
+            }
+            //if (ns.configs[buttonId].autoInteraction) {
+            //    switch (ns.buttonControllers[buttonId].buttonState) {
+            //        case ns.ButtonState.listening:
+            //            break;
+            //    }
+            //} else {
+
+            //}
+ 
         })
 
         $buttonLoader.addEventListener(ns.configs[buttonId].closeMessageReceivedEventName, function(event) {
