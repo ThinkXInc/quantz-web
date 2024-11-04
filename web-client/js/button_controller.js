@@ -6,6 +6,7 @@
         RECORDING: 'https://quantz.thinkxinc.com/img/quantz_button/recording-icon-white.svg',
         REPLYING: 'https://quantz.thinkxinc.com/img/quantz_button/replying-icon-white.svg',
         RESTART: '',
+        LEAVE: 'https://quantz.thinkxinc.com/img/quantz_button/leave-icon-white.svg',
     };
 
     ns.ButtonState = {
@@ -18,6 +19,7 @@
         replying: 'replying',
         busy: 'busy',
         restart: 'restart',
+        leave: 'leave'
     }
 
     ns.ButtonController = class {
@@ -30,10 +32,13 @@
             this.buttonElement = document.getElementById(ns.configs[buttonId].buttonElementId);
             this.iconElement = this.buttonElement.querySelector(`.${ns.configs[buttonId].prefix + ns.configs[buttonId].iconImageClassName}`);
             this.textContainer = document.getElementById(ns.configs[buttonId].buttonTextContainerId);
+            this.buttonControlElement = document.getElementById(`QBTN-button-control-${buttonId}`)
             this.sign = new ns.Sign({
                 buttonId: buttonId,
                 containerId: ns.configs[buttonId].buttonTextContainerId,
                 signType: ns.SignType.busy}); 
+            this.signElement = this.buttonElement.querySelector(`.QBTN-sign`);
+            this.iconWrapperElement = this.buttonElement.querySelector(`.QBTN-icon-wrapper`);
             this.textElement = this.textContainer.querySelector(`.${ns.configs[buttonId].prefix + ns.configs[buttonId].buttonTextClassName}`);
 
             if (!this.buttonElement) {
@@ -48,6 +53,9 @@
             }
             if (!this.textElement) {
                 console.error('Text element not found.');
+            }
+            if (!this.buttonControlElement) {
+                console.error('ButtonControl element not found.');
             }
 
             if (buttonType == ns.ButtonType.A) {
@@ -147,6 +155,27 @@
             this.toggleButtonState(ns.ButtonState.connected);
             this.updateButtonText('connected');
             this.sign.changeTo(ns.SignType.active);
+        }
+
+        switchToLeave() {
+            console.log(`[ButtonController] switch to leave.`)
+            this.toggleButtonState(ns.ButtonState.leave);
+            this.updateButtonText('leave');
+            this.buttonControlElement.style.display = 'none';
+            this.signElement.style.display = 'none';
+            //this.textElement.style.setProperty('width', 'max-content', 'important');
+            this.textElement.style.display = 'none';
+            if (this.buttonElement) {
+                this.buttonElement.style.setProperty('width', '145px', 'important');
+                this.buttonElement.style.setProperty('background-image', 'linear-gradient(to left, rgb(226, 54, 54), rgb(186, 51, 51))', 'important');
+                this.buttonElement.style.setProperty('border-radius', '50px', 'important');
+                this.buttonElement.style.setProperty('border', '1px solid rgb(60, 8, 8)', 'important');
+                this.iconWrapperElement.style.setProperty('width', '100%', 'important');
+            } else {
+                console.error('Button element not found for styling.');
+            }
+            this.setIcon(ns.IconType.LEAVE);
+            this.sign.changeTo(ns.SignType.leave);
         }
 
         switchStandbyToPushSpeak() {
