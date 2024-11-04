@@ -23,6 +23,7 @@
                 `${ns.configs[buttonId].prefix}button-loader-${buttonId}`
             );
             this.lang = defaultLang;
+            this.speechDurationMs = 0;
             this.frequencyMs = frequencyMs;
 
             this.SPEECH_THRESHOLD = -35;
@@ -36,16 +37,22 @@
                     this.SHORT_HUMAN_SILENCE_THRESHOLD_MS = 2000;
                     this.DEFAULT_HUMAN_SILENCE_THRESHOLD_MS = 3000;
                     this.LONG_HUMAN_SILENCE_THRESHOLD_MS = 4000;
+                    this.SPEECH_DURATION_THRESHOLD_MS = 3000;
+                    this.ADJUSTED_DURATION_THRESHOLD_MS = 7000;
                     break;
                 case ns.ResponseMode.NORMAL:
                     this.SHORT_HUMAN_SILENCE_THRESHOLD_MS = 3000;
                     this.DEFAULT_HUMAN_SILENCE_THRESHOLD_MS = 5000;
                     this.LONG_HUMAN_SILENCE_THRESHOLD_MS = 6000;
+                    this.SPEECH_DURATION_THRESHOLD_MS = 3000;
+                    this.ADJUSTED_DURATION_THRESHOLD_MS = 7000;
                     break;
                  case ns.ResponseMode.CAREFUL_LISTENING:
                     this.SHORT_HUMAN_SILENCE_THRESHOLD_MS = 5000;
                     this.DEFAULT_HUMAN_SILENCE_THRESHOLD_MS = 5000;
                     this.LONG_HUMAN_SILENCE_THRESHOLD_MS = 7000;
+                    this.SPEECH_DURATION_THRESHOLD_MS = 3000;
+                    this.ADJUSTED_DURATION_THRESHOLD_MS = 7000;
                     break;
             }
 
@@ -122,9 +129,11 @@
                 // Decibel is above threshold
                 if (!this.isHumanSpeaking) {
                     this.isHumanSpeaking = true;
+                    this.speechDurationMs = 0; // Reset speech duration when starting to speak
                     console.warn('[InteractionController] Human has started speaking.');
                     this.dispatchHumanStartSpeakingEvent();
                 }
+                this.speechDurationMs += this.frequencyMs;
                 this.silenceDurationMs = 0;
             } else {
                 // Decibel is below threshold
@@ -132,6 +141,18 @@
                     if (this.silenceDurationMs === 0) {
                         // Just started being silent, analyze the frequency pattern
                         this.analyzeFrequencyPattern();
+
+                        // Check the speech duration
+                        if (this.speechDurationMs >= this.SPEECH_DURATION_THRESHOLD_MS) {
+                            // Use the longer silence threshold
+                            this.HUMAN_SILENCE_THRESHOLD_MS = Math.max(
+                                this.HUMAN_SILENCE_THRESHOLD_MS,
+                                this.ADJUSTED_DURATION_THRESHOLD_MS
+                            );
+                            console.log(
+                                `[InteractionController] Human spoke for ${this.speechDurationMs}ms, adjusting silence threshold to ${this.HUMAN_SILENCE_THRESHOLD_MS}ms`
+                            );
+                        }
                     }
 
                     this.silenceDurationMs += this.frequencyMs;
@@ -141,6 +162,7 @@
                     if (this.silenceDurationMs >= this.HUMAN_SILENCE_THRESHOLD_MS) {
                         this.isHumanSpeaking = false;
                         this.silenceDurationMs = 0; // Reset the silence duration
+                        this.speechDurationMs = 0; // Reset the speech duration
                         console.log('[InteractionController] Human has stopped speaking.');
 
                         // Reset last human signal values to silent values

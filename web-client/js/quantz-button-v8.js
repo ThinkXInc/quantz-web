@@ -495,7 +495,7 @@
         // Define event handlers
         const onMouseEnter = () => {
             console.log(`[Quantz Button ${buttonId}] Start button mouseenter`);
-            ns.buttonControllers[buttonId].switchToLeave()
+            //ns.buttonControllers[buttonId].switchToLeave()
         };
 
         const onMouseLeave = () => {
@@ -717,9 +717,12 @@
         $buttonLoader.addEventListener(ns.configs[buttonId].assistantEndAudioSignalEventName, function(event) {
             console.log(`[Quantz Button ${buttonId}] **** (finish) assistant spectrum`);
             if (ns.configs[buttonId].autoInteraction) {
-                ns.buttonControllers[buttonId].switchToRecording(); // Switch to the recording state
-                ns.cores[buttonId].startRecording();
                 ns.interactionControllers[buttonId].didAssistantEndPlayingAudio();
+                // Delay to avoid catching assistant voice
+                setTimeout(() => {
+                    ns.buttonControllers[buttonId].switchToRecording(); // Switch to the recording state
+                    ns.cores[buttonId].startRecording();
+                }, 1000)
             }
             if (ns.configs[buttonId].buttonType === ns.ButtonType.A) {
                 ns.indicatorControllers[buttonId].resetToConnectedAnimation();
@@ -761,6 +764,15 @@
         $buttonLoader.addEventListener(ns.configs[buttonId].humanStartSpeakingEventName, function(event) {
             const { buttonId } = event.detail;
             console.log(`[Quantz Button ${buttonId}] human start speaking.`)
+            // **** [Experimental]
+            // 人間が話し終えていないのに終了判定されることがあるのでそのまま話を拾いたい
+            // しかしAssistantが発話しているとそれを拾ってしまうのでassistantの発話を止めることが必要
+            //if (ns.interactionControllers[buttonId].isAssistantSpeaking) {
+            //    console.warn(`[Quantz Button ${buttonId}] human start speaking while assistant is speaking. enforce stop assistant speach.`)
+            //    ns.cores[buttonId].enforceStopAssistantSpeech();
+            //}
+            // **** [Experimental]
+
             // TODO: 
             // send \\STOP message in certain condition
             // ユーザーが話し終えてからisAssistantSpeaking=trueになるまでの間をwaitingHumanResponse状態と定義する
@@ -833,9 +845,14 @@
             } else {
                 console.warn(`[Quantz Button ${buttonId}] no significant speech. skip.`)
             }
-            if (ns.configs[buttonId].autoInteraction) {
-                ns.cores[buttonId].startRecording();
-            }
+            // **** [Experimental]
+            // 人間が話し終えていないのに終了判定されることがあるのでそのまま話を拾いたい
+            // しかしAssistantが発話しているとそれを拾ってしまうのでassistantの発話を止めることが必要
+            //if (ns.configs[buttonId].autoInteraction) {
+            //    ns.cores[buttonId].startRecording();
+            //}
+            /// ********************
+
             //if (ns.configs[buttonId].autoInteraction) {
             //    switch (ns.buttonControllers[buttonId].buttonState) {
             //        case ns.ButtonState.listening:
@@ -850,7 +867,7 @@
         $buttonLoader.addEventListener(ns.configs[buttonId].closeMessageReceivedEventName, function(event) {
             console.log(`[Quantz Button ${buttonId}] close message received event received`);
             setTimeout(() => {
-                ns.buttonControllers[buttonId].switchToStart();
+                ns.buttonControllers[buttonId].switchToLeave();
                 ns.cores[buttonId].disconnect();
             }, 10000)
 
