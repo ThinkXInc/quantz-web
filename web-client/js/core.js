@@ -191,7 +191,7 @@
                         console.log(`[Core] Connection closed cleanly, code=${e.code}, reason=${e.reason}`);
                     } else {
                         console.error('[Core] Connection died', `Close event code: ${e.code}, reason: ${e.reason}`);
-                        const reconnectMs = 3000;
+                        const reconnectMs = 1000;
                         setTimeout(() => {
                             console.warn(`[Core] Websocket connection closed abruptly. Trying to reconnect in ${reconnectMs}ms ...`);
                             this.connectionRetryCount++;
