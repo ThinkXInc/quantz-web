@@ -495,6 +495,7 @@
         // Define event handlers
         const onMouseEnter = () => {
             console.log(`[Quantz Button ${buttonId}] Start button mouseenter`);
+            ns.buttonControllers[buttonId].switchToLeave()
         };
 
         const onMouseLeave = () => {

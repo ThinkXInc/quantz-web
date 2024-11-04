@@ -3,6 +3,7 @@
         standby: 'standby',
         busy: 'busy',
         active: 'active',
+        leave: 'leave',
         error: 'error'
     };
 
@@ -34,6 +35,7 @@
                     ns.configs[this.buttonId].prefix + ns.SignType.standby, 
                     ns.configs[this.buttonId].prefix + ns.SignType.busy, 
                     ns.configs[this.buttonId].prefix + ns.SignType.active, 
+                    ns.configs[this.buttonId].prefix + ns.SignType.leave, 
                     ns.configs[this.buttonId].prefix + ns.SignType.error
                 );
                 this.signType = signType;

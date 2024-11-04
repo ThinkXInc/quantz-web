@@ -10,6 +10,7 @@
             loading: 'Loading..',
             replying: "Replying...",
             busy: "Failed to connect. Try again later.",
+            leave: "Leave Meeting",
             limitReached: "Usage limit reached."
         },
         ja: {
@@ -22,6 +23,7 @@
             loading: 'ロード中...',
             replying: "返信中...",
             busy: "接続に失敗しました。時間を置いて再度お試しください。",
+            leave: "退出する",
             limitReached: "利用回数の上限に達しました。"
         },
         zh: {
@@ -34,6 +36,7 @@
             loading: '加载中...',
             replying: "回复中...",
             busy: "连接失败，请稍后再试。",
+            leave: "离开会议",
             limitReached: "已达到使用限制。"
         },
         es: {
@@ -46,6 +49,7 @@
             loading: 'Cargando...',
             replying: "Respondiendo...",
             busy: "Falló la conexión. Intenta de nuevo más tarde.",
+            leave: "Salir de la reunión",
             limitReached: "Se alcanzó el límite de uso."
         },
         fr: {
@@ -58,6 +62,7 @@
             loading: 'Chargement...',
             replying: "En réponse...",
             busy: "Échec de la connexion. Réessayez plus tard.",
+            leave: "Quitter la réunion",
             limitReached: "Limite d'utilisation atteinte."
         },
         ar: {
@@ -70,7 +75,8 @@
             loading: 'جاري التحميل...',
             replying: "جاري الرد...",
             busy: "فشل الاتصال. حاول مرة أخرى لاحقًا.",
-            limitReached: "تم الوصول للحد الأقصى للإستخدام."
+            leave: "غادر الاجتماع",
+            limitReached: "تم الوصول للحد الأقصى للإستخدام.",
         },
         ru: {
             standby: "Решите ваш вопрос сейчас",
@@ -80,6 +86,7 @@
             loading: 'Загрузка...',
             replying: "Отвечаю...",
             busy: "Не удалось подключиться. Попробуйте позже.",
+            leave: "Покинуть встречу",
             limitReached: "Достигнут предельный лимит."
         }
     };
