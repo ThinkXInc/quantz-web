@@ -1,0 +1,230 @@
+@cubic-bezier1: cubic-bezier(.65,0,.34,1);
+@open-chatview-duration: 0.3s;
+@alert-red: #8c1111;
+
+// MainContent
+
+#MainContent.interviews {
+    display: flex;
+    flex-direction: row;
+
+}
+
+// Left Column
+
+div#InterviewListContainer {
+    max-width: 600px;
+    height: 100vh;
+    div.TableView.interviewList {
+        div.tableViewContainer {
+            div.interviewListHeader {
+                div.leftContainer {
+                    h1.interviewListHeaderTitle {
+                        // Styles here
+                    }
+                    h3.interviewListCount {
+                        // Styles here
+                    }
+                }
+                div.rightContainer {
+                    img.search_icon {
+                        // Styles here
+                    }
+                }
+            }
+            div.createNew {
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                padding: 20px;
+                height: 65px;
+                background-color: #50636a;
+            
+                img.plusIcon {
+                    width: 24px;
+                    height: 24px;
+                    margin-right: 10px;
+                }
+            
+                h4.title {
+                    font-size: 16px;
+                    color: #fff;
+                }
+            }
+            div.tableView.interviewListTableView {
+                ul.tableListView.interviewListListView {
+                    li.TableViewCell.tableViewCell.interviewListCell {
+                        transition: background-color 0.3s @cubic-bezier1;
+                        &:hover {
+                            background-color: #f0f0f0;
+                        }
+                        &.selected {
+                            background-color: #eaeaea;
+                        }
+                        div.contentWrapper {
+                            div.header {
+                                span.label {
+                                    // Styles here
+                                }
+                                h6.title {
+                                    // Styles here
+                                }
+                            }
+                            div.body {
+                                p.text {
+                                    // Styles here
+                                }
+                            }
+                            div.footer {
+                                // Styles here
+                            }
+                        }
+                        div.buttonContainer.right {
+                            button {
+                                svg.deleteIconSVG {
+                                    // Styles here
+                                }
+                            }
+                        }
+                    }
+                }
+                div.gradientViewIndicator.TableViewGradientLoader {
+                    div.indicator-container {
+                        div.indicator-wrapper {
+                            svg {
+                                // Styles here
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}  
+
+
+// Right Column
+
+div#InterviewPreviewContainer {
+    padding: 20px;
+    width: 100%;
+    height: 100vh;
+    overflow-y: auto;
+ 
+    div.InterviewPreviewView {
+        padding: 20px;
+        width: 100%;
+        height: 100vh;
+
+        button.editButton {
+            background-color: #50636a;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            float: right; // Move the Edit button to the right
+        }
+
+        div.InterviewSummaryView {
+            h2 {
+                font-size: 24px;
+                margin-bottom: 10px;
+            }
+
+            span.introductionLabel {
+                font-weight: bold;
+            }
+
+            p.introduction {
+                background-color: #f7f7f7;
+                padding: 20px;
+                border-radius: 7px;
+                margin-bottom: 20px;
+                font-size: 20px;
+            }
+
+            img.stepArrow {
+                display: block;
+                margin: 20px auto;
+                width: 56px;
+            }
+
+            div.stepContainer {
+                position: relative;
+                margin-bottom: 40px;
+
+                h3.stepTitle {
+                    position: absolute;
+                    top: 0;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background-color: #fff;
+                    padding: 0 10px;
+                    font-size: 20px;
+                }
+
+                div.stepContent {
+                    border: 1px solid #ccc;
+                    border-radius: 10px;
+                    padding: 20px;
+                    margin-top: 20px;
+                    background-color: #add0dd;
+
+                    div.questionWrapper,
+                    div.finishConditionWrapper,
+                    div.maxTurnsWrapper {
+                        margin-top: 10px;
+                    }
+
+                    span.questionLabel,
+                    span.finishConditionLabel,
+                    span.maxTurnsLabel,
+                    span.instructionsLabel {
+                        font-weight: bold;
+                        display: block;
+                        margin-top: 10px;
+                    }
+
+                    p.question,
+                    p.finishCondition {
+                        margin: 5px 0 15px 0;
+                    }
+
+                    p.question {
+                        background-color: #f7f7f7;
+                        padding: 16px;
+                        border-radius: 5px;
+                        font-size: 20px;
+                    }
+
+                    span.maxTurns {
+                        margin-left: 5px;
+                    }
+
+                    ul.instructions {
+                        margin-left: 20px;
+                        list-style-type: disc;
+                    }
+
+                    span.moreDetailLink {
+                        color: blue;
+                        text-decoration: underline;
+                        cursor: pointer;
+                        margin-top: 10px;
+                        display: block;
+                    }
+
+                    div.hiddenContent {
+                        // Additional styles if needed
+                    }
+                }
+            }
+        }
+
+        div.InterviewLatestResultsView {
+            margin-top: 20px;
+            // Additional styles if needed
+        }
+    }
+}
