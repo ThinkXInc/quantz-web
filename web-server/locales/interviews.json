@@ -251,5 +251,14 @@
         "fr": "",
         "ru": "",
         "ar": ""
+    },
+    "interview_summary_end_label": {
+        "ja": "終了時のメッセージ",
+        "en": "Closing Remarks",
+        "zh": "面试结束时的总结",
+        "es": "Palabras de cierre de la entrevista",
+        "fr": "Remarques de clôture de l'entretien",
+        "ru": "Заключительное слово на собеседовании",
+        "ar": "كلمة الختام في المقابلة"
     }
 }

@@ -55,6 +55,7 @@ div#InterviewListContainer {
                 ul.tableListView.interviewListListView {
                     li.TableViewCell.tableViewCell.interviewListCell {
                         transition: background-color 0.3s @cubic-bezier1;
+                        min-height: 78px;
                         &:hover {
                             background-color: #f0f0f0;
                         }
@@ -105,63 +106,106 @@ div#InterviewListContainer {
 
 // Right Column
 
+
+// Right Column
 div#InterviewPreviewContainer {
     padding: 20px;
     width: 100%;
     height: 100vh;
     overflow-y: auto;
- 
+
     div.InterviewPreviewView {
         padding: 20px;
         width: 100%;
         height: 100vh;
 
         button.editButton {
-            background-color: #50636a;
-            color: #fff;
+            background-color: transparent; /* Makes background transparent */
+            color: #50636a; /* Sets icon color to match the desired color */
             border: none;
-            padding: 10px 20px;
+            padding: 10px;
             cursor: pointer;
             margin-bottom: 20px;
-            float: right; // Move the Edit button to the right
+            float: right;
+            transition: color 0.3s; /* For gradual color change */
+    
+            svg {
+                width: 24px;
+                height: 24px;
+            }
+        }
+    
+        button.editButton:hover {
+            color: #01a7e3; /* Changes icon color on hover */
+        }
+    
+        button.editButton:active {
+            color: #00c3ff; /* Changes icon color on click */
         }
 
         div.InterviewSummaryView {
             h2 {
                 font-size: 24px;
                 margin-bottom: 10px;
+                margin-bottom: 50px;
             }
 
-            span.introductionLabel {
-                font-weight: bold;
+            div.introductionContainer {
+                margin-bottom: 42px;
+
+                span.introductionLabel {
+                    font-size: 13px;
+                    font-weight: bold;
+                    display: block;
+                    margin-bottom: 10px;
+                }
+
+                p.introduction {
+                    background-color: #f7f7f7;
+                    padding: 20px;
+                    border-radius: 7px;
+                    font-size: 19px;
+                    font-weight: 600;
+                }
             }
 
-            p.introduction {
-                background-color: #f7f7f7;
-                padding: 20px;
-                border-radius: 7px;
-                margin-bottom: 20px;
-                font-size: 20px;
-            }
+            div.stepArrowContainer {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
 
-            img.stepArrow {
-                display: block;
-                margin: 20px auto;
-                width: 56px;
+                img.stepArrow {
+                    display: block;
+                    margin-top: 10px;
+                    margin-bottom: 10px;
+                    width: 56px;
+                }
             }
 
             div.stepContainer {
                 position: relative;
-                margin-bottom: 40px;
+                margin-bottom: 13px;
 
                 h3.stepTitle {
                     position: absolute;
                     top: 0;
-                    left: 50%;
+                    left: 8%;
                     transform: translate(-50%, -50%);
-                    background-color: #fff;
+                    background-color: transparent; // Make background transparent
                     padding: 0 10px;
-                    font-size: 20px;
+                    font-size: 17px;
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        width: 95%;
+                        height: 3px;
+                        background-color: white;
+                        z-index: -1;
+                    }
                 }
 
                 div.stepContent {
@@ -169,9 +213,10 @@ div#InterviewPreviewContainer {
                     border-radius: 10px;
                     padding: 20px;
                     margin-top: 20px;
-                    background-color: #add0dd;
+                    background-color: #fefefe;
 
                     div.questionWrapper,
+                    div.instructionsWrapper,
                     div.finishConditionWrapper,
                     div.maxTurnsWrapper {
                         margin-top: 10px;
@@ -183,7 +228,8 @@ div#InterviewPreviewContainer {
                     span.instructionsLabel {
                         font-weight: bold;
                         display: block;
-                        margin-top: 10px;
+                        margin-bottom: 6px;
+                        font-size: 13px;
                     }
 
                     p.question,
@@ -195,29 +241,88 @@ div#InterviewPreviewContainer {
                         background-color: #f7f7f7;
                         padding: 16px;
                         border-radius: 5px;
-                        font-size: 20px;
+                        font-size: 19px;
+                        font-weight: 600;
                     }
 
                     span.maxTurns {
                         margin-left: 5px;
                     }
 
-                    ul.instructions {
-                        margin-left: 20px;
-                        list-style-type: disc;
-                    }
+                    div.instructionsWrapper {
 
-                    span.moreDetailLink {
-                        color: blue;
-                        text-decoration: underline;
-                        cursor: pointer;
-                        margin-top: 10px;
-                        display: block;
-                    }
+                        ul.instructions {
+                            list-style: none;
+                            padding: 0;
 
-                    div.hiddenContent {
-                        // Additional styles if needed
+                            li {
+                                display: flex;
+                                align-items: center;
+                                margin-bottom: 5px;
+
+                                span.index {
+                                    display: inline-block;
+                                    background-color: #eee;
+                                    border-radius: 5px;
+                                    padding: 2px 8px;
+                                    margin-right: 9px;
+                                }
+                            }
+                        }
+
+                        span.moreDetail {
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            margin-top: 20px;
+
+                            img.moreDetailArrow {
+                                transition: transform 0.3s;
+                                margin-right: 5px;
+                                width: 13px;
+                            }
+
+                            p.moreDetailLabel {
+                                color: #525252 !important;
+                                font-size: 13px;
+                            }
+
+                            &.rotated img.moreDetailArrow {
+                                transform: rotate(180deg);
+                                transition: transform 0.7s cubic-bezier(0.4, 0.0, 0.2, 1);
+                            }
+                        }
+
+                        div.hiddenContent {
+                            overflow: hidden;
+                            max-height: 0;
+                            transition: max-height 0.5s @cubic-bezier1;
+
+                            &.expanded {
+                                max-height: 500px; // Adjust as needed
+                            }
+                        }
                     }
+                }
+            }
+
+            div.endContainer {
+                margin-top: 40px;
+
+                span.endLabel {
+                    font-weight: bold;
+                    display: block;
+                    margin-bottom: 6px;
+                    font-size: 13px;
+                }
+
+                p.endText {
+                    background-color: #f7f7f7;
+                    padding: 20px;
+                    border-radius: 7px;
+                    font-size: 19px;
+                    font-weight: 600;
+ 
                 }
             }
         }

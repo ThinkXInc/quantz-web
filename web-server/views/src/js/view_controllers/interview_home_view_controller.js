@@ -1,15 +1,3 @@
-//document.addEventListener('DOMContentLoaded', () => {
-//    const lang = window.lang;
-//    const locale = window.locale;
-//    console.log(`set up materials view.\nlang:${lang}`);
-//
-//    // initialize root view
-//    let materialsView = new MaterialsView({
-//        id: 'MainContent',
-//        locale: locale,
-//        lang: lang
-//    });
-//});
 class InterviewHomeViewController {
     constructor({
         id,
@@ -24,40 +12,6 @@ class InterviewHomeViewController {
         this.loadInterviews();
         console.log(`Initialize ${this.id}: with material ${material}`);
     }
-    setupViewBK() {
-        this.$view = document.getElementById("InterviewHomeView");
-
-        // Create container for two columns
-        const $container = document.createElement('div');
-        $container.id = 'InterviewHomeContainer';
-        $container.classList.add('InterviewHomeContainer');
-
-        // Left Column
-        const $leftColumn = document.createElement('div');
-        $leftColumn.id = 'InterviewLeftColumn';
-        $leftColumn.classList.add('InterviewLeftColumn');
-        this.$leftColumn = $leftColumn;
-
-        // Right Column
-        const $rightColumn = document.createElement('div');
-        $rightColumn.id = 'InterviewRightColumn';
-        $rightColumn.classList.add('InterviewRightColumn');
-        this.$rightColumn = $rightColumn;
-
-        // Append the list container to the left column
-        const $listContainer = document.createElement('div');
-        $listContainer.id = 'InterviewListContainer';
-        $listContainer.classList.add('InterviewListContainer');
-        $leftColumn.appendChild($listContainer);
-
-        // Append columns to the container
-        $container.appendChild($leftColumn);
-        $container.appendChild($rightColumn);
-
-        // Append the container to the view
-        this.$view.appendChild($container);
-    }
-
 
     setupView() {
         this.$MainContent = document.getElementById("MainContent");
