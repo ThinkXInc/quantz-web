@@ -8,7 +8,7 @@
         "ru": "",
         "ar": ""
     },
-    "interview_create_page_title_new": {
+    "interview_settings_page_title_new": {
         "ja": "",
         "en": "Create New Interview",
         "zh": "",
@@ -17,9 +17,18 @@
         "ru": "",
         "ar": ""
     },
-    "interview_create_page_title_edit": {
+    "interview_settings_page_title_edit": {
         "ja": "",
         "en": "Edit Interview",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "interview_result_summary_title":  {
+        "ja": "最新の結果",
+        "en": "Latest Results",
         "zh": "",
         "es": "",
         "fr": "",
@@ -29,6 +38,33 @@
     "create_interview_title_page_title": {
         "ja": "インタビュータイトル",
         "en": "Interview Title",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "interview_settings_cancel_button_text": {
+        "ja": "戻る",
+        "en": "Cancel",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "interview_settings_done_button_text": {
+        "ja": "決定",
+        "en": "Done",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "interview_create_submit_button_title": {
+        "ja": "決定",
+        "en": "Done",
         "zh": "",
         "es": "",
         "fr": "",
@@ -189,7 +225,16 @@
         "ar": "تعديل",
         "ru": "Редактировать"
     },
-    "interview_summary_introduction_label": {
+    "interview_create_title_label": {
+        "ja": "テンプレート名 (管理用の名前です。対話では使用されません。)",
+        "en": "Template Name (for administrative use only, not used in dialogues).",
+        "zh": "模板名称（仅供管理使用，对话中不使用）。",
+        "es": "Nombre de la plantilla (solo para uso administrativo, no se utiliza en diálogos).",
+        "fr": "Nom du modèle (à usage administratif uniquement, non utilisé dans les dialogues).",
+        "ru": "Название шаблона (используется только для административных целей, в диалогах не используется).",
+        "ar": "اسم القالب (للاستخدام الإداري فقط، ولا يُستخدم في الحوارات)."
+    },
+    "interview_create_introduction_label": {
         "ja": "開始時の喋り出し",
         "en": "Opening Remarks",
         "zh": "面试开始时的开场白",
@@ -198,7 +243,7 @@
         "ru": "Вступительное слово на собеседовании",
         "ar": "كلمة الافتتاح في المقابلة"
     },
-    "interview_summary_steps_label": {
+    "interview_create_steps_label": {
         "ja": "ステップ$0",
         "en": "Step $0",
         "zh": "步骤$0",
@@ -207,7 +252,7 @@
         "ar": "الخطوة $0",
         "ru": "Шаг $0"
     },
-    "interview_summary_step_question_label": {
+    "interview_create_step_question_label": {
         "ja": "質問",
         "en": "Question",
         "zh": "问题",
@@ -216,7 +261,7 @@
         "ar": "السؤال",
         "ru": "Вопрос"
     },
-    "interview_summary_step_finish_condition_label": {
+    "interview_create_step_finish_condition_label": {
         "ja": "終了条件",
         "en": "Finish Condition",
         "zh": "结束条件",
@@ -225,7 +270,7 @@
         "ar": "شرط الانتهاء",
         "ru": "Условие окончания"
     },
-    "interview_summary_step_max_turns_label": {
+    "interview_create_step_max_turns_label": {
         "ja": "最大ターン数",
         "en": "Max turns",
         "zh": "最大回合数",
@@ -234,7 +279,7 @@
         "ar": "أقصى عدد من الأدوار",
         "ru": "Максимальное число ходов"
     },
-    "interview_summary_step_instructions_label": {
+    "interview_create_step_instructions_label": {
         "ja": "指示",
         "en": "Instructions",
         "zh": "说明",
@@ -243,7 +288,7 @@
         "ar": "التعليمات",
         "ru": "Инструкции"
     },
-    "interview_summary_step_more_detail_label": {
+    "interview_create_step_more_detail_label": {
         "ja": "詳細",
         "en": "More details",
         "zh": "",
@@ -252,7 +297,7 @@
         "ru": "",
         "ar": ""
     },
-    "interview_summary_end_label": {
+    "interview_create_end_label": {
         "ja": "終了時のメッセージ",
         "en": "Closing Remarks",
         "zh": "面试结束时的总结",
