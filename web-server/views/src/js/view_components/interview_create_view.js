@@ -9,12 +9,20 @@ class InterviewCreateView {
     }) {
         this.id = id;
         this.locale = locale;
-        console.error('**************************')
-        console.error(this.locale)
         this.lang = lang;
         this.user = user;
         this.interviewId = interviewId;
         this.interview = interview || defaults;
+
+        this.maxInstructions = 3;
+
+        // Arrays to store DOM elements and forms for each step
+        this.questionForms = [];
+        this.finishConditionForms = [];
+        this.maxTurnsForms = [];
+        this.instructionForms = [];
+        this.instructionsLists = [];
+        this.addInstructionButtons = [];
 
         this.createView();
     }
@@ -163,11 +171,34 @@ class InterviewCreateView {
             const $instructionsWrapper = document.createElement('div');
             $instructionsWrapper.classList.add('instructionsWrapper');
 
+            // **More Detail**
+            const $moreDetail = document.createElement('span');
+            $moreDetail.classList.add('moreDetail');
+
+            const $arrowIcon = document.createElement('img');
+            $arrowIcon.src = '/img/interviews/down-arrow.svg';
+            $arrowIcon.classList.add('moreDetailArrow');
+
+            const $moreDetailLabel = document.createElement('p');
+            $moreDetailLabel.classList.add('moreDetailLabel');
+            $moreDetailLabel.textContent = this.locale.get('interview_create_step_more_detail_label', this.lang) || 'More detail';
+
+            $moreDetail.appendChild($arrowIcon);
+            $moreDetail.appendChild($moreDetailLabel);
+
+            $instructionsWrapper.appendChild($moreDetail);
+
+            // **Hidden Content**
+            const $hiddenContent = document.createElement('div');
+            $hiddenContent.classList.add('hiddenContent');
+
+            // **Instructions Label**
             const $instructionsLabel = document.createElement('span');
             $instructionsLabel.classList.add('instructionsLabel');
             $instructionsLabel.textContent = this.locale.get('interview_create_step_instructions_label', this.lang) || 'Instructions:';
-            $instructionsWrapper.appendChild($instructionsLabel);
+            $hiddenContent.appendChild($instructionsLabel);
 
+            // **Instructions List**
             const $instructionsList = document.createElement('div');
             $instructionsList.classList.add('instructions');
 
@@ -209,28 +240,28 @@ class InterviewCreateView {
                 $instructionsList.appendChild($instructionWrapper);
             });
 
-            $instructionsWrapper.appendChild($instructionsList);
+            $hiddenContent.appendChild($instructionsList);
 
-            // **More Detail**
-            const $moreDetail = document.createElement('span');
-            $moreDetail.classList.add('moreDetail');
+            // **Add Instruction Button Container**
+            const $addInstructionButtonContainer = document.createElement('div');
+            $addInstructionButtonContainer.classList.add('addInstructionButtonContainer');
+            $addInstructionButtonContainer.style.display = 'flex';
+            $addInstructionButtonContainer.style.justifyContent = 'center';
 
-            const $arrowIcon = document.createElement('img');
-            $arrowIcon.src = '/img/interviews/down-arrow.svg';
-            $arrowIcon.classList.add('moreDetailArrow');
+            // **Add Instruction Button**
+            const $addInstructionButton = document.createElement('img');
+            $addInstructionButton.src = '/img/interviews/plus-icon.svg';
+            $addInstructionButton.classList.add('addInstructionButton');
+            $addInstructionButton.style.cursor = 'pointer';
 
-            const $moreDetailLabel = document.createElement('p');
-            $moreDetailLabel.classList.add('moreDetailLabel');
-            $moreDetailLabel.textContent = this.locale.get('interview_create_step_more_detail_label', this.lang) || 'More detail';
+            $addInstructionButtonContainer.appendChild($addInstructionButton);
 
-            $moreDetail.appendChild($arrowIcon);
-            $moreDetail.appendChild($moreDetailLabel);
+            // Hide the button if the number of instructions is >= 3
+            if (this.instructionForms[index].length >= 3) {
+                $addInstructionButtonContainer.style.display = 'none';
+            }
 
-            $instructionsWrapper.appendChild($moreDetail);
-
-            // **Hidden Content**
-            const $hiddenContent = document.createElement('div');
-            $hiddenContent.classList.add('hiddenContent');
+            $hiddenContent.appendChild($addInstructionButtonContainer);
 
             // **Finish Condition Wrapper**
             const $finishConditionWrapper = document.createElement('div');
@@ -306,6 +337,51 @@ class InterviewCreateView {
                 $moreDetail.classList.toggle('rotated');
             });
 
+            // **Add Instruction Button Event Listener**
+            $addInstructionButton.addEventListener('click', () => {
+                const idx = this.instructionForms[index].length;
+                if (idx >= 3) {
+                    return;
+                }
+                const instructionForm = new TextField({
+                    id: `instructionForm_${index}_${idx}`,
+                    fieldName: `instruction_${index}_${idx}`,
+                    validators: [
+                        new Validator({
+                            errorType: ValidationErrorType.required,
+                            errorMessage: this.locale.get(ValidationErrorType.required, this.lang)
+                        }),
+                        new Validator({
+                            errorType: ValidationErrorType.maxLength,
+                            errorMessage: this.locale.get(ValidationErrorType.maxLength, this.lang),
+                            maxLength: 300 
+                        }),
+                    ],
+                    defaultValue: '',
+                    hasTitle: false,
+                    placeholder: `Enter instruction ${idx + 1}.`,
+                    isCounter: false,
+                });
+                instructionForm.$view.classList.add('instructionForm')
+                this.instructionForms[index][idx] = instructionForm;
+
+                const $instructionWrapper = document.createElement('div');
+                $instructionWrapper.classList.add('instructionWrapper');
+
+                const $indexSpan = document.createElement('span');
+                $indexSpan.classList.add('index');
+                $indexSpan.textContent = idx + 1;
+
+                $instructionWrapper.appendChild($indexSpan);
+                $instructionWrapper.appendChild(instructionForm.$view);
+
+                $instructionsList.appendChild($instructionWrapper);
+
+                if (this.instructionForms[index].length >= 3) {
+                    $addInstructionButtonContainer.style.display = 'none';
+                }
+            });
+
             $stepContent.appendChild($instructionsWrapper);
 
             $stepContainer.appendChild($stepContent);
@@ -322,7 +398,6 @@ class InterviewCreateView {
         $endArrowContainer.appendChild($endArrow);
 
         $interviewCreateViewContainer.appendChild($endArrowContainer);
- 
 
         // **End Container**
         const $endContainer = document.createElement('div');
@@ -359,7 +434,6 @@ class InterviewCreateView {
 
         // Append the summary view to the main view
         this.$view.appendChild($interviewCreateViewContainer);
-
     }
 
     mount($parent) {
@@ -448,9 +522,5 @@ class InterviewCreateView {
             $message.classList.add('alert');
             $message.textContent = 'An unexpected error occurred.';
         }
-    }
-
-    createUrlView(interviewId) {
-        // Your existing implementation
     }
 }
