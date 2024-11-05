@@ -1,0 +1,74 @@
+@alert-red: #8c1111;
+
+// ModalView
+div#InterviewSettingsModalView {
+    div.bg {
+
+    }
+    div.window {
+        max-width: 800px;
+        div.contentWrapper {
+            height: 80vh;
+            //background-color: #2e2e2e;
+            border-bottom: 1px solid #4f4f4f;
+            overflow-y: scroll;
+            h3.ModalViewTitle {
+
+            }
+        }
+
+        div.modalViewFooter {
+            height: 63px;
+            p.message {
+                width: 100%;
+                font-size: 14px;
+            }
+            p.alert {
+                color: @alert-red;
+            }
+            p.success {
+                color: #000;
+            }
+            button {
+                height: 100%;
+                width: 110px;
+                margin-left: 10px;
+                &.cancelButton {
+
+                }
+                &.doneButton {
+
+                }
+            }
+        }
+    }
+}
+ 
+div#InterviewSettingsModalViewMainContent div.PageView {
+    div.PageViewContainer {
+        margin-bottom: 30px;
+        padding: 5px;
+        border: 1px solid #585858;
+        h3.title {
+
+        }
+        h3.StepTitle {
+            font-size: 23px;
+            margin-bottom: 16px;
+        }
+        div.container {
+            div.TextField {
+                margin-bottom: 10px;
+            }
+        }
+    }
+    div.PageViewContainer.TitlePage {
+
+    }
+    div.PageViewContainer.IntroductionPage {
+
+    }
+    div.PageViewContainer.Step1Page {
+
+    }
+}

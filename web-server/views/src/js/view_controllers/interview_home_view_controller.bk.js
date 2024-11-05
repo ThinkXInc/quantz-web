@@ -1,3 +1,7 @@
+// InterviewResultsViewController
+// - left: InterviewResultsList
+// - right: InterviewPreview (resultのpreview)
+// にする
 class InterviewHomeViewController {
     constructor({
         id,
@@ -22,6 +26,13 @@ class InterviewHomeViewController {
         $listContainer.classList.add('InterviewListContainer');
         this.$MainContent.appendChild($listContainer);
         this.$listContainer = $listContainer;
+
+        // Append the preview container to the left column
+        const $previewContainer = document.createElement('div');
+        $previewContainer.id = 'InterviewPreviewContainer';
+        $previewContainer.classList.add('InterviewPreviewContainer');
+        this.$MainContent.appendChild($previewContainer);
+        this.$previewContainer = $previewContainer;
     }
 
     fetchUser(onSuccess) {
@@ -62,8 +73,7 @@ class InterviewHomeViewController {
             debuglog(interviews);
             if (this.interviews.length == 0) {
                 this.fetchUser(user => {
-                    //this.openInterviewCreateModalView(user, null, this.locale, this.lang);
-                    this.openInterviewSettingsModalView(user, null, this.locale, this.lang);
+                    this.openInterviewCreateModalView(user, null, this.locale, this.lang);
                 });
             }
             else {
@@ -94,11 +104,10 @@ class InterviewHomeViewController {
         this.interviewList.$view.addEventListener("clickedInterviewCell", (event)=> {
             const { index, interviewId, cell } = event.detail;
             //this.openInterviewCreateModalView(this.user, interviewId, this.locale, this.lang);
-            //this.openInterviewPreviewView(interviewId);
-            this.openInterviewSettingsModalView(this.user, interviewId, this.locale, this.lang);
+            this.openInterviewPreviewView(interviewId);
         })
         this.interviewList.$view.addEventListener("clickedNewInterviewButton", (event)=> {
-            this.openInterviewSettingsModalView(this.user, null, this.locale, this.lang);
+            this.openInterviewCreateModalView(this.user, null, this.locale, this.lang);
         })
         //this.interviewList.loadinterviews();
         this.interviewList.updateContentsFromInterviews(this.interviews);
@@ -146,31 +155,34 @@ class InterviewHomeViewController {
     }
     
 
-    openInterviewSettingsModalView(user, interviewId, locale, lang) {
+    openInterviewCreateModalView(user, interviewId, locale, lang) {
         let title = "";
         let interview = null;
         if (interviewId) {
-            title = locale.get("interview_settings_page_title_edit", lang);
+            title = locale.get("interview_create_page_title_edit", lang);
             interview = this.getInterview(interviewId);
         } else {
-            title = locale.get("interview_settings_page_title_new", lang);
+            title = locale.get("interview_create_page_title_new", lang);
         }
-        this.interviewSettingsModalView = new InterviewSettingsModalView({
-            id: 'InterviewSettingsModalView',
+        this.interviewCreateModalView = new InterviewCreateModalView({
+            id: 'InterviewCreateModalView',
             user: user,
             locale: locale,
             lang: lang,
             title: title,
-            interviewId: interviewId,
+            //locale.get(MaterialsLocaleKeys.SETTINGS_MODAL_VIEW_TITLE, lang),
+            text: "",
+            interviewId: interviewId, //'670dcf37aa9bfc2db50d1574'
             interview: interview,
-            cancelButtonText: locale.get("interview_settings_cancel_button_text", lang),
-            doneButtonText: locale.get("interview_settings_done_button_text", lang),
+            cancelButtonText: "Cancel",
+            //locale.get(MaterialsLocaleKeys.SETTINGS_MODAL_VIEW_CANCEL, lang),
+            doneButtonText: "Done",
+            //locale.get(MaterialsLocaleKeys.SETTINGS_MODAL_VIEW_DONE, lang),
             shouldCloseOnTapBG: true
         });
-        this.interviewSettingsModalView.mount(this.$MainContent);
-        this.interviewSettingsModalView.show();
+        this.interviewCreateModalView.mount(this.$MainContent);
+        this.interviewCreateModalView.show();
     }
-
     loading(isLoading) {}
 }
 
