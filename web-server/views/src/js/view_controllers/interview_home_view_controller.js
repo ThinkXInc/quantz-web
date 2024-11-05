@@ -1,15 +1,15 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const lang = window.lang;
-    const locale = window.locale;
-    console.log(`set up materials view.\nlang:${lang}`);
-
-    // initialize root view
-    let materialsView = new MaterialsView({
-        id: 'MainContent',
-        locale: locale,
-        lang: lang
-    });
-});
+//document.addEventListener('DOMContentLoaded', () => {
+//    const lang = window.lang;
+//    const locale = window.locale;
+//    console.log(`set up materials view.\nlang:${lang}`);
+//
+//    // initialize root view
+//    let materialsView = new MaterialsView({
+//        id: 'MainContent',
+//        locale: locale,
+//        lang: lang
+//    });
+//});
 class InterviewHomeViewController {
     constructor({
         id,
@@ -24,14 +24,59 @@ class InterviewHomeViewController {
         this.loadInterviews();
         console.log(`Initialize ${this.id}: with material ${material}`);
     }
-    setupView() {
+    setupViewBK() {
         this.$view = document.getElementById("InterviewHomeView");
 
+        // Create container for two columns
+        const $container = document.createElement('div');
+        $container.id = 'InterviewHomeContainer';
+        $container.classList.add('InterviewHomeContainer');
+
+        // Left Column
+        const $leftColumn = document.createElement('div');
+        $leftColumn.id = 'InterviewLeftColumn';
+        $leftColumn.classList.add('InterviewLeftColumn');
+        this.$leftColumn = $leftColumn;
+
+        // Right Column
+        const $rightColumn = document.createElement('div');
+        $rightColumn.id = 'InterviewRightColumn';
+        $rightColumn.classList.add('InterviewRightColumn');
+        this.$rightColumn = $rightColumn;
+
+        // Append the list container to the left column
         const $listContainer = document.createElement('div');
         $listContainer.id = 'InterviewListContainer';
         $listContainer.classList.add('InterviewListContainer');
-        this.$view.appendChild($listContainer);
+        $leftColumn.appendChild($listContainer);
+
+        // Append columns to the container
+        $container.appendChild($leftColumn);
+        $container.appendChild($rightColumn);
+
+        // Append the container to the view
+        this.$view.appendChild($container);
     }
+
+
+    setupView() {
+        this.$MainContent = document.getElementById("MainContent");
+
+        // Append the list container to the left column
+        const $listContainer = document.createElement('div');
+        $listContainer.id = 'InterviewListContainer';
+        $listContainer.classList.add('InterviewListContainer');
+        this.$MainContent.appendChild($listContainer);
+        this.$listContainer = $listContainer;
+
+        // Append the preview container to the left column
+        const $previewContainer = document.createElement('div');
+        $previewContainer.id = 'InterviewPreviewContainer';
+        $previewContainer.classList.add('InterviewPreviewContainer');
+        this.$MainContent.appendChild($previewContainer);
+        this.$previewContainer = $previewContainer;
+    }
+
     fetchUser(onSuccess) {
         fetch(`/v1/${this.lang}/user`).then(response => {
             if (!response.ok) {
@@ -57,6 +102,7 @@ class InterviewHomeViewController {
             console.error('Unexpected error occurred when init:', error);
         });
     }
+
     loadInterviews() {
         this.loading(true);
         Http.get(`/v1/${this.lang}/interviews/list`, res => {
@@ -99,14 +145,15 @@ class InterviewHomeViewController {
         });
         this.interviewList.$view.addEventListener("clickedInterviewCell", (event)=> {
             const { index, interviewId, cell } = event.detail;
-            this.openInterviewCreateModalView(this.user, interviewId, this.locale, this.lang);
+            //this.openInterviewCreateModalView(this.user, interviewId, this.locale, this.lang);
+            this.openInterviewPreviewView(interviewId);
         })
         this.interviewList.$view.addEventListener("clickedNewInterviewButton", (event)=> {
             this.openInterviewCreateModalView(this.user, null, this.locale, this.lang);
         })
         //this.interviewList.loadinterviews();
         this.interviewList.updateContentsFromInterviews(this.interviews);
-        this.interviewList.appendToElementById('InterviewListContainer');
+        this.interviewList.mount(this.$listContainer);
         this.interviewList.loading(false);
     }
 
@@ -123,6 +170,32 @@ class InterviewHomeViewController {
             console.error(`[WARNING] interivew not found in list by id ${interviewId}`)
         }
     }
+
+    openInterviewPreviewView(interviewId) {
+        const interview = this.getInterview(interviewId);
+    
+        if (!this.interviewPreviewView) {
+            this.interviewPreviewView = new InterviewPreviewView({
+                id: 'InterviewPreviewView',
+                interview: interview,
+                locale: this.locale,
+                lang: this.lang,
+            });
+    
+            // Append the InterviewPreviewView to the right column
+            this.interviewPreviewView.mount(this.$previewContainer);
+    
+            // **Event Listener for Edit Button Click**
+            this.interviewPreviewView.$view.addEventListener('editInterview', (event) => {
+                const { interviewId } = event.detail;
+                this.openInterviewCreateModalView(this.user, interviewId, this.locale, this.lang);
+            });
+    
+        } else {
+            this.interviewPreviewView.updateInterview(interview);
+        }
+    }
+    
 
     openInterviewCreateModalView(user, interviewId, locale, lang) {
         let title = "";
@@ -149,8 +222,9 @@ class InterviewHomeViewController {
             //locale.get(MaterialsLocaleKeys.SETTINGS_MODAL_VIEW_DONE, lang),
             shouldCloseOnTapBG: true
         });
-        this.interviewCreateModalView.mount('#MainContent');
+        this.interviewCreateModalView.mount(this.$MainContent);
         this.interviewCreateModalView.show();
     }
     loading(isLoading) {}
 }
+

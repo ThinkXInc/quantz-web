@@ -36,40 +36,40 @@
         "ar": ""
     },
     "create_new_interview_button_title": {
-        "ja": "",
+        "ja": "新規作成",
         "en": "Create New",
-        "zh": "",
-        "es": "",
-        "fr": "",
-        "ru": "",
-        "ar": ""
+        "zh": "新建",
+        "fr": "Créer Nouveau",
+        "es": "Crear Nuevo",
+        "ar": "إنشاء جديد",
+        "ru": "Создать новый"
     },
     "interview_list_header_title": {
-        "ja": "",
+        "ja": "インタビュー覧",
         "en": "Your Interviews",
-        "zh": "",
-        "es": "",
-        "fr": "",
-        "ru": "",
-        "ar": ""
+        "zh": "面试列表",
+        "fr": "Liste d'entretiens",
+        "es": "Lista de entrevistas",
+        "ar": "قائمة المقابلات",
+        "ru": "Список интервью"
     },
     "interview_list_count_singular": {
         "ja": "インタビュー",
-        "en": "Interview",
-        "zh": "",
-        "es": "",
-        "fr": "",
-        "ru": "",
-        "ar": ""
+        "en": "interview",
+        "zh": "个面试",
+        "fr": "entretien",
+        "es": "entrevista",
+        "ar": "مقابلة",
+        "ru": "интервью"
     },
     "interview_list_count_plural": {
         "ja": "インタビュー",
-        "en": "Interviews",
-        "zh": "",
-        "es": "",
-        "fr": "",
-        "ru": "",
-        "ar": ""
+        "en": "interviews",
+        "zh": "个面试",
+        "fr": "entretiens",
+        "es": "entrevistas",
+        "ar": "مقابلات",
+        "ru": "интервью"
     },
     "create_interview_introduction_page_title": {
         "ja": "開始時の喋り出し",
@@ -179,5 +179,77 @@
         "es": "Copiado al portapapeles.",
         "ar": "تم النسخ إلى الحافظة.",
         "ru": "Скопировано в буфер обмена."
+    },
+    "interview_preview_edit_button_label": {
+        "ja": "編集",
+        "en": "Edit",
+        "zh": "编辑",
+        "fr": "Modifier",
+        "es": "Editar",
+        "ar": "تعديل",
+        "ru": "Редактировать"
+    },
+    "interview_summary_introduction_label": {
+        "ja": "開始時の喋り出し",
+        "en": "Opening Remarks",
+        "zh": "面试开始时的开场白",
+        "es": "Palabras de apertura de la entrevista",
+        "fr": "Propos d'ouverture de l'entretien",
+        "ru": "Вступительное слово на собеседовании",
+        "ar": "كلمة الافتتاح في المقابلة"
+    },
+    "interview_summary_steps_label": {
+        "ja": "ステップ$0",
+        "en": "Step $0",
+        "zh": "步骤$0",
+        "fr": "Étape $0",
+        "es": "Paso $0",
+        "ar": "الخطوة $0",
+        "ru": "Шаг $0"
+    },
+    "interview_summary_step_question_label": {
+        "ja": "質問",
+        "en": "Question",
+        "zh": "问题",
+        "fr": "Question",
+        "es": "Pregunta",
+        "ar": "السؤال",
+        "ru": "Вопрос"
+    },
+    "interview_summary_step_finish_condition_label": {
+        "ja": "終了条件",
+        "en": "Finish Condition",
+        "zh": "结束条件",
+        "fr": "Condition de fin",
+        "es": "Condición de finalización",
+        "ar": "شرط الانتهاء",
+        "ru": "Условие окончания"
+    },
+    "interview_summary_step_max_turns_label": {
+        "ja": "最大ターン数",
+        "en": "Max turns",
+        "zh": "最大回合数",
+        "fr": "Tours maximum",
+        "es": "Máximo de turnos",
+        "ar": "أقصى عدد من الأدوار",
+        "ru": "Максимальное число ходов"
+    },
+    "interview_summary_step_instructions_label": {
+        "ja": "指示",
+        "en": "Instructions",
+        "zh": "说明",
+        "fr": "Instructions",
+        "es": "Instrucciones",
+        "ar": "التعليمات",
+        "ru": "Инструкции"
+    },
+    "interview_summary_step_more_detail_label": {
+        "ja": "詳細",
+        "en": "More details",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
     }
 }
