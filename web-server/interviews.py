@@ -139,6 +139,7 @@ def interview_window(lang, interview_id, lang_name):
         'main/interview.html',
         lang=lang,
         lang_name=lang_name,
+        host_id=str(interview.user_id),  # NOTE: Be careful this instance is of InteractionModel (not Interview model)
         interview_id=interview_id,
         interview_title=interview.title,
         locale_json=locale.to_json_string(),

@@ -371,11 +371,26 @@
                 this.currentAssistantEvent.message = this.currentAssistantEvent.messages.join(' ');
                 delete this.currentAssistantEvent.messages;
                 this.events.push(this.currentAssistantEvent);
-                console.error('Updated conversation events:', JSON.stringify(this.events, null, 2));
+                this.dispatchConversationDataUpdatedEvent(this.events);
+                console.log('[InteractionController] Updated conversation events:', JSON.stringify(this.events, null, 2));
                 this.currentAssistantEvent = null;
             } else {
                 console.warn('No current assistant event to end.');
             }
+        }
+
+        // conversation data event
+
+        dispatchConversationDataUpdatedEvent(events) {
+            console.log(`[InteractionController] Dispatching conversationDataUpdatedEvent - buttonId: ${this.buttonId}`);
+            this.humanState = ns.HumanState.WAITING;
+            const event = new CustomEvent(ns.configs[this.buttonId].conversationDataUpdatedEventName, {
+                detail: {
+                    buttonId: this.buttonId,
+                    events: events
+                }
+            });
+            this.$buttonLoader.dispatchEvent(event);
         }
 
         // message receive handler
@@ -402,7 +417,8 @@
                 this.currentHumanEvent.message = message;//this.currentHumanEvent.messages.join(' ');
                 delete this.currentHumanEvent.messages;
                 this.events.push(this.currentHumanEvent);
-                console.error('Updated conversation events:', JSON.stringify(this.events, null, 2));
+                this.dispatchConversationDataUpdatedEvent(this.events);
+                console.log('[InteractionController] Updated conversation events:', JSON.stringify(this.events, null, 2));
                 this.currentHumanEvent = null;
             } else {
                 console.warn('No current human event to end.');
@@ -419,14 +435,14 @@
             console.log('[InteractionController] Converstaion end.');
 
             // Log the final conversation data
-            console.error('Final conversation events:', JSON.stringify(this.events, null, 2));
+            console.log('[InteractionController] Final conversation events:', JSON.stringify(this.events, null, 2));
         }
 
         didReachToLimitReceived() {
             console.log('[InteractionController] Reach to limit message received.');
 
             // Log the final conversation data
-            console.error('Final conversation events:', JSON.stringify(this.events, null, 2));
+            console.log('[InteractionController] Final conversation events:', JSON.stringify(this.events, null, 2));
         }
     };
 })(Quantz);
