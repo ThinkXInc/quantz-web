@@ -513,6 +513,8 @@
                         ns.buttonControllers[buttonId].switchToConnected(); // Switch to the connected state
                         if (ns.cores[buttonId].connectionRetryCount > 0) {
                             console.log(`[Quantz Button ${buttonId}] Connection reestablished.`)
+                            ns.buttonControllers[buttonId].switchToRecording(); // Switch to the recording state
+                            ns.cores[buttonId].startRecording();
                         } else {
                             console.log(`[Quantz Button ${buttonId}] Connection established.`);
                             ns.cores[buttonId].sendStartMessage();
@@ -532,6 +534,8 @@
                         ns.buttonControllers[buttonId].switchToConnected(); // Switch to the connected state
                         if (ns.cores[buttonId].connectionRetryCount > 0) {
                             console.log(`[Quantz Button ${buttonId}] Connection reestablished.`)
+                            ns.buttonControllers[buttonId].switchToRecording(); // Switch to the recording state
+                            ns.cores[buttonId].startRecording();
                         } else {
                             console.log(`[Quantz Button ${buttonId}] Connection established.`);
                             ns.cores[buttonId].sendStartMessage();
@@ -556,6 +560,8 @@
                         //}, 1000);
                         if (ns.cores[buttonId].connectionRetryCount > 0) {
                             console.log(`[Quantz Button ${buttonId}] Connection reestablished.`)
+                            ns.buttonControllers[buttonId].switchToRecording(); // Switch to the recording state
+                            ns.cores[buttonId].startRecording();
                         } else {
                             console.log(`[Quantz Button ${buttonId}] Connection established.`);
                             console.log('*****************************')
@@ -869,6 +875,10 @@
             setTimeout(() => {
                 ns.buttonControllers[buttonId].switchToLeave();
                 ns.cores[buttonId].disconnect();
+
+                if (ns.configs[buttonId].autoInteraction) {
+                    ns.interactionControllers[buttonId].didConversationEnd();
+                }
             }, 10000)
 
             // dispatch to interface
@@ -880,6 +890,10 @@
             ns.buttonControllers[buttonId].switchToStandby();
             ns.indicatorControllers[buttonId].resetToStandby();
             ns.cores[buttonId].disconnect();
+
+            if (ns.configs[buttonId].autoInteraction) {
+                ns.interactionControllers[buttonId].didReachToLimitReceived();
+            }
         })
 
         $buttonLoader.addEventListener(ns.configs[buttonId].languageChangeEventName, function(event) {

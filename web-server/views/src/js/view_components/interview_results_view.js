@@ -1,4 +1,4 @@
-class InterviewResultSummaryView {
+class InterviewResultsView {
     constructor({
         id,
         interviewId,
@@ -16,11 +16,11 @@ class InterviewResultSummaryView {
     setupView() {
         this.$view = document.createElement('div');
         this.$view.id = this.id;
-        this.$view.classList.add('InterviewResultSummaryView');
+        this.$view.classList.add('InterviewResultsView');
 
         // Basic structure, add content as needed
         const $header = document.createElement('h3');
-        $header.textContent = this.locale.get('interview_result_summary_title', this.lang);
+        $header.textContent = this.locale.get('interview_results_title', this.lang);
         this.$view.appendChild($header);
 
         // Add more elements as required

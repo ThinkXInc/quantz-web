@@ -395,7 +395,7 @@
                     } else if (messageString.startsWith('\\SYSTEM')) {
                         let systemMessage = messageString.substring(7); // Remove '\\SYSTEM' (7 characters)
                         console.log('[Core] System message received:', systemMessage);
-                        if (this.history.length > 0 && this.history[this.history.length - 1].type === ns.SenderType.USER) {
+                        if ((this.history.length > 0 && this.history[this.history.length - 1].type === ns.SenderType.USER) || (this.history.length == 0)) {
                             // dispatch "responseStartEvent" when it is the beggining
                             this.dispatchAssistantResponseStartEvent(systemMessage);
                         }

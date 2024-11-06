@@ -10,7 +10,7 @@
     },
     "interview_settings_page_title_new": {
         "ja": "",
-        "en": "Create New Interview",
+        "en": "Create New Meeting",
         "zh": "",
         "es": "",
         "fr": "",
@@ -26,7 +26,7 @@
         "ru": "",
         "ar": ""
     },
-    "interview_result_summary_title":  {
+    "interview_results_title":  {
         "ja": "最新の結果",
         "en": "Latest Results",
         "zh": "",
@@ -72,13 +72,13 @@
         "ar": ""
     },
     "create_new_interview_button_title": {
-        "ja": "新規作成",
-        "en": "Create New",
-        "zh": "新建",
-        "fr": "Créer Nouveau",
-        "es": "Crear Nuevo",
-        "ar": "إنشاء جديد",
-        "ru": "Создать новый"
+        "ja": "会議を新規作成",
+        "en": "Create New Meeting",
+        "zh": "创建新会议",
+        "fr": "Créer une nouvelle réunion",
+        "es": "Crear nueva reunión",
+        "ar": "إنشاء اجتماع جديد",
+        "ru": "Создать новую встречу"
     },
     "interview_list_header_title": {
         "ja": "インタビュー覧",

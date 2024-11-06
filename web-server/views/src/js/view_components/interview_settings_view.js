@@ -102,8 +102,8 @@ class InterviewSettingsModalView extends ModalView {
             });
             this.interviewLinkView.mount(this.$mainContent);
 
-            this.interviewResultSummaryView = new InterviewResultSummaryView({
-                id: 'InterviewResultSummaryView',
+            this.interviewResultSummaryView = new InterviewResultsView({
+                id: 'InterviewResultsView',
                 interviewId: this.interviewId,
                 locale: this.locale,
                 lang: this.lang

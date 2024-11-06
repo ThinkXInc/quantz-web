@@ -4,6 +4,7 @@
         busy: 'busy',
         active: 'active',
         leave: 'leave',
+        restart: 'restart',
         error: 'error'
     };
 
@@ -35,13 +36,14 @@
                     ns.configs[this.buttonId].prefix + ns.SignType.standby, 
                     ns.configs[this.buttonId].prefix + ns.SignType.busy, 
                     ns.configs[this.buttonId].prefix + ns.SignType.active, 
+                    ns.configs[this.buttonId].prefix + ns.SignType.restart, 
                     ns.configs[this.buttonId].prefix + ns.SignType.leave, 
                     ns.configs[this.buttonId].prefix + ns.SignType.error
                 );
                 this.signType = signType;
                 this.signElement.classList.add(ns.configs[this.buttonId].prefix + signType);
             } else {
-                console.error("Invalid sign type.");
+                console.error("[Sign] Invalid sign type.", signType);
             }
         }
     }
