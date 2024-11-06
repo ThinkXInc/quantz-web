@@ -51,6 +51,16 @@ func main() {
 	log.Fatal(http.ListenAndServe(addr, nil))
 }
 
+// logFileServer wraps a http.FileServer with logging
+func logFileServer(rootPath string) http.Handler {
+	fileServer := http.FileServer(http.Dir(rootPath))
+
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Printf("[FileServer] Received request for %s", r.URL.Path)
+		fileServer.ServeHTTP(w, r)
+	})
+}
+
 // Function to generate file paths
 func generateFilePath(root string, metaData MetaData) (string, error) {
 	t, err := time.Parse(time.RFC3339, metaData.StartDatetime)
