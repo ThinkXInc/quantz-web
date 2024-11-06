@@ -68,8 +68,10 @@
         humanStopSpeakingEventName: 'quantz-humanStopSpeaking',
         humanStopRecordingEventName: 'quantz-humanStopRecording',
         signalDataUpdatedEventName: 'quantz-signalDataUpdated',
+        conversationDataUpdatedEventName: 'quantz-conversationDataUpdated',
         reachToLimitEventName: 'quantz-reachToLimit',
         closeMessageReceivedEventName: 'quantz-closeMessageReceived',
+        connectionClosedCleanlyEventName: 'quantz-connectionClosedCleanly',
         languageChangeEventName: 'quantz-languageChange',
         failedToGetTokenEventName: 'quantz-failedToGetToken',
         autoInteraction: true,
@@ -927,6 +929,15 @@
                 }
             }));
         });
+
+        $buttonLoader.addEventListener(ns.configs[buttonId].conversationDataUpdatedEventName, function(event) {
+            const { buttonId, events } = event.detail; 
+            document.dispatchEvent(new CustomEvent(ns.configs[buttonId].conversationDataUpdatedEventName, {
+                detail: {
+                    events: events
+                }
+            }))
+        })
 
         // Handling touch events for touch devices
         $btn.addEventListener('touchstart', (e) => {

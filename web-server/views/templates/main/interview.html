@@ -17,6 +17,7 @@
     const lang = "{{ lang }}"
     const langName = "{{ lang_name }}"
     
+    const hostId = "{{ host_id }}"
     const interviewId = "{{ interview_id }}"
     const interviewTitle = "{{ interview_title }}"
 
@@ -36,6 +37,7 @@
     window.lang = lang;
     window.langName = langName;
 
+    window.hostId = hostId;
     window.interviewId = interviewId;
     window.interviewTitle = interviewTitle;
 }
@@ -44,8 +46,6 @@
     document.addEventListener("DOMContentLoaded", function() {
         const lang = window.lang;
         const locale = window.locale;
-        const interviewId = window.interviewId;
-        const interviewTitle = window.interviewTitle;
 
         console.log(`set up interview.\nlang:${lang}`);
 
@@ -53,8 +53,9 @@
             id: 'InterviewController',
             locale: locale,
             lang: lang,
-            interviewId,
-            interviewTitle
+            hostId: window.hostId,
+            interviewId: window.interviewId,
+            interviewTitle: window.interviewTitle
         });
 
         const SMARTPHONE_WIDTH = 480;

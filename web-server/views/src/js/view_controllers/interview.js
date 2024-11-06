@@ -3,6 +3,7 @@ class Interview {
         id,
         locale,
         lang,
+        hostId,
         interviewId,
         interviewTitle
     }) {
@@ -10,6 +11,7 @@ class Interview {
         this.locale = locale;
         this.lang = lang;
         //this.user = user;
+        this.hostId = hostId;
         this.interviewId = interviewId;
         this.interviewTitle = interviewTitle;
 
@@ -23,6 +25,8 @@ class Interview {
     setupView(){
         const $interviewView = document.getElementById('Interview');
         this.meetingView = new MeetingView({
+            hostId: this.hostId,
+            interviewId: this.interviewId,
             locale: this.locale,
             lang: this.lang,
             meta: this.interviewMeta,
@@ -56,6 +60,8 @@ class Interview {
         // Start clicked
         document.addEventListener('quantz-didClickStart', (event) => {
             console.warn('start click')
+
+            this.meetingView.didMeetingStart();
 
             // Open ChatView
             if (!this.meetingView.isChatViewOpen()) {
@@ -139,17 +145,17 @@ class Interview {
         document.addEventListener('quantz-closeMessageReceived', (event) => {
             console.log(`[Interview] \\CLOSE received`);
             this.isInterviewEnd = true;
-            switch (this.meetingView.interviewerMode) {
-                case InterviewerMode.GRAPHIC1:
-                    break;
-                case InterviewerMode.MAN1:
-                    setTimeout(() => {
+            const waitDurationMs = 7000;
+            setTimeout(() => {
+                switch (this.meetingView.interviewerMode) {
+                    case InterviewerMode.GRAPHIC1:
+                        break;
+                    case InterviewerMode.MAN1:
                         this.meetingView.stopAllVideos();
-                    }, 7000);
-                    break;
-            }
-
- 
+                        break;
+                }
+                this.meetingView.uploadData();
+            }, waitDurationMs);
         })
 
     }
@@ -167,7 +173,9 @@ const InterviewerMode = Object.freeze({
 });
 
 class MeetingView {
-    constructor({ locale, lang, meta, interviewerMode = InterviewerMode.GRAPHIC1 }) {
+    constructor({ hostId, interviewId, locale, lang, meta, interviewerMode = InterviewerMode.GRAPHIC1 }) {
+        this.hostId = hostId;
+        this.interviewId = interviewId;
         this.locale = locale;
         this.lang = lang;
         this.meta = meta;
@@ -176,6 +184,21 @@ class MeetingView {
         this.currentVideo = '';
         this.videoPlayQueue = [];  // Initialize the video play queue
         this.isVideoPlaying = false;  
+
+        this.uploader = new FileUploader({
+            fileKey: "file",
+            fileName: "video.webm",
+            metadataKey: "metadata"
+        });
+
+        this.startDatetime = null;
+        this.events = null;  // conversation data
+
+        document.addEventListener('quantz-conversationDataUpdated', function(event) {
+            const { buttonId, events } = event.detail; 
+            console.log('[MeetingView] new events received: ',events);
+            this.events = events;
+        })
     }
 
     setupView() {
@@ -319,6 +342,7 @@ class MeetingView {
         navigator.mediaDevices.getUserMedia({ video: true }) // ***
             .then(stream => {
                 $selfView.srcObject = stream;
+                this.uploader.startRecording(stream);
             })
             .catch(err => {
                 console.error('Failed to get video stream: ', err);
@@ -376,6 +400,37 @@ class MeetingView {
         const shadowSize = Math.min(maxShadowSize, volumeRatio);
         $elem.style.boxShadow = `0 0 10px ${shadowSize}px rgba(255, 255, 255, ${shadowOpacity})`;
         console.warn(`Volume: ${volume}, Normalized Volume: ${normalizedVolume}, Volume Ratio: ${volumeRatio}, Shadow Size: ${shadowSize}px, Opacity: ${shadowOpacity}`);
+    }
+
+    didMeetingStart() {
+        this.startDatetime = new Date();
+    }
+
+    uploadData() {
+        this.uploader.stopRecording();
+        const startDatetimeStr = this.formatDatetime(this.startDatetime);
+        this.uploader.upload({
+            url: '/upload',
+            withMetaData: {
+                'service': 'interview',
+                'identifier': this.interviewId,
+                'hostId': this.hostId,
+                'events': this.events,
+                'startDatetime': startDatetimeStr
+            },
+            onSuccess: (data) => {
+                console.log('[MeetingView] Upload succeeded:', data);
+            },
+            onError: (error) => {
+                console.error('[MeetingView] Upload error:', error);
+            }
+        });
+    }
+
+    formatDatetime(date) {
+        if (!date) return '';
+        const pad = (n) => n.toString().padStart(2, '0');
+        return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}-${pad(date.getHours())}:${pad(date.getMinutes())}.${pad(date.getSeconds())}`;
     }
 
     // video mode
@@ -439,6 +494,7 @@ class MeetingView {
     }
 
     stopAllVideos() {
+        console.log(`[MeetingView] stopAllVideos in interviewerView`)
         // Stop all videos and hide them
         Object.keys(this.videoElements).forEach(k => {
             this.videoElements[k].style.display = 'none';

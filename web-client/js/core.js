@@ -101,7 +101,7 @@
             // Combine all parts into a single Blob
             const blobWithHeader = new Blob([messageType, langBytes, audioBlob, ns.endOfMessageBytes], { type: 'audio/wav' });
             
-            if (this.socket.readyState === WebSocket.OPEN) {
+            if (this.socket && this.socket.readyState === WebSocket.OPEN) {
                 this.socket.send(blobWithHeader);
                 console.log("Audio blob with header sent to server.");
             } else {
@@ -189,6 +189,7 @@
                     this.isConnected = false;
                     if (e.wasClean) {
                         console.log(`[Core] Connection closed cleanly, code=${e.code}, reason=${e.reason}`);
+                        this.dispatchConnectionClosedCleanlyEvent();
                     } else {
                         console.error('[Core] Connection died', `Close event code: ${e.code}, reason: ${e.reason}`);
                         const reconnectMs = 1000;
@@ -696,6 +697,14 @@
             this.$buttonLoader.dispatchEvent(event);
         }
     
+        dispatchConnectionClosedCleanlyEvent() {
+            const event = new CustomEvent(ns.configs[this.buttonId].connectionClosedCleanlyEventName, {
+                detail: {
+                }
+            });
+            this.$buttonLoader.dispatchEvent(event);
+        }
+
         displayMessages() {
             const dialogueElement = document.getElementById(ns.configs[this.buttonId].balloonDialogueId);
         
