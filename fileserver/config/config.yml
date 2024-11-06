@@ -2,7 +2,7 @@
 host: "localhost"
 port: 8080
 upload_url: "/fs/upload"
-access_url: "/fs/files/"
+access_url: "/fs/files"
 files_root_path: "/disk1/quantz"
 limit_mb: 100
 webhook_url: "https://quantz.thinkxinc.com/webhook/fileserver"
