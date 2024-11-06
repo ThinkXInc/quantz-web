@@ -3,14 +3,9 @@
 package config
 
 import (
-	"io/ioutil"
 	"log"
-	"os"
-	"strconv"
-
+	"io/ioutil"
 	"gopkg.in/yaml.v3"
-
-	"github.com/joho/godotenv"
 )
 
 type Config struct {
@@ -26,14 +21,8 @@ type Config struct {
 var Cfg Config
 
 func init() {
-	// Load .env file from the given path
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Println("No .env file found")
-	}
-
 	// Read config.yml
-	yamlFile, err := ioutil.ReadFile("config.yml")
+	yamlFile, err := ioutil.ReadFile("./config/config.yml")
 	if err != nil {
 		log.Fatalf("Error reading config.yml file: %v", err)
 	}
@@ -41,16 +30,4 @@ func init() {
 	if err != nil {
 		log.Fatalf("Error parsing config.yml file: %v", err)
 	}
-
-	// Override config values with environment variables if set
-	if host := os.Getenv("HOST"); host != "" {
-		Cfg.Host = host
-	}
-	if portStr := os.Getenv("PORT"); portStr != "" {
-		port, err := strconv.Atoi(portStr)
-		if err == nil {
-			Cfg.Port = port
-		}
-	}
-	// Similarly for other config values...
 }

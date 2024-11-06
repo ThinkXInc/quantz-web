@@ -37,3 +37,6 @@ web-server/views/js/*
 web-server/views/node_modules/
 web-server/views/package-lock.json
 web-server/views/video/top/TutorialJessicas_v2_volumes2.mp4
+
+# fileserver
+fileserver/test_video.webm
