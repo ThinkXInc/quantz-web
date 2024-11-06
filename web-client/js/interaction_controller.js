@@ -80,6 +80,12 @@
             // Silence duration tracker
             this.silenceDurationMs = 0;
 
+            // Initialize conversation events array
+            this.events = [];
+            this.currentAssistantEvent = null;
+            this.currentHumanEvent = null;
+
+
             console.log(
                 '[InteractionController] Initialized with frequencyMs:',
                 this.frequencyMs
@@ -90,6 +96,7 @@
         }
 
         start() {
+            this.startTime = Date.now(); // Record the start time
             this.clock = setInterval(() => {
                 // Append human data
                 this.humanFundamentalFrequencies.push(
@@ -302,6 +309,15 @@
                 }
             });
             this.$buttonLoader.dispatchEvent(event);
+
+            console.warn('Start a new human event.');
+            // Start a new human event
+            this.currentHumanEvent = {
+                speaker: "user",
+                startMs: Date.now() - this.startTime,
+                messages: [],
+                endMs: null
+            };
         }
 
         dispatchHumanStopSpeakingEvent() {
@@ -313,6 +329,8 @@
                 }
             });
             this.$buttonLoader.dispatchEvent(event);
+
+
         }
 
         // assistant action handler
@@ -321,6 +339,14 @@
             console.log('[InteractionController] Did assistant response started.');
             this.assistantState = ns.AssistantState.START_RESPONDING;
 
+            console.warn('Start a new assistant event.');
+            // Start a new assistant event
+            this.currentAssistantEvent = {
+                speaker: "system",
+                startMs: Date.now() - this.startTime,
+                messages: [],
+                endMs: null
+            };
         }
 
         didAssistantStartPlayingAudioBuffer() {
@@ -337,17 +363,50 @@
             this.assistantState = ns.AssistantState.WAITING;
             this.isAssistantSpeaking = false;
             console.log('[InteractionController] Assistant has stopped speaking.');
+
+            console.warn('End current assistant event.');
+            // End the current assistant event
+            if (this.currentAssistantEvent) {
+                this.currentAssistantEvent.endMs = Date.now() - this.startTime;
+                this.currentAssistantEvent.message = this.currentAssistantEvent.messages.join(' ');
+                delete this.currentAssistantEvent.messages;
+                this.events.push(this.currentAssistantEvent);
+                console.error('Updated conversation events:', JSON.stringify(this.events, null, 2));
+                this.currentAssistantEvent = null;
+            } else {
+                console.warn('No current assistant event to end.');
+            }
         }
 
         // message receive handler
 
         didAssistantMessageReceive(message) {
             console.log('[InteractionController] Assistant message received: ', message);
+
+            if (this.currentAssistantEvent) {
+                // Append message to current event
+                this.currentAssistantEvent.messages.push(message);
+            } else {
+                console.warn('No current assistant event to attach message to.');
+            }
         }
         
         
         didHumanMessageReceive(message) {
             console.log('[InteractionController] Human message received: ', message);
+
+            // End the current human event
+            console.warn('End current human event.');
+            if (this.currentHumanEvent) {
+                this.currentHumanEvent.endMs = Date.now() - this.startTime;
+                this.currentHumanEvent.message = message;//this.currentHumanEvent.messages.join(' ');
+                delete this.currentHumanEvent.messages;
+                this.events.push(this.currentHumanEvent);
+                console.error('Updated conversation events:', JSON.stringify(this.events, null, 2));
+                this.currentHumanEvent = null;
+            } else {
+                console.warn('No current human event to end.');
+            }
         }
         
         
@@ -355,5 +414,19 @@
             console.log('[InteractionController] Announce message received: ', message);
         }
 
+        // Finish event
+        didConversationEnd() {
+            console.log('[InteractionController] Converstaion end.');
+
+            // Log the final conversation data
+            console.error('Final conversation events:', JSON.stringify(this.events, null, 2));
+        }
+
+        didReachToLimitReceived() {
+            console.log('[InteractionController] Reach to limit message received.');
+
+            // Log the final conversation data
+            console.error('Final conversation events:', JSON.stringify(this.events, null, 2));
+        }
     };
 })(Quantz);
