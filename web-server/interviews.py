@@ -1,3 +1,4 @@
+import json
 from os.path import dirname, abspath, join
 from flask import Flask, render_template, request, g, jsonify, Blueprint, url_for
 from flask_httpauth import HTTPBasicAuth
@@ -101,8 +102,9 @@ interaction_model_db = InteractionModelDB(
     db_number=REDIS_INTERACTION_MODEL_DB_NUMBER
 )
 
-# Redis ChatDB remote
-from llm.init_chatdb import remote_redis_chatdb
+# Redis ChatDB
+from llm.chat_db import ChatData, ChatDB, ChatDataNotFoundError
+from llm.init_chatdb import chat_db_remote
 
 # Email
 from mails.send_mail import (
@@ -298,13 +300,13 @@ def webhook_files_uploaded():
 
     logger.info(magenta(f'[POST] /v1/webhook/files/uploaded => \n'+'-'*100+f'\n{payload}'+'-'*100))
 
-    try:
-        event = payload["event"]
-        alert = payload["alert"]
-        logger.info(yellow(f'Received webhook event: {event}'))
-    except ValueError as e:
-        logger.error(red(f'Invalid payload with error: {e}'))
+    # Validate payload keys
+    if "event" not in payload:
+        message = 'Missing "event" key in payload.'
+        logger.error(red(message))
         return 'Invalid payload', 400
+    
+    event = payload["event"]
 
     logger.info(bold(f'webhook event: {event}'))
 
@@ -312,11 +314,37 @@ def webhook_files_uploaded():
 
         try:
             # update chatdata
+            if "metadata" not in payload:
+                raise ValueError("Missing 'metadata' in payload")
+
             metadata = payload["metadata"]
-            chatdata = remote_redis_chatdb.get_chat_data(metadata["clientId"])
-            chatdata.metadata = metadata  # TODO: chatdata.metadata is expected to be string. shold convert to string?
+
+            if "clientId" not in metadata:
+                raise ValueError("Missing 'clientId' in payload")
+
+            if "identifier" not in metadata:
+                raise ValueError("Missing 'identifier' in payload")
+
+            if "hostId" not in metadata:
+                raise ValueError("Missing 'hostId' in payload")
+
+            client_id = metadata["clientId"]
+            host_id = metadata["hostId"]
+            identifier = metadata["identifier"]
+
+            logger.info(f'get ids from metadata: [host_id] {host_id} [client_id] {client_id} [identifier] {identifier}')
+
+            chatdata = chat_db_remote.get_chat_data(client_id)
+            if not len(chatdata.client_id):
+                message = f'chat data not found by client_id: "{client_id}"'
+                logger.error(red(message))
+                raise ChatDataNotFoundError(message)
+
+            chatdata.metadata = json.dumps(metadata)  # to string
             chatdata.is_video_saved = True
-            remote_redis_chatdb.set_chat_data(chatdata)
+
+            # retrieve chatdata from local redis
+            chat_db_remote.set_chat_data(client_id, chatdata)
             logger.info(light_green(f'chatdata successfully updated with uploaded metadata.'))
         except Exception as e:
             message = f'Failed to save metadata with error: {e}'
@@ -324,12 +352,12 @@ def webhook_files_uploaded():
             return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
 
         ### DEBUG
-        chatdata = remote_redis_chatdb.get_chat_data(client_id)
+        chatdata = chat_db_remote.get_chat_data(client_id)
         logger.info(cyan(f'updated chatdata. {chatdata}'))
         ###
 
         try:
-            interview = interaction_model_db.get_one(chatdata.identifier)
+            interview = interaction_model_db.get_one(identifier)
             logger.info(f'interview found: {interview}')
         except InteractionModelNotFoundError:
             return UnexpectedAPIErrorFormat(
@@ -339,7 +367,7 @@ def webhook_files_uploaded():
 
         try:
             # Fetch the user from the database
-            user = User.find_user_by_id(chatdata.host_id)
+            user = User.find_user_by_id(host_id)
             lang_in_chat = chatdata.lang if chatdata.lang else lang
             send_interview_result_email(user, metadata, interview, lang_in_chat)
             logger.info(light_green(f'interview result mail successfully sent to {user.email}.'))
@@ -356,12 +384,13 @@ def webhook_files_uploaded():
 
 
     elif event == "save.fail.diskfull":
-        # TODO: parse reason and return error
-        pass
-
+        message = f'Failed to save interview result data because of disk full.'
+        logger.error(red(message))
+        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
     elif event == "save.fail.unknownerror":
-        # TODO: parse reason and return error
-        pass
+        message = f'Failed to save interview result data with unknown error'
+        logger.error(red(message))
+        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
     else:
         message = f'{event} is unknown event.'
         logger.error(red(message))

@@ -501,7 +501,7 @@ def generate_interview_result_text(metadata, name_label='Name', email_label='Ema
     text_content = '\n'.join(lines)
     return text_content
 
-def send_interview_result_email(user: User, metadata: dict, interview: "InteractionModel", lang: str)
+def send_interview_result_email(user: User, metadata: dict, interview: "InteractionModel", lang: str):
     flask_app = Flask(__name__, template_folder='templates')  # mails/ is root
     logger.debug(flask_app.jinja_loader.searchpath)
 

@@ -203,6 +203,10 @@ class MeetingView {
         this.userInfo = userInfo;
         if (!userInfo.name || !userInfo.email) {
             console.error(`[MeetingView] [ERROR] userInfo.name & userInfo.email must be collected.`);
+            // DEBUG
+            this.userInfo = {'name': "Kazuki", 'email': "kaz@mail.com"}
+            console.error('set dummy name & email')
+            // DEBUG
         }
 
         this.uploader = new FileUploader({
@@ -214,10 +218,11 @@ class MeetingView {
         this.startDatetime = null;
         this.events = null;  // conversation data
 
+        const _this = this;
         document.addEventListener('quantz-conversationDataUpdated', function(event) {
             const { buttonId, events } = event.detail; 
-            console.log('[MeetingView] new events received: ',events);
-            this.events = events;
+            console.log('[MeetingView] new events received: ', events);
+            _this.events = events;
         })
     }
 
@@ -427,29 +432,31 @@ class MeetingView {
     }
 
     uploadData() {
-        this.uploader.stopRecording();
-        const startDatetimeStr = this.formatDatetime(this.startDatetime);
-        const endDatetimeStr = this.formatDatetime(new Date()); // Get endDatetime
-        this.uploader.upload({
-            url: '/upload',
-            withMetaData: {
-                'service': 'interview',
-                'identifier': this.interviewId,
-                'hostId': this.hostId,
-                'clientId': this.clientId,
-                'userInfo': this.userInfo,
-                'events': this.events,
-                'startDatetime': startDatetimeStr,
-                'endDatetime': endDatetimeStr
-            },
-            onSuccess: (data) => {
-                console.log('[MeetingView] Upload succeeded:', data);
-            },
-            onError: (error) => {
-                console.error('[MeetingView] Upload error:', error);
-            }
+        this.uploader.stopRecording().then(() => {
+            const startDatetimeStr = this.formatDatetime(this.startDatetime);
+            const endDatetimeStr = this.formatDatetime(new Date()); // Get endDatetime
+            this.uploader.upload({
+                url: '/fs/upload',
+                withMetaData: {
+                    'service': 'interview',
+                    'identifier': this.interviewId,
+                    'hostId': this.hostId,
+                    'clientId': this.clientId,
+                    'userInfo': this.userInfo,
+                    'events': this.events,
+                    'startDatetime': startDatetimeStr,
+                    'endDatetime': endDatetimeStr
+                },
+                onSuccess: (data) => {
+                    console.log('[MeetingView] Upload succeeded:', data);
+                },
+                onError: (error) => {
+                    console.error('[MeetingView] Upload error:', error);
+                }
+            });
         });
     }
+    
 
     formatDatetime(date) {
         if (!date) return '';
