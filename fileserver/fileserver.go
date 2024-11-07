@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -10,6 +11,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"syscall"
 	"time"
 	"path"
 
@@ -28,28 +30,36 @@ type Event struct {
 }
 
 type UserInfo struct {
-    Name  string `json:"name"`
-    Email string `json:"email"`
+	Name  string `json:"name"`
+	Email string `json:"email"`
 }
 
 type MetaData struct {
-	Service       string  `json:"service"`
-	Identifier    string  `json:"identifier"`
-	HostID        string  `json:"hostId"`
-	ClientId      string  `json:"clientId"`
-	UserInfo      UserInfo `json:"userInfo"`
-	Events        []Event `json:"events"`
-	StartDatetime string  `json:"startDatetime"`
-	EndDatetime   string  `json:"endDatetime"`
-	MetadataUrl   string  `json:"metadataUrl,omitempty"`
+	Service          string    `json:"service"`
+	Identifier       string    `json:"identifier"`
+	HostID           string    `json:"hostId"`
+	ClientId         string    `json:"clientId"`
+	UserInfo         UserInfo  `json:"userInfo"`
+	Events           []Event   `json:"events"`
+	StartDatetime    string    `json:"startDatetime"`
+	EndDatetime      string    `json:"endDatetime"`
+	MetadataUrl      string    `json:"metadataUrl,omitempty"`
 	VideoPathAll     string    `json:"videoPathAll,omitempty"`
 	ScreenShotUrlAll string    `json:"screenShotUrlAll,omitempty"`
+}
+
+// New struct for webhook payload
+type WebhookPayload struct {
+	Event string   `json:"event"`
+	Data  MetaData `json:"metadata"`
 }
 
 const WHOLE_VIDEO_NAME = "all.webm"
 const COMPRESSED_WHOLE_VIDEO_NAME = "all_compressed.mp4"
 const METADATA_FILE_NAME = "metadata.json"
 const SCREENSHOT_WHOLE_VIDEO_NAME = "all_compressed.jpeg"
+
+var ErrDiskFull = errors.New("disk space below threshold")
 
 func main() {
 	// Load configuration
@@ -64,32 +74,21 @@ func main() {
 	log.Fatal(http.ListenAndServe(addr, nil))
 }
 
-// logFileServer wraps a http.FileServer with logging
-func logFileServer(rootPath string) http.Handler {
-	fileServer := http.FileServer(http.Dir(rootPath))
-
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		log.Printf("[FileServer] Received request for %s", r.URL.Path)
-		fileServer.ServeHTTP(w, r)
-	})
-}
-
-// Function to generate file paths
 func generateFilePath(root string, metaData MetaData) (string, error) {
-	t, err := time.Parse(time.RFC3339, metaData.StartDatetime)
-	if err != nil {
-		log.Printf("[generateFilePath] Error parsing StartDatetime: %v", err)
-		return "", err
-	}
-	year := fmt.Sprintf("%04d", t.Year())
-	month := fmt.Sprintf("%02d", t.Month())
-	day := fmt.Sprintf("%02d", t.Day())
-	// {root}/{service}/{year}/{month}/{day}/{identifier}/...
-	// e.g. /disk1/quantz/interview/2024/6/12/d0j8adadDoS/
-	saveFolderPath := filepath.Join(root, metaData.Service, year, month, day, metaData.Identifier)
-	log.Printf("[generateFilePath] Generated saveFolderPath: %s", saveFolderPath)
-	return saveFolderPath, nil
+    t, err := time.Parse(time.RFC3339, metaData.StartDatetime)
+    if err != nil {
+        log.Printf("[generateFilePath] Error parsing StartDatetime: %v", err)
+        return "", err
+    }
+    year := fmt.Sprintf("%04d", t.Year())
+    month := fmt.Sprintf("%02d", t.Month())
+    day := fmt.Sprintf("%02d", t.Day())
+    // Updated path to include ClientId
+    saveFolderPath := filepath.Join(root, metaData.Service, year, month, day, metaData.Identifier, metaData.ClientId)
+    log.Printf("[generateFilePath] Generated saveFolderPath: %s", saveFolderPath)
+    return saveFolderPath, nil
 }
+
 
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("[uploadHandler] Received upload request from %s", r.RemoteAddr)
@@ -210,15 +209,43 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("[uploadHandler] Responded to client")
 }
 
-func processVideo(videoPath, saveFolderPath string, metaData MetaData) {
+func processVideo(videoPath, saveFolderPath string, metaData MetaData) (err error) {
+	defer func() {
+		var payload WebhookPayload
+		payload.Data = metaData
+		if err != nil {
+			if errors.Is(err, ErrDiskFull) {
+				payload.Event = "save.fail.diskfull"
+			} else {
+				payload.Event = "save.fail.unknownerror"
+			}
+		} else {
+			payload.Event = "save.success"
+		}
+		sendWebhook(payload)
+	}()
+
 	log.Printf("[processVideo] Started processing video at %s", videoPath)
+
+	// Check disk space
+	availableSpace, err := getAvailableDiskSpace(saveFolderPath)
+	if err != nil {
+		log.Printf("[processVideo] Error getting available disk space: %v", err)
+		return err
+	}
+	thresholdBytes := uint64(config.Cfg.DiskSpaceThresholdMB) * 1024 * 1024
+	if availableSpace < thresholdBytes {
+		log.Printf("[processVideo] Available disk space (%d bytes) is below threshold (%d bytes)", availableSpace, thresholdBytes)
+		err = ErrDiskFull
+		return err
+	}
 
 	// Compress the video
 	compressedVideoPath := filepath.Join(saveFolderPath, COMPRESSED_WHOLE_VIDEO_NAME)
-	err := compressVideo(videoPath, compressedVideoPath)
+	err = compressVideo(videoPath, compressedVideoPath)
 	if err != nil {
 		log.Printf("[processVideo] Error compressing video: %v", err)
-		return
+		return err
 	}
 	log.Printf("[processVideo] Compressed video saved to %s", compressedVideoPath)
 
@@ -226,7 +253,7 @@ func processVideo(videoPath, saveFolderPath string, metaData MetaData) {
 	baseUrl, err := generateBaseUrl(metaData)
 	if err != nil {
 		log.Printf("[processVideo] Error generating baseUrl: %v", err)
-		return
+		return err
 	}
 	log.Printf("[processVideo] Generated baseUrl: %s", baseUrl)
 
@@ -288,42 +315,37 @@ func processVideo(videoPath, saveFolderPath string, metaData MetaData) {
 	metadataJsonData, err := json.Marshal(metaData)
 	if err != nil {
 		log.Printf("[processVideo] Error marshaling metadata to JSON: %v", err)
-	} else {
-		err = os.WriteFile(metadataJsonPath, metadataJsonData, os.ModePerm)
-		if err != nil {
-			log.Printf("[processVideo] Error writing metadata.json: %v", err)
-		} else {
-			log.Printf("[processVideo] Updated metadata.json saved to %s", metadataJsonPath)
-		}
+		return err
 	}
-
-	// Send webhook notification with the full metadata
-	err = sendWebhook(metaData)
+	err = os.WriteFile(metadataJsonPath, metadataJsonData, os.ModePerm)
 	if err != nil {
-		log.Printf("[processVideo] Error sending webhook: %v", err)
-	} else {
-		log.Printf("[processVideo] Successfully sent webhook notification")
+		log.Printf("[processVideo] Error writing metadata.json: %v", err)
+		return err
 	}
+	log.Printf("[processVideo] Updated metadata.json saved to %s", metadataJsonPath)
+
+	return nil
 }
 
 func generateBaseUrl(metaData MetaData) (string, error) {
-	t, err := time.Parse(time.RFC3339, metaData.StartDatetime)
-	if err != nil {
-		log.Printf("[generateBaseUrl] Error parsing StartDatetime: %v", err)
-		return "", err
-	}
-	year := fmt.Sprintf("%04d", t.Year())
-	month := fmt.Sprintf("%02d", t.Month())
-	day := fmt.Sprintf("%02d", t.Day())
-	baseUrl := path.Join(config.Cfg.AccessURL, metaData.Service, year, month, day, metaData.Identifier)
-	log.Printf("[generateBaseUrl] Generated baseUrl: %s", baseUrl)
-	return baseUrl, nil
+    t, err := time.Parse(time.RFC3339, metaData.StartDatetime)
+    if err != nil {
+        log.Printf("[generateBaseUrl] Error parsing StartDatetime: %v", err)
+        return "", err
+    }
+    year := fmt.Sprintf("%04d", t.Year())
+    month := fmt.Sprintf("%02d", t.Month())
+    day := fmt.Sprintf("%02d", t.Day())
+    // Updated URL to include ClientId
+    baseUrl := path.Join(config.Cfg.AccessURL, metaData.Service, year, month, day, metaData.Identifier, metaData.ClientId)
+    log.Printf("[generateBaseUrl] Generated baseUrl: %s", baseUrl)
+    return baseUrl, nil
 }
 
 func compressVideo(inputPath, outputPath string) error {
 	log.Printf("[compressVideo] Compressing video from %s to %s", inputPath, outputPath)
 	// Use ffmpeg to compress the video
-	cmd := exec.Command("ffmpeg", "-i", inputPath, "-vcodec", "libx264", "-crf", "28", outputPath)
+	cmd := exec.Command("ffmpeg", "-y", "-i", inputPath, "-vcodec", "libx264", "-crf", "28", outputPath)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err := cmd.Run()
@@ -361,13 +383,13 @@ func generateScreenshot(videoFilePath, screenshotFilePath string) error {
 	return err
 }
 
-func sendWebhook(metaData MetaData) error {
+func sendWebhook(payload WebhookPayload) error {
 	log.Printf("[sendWebhook] Sending webhook to %s", config.Cfg.WebhookURL)
 	// Prepare the webhook payload
 	webhookURL := config.Cfg.WebhookURL
-	payloadBytes, err := json.Marshal(metaData)
+	payloadBytes, err := json.Marshal(payload)
 	if err != nil {
-		log.Printf("[sendWebhook] Error marshaling metadata: %v", err)
+		log.Printf("[sendWebhook] Error marshaling payload: %v", err)
 		return err
 	}
 	resp, err := http.Post(webhookURL, "application/json", bytes.NewReader(payloadBytes))
@@ -383,4 +405,14 @@ func sendWebhook(metaData MetaData) error {
 	}
 	log.Printf("[sendWebhook] Webhook sent successfully")
 	return nil
+}
+
+func getAvailableDiskSpace(path string) (uint64, error) {
+	var stat syscall.Statfs_t
+	err := syscall.Statfs(path, &stat)
+	if err != nil {
+		return 0, err
+	}
+	// Available blocks * size per block = available space in bytes
+	return stat.Bavail * uint64(stat.Bsize), nil
 }

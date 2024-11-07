@@ -52,9 +52,9 @@ func main() {
     // Prepare metadata
     currentTime := time.Now()
     metaData := MetaData{
-        Service:       "test_service",
-        Identifier:    "test_identifier",
-        HostID:        "test_host",
+        Service:       "interview",
+        Identifier:    "3db3b4b18a036707e42c26d7",
+        HostID:        "66961e8cdb50d5d0004bd6e3",
         ClientID:      "test_client",
         StartDatetime: currentTime.Format(time.RFC3339),
         EndDatetime:   currentTime.Add(10 * time.Minute).Format(time.RFC3339),
