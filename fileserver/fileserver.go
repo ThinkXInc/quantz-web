@@ -42,11 +42,14 @@ type MetaData struct {
 	StartDatetime string  `json:"startDatetime"`
 	EndDatetime   string  `json:"endDatetime"`
 	MetadataUrl   string  `json:"metadataUrl,omitempty"`
+	VideoPathAll     string    `json:"videoPathAll,omitempty"`
+	ScreenShotUrlAll string    `json:"screenShotUrlAll,omitempty"`
 }
 
 const WHOLE_VIDEO_NAME = "all.webm"
 const COMPRESSED_WHOLE_VIDEO_NAME = "all_compressed.mp4"
 const METADATA_FILE_NAME = "metadata.json"
+const SCREENSHOT_WHOLE_VIDEO_NAME = "all_compressed.jpeg"
 
 func main() {
 	// Load configuration
@@ -227,6 +230,19 @@ func processVideo(videoPath, saveFolderPath string, metaData MetaData) {
 	}
 	log.Printf("[processVideo] Generated baseUrl: %s", baseUrl)
 
+	// Generate screenshot for the compressed whole video
+	wholeScreenshotPath := filepath.Join(saveFolderPath, SCREENSHOT_WHOLE_VIDEO_NAME)
+	err = generateScreenshot(compressedVideoPath, wholeScreenshotPath)
+	if err != nil {
+		log.Printf("[processVideo] Error generating screenshot for whole video: %v", err)
+	} else {
+		log.Printf("[processVideo] Generated screenshot for whole video saved to %s", wholeScreenshotPath)
+	}
+
+	// Update metaData with VideoPathAll and ScreenShotUrlAll
+	metaData.VideoPathAll = path.Join(baseUrl, COMPRESSED_WHOLE_VIDEO_NAME)
+	metaData.ScreenShotUrlAll = path.Join(baseUrl, SCREENSHOT_WHOLE_VIDEO_NAME)
+
 	// Process each event
 	for idx, event := range metaData.Events {
 		log.Printf("[processVideo] Processing event %d: %+v", idx, event)
@@ -256,16 +272,16 @@ func processVideo(videoPath, saveFolderPath string, metaData MetaData) {
 		}
 		log.Printf("[processVideo] Generated screenshot saved to %s", screenShotFilePath)
 
-        // Update the event with videoUrl and screenShotUrl
-        event.VideoUrl = path.Join(baseUrl, fileName)
-        event.ScreenShotUrl = path.Join(baseUrl, screenShotFileName)
+		// Update the event with videoUrl and screenShotUrl
+		event.VideoUrl = path.Join(baseUrl, fileName)
+		event.ScreenShotUrl = path.Join(baseUrl, screenShotFileName)
 
 		// Update the event in the metadata.Events slice
 		metaData.Events[idx] = event
 	}
 
-    // Update metadataUrl
-    metaData.MetadataUrl = path.Join(baseUrl, METADATA_FILE_NAME)
+	// Update metadataUrl
+	metaData.MetadataUrl = path.Join(baseUrl, METADATA_FILE_NAME)
 
 	// Save the updated metadata.json
 	metadataJsonPath := filepath.Join(saveFolderPath, METADATA_FILE_NAME)
@@ -291,17 +307,17 @@ func processVideo(videoPath, saveFolderPath string, metaData MetaData) {
 }
 
 func generateBaseUrl(metaData MetaData) (string, error) {
-    t, err := time.Parse(time.RFC3339, metaData.StartDatetime)
-    if err != nil {
-        log.Printf("[generateBaseUrl] Error parsing StartDatetime: %v", err)
-        return "", err
-    }
-    year := fmt.Sprintf("%04d", t.Year())
-    month := fmt.Sprintf("%02d", t.Month())
-    day := fmt.Sprintf("%02d", t.Day())
-    baseUrl := path.Join(config.Cfg.AccessURL, metaData.Service, year, month, day, metaData.Identifier)
-    log.Printf("[generateBaseUrl] Generated baseUrl: %s", baseUrl)
-    return baseUrl, nil
+	t, err := time.Parse(time.RFC3339, metaData.StartDatetime)
+	if err != nil {
+		log.Printf("[generateBaseUrl] Error parsing StartDatetime: %v", err)
+		return "", err
+	}
+	year := fmt.Sprintf("%04d", t.Year())
+	month := fmt.Sprintf("%02d", t.Month())
+	day := fmt.Sprintf("%02d", t.Day())
+	baseUrl := path.Join(config.Cfg.AccessURL, metaData.Service, year, month, day, metaData.Identifier)
+	log.Printf("[generateBaseUrl] Generated baseUrl: %s", baseUrl)
+	return baseUrl, nil
 }
 
 func compressVideo(inputPath, outputPath string) error {
