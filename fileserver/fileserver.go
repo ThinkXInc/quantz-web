@@ -91,122 +91,100 @@ func generateFilePath(root string, metaData MetaData) (string, error) {
 
 
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
-	log.Printf("[uploadHandler] Received upload request from %s", r.RemoteAddr)
+    log.Printf("[uploadHandler] Received upload request from %s", r.RemoteAddr)
 
-	// Parse the multipart form data
-	err := r.ParseMultipartForm(int64(config.Cfg.LimitMB) << 20) // Limit in MB
-	if err != nil {
-		log.Printf("[uploadHandler] Error parsing form data: %v", err)
-		http.Error(w, "Error parsing form data", http.StatusBadRequest)
-		return
-	}
-	log.Printf("[uploadHandler] Parsed multipart form data")
+    // Parse the multipart form data
+    err := r.ParseMultipartForm(int64(config.Cfg.LimitMB) << 20) // Limit in MB
+    if err != nil {
+        log.Printf("[uploadHandler] Error parsing form data: %v", err)
+        http.Error(w, "Error parsing form data", http.StatusBadRequest)
+        return
+    }
+    log.Printf("[uploadHandler] Parsed multipart form data")
 
-	// Retrieve and parse the metadata
-	var metaData MetaData
-	metaDataFound := false
-	for _, values := range r.Form {
-		if len(values) > 0 {
-			err = json.Unmarshal([]byte(values[0]), &metaData)
-			if err == nil {
-				metaDataFound = true
-				break
-			}
-		}
-	}
-	if !metaDataFound {
-		log.Printf("[uploadHandler] No valid metadata provided")
-		http.Error(w, "No valid metadata provided", http.StatusBadRequest)
-		return
-	}
-	log.Printf("[uploadHandler] Parsed metadata: %+v", metaData)
+    // Retrieve and parse the metadata
+    metaDataJson := r.FormValue("metadata")
+    if metaDataJson == "" {
+        log.Printf("[uploadHandler] No valid metadata provided")
+        http.Error(w, "No valid metadata provided", http.StatusBadRequest)
+        return
+    }
 
-	// Generate the save path
-	root := config.Cfg.FilesRootPath
-	saveFolderPath, err := generateFilePath(root, metaData)
-	if err != nil {
-		log.Printf("[uploadHandler] Error generating save path: %v", err)
-		http.Error(w, "Error parsing startDatetime", http.StatusBadRequest)
-		return
-	}
-	log.Printf("[uploadHandler] Save folder path: %s", saveFolderPath)
+    var metaData MetaData
+    err = json.Unmarshal([]byte(metaDataJson), &metaData)
+    if err != nil {
+        log.Printf("[uploadHandler] Error unmarshaling metadata: %v", err)
+        http.Error(w, "Error parsing metadata", http.StatusBadRequest)
+        return
+    }
+    log.Printf("[uploadHandler] Parsed metadata: %+v", metaData)
 
-	// Create the directory
-	err = os.MkdirAll(saveFolderPath, os.ModePerm)
-	if err != nil {
-		log.Printf("[uploadHandler] Error creating directory: %v", err)
-		http.Error(w, "Error creating directory", http.StatusInternalServerError)
-		return
-	}
-	log.Printf("[uploadHandler] Created directory: %s", saveFolderPath)
+    // Generate the save path
+    root := config.Cfg.FilesRootPath
+    saveFolderPath, err := generateFilePath(root, metaData)
+    if err != nil {
+        log.Printf("[uploadHandler] Error generating save path: %v", err)
+        http.Error(w, "Error parsing startDatetime", http.StatusBadRequest)
+        return
+    }
+    log.Printf("[uploadHandler] Save folder path: %s", saveFolderPath)
 
-	// Retrieve the file
-	var file io.Reader
-	fileFound := false
-	for _, fileHeaders := range r.MultipartForm.File {
-		if len(fileHeaders) > 0 {
-			fileHeader := fileHeaders[0]
-			file, err = fileHeader.Open()
-			if err != nil {
-				log.Printf("[uploadHandler] Error opening uploaded file: %v", err)
-				http.Error(w, "Error opening uploaded file", http.StatusBadRequest)
-				return
-			}
-			defer file.(io.Closer).Close()
-			fileFound = true
-			break
-		}
-	}
-	if !fileFound {
-		log.Printf("[uploadHandler] No file uploaded")
-		http.Error(w, "No file uploaded", http.StatusBadRequest)
-		return
-	}
-	log.Printf("[uploadHandler] Opened uploaded file")
+    // Create the directory
+    err = os.MkdirAll(saveFolderPath, os.ModePerm)
+    if err != nil {
+        log.Printf("[uploadHandler] Error creating directory: %v", err)
+        http.Error(w, "Error creating directory", http.StatusInternalServerError)
+        return
+    }
+    log.Printf("[uploadHandler] Created directory: %s", saveFolderPath)
 
-	// Save the full video
-	wholeVideoPath := filepath.Join(saveFolderPath, WHOLE_VIDEO_NAME)
-	log.Printf("[uploadHandler] Saving full video to %s", wholeVideoPath)
-	outFile, err := os.Create(wholeVideoPath)
-	if err != nil {
-		log.Printf("[uploadHandler] Error creating video file: %v", err)
-		http.Error(w, "Error saving video file", http.StatusInternalServerError)
-		return
-	}
-	defer outFile.Close()
-	_, err = io.Copy(outFile, file)
-	if err != nil {
-		log.Printf("[uploadHandler] Error saving video file: %v", err)
-		http.Error(w, "Error saving video file", http.StatusInternalServerError)
-		return
-	}
-	log.Printf("[uploadHandler] Saved full video")
+    // Retrieve the file
+    file, _, err := r.FormFile("file")
+    if err != nil {
+        log.Printf("[uploadHandler] Error retrieving file: %v", err)
+        http.Error(w, "Error retrieving file", http.StatusBadRequest)
+        return
+    }
+    defer file.Close()
+    log.Printf("[uploadHandler] Opened uploaded file")
 
-	// Save the conversation data
-	conversationDataPath := filepath.Join(saveFolderPath, METADATA_FILE_NAME)
-	log.Printf("[uploadHandler] Saving conversation data to %s", conversationDataPath)
-	metaDataJson, err := json.Marshal(metaData)
-	if err != nil {
-		log.Printf("[uploadHandler] Error marshaling metadata: %v", err)
-		http.Error(w, "Error marshaling metadata", http.StatusInternalServerError)
-		return
-	}
-	err = os.WriteFile(conversationDataPath, metaDataJson, os.ModePerm)
-	if err != nil {
-		log.Printf("[uploadHandler] Error saving conversation data: %v", err)
-		http.Error(w, "Error saving conversation data", http.StatusInternalServerError)
-		return
-	}
-	log.Printf("[uploadHandler] Saved conversation data")
+    // Save the full video
+    wholeVideoPath := filepath.Join(saveFolderPath, WHOLE_VIDEO_NAME)
+    log.Printf("[uploadHandler] Saving full video to %s", wholeVideoPath)
+    outFile, err := os.Create(wholeVideoPath)
+    if err != nil {
+        log.Printf("[uploadHandler] Error creating video file: %v", err)
+        http.Error(w, "Error saving video file", http.StatusInternalServerError)
+        return
+    }
+    defer outFile.Close()
+    _, err = io.Copy(outFile, file)
+    if err != nil {
+        log.Printf("[uploadHandler] Error saving video file: %v", err)
+        http.Error(w, "Error saving video file", http.StatusInternalServerError)
+        return
+    }
+    log.Printf("[uploadHandler] Saved full video")
 
-	// Start processing in the background
-	log.Printf("[uploadHandler] Starting background video processing")
-	go processVideo(wholeVideoPath, saveFolderPath, metaData)
+    // Save the conversation data
+    conversationDataPath := filepath.Join(saveFolderPath, METADATA_FILE_NAME)
+    log.Printf("[uploadHandler] Saving conversation data to %s", conversationDataPath)
+    err = os.WriteFile(conversationDataPath, []byte(metaDataJson), os.ModePerm)
+    if err != nil {
+        log.Printf("[uploadHandler] Error saving conversation data: %v", err)
+        http.Error(w, "Error saving conversation data", http.StatusInternalServerError)
+        return
+    }
+    log.Printf("[uploadHandler] Saved conversation data")
 
-	// Send immediate response to the client
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("Upload received and processing started"))
-	log.Printf("[uploadHandler] Responded to client")
+    // Start processing in the background
+    log.Printf("[uploadHandler] Starting background video processing")
+    go processVideo(wholeVideoPath, saveFolderPath, metaData)
+
+    // Send immediate response to the client
+    w.WriteHeader(http.StatusOK)
+    w.Write([]byte("Upload received and processing started"))
+    log.Printf("[uploadHandler] Responded to client")
 }
 
 func processVideo(videoPath, saveFolderPath string, metaData MetaData) (err error) {
@@ -344,6 +322,14 @@ func generateBaseUrl(metaData MetaData) (string, error) {
 
 func compressVideo(inputPath, outputPath string) error {
 	log.Printf("[compressVideo] Compressing video from %s to %s", inputPath, outputPath)
+
+	// Step to check file integrity
+	checkCmd := exec.Command("ffmpeg", "-v", "error", "-i", inputPath, "-f", "null", "-")
+	if err := checkCmd.Run(); err != nil {
+		log.Printf("[compressVideo] Error: Video file may be corrupted: %v", err)
+		return fmt.Errorf("file integrity check failed: %w", err)
+	}
+
 	// Use ffmpeg to compress the video
 	cmd := exec.Command("ffmpeg", "-y", "-i", inputPath, "-vcodec", "libx264", "-crf", "28", outputPath)
 	cmd.Stdout = os.Stdout
