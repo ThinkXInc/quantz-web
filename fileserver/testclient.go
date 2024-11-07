@@ -17,45 +17,68 @@ import (
 	"fileserver/config"
 )
 
-// Define the data structures
+// Event represents an individual event within the metadata.
 type Event struct {
-	Speaker       string `json:"speaker"`
-	StartMs       int    `json:"startMs"`
-	EndMs         int    `json:"endMs"`
-	Message       string `json:"message"`
-	VideoUrl      string `json:"videoUrl,omitempty"`
-	ScreenShotUrl string `json:"screenShotUrl,omitempty"`
+	Speaker    string  `json:"speaker"`
+	StartMs    int     `json:"startMs"`
+	EndMs      int     `json:"endMs"`
+	Message    string  `json:"message"`
+	VideoPath  string  `json:"videoPath,omitempty"` // Optional path to a video file
+	Timestamp  string  `json:"timestamp,omitempty"` // Optional ISO string timestamp
 }
 
+type UserInfo struct {
+    Name  string `json:"name"`
+    Email string `json:"email"`
+}
+
+// MetaData holds the entire metadata including the list of events.
 type MetaData struct {
-	Service       string  `json:"service"`
-	Identifier    string  `json:"identifier"`
-	HostID        string  `json:"hostId"`
-	Events        []Event `json:"events"`
-	StartDatetime string  `json:"startDatetime"`
-	MetadataUrl   string  `json:"metadataUrl,omitempty"`
+	Service       string    `json:"service"`
+	Identifier    string    `json:"identifier"`
+	HostID        string    `json:"hostId"`
+	ClientID      string    `json:"clientId"`       // Include clientId in the metadata
+	Events        []Event   `json:"events"`
+	UserInfo      UserInfo `json:"userInfo"`
+	StartDatetime string    `json:"startDatetime"`
+	EndDatetime   string    `json:"endDatetime"`
 }
 
 func main() {
-	// Prepare the URL using host and port from config
-	url := fmt.Sprintf("http://%s:%d%s", config.Cfg.Host, config.Cfg.Port, config.Cfg.UploadURL)
-	log.Printf("Sending request to %s", url)
+    // Prepare the URL using host and port from config
+    url := fmt.Sprintf("http://%s:%d%s", config.Cfg.Host, config.Cfg.Port, config.Cfg.UploadURL)
+    log.Printf("Sending request to %s", url)
 
-	// Prepare metadata
-	metaData := MetaData{
-		Service:    "test_service",
-		Identifier: "test_identifier",
-		HostID:     "test_host",
-		Events: []Event{
-			{
-				Speaker: "Speaker1",
-				StartMs: 0,
-				EndMs:   5000,
-				Message: "Hello world",
-			},
-		},
-		StartDatetime: time.Now().Format(time.RFC3339),
-	}
+    // Prepare metadata
+    currentTime := time.Now()
+    metaData := MetaData{
+        Service:       "test_service",
+        Identifier:    "test_identifier",
+        HostID:        "test_host",
+        ClientID:      "test_client",
+        StartDatetime: currentTime.Format(time.RFC3339),
+        EndDatetime:   currentTime.Add(10 * time.Minute).Format(time.RFC3339),
+        UserInfo: UserInfo{
+            Name:  "John Doe",
+            Email: "johndoe@example.com",
+        },
+        Events: []Event{
+            {
+                Speaker:   "system",
+                StartMs:   100,
+                EndMs:     1000,
+                Message:   "Hello, Kazuki. Are you ready?",
+            },
+            {
+                Speaker:   "user",
+                StartMs:   1300,
+                EndMs:     2000,
+                Message:   "Yes, I'm ready",
+                VideoPath: "/test_service/test_identifier/user_0.mp4",
+                Timestamp: "2024-10-12T11:32:45Z",
+            },
+        },
+    }
 
 	// Serialize metadata to JSON
 	metaDataJson, err := json.Marshal(metaData)

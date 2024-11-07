@@ -5,4 +5,4 @@ upload_url: "/fs/upload"
 access_url: "/fs/files/"
 files_root_path: "/disk1/quantz"
 limit_mb: 100
-webhook_url: "https://quantz.thinkxinc.com/webhook/fileserver"
+webhook_url: "https://quantz.thinkxinc.com/v1/webhook/files/uploaded"
