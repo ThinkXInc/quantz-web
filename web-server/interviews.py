@@ -15,6 +15,7 @@ blueprint_interviews = Blueprint('interviews', __name__)
 # Config
 from config import Config, check_config
 REQUIRED_KEYS_IN_CONFIG = [
+    'DEFAULT_LANG',
     'LOCALES_ROOT',
     'UNIT_PRICE_USD',
     'REDIS_ACCESS_HOST',
@@ -28,6 +29,7 @@ REQUIRED_KEYS_IN_CONFIG = [
 ]
 check_config(Config, REQUIRED_KEYS_IN_CONFIG)
 
+DEFAULT_LANG = Config.DEFAULT_LANG
 UNIT_PRICE_USD = Config.UNIT_PRICE_USD
 REDIS_ACCESS_HOST = Config.REDIS_ACCESS_HOST
 REDIS_ACCESS_PORT = Config.REDIS_ACCESS_PORT
@@ -77,7 +79,8 @@ from init_mongodb import connect
 from models.data.user import (
     User,
     UnauthorizedAccessError,
-    UserNotFoundError
+    UserNotFoundError,
+    UserQueryError
 )
 
 # Redis InteractionModel
@@ -96,6 +99,15 @@ interaction_model_db = InteractionModelDB(
     host=REDIS_INTERACTION_MODEL_HOST,
     port=REDIS_INTERACTION_MODEL_PORT,
     db_number=REDIS_INTERACTION_MODEL_DB_NUMBER
+)
+
+# Redis ChatDB remote
+from llm.init_chatdb import remote_redis_chatdb
+
+# Email
+from mails.send_mail import (
+    send_interview_result_email,
+    MailSendError
 )
 
 # main page
@@ -274,3 +286,84 @@ def delete_all_interviews(user, lang, lang_name):
     except InteractionModelDeleteError as e:
         logger.error(red(f"Error while deleting interviews: {e}"))
         return UnexpectedAPIErrorFormat(lang=lang, message=locale.get('interviews_delete_failed', lang)).http_response()
+
+# webhook from fileserver
+@blueprint_interviews.route('/v1/webhook/files/uploaded', methods=['POST'])
+@content_type_check_json
+def webhook_files_uploaded():
+    logger.info(cyan(f'request: {request.url} => request.json: {request.json}'))
+
+    payload = request.json
+    lang = DEFAULT_LANG
+
+    logger.info(magenta(f'[POST] /v1/webhook/files/uploaded => \n'+'-'*100+f'\n{payload}'+'-'*100))
+
+    try:
+        event = payload["event"]
+        alert = payload["alert"]
+        logger.info(yellow(f'Received webhook event: {event}'))
+    except ValueError as e:
+        logger.error(red(f'Invalid payload with error: {e}'))
+        return 'Invalid payload', 400
+
+    logger.info(bold(f'webhook event: {event}'))
+
+    if event == "save.success":
+
+        try:
+            # update chatdata
+            metadata = payload["metadata"]
+            chatdata = remote_redis_chatdb.get_chat_data(metadata["clientId"])
+            chatdata.metadata = metadata  # TODO: chatdata.metadata is expected to be string. shold convert to string?
+            chatdata.is_video_saved = True
+            remote_redis_chatdb.set_chat_data(chatdata)
+            logger.info(light_green(f'chatdata successfully updated with uploaded metadata.'))
+        except Exception as e:
+            message = f'Failed to save metadata with error: {e}'
+            logger.error(red(message))
+            return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+
+        ### DEBUG
+        chatdata = remote_redis_chatdb.get_chat_data(client_id)
+        logger.info(cyan(f'updated chatdata. {chatdata}'))
+        ###
+
+        try:
+            interview = interaction_model_db.get_one(chatdata.identifier)
+            logger.info(f'interview found: {interview}')
+        except InteractionModelNotFoundError:
+            return UnexpectedAPIErrorFormat(
+                lang=lang,
+                message=locale.get('interview_not_found', lang)
+            ).http_response()
+
+        try:
+            # Fetch the user from the database
+            user = User.find_user_by_id(chatdata.host_id)
+            lang_in_chat = chatdata.lang if chatdata.lang else lang
+            send_interview_result_email(user, metadata, interview, lang_in_chat)
+            logger.info(light_green(f'interview result mail successfully sent to {user.email}.'))
+        except UserNotFoundError:
+            message = locale.get('user_not_found', lang)
+            return ResourceNotFoundAPIErrorFormat(lang=lang, message=message).http_response()
+        except UserQueryError:
+            message = locale.get('user_find_single_failed', lang)
+            return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+        except Exception as e:
+            message = f'Failed to deliver interview result with error: {e}'
+            logger.error(red(message))
+            return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+
+
+    elif event == "save.fail.diskfull":
+        # TODO: parse reason and return error
+        pass
+
+    elif event == "save.fail.unknownerror":
+        # TODO: parse reason and return error
+        pass
+    else:
+        message = f'{event} is unknown event.'
+        logger.error(red(message))
+        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+

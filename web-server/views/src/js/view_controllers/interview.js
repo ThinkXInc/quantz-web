@@ -5,12 +5,17 @@ class Interview {
         lang,
         hostId,
         interviewId,
-        interviewTitle
+        interviewTitle,
+        userInfo = {
+                    "name": null,
+                    "email": null,
+                }
     }) {
         this.id = id;
         this.locale = locale;
         this.lang = lang;
         //this.user = user;
+        this.userInfo = userInfo;
         this.hostId = hostId;
         this.interviewId = interviewId;
         this.interviewTitle = interviewTitle;
@@ -24,6 +29,8 @@ class Interview {
 
     setupView(){
         const $interviewView = document.getElementById('Interview');
+        // TODO: show userInfo input modal
+
         this.meetingView = new MeetingView({
             hostId: this.hostId,
             interviewId: this.interviewId,
@@ -31,6 +38,7 @@ class Interview {
             lang: this.lang,
             meta: this.interviewMeta,
             interviewerMode: InterviewerMode.GRAPHIC1,  //MAN1,
+            userInfo: this.userInfo
         });
         this.meetingView.setupView();
         this.meetingView.mount($interviewView);
@@ -78,6 +86,14 @@ class Interview {
                     break;
             }
         }) 
+
+
+        document.addEventListener('quantz-tokenIssued', (event) => {
+            const { buttonId, clientId } = event.detail;
+            console.warn(`[Interview] clientId issued ${clientId}`);
+            this.clientId = clientId;
+            this.meetingView.clientId = clientId;
+        })
 
         // Restart clicked
         document.addEventListener('quantz-didClickRestart', (event) => {
@@ -173,7 +189,7 @@ const InterviewerMode = Object.freeze({
 });
 
 class MeetingView {
-    constructor({ hostId, interviewId, locale, lang, meta, interviewerMode = InterviewerMode.GRAPHIC1 }) {
+    constructor({ hostId, interviewId, locale, lang, meta, interviewerMode = InterviewerMode.GRAPHIC1, userInfo = {} }) {
         this.hostId = hostId;
         this.interviewId = interviewId;
         this.locale = locale;
@@ -184,6 +200,10 @@ class MeetingView {
         this.currentVideo = '';
         this.videoPlayQueue = [];  // Initialize the video play queue
         this.isVideoPlaying = false;  
+        this.userInfo = userInfo;
+        if (!userInfo.name || !userInfo.email) {
+            console.error(`[MeetingView] [ERROR] userInfo.name & userInfo.email must be collected.`);
+        }
 
         this.uploader = new FileUploader({
             fileKey: "file",
@@ -409,14 +429,18 @@ class MeetingView {
     uploadData() {
         this.uploader.stopRecording();
         const startDatetimeStr = this.formatDatetime(this.startDatetime);
+        const endDatetimeStr = this.formatDatetime(new Date()); // Get endDatetime
         this.uploader.upload({
             url: '/upload',
             withMetaData: {
                 'service': 'interview',
                 'identifier': this.interviewId,
                 'hostId': this.hostId,
+                'clientId': this.clientId,
+                'userInfo': this.userInfo,
                 'events': this.events,
-                'startDatetime': startDatetimeStr
+                'startDatetime': startDatetimeStr,
+                'endDatetime': endDatetimeStr
             },
             onSuccess: (data) => {
                 console.log('[MeetingView] Upload succeeded:', data);
@@ -429,8 +453,7 @@ class MeetingView {
 
     formatDatetime(date) {
         if (!date) return '';
-        const pad = (n) => n.toString().padStart(2, '0');
-        return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}-${pad(date.getHours())}:${pad(date.getMinutes())}.${pad(date.getSeconds())}`;
+        return date.toISOString(); // Use ISO format
     }
 
     // video mode

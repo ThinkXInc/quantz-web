@@ -1,0 +1,52 @@
+{% extends "html/base.html" %}
+
+{% block content %}
+<section style="color: #333; margin-bottom: 20px; padding: 6px 20px;">
+    <p>{{ formatted_date }}</p>
+
+    <p>{{ name_label }}: {{ name }}</p>
+    <p>{{ email_label }}: {{ email }}</p>
+
+    <br>
+
+    {% if video_path_all %}
+        <!-- Display screenshot with play button overlay -->
+        <a href="{{ video_path_all }}" target="_blank" style="text-decoration: none; position: relative; display: inline-block;">
+            <img src="{{ screen_shot_url_all }}" alt="Video" style="width: 100%; max-width: 600px; display: block;">
+            <!-- Play button overlay -->
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                <!-- Simple triangle play button using HTML entity -->
+                <span style="font-size: 60px; color: rgba(255,255,255,0.7);">&#9658;</span>
+            </div>
+        </a>
+    {% endif %}
+
+    <br>
+
+    {% for event in events %}
+        <div style="margin-bottom: 3px;">
+            {% if event.speaker == 'system' %}
+                <p style="color: #368fe8; margin: 0;">{{ event.speaker }}: {{ event.message }}</p>
+            {% elif event.speaker == 'user' %}
+                <p style="color: #A5A5A5; margin: 0;">{{ event.speaker }}: {{ event.message }}</p>
+            {% else %}
+                <p style="color: #8a8a8a; margin: 0;">{{ event.speaker }}: {{ event.message }}</p>
+            {% endif %}
+
+            {% if event.videoPath %}
+                <a href="{{ event.videoPath }}" target="_blank" style="text-decoration: none; position: relative; display: inline-block;">
+                    <img src="{{ event.screenShotUrl }}" alt="Video" style="width: 100%; max-width: 600px; display: block;">
+                    <!-- Play button overlay -->
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                        <span style="font-size: 60px; color: rgba(255,255,255,0.7);">&#9658;</span>
+                    </div>
+                </a>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+  <div style="margin-top: 37px; font-weight: 700;" clas="team">
+    {{ team }}
+  </div>
+</section>
+{% endblock %}
