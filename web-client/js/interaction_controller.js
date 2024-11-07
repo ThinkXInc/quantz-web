@@ -315,6 +315,7 @@
             this.currentHumanEvent = {
                 speaker: "user",
                 startMs: Date.now() - this.startTime,
+                timestamp: new Date().toISOString(), // Add timestamp
                 messages: [],
                 endMs: null
             };
@@ -344,6 +345,7 @@
             this.currentAssistantEvent = {
                 speaker: "system",
                 startMs: Date.now() - this.startTime,
+                timestamp: new Date().toISOString(), // Add timestamp
                 messages: [],
                 endMs: null
             };

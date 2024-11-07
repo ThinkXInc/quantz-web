@@ -54,6 +54,8 @@
             new ns.Language("中文", ns.LanguageCode.zh, false),
             new ns.Language("العربية", ns.LanguageCode.ar, false)
         ],
+        tokenIssuedEventName: 'quantz-tokenIssued',
+        failedToGetTokenEventName: 'quantz-failedToGetToken',
         didClickStartEventName: 'quantz-didClickStart',
         didClickRestartEventName: 'quantz-didClickRestart',
         messageReceiveEventName: 'quantz-messageReceived',
@@ -73,7 +75,6 @@
         closeMessageReceivedEventName: 'quantz-closeMessageReceived',
         connectionClosedCleanlyEventName: 'quantz-connectionClosedCleanly',
         languageChangeEventName: 'quantz-languageChange',
-        failedToGetTokenEventName: 'quantz-failedToGetToken',
         autoInteraction: true,
         enableRestart: true,
     };
@@ -903,6 +904,18 @@
             console.log(`[Quantz Button ${buttonId}] language change event received:`, lang);
             ns.buttonControllers[buttonId].changeLanguage(lang);
             ns.balloons[buttonId].changeLanguage(lang);
+        });
+
+        $buttonLoader.addEventListener(ns.configs[buttonId].tokenIssuedEventName, function(event) {
+            const { buttonId, token, clientId } = event.detail;
+            console.log(`[Quantz Button ${buttonId}] token and clientId issued event received.`);
+            document.dispatchEvent(new CustomEvent(ns.configs[buttonId].tokenIssuedEventName, {
+                detail: {
+                    buttonId: buttonId,
+                    //token: token,  // just in case not publish for security reason
+                    clientId: clientId
+                }
+            }));
         });
 
         $buttonLoader.addEventListener(ns.configs[buttonId].failedToGetTokenEventName, function(event) {

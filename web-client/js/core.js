@@ -29,6 +29,7 @@
             this.socket;  // WebSocket instance
 
             this.token;
+            this.clientId;
 
             this.isConnected = false;
             this.connectionRetryCount = 0;
@@ -133,24 +134,30 @@
                 });
 
                 if (!response.ok) {
-                    // Instead of throwing an error, return an object indicating the status
                     return {
                         token: null,
+                        clientId: null,
                         status: response.status,
                         error: new Error('Token request was denied. Status: ' + response.status)
                     };
                 }
-    
-                const token = await response.text();
-                return { token, status: response.status, error: null };
+        
+                const data = await response.json(); // Parse the JSON response
+                return { 
+                    token: data.token, 
+                    clientId: data.clientId,
+                    status: response.status, 
+                    error: null 
+                };
             } catch (error) {
                 console.error("Network error:", error);
-                return { token: null, status: null, error };
+                return { token: null, clientId: null, status: null, error };
             }
         }
 
         async connect(onConnected) {
             if(!this.token) {
+                console.log("[Core] No existing token, requesting new token...");
                 const result = await this.getToken();
 
                 if (result.error) {
@@ -159,9 +166,11 @@
                     return;
                 }
 
-
+                // Update the token on successful acquisition
                 this.token = result.token;
+                this.clientId = result.clientId;
                 console.log("[Core] Token obtained:", this.token);
+                this.dispatchTokenIssuedEvent(result.token, result.clientId);
             } else {
                 console.log("[Core] Use token :", this.token);
             }
@@ -686,6 +695,17 @@
             this.$buttonLoader.dispatchEvent(event);
         }
 
+        dispatchTokenIssuedEvent(token, clientId) {
+            const event = new CustomEvent(ns.configs[this.buttonId].tokenIssuedEventName, {
+                detail: {
+                    buttonId: this.buttonId,
+                    token: token,
+                    clientId: clientId
+                }
+            });
+            this.$buttonLoader.dispatchEvent(event);
+        }
+ 
         dispatchFailedToGetTokenEvent(error, status) {
             const event = new CustomEvent(ns.configs[this.buttonId].failedToGetTokenEventName, {
                 detail: {
