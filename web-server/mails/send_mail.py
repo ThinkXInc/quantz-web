@@ -440,6 +440,100 @@ def send_added_to_wait_list_email(general_status: GeneralSystemStatus, user: Use
         except MailSendError as e:
             raise MailSendError
 
+def generate_interview_result_template(metadata, name_label='Name', email_label='Email'):
+    # Parse and format the date
+    start_datetime_str = metadata.get("startDatetime")
+    start_datetime = datetime.fromisoformat(start_datetime_str)
+    formatted_date = start_datetime.strftime("%Y/%m/%d %H:%M")
+
+    # Get name and email
+    user_info = metadata.get("userInfo", {})
+    name = user_info.get("name", "")
+    email = user_info.get("email", "")
+
+    # Get video and screenshot paths
+    video_path_all = metadata.get("videoPathAll", "")
+    screen_shot_url_all = metadata.get("screenShotUrlAll", "")
+
+    # Get events
+    events = metadata.get("events", [])
+
+    # Prepare the data for the template
+    return render_template(
+        'html/interview_result.html',
+        formatted_date=formatted_date,
+        name_label=name_label,
+        email_label=email_label,
+        name=name,
+        email=email,
+        video_path_all=video_path_all,
+        screen_shot_url_all=screen_shot_url_all,
+        events=events
+    )
+
+def generate_interview_result_text(metadata, name_label='Name', email_label='Email'):
+    from datetime import datetime
+
+    # Parse and format the date
+    start_datetime_str = metadata.get("startDatetime")
+    start_datetime = datetime.fromisoformat(start_datetime_str)
+    formatted_date = start_datetime.strftime("%Y/%m/%d %H:%M")
+
+    # Get name and email
+    user_info = metadata.get("userInfo", {})
+    name = user_info.get("name", "")
+    email = user_info.get("email", "")
+
+    # Initialize the text content
+    lines = []
+    lines.append(f"{formatted_date}\n")
+    lines.append(f"{name_label}: {name}")
+    lines.append(f"{email_label}: {email}\n")
+
+    # Get events
+    events = metadata.get("events", [])
+    for event in events:
+        speaker = event.get("speaker", "")
+        message = event.get("message", "")
+        lines.append(f"{speaker}: {message}")
+
+    # Join all lines into a single string
+    text_content = '\n'.join(lines)
+    return text_content
+
+def send_interview_result_email(user: User, metadata: dict, interview: "InteractionModel", lang: str)
+    flask_app = Flask(__name__, template_folder='templates')  # mails/ is root
+    logger.debug(flask_app.jinja_loader.searchpath)
+
+    def generate_html_template(metadata):
+        # TODO:
+        pass
+
+    with flask_app.app_context(): # celery worker process needs context
+        title = interview.title
+        name = metadata["userInfo"]["name"]
+        subject = locale.get('email_interview_result_subject', lang, [title, name])
+        name_label = locale.get('email_interview_result_name_label', lang)
+        email_label = locale.get('email_interview_result_email_label', lang)
+        html_content = generate_interview_result_template(metadata, name_label, email_label)
+        text_content = generate_interview_result_text(metadata, name_label, email_label)
+
+        try:
+            mail.send(
+                sender=SENDER,
+                reply_to=REPLY_TO,
+                recipient=user.email,
+                subject=subject,
+                text=text_content,
+                html=html_content,
+                bcc=[MAIL_SYSTEM]
+            )
+            logger.info(light_green(f'Email "{subject}" sent to {user.email}'))
+        except MailSendError as e:
+            raise MailSendError
+
+
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Send various types of emails.")
