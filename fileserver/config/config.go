@@ -16,6 +16,7 @@ type Config struct {
 	FilesRootPath          string `yaml:"files_root_path"`
 	LimitMB                int    `yaml:"limit_mb"`
 	WebhookURL             string `yaml:"webhook_url"`
+	DiskSpaceThresholdMB int `json:"diskSpaceThresholdMB"`
 }
 
 var Cfg Config

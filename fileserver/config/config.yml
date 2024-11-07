@@ -4,5 +4,5 @@ port: 8009
 upload_url: "/fs/upload"
 access_url: "/fs/files/"
 files_root_path: "/disk1/quantz"
-limit_mb: 100
-webhook_url: "https://quantz.thinkxinc.com/v1/webhook/files/uploaded"
+limit_mb: 300
+webhook_url: "http://192.168.1.11:8000/v1/webhook/files/uploaded"
