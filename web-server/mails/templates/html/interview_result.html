@@ -2,17 +2,20 @@
 
 {% block content %}
 <section style="color: #333; margin-bottom: 20px; padding: 6px 20px;">
-    <p>{{ formatted_date }}</p>
+    <div style="font-size: 1.2em; margin-bottom: 33px;">{{ body1 }}</div>
 
-    <p>{{ name_label }}: {{ name }}</p>
-    <p>{{ email_label }}: {{ email }}</p>
+    <div style="padding: 2px 16px; width: max-content; min-width: 400px; font-weight: 600; color: #5f5f5f; font-size: 13px; width: max-content;">
+        <p><span style="margin-right: 4px;">{{ name_label }}</span><span>{{ name }}</span></p>
+        <p><span style="margin-right: 4px;">{{ email_label }}</span><span>{{ email }}</span></p>
+        <p><span style="margin-right: 4px;">{{ date_label }}</span><span>{{ formatted_date }}</span></p>
+    </div>
 
     <br>
 
     {% if video_path_all %}
         <!-- Display screenshot with play button overlay -->
-        <a href="{{ video_path_all }}" target="_blank" style="text-decoration: none; position: relative; display: inline-block;">
-            <img src="{{ screen_shot_url_all }}" alt="Video" style="width: 100%; max-width: 600px; display: block;">
+        <a href="{{ host_url }}{{ video_path_all }}" target="_blank" style="text-decoration: none; position: relative; display: inline-block;">
+            <img src="{{ host_url }}{{ screen_shot_url_all }}" alt="Video" style="width: 100%; max-width: 600px; display: block;">
             <!-- Play button overlay -->
             <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
                 <!-- Simple triangle play button using HTML entity -->
@@ -34,8 +37,8 @@
             {% endif %}
 
             {% if event.videoPath %}
-                <a href="{{ event.videoPath }}" target="_blank" style="text-decoration: none; position: relative; display: inline-block;">
-                    <img src="{{ event.screenShotUrl }}" alt="Video" style="width: 100%; max-width: 600px; display: block;">
+                <a href="{{ host_url }}{{ event.videoPath }}" target="_blank" style="text-decoration: none; position: relative; display: inline-block;">
+                    <img src="{{ host_url }}{{ event.screenShotUrl }}" alt="Video" style="width: 100%; max-width: 600px; display: block;">
                     <!-- Play button overlay -->
                     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
                         <span style="font-size: 60px; color: rgba(255,255,255,0.7);">&#9658;</span>
@@ -44,6 +47,8 @@
             {% endif %}
         </div>
     {% endfor %}
+
+  <div style="font-size: 1.2em; margin-top: 33px;">{{ body2 }}</div>
 
   <div style="margin-top: 37px; font-weight: 700;" clas="team">
     {{ team }}

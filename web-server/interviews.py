@@ -382,6 +382,9 @@ def webhook_files_uploaded():
             logger.error(red(message))
             return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
 
+        message = f'Successfully processed {event} event for webhook {request.url}.'
+        logger.info(green(message))
+        return OKAPISuccessFormat(message=message).http_response()
 
     elif event == "save.fail.diskfull":
         message = f'Failed to save interview result data because of disk full.'
