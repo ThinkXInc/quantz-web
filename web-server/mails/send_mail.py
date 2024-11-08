@@ -456,7 +456,7 @@ def generate_interview_result_template(metadata, body1, body2, date_label='Date'
 
     # Get video and screenshot paths
     video_path_all = metadata.get("videoPathAll", "")
-    screen_shot_url_all = metadata.get("screenShotUrlAll", "")
+    screen_shot_url_all = metadata.get("screenShotPathAll", "")
 
     # Get events
     events = metadata.get("events", [])

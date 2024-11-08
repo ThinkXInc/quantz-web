@@ -289,6 +289,7 @@ def delete_all_interviews(user, lang, lang_name):
         logger.error(red(f"Error while deleting interviews: {e}"))
         return UnexpectedAPIErrorFormat(lang=lang, message=locale.get('interviews_delete_failed', lang)).http_response()
 
+
 # webhook from fileserver
 @blueprint_interviews.route('/v1/webhook/files/uploaded', methods=['POST'])
 @content_type_check_json
@@ -399,3 +400,112 @@ def webhook_files_uploaded():
         logger.error(red(message))
         return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
 
+
+@blueprint_interviews.route('/interviews/mailsample/send', methods=['GET'])
+def mailsample_send():
+    logger.info(magenta(f'[GET] /interviews/mailsample/send'))
+
+    # Prepare the recipient email address
+    sendto = "kaz@thinkxinc.com"
+
+    # Create a user object with the recipient's email
+    user = User(email=sendto)
+
+    # Prepare the metadata from the expected sample mail
+    metadata = {
+        'startDatetime': '2024-11-08T12:31:00',
+        'userInfo': {
+            'name': 'Lara',
+            'email': 'laraland@mail.com'
+        },
+        'videoPathAll': '',  # No video links
+        'screenShotPathAll': 'https://quantz.thinkxinc.com/img/interviews/samplemail/full.png',
+        'events': [
+            {
+                'speaker': 'system',
+                'message': 'Hello, Lara. I would like to conduct a simple interview with you now. Are you ready?',
+                'videoPath': '',
+                'screenShotPath': None
+            },
+            {
+                'speaker': 'user',
+                'message': "Yes, I'm ready.",
+                'videoPath': '',
+                'screenShotPath': 'https://quantz.thinkxinc.com/img/interviews/samplemail/user_0.png'
+            },
+            {
+                'speaker': 'system',
+                'message': 'Okay. Could you briefly introduce yourself?',
+                'videoPath': '',
+                'screenShotPath': None
+            },
+            {
+                'speaker': 'user',
+                'message': (
+                    "Okay, my name is Lara. I'm a second-year master's student at the University of Tokyo studying new media design. "
+                    "Specifically, I'm developing devices that enhance human creativity using sensory feedback. "
+                    "For example, this project combines visual, auditory, and tactile inputs to support diverse creative tasks."
+                ),
+                'videoPath': '',
+                'screenShotPath': 'https://quantz.thinkxinc.com/img/interviews/samplemail/user_1.png'
+            },
+            {
+                'speaker': 'system',
+                'message': (
+                    "Okay. This company provides next-generation communication services using LLM technology. "
+                    "What skills do you think you can contribute?"
+                ),
+                'videoPath': '',
+                'screenShotPath': 'https://quantz.thinkxinc.com/img/interviews/samplemail/user_2.png'
+            },
+            {
+                'speaker': 'user',
+                'message': (
+                    "Since I studied at the design school in Shanghai, I'm skilled with contemporary graphic and video editing tools. "
+                    "With over four years of experience and a following of 5,000 on social media, "
+                    "I can contribute to creative growth, especially in marketing and design."
+                ),
+                'videoPath': '',
+                'screenShotPath': None
+            },
+            {
+                'speaker': 'system',
+                'message': (
+                    "Okay, thank you. Finally, could you tell us what aspects of our company interested you the most?"
+                ),
+                'videoPath': '',
+                'screenShotPath': 'https://quantz.thinkxinc.com/img/interviews/samplemail/user_3.png'
+            },
+            {
+                'speaker': 'user',
+                'message': (
+                    "ThinkX is challenging new things and developing future possibilities, and I thought that the company's attitude of following creative people suited me."
+                ),
+                'videoPath': '',
+                'screenShotPath': None
+            },
+            {
+                'speaker': 'system',
+                'message': (
+                    "Operator: Thank you, Lara. This is the end. Please feel free to write any follow-up information. Goodbye."
+                ),
+                'videoPath': '',
+                'screenShotPath': None
+            }
+        ]
+    }
+
+    # Prepare the interview object with the title
+    interview = InteractionModel(title="Interview A")
+
+    # Set the language
+    lang = 'ja'
+
+    # Send the email using the existing send_interview_result_email function
+    try:
+        send_interview_result_email(user, metadata, interview, lang)
+        logger.info(light_green(f'Sample email sent to {user.email}'))
+        return jsonify({'status': 'success', 'message': 'Sample email sent'}), 200
+    except MailSendError as e:
+        logger.error(f"Failed to send sample email: {str(e)}")
+        return jsonify({'status': 'error', 'message': 'Failed to send sample email'}), 500
