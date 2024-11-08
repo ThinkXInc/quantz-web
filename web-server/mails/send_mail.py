@@ -440,7 +440,7 @@ def send_added_to_wait_list_email(general_status: GeneralSystemStatus, user: Use
         except MailSendError as e:
             raise MailSendError
 
-def generate_interview_result_template(metadata, name_label='Name', email_label='Email'):
+def generate_interview_result_template(metadata, body1, body2, date_label='Date', name_label='Name', email_label='Email', lang='en'):
     # Parse and format the date
     start_datetime_str = metadata.get("startDatetime")
     start_datetime = datetime.fromisoformat(start_datetime_str)
@@ -461,17 +461,22 @@ def generate_interview_result_template(metadata, name_label='Name', email_label=
     # Prepare the data for the template
     return render_template(
         'html/interview_result.html',
+        body1=body1,
+        body2=body2,
+        host_url=HOST_URL,
         formatted_date=formatted_date,
+        date_label=date_label,
         name_label=name_label,
         email_label=email_label,
         name=name,
         email=email,
         video_path_all=video_path_all,
         screen_shot_url_all=screen_shot_url_all,
-        events=events
+        events=events,
+        team=locale.get('team', lang)
     )
 
-def generate_interview_result_text(metadata, name_label='Name', email_label='Email'):
+def generate_interview_result_text(metadata, body1, body2, date_label='Date', name_label='Name', email_label='Email', lang='en'):
     from datetime import datetime
 
     # Parse and format the date
@@ -486,7 +491,8 @@ def generate_interview_result_text(metadata, name_label='Name', email_label='Ema
 
     # Initialize the text content
     lines = []
-    lines.append(f"{formatted_date}\n")
+    lines.append(body1)
+    lines.append(f"{date_label}: {formatted_date}\n")
     lines.append(f"{name_label}: {name}")
     lines.append(f"{email_label}: {email}\n")
 
@@ -497,6 +503,8 @@ def generate_interview_result_text(metadata, name_label='Name', email_label='Ema
         message = event.get("message", "")
         lines.append(f"{speaker}: {message}")
 
+    lines.append(body2)
+    lines.append(locale.get('team', lang))
     # Join all lines into a single string
     text_content = '\n'.join(lines)
     return text_content
@@ -505,18 +513,19 @@ def send_interview_result_email(user: User, metadata: dict, interview: "Interact
     flask_app = Flask(__name__, template_folder='templates')  # mails/ is root
     logger.debug(flask_app.jinja_loader.searchpath)
 
-    def generate_html_template(metadata):
-        # TODO:
-        pass
+    lang = "ja"
 
     with flask_app.app_context(): # celery worker process needs context
         title = interview.title
         name = metadata["userInfo"]["name"]
         subject = locale.get('email_interview_result_subject', lang, [title, name])
+        body1 = locale.get('email_interview_result_body1', lang)
+        body2 = locale.get('email_interview_result_body2', lang)
+        date_label = locale.get('email_interview_result_date_label', lang)
         name_label = locale.get('email_interview_result_name_label', lang)
         email_label = locale.get('email_interview_result_email_label', lang)
-        html_content = generate_interview_result_template(metadata, name_label, email_label)
-        text_content = generate_interview_result_text(metadata, name_label, email_label)
+        html_content = generate_interview_result_template(metadata, body1, body2, date_label, name_label, email_label, lang)
+        text_content = generate_interview_result_text(metadata, body1, body2, date_label, name_label, email_label, lang)
 
         try:
             mail.send(

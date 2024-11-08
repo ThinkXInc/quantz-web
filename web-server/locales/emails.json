@@ -315,12 +315,57 @@
         "ru": ""
     },
     "email_interview_result_subject": {
-        "ja": "",
-        "en": "",
-        "zh": "",
-        "fr": "",
-        "es": "",
-        "ar": "",
-        "ru": ""
+        "ja": "【Quantz】[結果報告] $0 - $1",
+        "en": "【Quantz】[Summary] $0 - $1",
+        "zh": "【Quantz】[会议总结] $0 - $1",
+        "fr": "【Quantz】[Compte-rendu] $0 - $1",
+        "es": "【Quantz】[Resumen de la reunión] $0 - $1",
+        "ar": "【Quantz】[ملخص الاجتماع] $0 - $1",
+        "ru": "【Quantz】[Результаты] $0 - $1"
+    },
+    "email_interview_result_body1": {
+        "ja": "ミーティング結果のご報告です。",
+        "en": "Here is the summary of the meeting.",
+        "zh": "以下是会议的总结。",
+        "fr": "Voici le compte-rendu de la réunion.",
+        "es": "A continuación se presenta el resumen de la reunión.",
+        "ar": "إليك ملخص الاجتماع.",
+        "ru": "Вот резюме встречи."
+    },
+    "email_interview_result_date_label": {
+        "ja": "開始時刻",
+        "en": "Start Time",
+        "zh": "会议开始时间",
+        "fr": "Heure de début",
+        "es": "Hora de inicio",
+        "ar": "وقت البدء",
+        "ru": "Время начала"
+    },
+    "email_interview_result_name_label": {
+        "ja": "名前",
+        "en": "Name",
+        "zh": "姓名",
+        "fr": "Nom",
+        "es": "Nombre",
+        "ar": "الاسم",
+        "ru": "Имя"
+    },
+    "email_interview_result_email_label": {
+        "ja": "メールアドレス",
+        "en": "Email",
+        "zh": "电子邮件",
+        "fr": "E-mail",
+        "es": "Correo electrónico",
+        "ar": "البريد الإلكتروني",
+        "ru": "Электронная почта"
+    },
+    "email_interview_result_body2": {
+        "ja": "この代理ミーティングによって、あなたの人生の貴重な30分を増やすことに成功しました！",
+        "en": "Thanks to this proxy meeting, we have successfully saved 30 precious minutes of your life!",
+        "zh": "通过这次代理会议，我们成功为您节省了宝贵的30分钟时间！",
+        "fr": "Grâce à cette réunion par procuration, nous avons réussi à vous faire gagner 30 précieuses minutes de votre vie!",
+        "es": "Gracias a esta reunión proxy, hemos logrado ahorrarte 30 minutos valiosos de tu vida!",
+        "ar": "بفضل هذا الاجتماع بالوكالة، نجحنا في توفير 30 دقيقة ثمينة من حياتك!",
+        "ru": "Благодаря этому заместительскому собранию, нам удалось сэкономить 30 драгоценных минут вашей жизни!"
     }
 }
