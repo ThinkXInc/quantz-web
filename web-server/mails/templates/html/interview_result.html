@@ -5,44 +5,57 @@
     <div style="font-size: 1.2em; margin-bottom: 33px;">{{ body1 }}</div>
 
     <div style="padding: 2px 16px; width: max-content; min-width: 400px; font-weight: 600; color: #5f5f5f; font-size: 13px; width: max-content;">
-        <p><span style="margin-right: 4px;">{{ name_label }}</span><span>{{ name }}</span></p>
-        <p><span style="margin-right: 4px;">{{ email_label }}</span><span>{{ email }}</span></p>
-        <p><span style="margin-right: 4px;">{{ date_label }}</span><span>{{ formatted_date }}</span></p>
+        <p style="margin: 0 0 5px 0;"><span style="margin-right: 4px;">{{ name_label }}</span><span>{{ name }}</span></p>
+        <p style="margin: 0 0 5px 0;"><span style="margin-right: 4px;">{{ email_label }}</span><span>{{ email }}</span></p>
+        <p style="margin: 0 0 5px 0;"><span style="margin-right: 4px;">{{ date_label }}</span><span>{{ formatted_date }}</span></p>
     </div>
 
     <br>
 
     {% if video_path_all %}
         <!-- Display screenshot with play button overlay -->
-        <a href="{{ host_url }}{{ video_path_all }}" target="_blank" style="text-decoration: none; position: relative; display: inline-block;">
+        <a href="{{ host_url }}{{ video_path_all }}" target="_blank" style="text-decoration: none; position: margin-bottom: 79px; display: inline-block;">
             <img src="{{ host_url }}{{ screen_shot_url_all }}" alt="Video" style="width: 100%; max-width: 600px; display: block;">
+            {#
             <!-- Play button overlay -->
             <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
                 <!-- Simple triangle play button using HTML entity -->
                 <span style="font-size: 60px; color: rgba(255,255,255,0.7);">&#9658;</span>
             </div>
+            #}
         </a>
     {% endif %}
 
     <br>
 
     {% for event in events %}
-        <div style="margin-bottom: 3px;">
+        <div style="margin-bottom: 3px; font-size: 15px;">
             {% if event.speaker == 'system' %}
-                <p style="color: #368fe8; margin: 0;">{{ event.speaker }}: {{ event.message }}</p>
+                <p style="margin: 0;">
+                    <span style="margin-right: 10px; font-size: 12px; padding: 2px 4px; border-radius: 2px; background-color: #e3e3e3; color: #8a8a8a;">{{ event.speaker }}</span>
+                    <span style="font-size:15px; font-weight:500; color:#606060;">{{ event.message }}</span>
+                </p>
             {% elif event.speaker == 'user' %}
-                <p style="color: #A5A5A5; margin: 0;">{{ event.speaker }}: {{ event.message }}</p>
+                <p style="margin: 0;">
+                    <span style="margin-right: 10px; font-size: 12px; padding: 2px 4px; border-radius: 2px; background-color: #dff9fc; color: #79a9af;">{{ event.speaker }}</span>
+                    <span style="font-size:15px; font-weight:500; color:#3db3c3;">{{ event.message }}</span>
+                </p>
             {% else %}
-                <p style="color: #8a8a8a; margin: 0;">{{ event.speaker }}: {{ event.message }}</p>
+                <p style="margin: 0;">
+                    <span style="margin-right: 10px; font-size: 12px; padding: 2px 4px; border-radius: 2px; background-color: #e3e3e3; color: #683c15;">{{ event.speaker }}</span>
+                    <span style="font-size:15px; font-weight:300; color:#aaa;">{{ event.message }}</span>
+                </p>
             {% endif %}
 
             {% if event.videoPath %}
-                <a href="{{ host_url }}{{ event.videoPath }}" target="_blank" style="text-decoration: none; position: relative; display: inline-block;">
+                <a href="{{ host_url }}{{ event.videoPath }}" target="_blank" style="margin: 18px 0; text-decoration: none; position: relative !important; display: inline-block;">
                     <img src="{{ host_url }}{{ event.screenShotUrl }}" alt="Video" style="width: 100%; max-width: 600px; display: block;">
                     <!-- Play button overlay -->
+                     {#
                     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
                         <span style="font-size: 60px; color: rgba(255,255,255,0.7);">&#9658;</span>
                     </div>
+                    #}
                 </a>
             {% endif %}
         </div>
