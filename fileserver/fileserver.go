@@ -26,7 +26,7 @@ type Event struct {
 	Message       string `json:"message"`
 	Timestamp     string `json:"timestamp,omitempty"`
 	VideoPath      string `json:"videoPath,omitempty"`
-	ScreenShotUrl string `json:"screenShotUrl,omitempty"`
+	ScreenShotPath string `json:"screenShotPath,omitempty"`
 }
 
 type UserInfo struct {
@@ -43,9 +43,9 @@ type MetaData struct {
 	Events           []Event   `json:"events"`
 	StartDatetime    string    `json:"startDatetime"`
 	EndDatetime      string    `json:"endDatetime"`
-	MetadataUrl      string    `json:"metadataUrl,omitempty"`
+	MetadataPath      string    `json:"metadataPath,omitempty"`
 	VideoPathAll     string    `json:"videoPathAll,omitempty"`
-	ScreenShotUrlAll string    `json:"screenShotUrlAll,omitempty"`
+	ScreenShotPathAll string    `json:"screenShotPathAll,omitempty"`
 }
 
 // New struct for webhook payload
@@ -244,9 +244,9 @@ func processVideo(videoPath, saveFolderPath string, metaData MetaData) (err erro
 		log.Printf("[processVideo] Generated screenshot for whole video saved to %s", wholeScreenshotPath)
 	}
 
-	// Update metaData with VideoPathAll and ScreenShotUrlAll
+	// Update metaData with VideoPathAll and ScreenShotPathAll
 	metaData.VideoPathAll = path.Join(baseUrl, COMPRESSED_WHOLE_VIDEO_NAME)
-	metaData.ScreenShotUrlAll = path.Join(baseUrl, SCREENSHOT_WHOLE_VIDEO_NAME)
+	metaData.ScreenShotPathAll = path.Join(baseUrl, SCREENSHOT_WHOLE_VIDEO_NAME)
 
 	// Initialize a map to track index for each speaker
 	speakerIndexes := make(map[string]int)
@@ -282,8 +282,8 @@ func processVideo(videoPath, saveFolderPath string, metaData MetaData) (err erro
 			event.VideoPath = path.Join(baseUrl, fileName)
 		}
 
-		// Only generate screenshot if the original event contains a ScreenShotUrl
-		if event.ScreenShotUrl != "" {
+		// Only generate screenshot if the original event contains a ScreenShotPath
+		if event.ScreenShotPath != "" {
 			// Generate the screenshot
 			screenShotFileName := fmt.Sprintf("%s_%d.jpeg", speaker, speakerIdx)
 			screenShotFilePath := filepath.Join(saveFolderPath, screenShotFileName)
@@ -295,16 +295,16 @@ func processVideo(videoPath, saveFolderPath string, metaData MetaData) (err erro
 			}
 			log.Printf("[processVideo] Generated screenshot saved to %s", screenShotFilePath)
 
-			// Update the event's ScreenShotUrl if it was originally present
-			event.ScreenShotUrl = path.Join(baseUrl, screenShotFileName)
+			// Update the event's ScreenShotPath if it was originally present
+			event.ScreenShotPath = path.Join(baseUrl, screenShotFileName)
 		}
 
 	    // Update the event in the metadata.Events slice
 	    metaData.Events[idx] = event
 	}
 
-	// Update metadataUrl
-	metaData.MetadataUrl = path.Join(baseUrl, METADATA_FILE_NAME)
+	// Update metadataPath
+	metaData.MetadataPath = path.Join(baseUrl, METADATA_FILE_NAME)
 
 	// Save the updated metadata.json
 	metadataJsonPath := filepath.Join(saveFolderPath, METADATA_FILE_NAME)

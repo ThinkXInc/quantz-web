@@ -25,7 +25,7 @@ type Event struct {
 	Message       string `json:"message"`
 	VideoPath     string `json:"videoPath,omitempty"` // Optional path to a video file
 	Timestamp     string `json:"timestamp,omitempty"` // Optional ISO string timestamp
-	ScreenShotUrl string `json:"screenShotUrl,omitempty"`
+	ScreenShotPath string `json:"screenShotPath,omitempty"`
 }
 
 type UserInfo struct {
@@ -81,7 +81,7 @@ func main() {
                 EndMs:     2000,
                 Message:   "Yes, I'm ready",
                 VideoPath: fmt.Sprintf("/fs/files/interview/%d/%02d/%02d/%s/%s/user_0.mp4", year, month, day, identifier, clientID),
-                ScreenShotUrl: fmt.Sprintf("/fs/files/interview/%d/%02d/%02d/%s/%s/user_0.jpeg", year, month, day, identifier, clientID),
+                ScreenShotPath: fmt.Sprintf("/fs/files/interview/%d/%02d/%02d/%s/%s/user_0.jpeg", year, month, day, identifier, clientID),
                 Timestamp: "2024-10-12T11:32:45Z",
             },
             {
@@ -97,7 +97,7 @@ func main() {
                 EndMs:     7000,
                 Message:   "Yes, my name is Josheph Cristpher Mackerboy. I'm working hard everyday. But I've recently noticed I'm working too hard. So I need to change my job right away. I like hard working but it's not sustainable in this way.",
                 VideoPath: fmt.Sprintf("/fs/files/interview/%d/%02d/%02d/%s/%s/user_1.mp4", year, month, day, identifier, clientID),
-                ScreenShotUrl: fmt.Sprintf("/fs/files/interview/%d/%02d/%02d/%s/%s/user_1.jpeg", year, month, day, identifier, clientID),
+                ScreenShotPath: fmt.Sprintf("/fs/files/interview/%d/%02d/%02d/%s/%s/user_1.jpeg", year, month, day, identifier, clientID),
                 Timestamp: "2024-10-12T11:32:45Z",
             },
             {
