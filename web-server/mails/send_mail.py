@@ -519,7 +519,7 @@ def send_interview_result_email(user: User, metadata: dict, interview: "Interact
     flask_app = Flask(__name__, template_folder='templates')  # mails/ is root
     logger.debug(flask_app.jinja_loader.searchpath)
 
-    lang = "ja"
+    lang = "en"
 
     with flask_app.app_context(): # celery worker process needs context
         title = interview.title
