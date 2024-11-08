@@ -62,6 +62,24 @@
         "ru": "",
         "ar": ""
     },
+    "interview_results_count_plural":  {
+        "ja": "$0回のミーティングが実施されました。",
+        "en": "$0 meetings have been conducted.",
+        "zh": "已进行了$0次会议。",
+        "es": "Se han realizado $0 reuniones.",
+        "fr": "$0 réunions ont été tenues.",
+        "ru": "Проведено $0 встреч.",
+        "ar": "تم عقد $0 اجتماع."
+    },
+    "interview_results_count_singular":  {
+        "ja": "$0回のミーティングが実施されました。",
+        "en": "$0 meeting has been conducted.",
+        "zh": "已进行了$0次会议。",
+        "es": "Se ha realizado $0 reunión.",
+        "fr": "$0 réunion a été tenue.",
+        "ru": "Проведена $0 встреча.",
+        "ar": "تم عقد $0 اجتماع."
+    },
     "create_interview_title_page_title": {
         "ja": "インタビュータイトル",
         "en": "Interview Title",

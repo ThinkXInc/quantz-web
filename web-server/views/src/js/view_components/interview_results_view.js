@@ -39,6 +39,8 @@ class InterviewResultCellContent extends TableViewCellContent {
     constructor({
         interviewId = '',
         clientId = '',
+        isChecked = false,
+        dateString = '',
         title = '',
         text = '',
         icon = '',
@@ -52,6 +54,8 @@ class InterviewResultCellContent extends TableViewCellContent {
         });
 
         this.interviewId = interviewId;
+        this.clientId = clientId;
+        this.isChecked = isChecked;
     }
 }
 
@@ -62,6 +66,8 @@ class InterviewResultCell extends TableViewCell {
         title = '',
         text = '',
         icon = '',
+        isChecked = false,
+        cellSelectedClassName = 'selected',
         maxDisplayTitleLength = 100,
         maxDisplayTextLength = 100,
         ...otherOptions
@@ -72,6 +78,7 @@ class InterviewResultCell extends TableViewCell {
             title: title,
             text: text,
             icon: icon,
+            cellSelectedClassName: cellSelectedClassName,
             ...otherOptions
         });
 
@@ -84,15 +91,35 @@ class InterviewResultCell extends TableViewCell {
         this.$text.textContent = truncateText(text, this.maxDisplayTextLength);
     }
 
-    updateTitle(title, maxCharacterLength = this.maxDisplayTitleLength, flashDuration = 10, cursorChar = ' ', truncateSuffix = "...") {
-        flashText(this, 'title', truncateText(title, maxCharacterLength), flashDuration, 0, cursorChar);
+    set isChecked(value) {
+        this._isChecked = value;
+        if (value == true) {
+            this.$isChecked.classList.add('checked');
+        } else {
+            this.$isChecked.classList.remove('checked');
+        }
     }
+
+    get label() { this._label; }
+
+    setContent(content) {
+        this.content = content;
+        this.title = content.title;
+        this.text = content.text;
+        this.label = content.label;
+        this.isChecked = content.isChecked;
+    }
+
+    //updateTitle(title, maxCharacterLength = this.maxDisplayTitleLength, flashDuration = 10, cursorChar = ' ', truncateSuffix = "...") {
+    //    flashText(this, 'title', truncateText(title, maxCharacterLength), flashDuration, 0, cursorChar);
+    //}
 }
 
 class InterviewResults extends TableView {
     constructor({
         id,
         lang,
+        locale,
         tableViewId = "InterviewResults",
         cellClass = InterviewListCell,
         cellContentClass = InterviewListCellContent,
@@ -114,6 +141,7 @@ class InterviewResults extends TableView {
         });
 
         this.lang = lang;
+        this.locale = locale;
         this.tableViewId = tableViewId;
         this.maxDisplayTitleLength = maxDisplayTitleLength;
         this.maxDisplayTextLength = maxDisplayTextLength;
@@ -133,9 +161,9 @@ class InterviewResults extends TableView {
                 this.loading(false);
 
                 const { interviewResults, count } = res
-                this.updateHeaderInterviewCounts(count);
                 debuglog(interviewResults)
-                this.updateContentsFromInterviewResults(interviewResults);
+                this.updateContents(interviewResults);
+                this.updateHeaderCount(count);
             },
             (error) => {
                 this.loading(false);
@@ -143,7 +171,7 @@ class InterviewResults extends TableView {
             });
     }
 
-    updateContentsFromInterviewResults(interviewResults) {
+    updateContents(interviewResults) {
         let contents = interviewResults.map(d => new InterviewResultCellContent({
             interviewId: d.interviewId,
             clientId: d.clientId,
@@ -153,17 +181,24 @@ class InterviewResults extends TableView {
         this.contents = contents;
     }
 
-    updateHeaderInterviewCounts(count) {
+    updateCount(count) {
         if (count > 1) {
-            this.$interviewListCount.textContent = `${count} ${this.listCountTextPlural}`
+            this.$count.textContent = this.locale('interview_results_count_plural', this.lang, [count])
         } else {
-            this.$interviewListCount.textContent = `${count} ${this.listCountTextSingular}`
+            this.$count.textContent = this.locale('interview_results_count_singular', this.lang, [count])
         }
     }
 
-    addNewCell(title, text, interviewId, delay = 0, insertCellIndex = 0) {
+    addNewCell(interviewId, clientId, isChecked, dateString, title, text, delay = 0, insertCellIndex = 0) {
         this.insertCell(
-            new InterviewListCellContent({title: '', text: text, interviewId: interviewId })
+            new InterviewListCellContent({
+                clientId: clientId,
+                isChecked: isChecked,
+                dateString: dateString,
+                title: title,
+                text: text,
+                interviewId: interviewId
+            })
             , insertCellIndex, delay, (newCell)=> {
                 newCell.updateTitle(title)
                 this.selectCellAtIndex(newCell.index, newCell);
@@ -182,18 +217,18 @@ class InterviewResults extends TableView {
         console.log(`${this.id}: cell ID:${cell.id} Index:${selectedIndex} clicked`)
         // Dispatch event
         this.$view.dispatchEvent(new CustomEvent(
-            "clickedInterviewCell", 
-            { detail: { index: selectedIndex, interviewId: cell.content.interviewId, cell: cell } }));
+            "clickedInterviewResultCell", 
+            { detail: { index: selectedIndex, clientId: cell.content.clientId, cell: cell } }));
     }
 
-    updateTitleWithInterviewId(interviewId, title) {
-        let cell = this._cellByInterviewId(interviewId);
+    updateTitleWithClientId(clientId, title) {
+        let cell = this._cellByClientId(clientId);
         cell.updateTitle(title);
     }
 
-    _cellByInterviewId(interviewId) {
+    _cellByCleintId(clientId) {
         // Search for a cell with the matching interviewId
-        let foundCell = this.cells.find(cell => cell.content && cell.content.interviewId === interviewId);
+        let foundCell = this.cells.find(cell => cell.content && cell.content.clientId === clientId);
     
         // If a cell is found, return it
         if (foundCell) {
@@ -201,82 +236,47 @@ class InterviewResults extends TableView {
         }
     
         // If no cell is found, throw an error
-        throw new Error(`No cell found with interviewId: ${interviewId}`);
-    }
-
-    _addEventHandlers() {
-        const _this = this;
-        this.$createNew.addEventListener('click', () => {
-            console.log(`${this.id} ${this.$createNew.id} clicked`);
-            // Dispatch event
-            this.$view.dispatchEvent(new CustomEvent(
-                "clickedNewInterviewButton", 
-                { detail: { } }));
-        })
+        throw new Error(`No cell found with clientId: ${clientId}`);
     }
 
     createElements() {
         // Interview List Header
-        this.createElementsListHeader();
-
-        // Create New Section
-        this.createElementsCreateNewButton();
+        this.createHeader();
     }
 
-    createElementsListHeader () {
-        this.$interviewListHeader = document.createElement('div');
-        this.$interviewListHeader.classList.add('interviewListHeader');
+    createHeader () {
+        this.$interviewResultsHeader = document.createElement('div');
+        this.$interviewResultsHeader.classList.add('interviewResultsHeader');
 
         // Left Container
-        this.$leftContainer = document.createElement('div');
-        this.$leftContainer.classList.add('leftContainer');
-        this.$interviewListHeader.appendChild(this.$leftContainer);
+        this.$container = document.createElement('div');
+        this.$container.classList.add('container');
+        this.$interviewResultsHeader.appendChild(this.$container);
 
-        this.$interviewListHeaderTitle = document.createElement('h1');
-        this.$interviewListHeaderTitle.classList.add('interviewListHeaderTitle');
-        this.$interviewListHeaderTitle.textContent = this.headerTitle;
-        this.$leftContainer.appendChild(this.$interviewListHeaderTitle);
+        this.$interviewResultsHeaderTitle = document.createElement('h1');
+        this.$interviewResultsHeaderTitle.classList.add('interviewResultsHeaderTitle');
+        this.$interviewResultsHeaderTitle.textContent = this.headerTitle;
+        this.$container.appendChild(this.$interviewResultsHeaderTitle);
 
-        this.$interviewListCount = document.createElement('h3');
-        this.$interviewListCount.classList.add('interviewListCount');
-        this.$interviewListCount.textContent = this.listCountText;
-        this.$leftContainer.appendChild(this.$interviewListCount);
+        this.$interviewResultsCount = document.createElement('h3');
+        this.$interviewResultsCount.classList.add('interviewResultsCount');
+        this.$interviewResultsCount.textContent = this.listCountText;
+        this.$container.appendChild(this.$interviewResultsCount);
 
-        // Right Container
-        this.$rightContainer = document.createElement('div');
-        this.$rightContainer.classList.add('rightContainer');
-        this.$interviewListHeader.appendChild(this.$rightContainer);
-
-        this.$search_icon = document.createElement('img');
-        this.$search_icon.classList.add('search_icon');
-        this.$search_icon.src = '/img/search-icon.png';
-        this.$search_icon.srcset = '/img/search-icon@2x.png';
-        this.$rightContainer.appendChild(this.$search_icon);
-
-        // Insert interviewListHeader at the beginning of the $tableViewContainer
-        this.$tableViewContainer.insertBefore(this.$interviewListHeader, this.$tableViewContainer.firstChild);
+        // Insert interviewResultsHeader at the beginning of the $tableViewContainer
+        this.$tableViewContainer.insertBefore(this.$interviewResultsHeader, this.$tableViewContainer.firstChild);
     }
 
-    createElementsCreateNewButton() {
-        this.$createNew = document.createElement('div');
-        this.$createNew.classList.add('createNew');
-        this.$createNew.id = 'CreateNew';
-        this.$view.appendChild(this.$createNew);
-
-        this.$plusIcon = document.createElement('img');
-        this.$plusIcon.classList.add('plusIcon');
-        this.$plusIcon.src = '/img/plus-icon.png';
-        this.$plusIcon.srcset = '/img/plus-icon@2x.png';
-        this.$createNew.appendChild(this.$plusIcon);
-
-        this.$title = document.createElement('h4');
-        this.$title.classList.add('title');
-        this.$title.textContent = this.createNewButtonTitle;
-        this.$createNew.appendChild(this.$title);
-
-
-        // Insert createNew after interviewListHeader
-        this.$tableViewContainer.insertBefore(this.$createNew, this.$interviewListHeader.nextSibling);
+    _addEventHandlers() {
+        const _this = this;
+        //this.$createNew.addEventListener('click', () => {
+        //    console.log(`${this.id} ${this.$createNew.id} clicked`);
+        //    // Dispatch event
+        //    this.$view.dispatchEvent(new CustomEvent(
+        //        "clickedNewInterviewButton", 
+        //        { detail: { } }));
+        //})
     }
+
 
 }
