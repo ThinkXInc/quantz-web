@@ -150,8 +150,8 @@ class InterviewHomeViewController {
         let title = "";
         let interview = null;
         if (interviewId) {
-            title = locale.get("interview_settings_page_title_edit", lang);
             interview = this.getInterview(interviewId);
+            title = interview.title;//locale.get("interview_settings_page_title_edit", lang);
         } else {
             title = locale.get("interview_settings_page_title_new", lang);
         }

@@ -8,8 +8,17 @@
         "ru": "",
         "ar": ""
     },
+    "create_new_interview_button_title": {
+        "ja": "ミーティングを新規作成",
+        "en": "Create New Meeting",
+        "zh": "创建新会议",
+        "fr": "Créer une nouvelle réunion",
+        "es": "Crear nueva reunión",
+        "ar": "إنشاء اجتماع جديد",
+        "ru": "Создать новую встречу"
+    },
     "interview_settings_page_title_new": {
-        "ja": "",
+        "ja": "ミーティングを新規作成",
         "en": "Create New Meeting",
         "zh": "",
         "es": "",
@@ -18,8 +27,26 @@
         "ar": ""
     },
     "interview_settings_page_title_edit": {
-        "ja": "",
+        "ja": "ミーティングを編集",
         "en": "Edit Interview",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "interview_settings_results_label": {
+        "ja": "最新の結果",
+        "en": "Latest Results",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "interview_settings_customize_label": {
+        "ja": "ミーティングをカスタマイズ",
+        "en": "Customize Meeting",
         "zh": "",
         "es": "",
         "fr": "",
@@ -70,15 +97,6 @@
         "fr": "",
         "ru": "",
         "ar": ""
-    },
-    "create_new_interview_button_title": {
-        "ja": "会議を新規作成",
-        "en": "Create New Meeting",
-        "zh": "创建新会议",
-        "fr": "Créer une nouvelle réunion",
-        "es": "Crear nueva reunión",
-        "ar": "إنشاء اجتماع جديد",
-        "ru": "Создать новую встречу"
     },
     "interview_list_header_title": {
         "ja": "インタビュー覧",
