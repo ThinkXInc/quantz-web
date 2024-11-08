@@ -443,7 +443,10 @@ def send_added_to_wait_list_email(general_status: GeneralSystemStatus, user: Use
 def generate_interview_result_template(metadata, body1, body2, date_label='Date', name_label='Name', email_label='Email', lang='en'):
     # Parse and format the date
     start_datetime_str = metadata.get("startDatetime")
-    start_datetime = datetime.fromisoformat(start_datetime_str)
+    if start_datetime_str.endswith("Z"):
+        start_datetime = datetime.strptime(start_datetime_str, "%Y-%m-%dT%H:%M:%S.%fZ")
+    else:
+        start_datetime = datetime.fromisoformat(start_datetime_str)
     formatted_date = start_datetime.strftime("%Y/%m/%d %H:%M")
 
     # Get name and email
@@ -481,7 +484,10 @@ def generate_interview_result_text(metadata, body1, body2, date_label='Date', na
 
     # Parse and format the date
     start_datetime_str = metadata.get("startDatetime")
-    start_datetime = datetime.fromisoformat(start_datetime_str)
+    if start_datetime_str.endswith("Z"):
+        start_datetime = datetime.strptime(start_datetime_str, "%Y-%m-%dT%H:%M:%S.%fZ")
+    else:
+        start_datetime = datetime.fromisoformat(start_datetime_str)
     formatted_date = start_datetime.strftime("%Y/%m/%d %H:%M")
 
     # Get name and email
