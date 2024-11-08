@@ -33,7 +33,7 @@ class InterviewCreateView {
         this.$view.id = this.id;
         this.$view.classList.add('InterviewCreateView');
 
-        // **InterviewSummaryView**
+        // **InterviewCreateView**
         const $interviewCreateViewContainer = document.createElement('div');
         $interviewCreateViewContainer.classList.add('InterviewCreateViewContainer');
 
@@ -437,7 +437,6 @@ class InterviewCreateView {
     }
 
     mount($parent) {
-        $parent.innerHTML = '';
         $parent.appendChild(this.$view);
     }
 

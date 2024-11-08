@@ -65,7 +65,23 @@ class InterviewLinkView {
         this.$view.appendChild($urlViewPre);
     }
 
-    mount(element) {
-        element.appendChild(this.$view);
+    mount(selectorOrElement) {
+        let container;
+    
+        // Check if the input is a string, implying a selector
+        if (typeof selectorOrElement === 'string') {
+            container = document.querySelector(selectorOrElement);
+            if (!container) {
+                console.error(`No element found with selector ${selectorOrElement}`);
+                return;
+            }
+        } else if (selectorOrElement instanceof Element) {
+            container = selectorOrElement;
+        } else {
+            console.error('Invalid input: selector must be a string or a DOM element');
+            return;
+        }
+        container.appendChild(this.$view);
     }
+
 }

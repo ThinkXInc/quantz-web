@@ -52,7 +52,6 @@ class InterviewSettingsModalView extends ModalView {
         protocols = [],
         validators = []
     }) {
-        console.error('((((((((((((((((((((((((((((((((')
         console.error(locale)
 
         super({
@@ -71,27 +70,27 @@ class InterviewSettingsModalView extends ModalView {
         this.locale = locale;
         this.lang = lang;
 
-        console.error('((((((((((((((((((((((((((((((((')
-        console.error(locale)
-        console.error(this.locale)
-
         this.interviewId = interviewId; //'670dcf37aa9bfc2db50d1574';//null;//'670b89cf740b61aa1bf16761';//null;
         this.interview = interview;
-        console.warn(this.interview)
-        console.warn(this.interview)
-        console.warn(this.interview)
-        console.warn(this.interview)
 
+        console.warn(this)
+        super.createElements();
+        console.warn(this)
 
-        this.createElements();
+        this.setupView();
+    }
 
-        // Create main content
-        this.$mainContent.id = 'InterviewSettingsModalViewMainContent';
+    setupView() {
+        console.warn(this.$mainContent)
+
+        const $message = document.createElement('p');
+        $message.id = 'InterviewSettingsModalViewMessage';
+        $message.classList.add('message');
+        this.$view.querySelector('.footer').prepend($message);
+        this.$message = $message;
+
         
-        console.error('((((((((((((((((((((((((((((((((')
-        console.error(this.locale)
- 
-
+        console.warn(this.interviewId)
         if (this.interviewId) {
             // Display all three views
             this.interviewLinkView = new InterviewLinkView({
@@ -102,13 +101,35 @@ class InterviewSettingsModalView extends ModalView {
             });
             this.interviewLinkView.mount(this.$mainContent);
 
-            this.interviewResultSummaryView = new InterviewResultsView({
+            const $labelResults = document.createElement('span');
+            $labelResults.classList.add('label');
+            $labelResults.classList.add('results');
+            $labelResults.textContent = this.locale.get('interview_settings_results_label', this.lang)
+            this.$mainContent.appendChild($labelResults);
+
+            const $separatorResults = document.createElement('span');
+            $separatorResults.classList.add('separator');
+            $separatorResults.classList.add('results');
+            this.$mainContent.appendChild($separatorResults);
+
+            this.interviewResultsView = new InterviewResultsView({
                 id: 'InterviewResultsView',
                 interviewId: this.interviewId,
                 locale: this.locale,
                 lang: this.lang
             });
-            this.interviewResultSummaryView.mount(this.$mainContent);
+            this.interviewResultsView.mount(this.$mainContent);
+
+            const $labelCustomize = document.createElement('span');
+            $labelCustomize.classList.add('label');
+            $labelCustomize.classList.add('customize');
+            $labelCustomize.textContent = this.locale.get('interview_settings_customize_label', this.lang)
+            this.$mainContent.appendChild($labelCustomize);
+
+            const $separatorCustomize = document.createElement('span');
+            $separatorCustomize.classList.add('separator');
+            $separatorCustomize.classList.add('customize');
+            this.$mainContent.appendChild($separatorCustomize);
         }
 
         // Always display InterviewCreateView
@@ -121,20 +142,7 @@ class InterviewSettingsModalView extends ModalView {
             interview: this.interview,
         });
         this.interviewCreateView.mount(this.$mainContent);
-    }
 
-    createElements() {
-        super.createElements();
-
-        const $message = document.createElement('p');
-        $message.id = 'InterviewSettingsModalViewMessage';
-        $message.classList.add('message');
-        this.$view.querySelector('.footer').prepend($message);
-        this.$message = $message;
-
-   }
-
-    setupView() {
     }
 
     show() {
