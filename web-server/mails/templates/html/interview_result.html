@@ -47,9 +47,9 @@
                 </p>
             {% endif %}
 
-            {% if event.videoPath %}
+            {% if event.videoPath or event.screenShotPath %}
                 <a href="{{ host_url }}{{ event.videoPath }}" target="_blank" style="margin: 18px 0; text-decoration: none; position: relative !important; display: inline-block;">
-                    <img src="{{ host_url }}{{ event.screenShotUrl }}" alt="Video" style="width: 100%; max-width: 600px; display: block;">
+                    <img src="{{ host_url }}{{ event.screenShotPath }}" alt="Video" style="width: 100%; max-width: 600px; display: block;">
                     <!-- Play button overlay -->
                      {#
                     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">

@@ -419,7 +419,7 @@ def mailsample_send():
             'email': 'laraland@mail.com'
         },
         'videoPathAll': '',  # No video links
-        'screenShotPathAll': 'https://quantz.thinkxinc.com/img/interviews/samplemail/full.png',
+        'screenShotPathAll': '/img/interviews/samplemail/full.png',
         'events': [
             {
                 'speaker': 'system',
@@ -430,8 +430,8 @@ def mailsample_send():
             {
                 'speaker': 'user',
                 'message': "Yes, I'm ready.",
-                'videoPath': '',
-                'screenShotPath': 'https://quantz.thinkxinc.com/img/interviews/samplemail/user_0.png'
+                'videoPath': '/img/interviews/samplemail/video/user_0.mov',
+                'screenShotPath': '/img/interviews/samplemail/user_0.png'
             },
             {
                 'speaker': 'system',
@@ -446,8 +446,8 @@ def mailsample_send():
                     "Specifically, I'm developing devices that enhance human creativity using sensory feedback. "
                     "For example, this project combines visual, auditory, and tactile inputs to support diverse creative tasks."
                 ),
-                'videoPath': '',
-                'screenShotPath': 'https://quantz.thinkxinc.com/img/interviews/samplemail/user_1.png'
+                'videoPath': '/img/interviews/samplemail/video/user_1.mov',
+                'screenShotPath': '/img/interviews/samplemail/user_1.png'
             },
             {
                 'speaker': 'system',
@@ -455,8 +455,8 @@ def mailsample_send():
                     "Okay. This company provides next-generation communication services using LLM technology. "
                     "What skills do you think you can contribute?"
                 ),
-                'videoPath': '',
-                'screenShotPath': 'https://quantz.thinkxinc.com/img/interviews/samplemail/user_2.png'
+                'videoPath': None,
+                'screenShotPath': None
             },
             {
                 'speaker': 'user',
@@ -465,24 +465,22 @@ def mailsample_send():
                     "With over four years of experience and a following of 5,000 on social media, "
                     "I can contribute to creative growth, especially in marketing and design."
                 ),
-                'videoPath': '',
-                'screenShotPath': None
+                'videoPath': '/img/interviews/samplemail/video/user_3.mov',
+                'screenShotPath': '/img/interviews/samplemail/user_3.png'
             },
             {
                 'speaker': 'system',
                 'message': (
                     "Okay, thank you. Finally, could you tell us what aspects of our company interested you the most?"
-                ),
-                'videoPath': '',
-                'screenShotPath': 'https://quantz.thinkxinc.com/img/interviews/samplemail/user_3.png'
+                )
             },
             {
                 'speaker': 'user',
                 'message': (
                     "ThinkX is challenging new things and developing future possibilities, and I thought that the company's attitude of following creative people suited me."
                 ),
-                'videoPath': '',
-                'screenShotPath': None
+                'videoPath': '/img/interviews/samplemail/video/user_3.mov',
+                'screenShotPath': '/img/interviews/samplemail/user_3.png'
             },
             {
                 'speaker': 'system',
