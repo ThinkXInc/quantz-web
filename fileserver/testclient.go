@@ -19,12 +19,13 @@ import (
 
 // Event represents an individual event within the metadata.
 type Event struct {
-	Speaker    string  `json:"speaker"`
-	StartMs    int     `json:"startMs"`
-	EndMs      int     `json:"endMs"`
-	Message    string  `json:"message"`
-	VideoPath  string  `json:"videoPath,omitempty"` // Optional path to a video file
-	Timestamp  string  `json:"timestamp,omitempty"` // Optional ISO string timestamp
+	Speaker       string `json:"speaker"`
+	StartMs       int    `json:"startMs"`
+	EndMs         int    `json:"endMs"`
+	Message       string `json:"message"`
+	VideoPath     string `json:"videoPath,omitempty"` // Optional path to a video file
+	Timestamp     string `json:"timestamp,omitempty"` // Optional ISO string timestamp
+	ScreenShotUrl string `json:"screenShotUrl,omitempty"`
 }
 
 type UserInfo struct {
@@ -51,11 +52,16 @@ func main() {
 
     // Prepare metadata
     currentTime := time.Now()
+    year, month, day := currentTime.Year(), currentTime.Month(), currentTime.Day()
+
+    identifier := "3db3b4b18a036707e42c26d7"
+    clientID := "cc678692d84e44a5a459bfd722ae2140"
+
     metaData := MetaData{
         Service:       "interview",
-        Identifier:    "3db3b4b18a036707e42c26d7",
+        Identifier:    identifier,
         HostID:        "66961e8cdb50d5d0004bd6e3",
-        ClientID:      "test_client",
+        ClientID:      clientID,
         StartDatetime: currentTime.Format(time.RFC3339),
         EndDatetime:   currentTime.Add(10 * time.Minute).Format(time.RFC3339),
         UserInfo: UserInfo{
@@ -74,7 +80,31 @@ func main() {
                 StartMs:   1300,
                 EndMs:     2000,
                 Message:   "Yes, I'm ready",
-                VideoPath: "/test_service/test_identifier/user_0.mp4",
+                VideoPath: fmt.Sprintf("/fs/files/interview/%d/%02d/%02d/%s/%s/user_0.mp4", year, month, day, identifier, clientID),
+                ScreenShotUrl: fmt.Sprintf("/fs/files/interview/%d/%02d/%02d/%s/%s/user_0.jpeg", year, month, day, identifier, clientID),
+                Timestamp: "2024-10-12T11:32:45Z",
+            },
+            {
+                Speaker:   "system",
+                StartMs:   2300,
+                EndMs:     4000,
+                Message:   "Okay, could you introduce yourself briefly?",
+                Timestamp: "2024-10-12T11:32:45Z",
+            },
+            {
+                Speaker:   "user",
+                StartMs:   4300,
+                EndMs:     7000,
+                Message:   "Yes, my name is Josheph Cristpher Mackerboy. I'm working hard everyday. But I've recently noticed I'm working too hard. So I need to change my job right away. I like hard working but it's not sustainable in this way.",
+                VideoPath: fmt.Sprintf("/fs/files/interview/%d/%02d/%02d/%s/%s/user_1.mp4", year, month, day, identifier, clientID),
+                ScreenShotUrl: fmt.Sprintf("/fs/files/interview/%d/%02d/%02d/%s/%s/user_1.jpeg", year, month, day, identifier, clientID),
+                Timestamp: "2024-10-12T11:32:45Z",
+            },
+            {
+                Speaker:   "system",
+                StartMs:   7300,
+                EndMs:     9000,
+                Message:   "Thank you. This is the end.",
                 Timestamp: "2024-10-12T11:32:45Z",
             },
         },

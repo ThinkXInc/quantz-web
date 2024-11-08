@@ -25,7 +25,7 @@ type Event struct {
 	EndMs         int    `json:"endMs"`
 	Message       string `json:"message"`
 	Timestamp     string `json:"timestamp,omitempty"`
-	VideoUrl      string `json:"videoUrl,omitempty"`
+	VideoPath      string `json:"videoPath,omitempty"`
 	ScreenShotUrl string `json:"screenShotUrl,omitempty"`
 }
 
@@ -248,41 +248,59 @@ func processVideo(videoPath, saveFolderPath string, metaData MetaData) (err erro
 	metaData.VideoPathAll = path.Join(baseUrl, COMPRESSED_WHOLE_VIDEO_NAME)
 	metaData.ScreenShotUrlAll = path.Join(baseUrl, SCREENSHOT_WHOLE_VIDEO_NAME)
 
+	// Initialize a map to track index for each speaker
+	speakerIndexes := make(map[string]int)
+
 	// Process each event
 	for idx, event := range metaData.Events {
-		log.Printf("[processVideo] Processing event %d: %+v", idx, event)
-		durationMs := event.EndMs - event.StartMs
-		startSec := float64(event.StartMs) / 1000.0
-		durationSec := float64(durationMs) / 1000.0
+	    log.Printf("[processVideo] Processing event %d: %+v", idx, event)
+	    durationMs := event.EndMs - event.StartMs
+	    startSec := float64(event.StartMs) / 1000.0
+	    durationSec := float64(durationMs) / 1000.0
 
-		speaker := event.Speaker
-		fileName := fmt.Sprintf("%s_%d.mp4", speaker, idx)
-		outputFilePath := filepath.Join(saveFolderPath, fileName)
+	    speaker := event.Speaker
 
-		// Extract the video segment
-		err := extractVideoSegment(compressedVideoPath, outputFilePath, startSec, durationSec)
-		if err != nil {
-			log.Printf("[processVideo] Error extracting video segment for event %d: %v", idx, err)
-			continue
+	    // Get the current index for the speaker and increment it afterwards
+	    speakerIdx := speakerIndexes[speaker]
+	    speakerIndexes[speaker]++
+
+		// Only extract video segment if the original event contains a VideoPath
+		if event.VideoPath != "" {
+			// Create filenames using the speaker-specific index
+			fileName := fmt.Sprintf("%s_%d.mp4", speaker, speakerIdx)
+			outputFilePath := filepath.Join(saveFolderPath, fileName)
+
+			// Extract the video segment
+			err := extractVideoSegment(compressedVideoPath, outputFilePath, startSec, durationSec)
+			if err != nil {
+				log.Printf("[processVideo] Error extracting video segment for event %d: %v", idx, err)
+				continue
+			}
+			log.Printf("[processVideo] Extracted video segment saved to %s", outputFilePath)
+
+			// Update the event's VideoPath if it was originally present
+			event.VideoPath = path.Join(baseUrl, fileName)
 		}
-		log.Printf("[processVideo] Extracted video segment saved to %s", outputFilePath)
 
-		// Generate the screenshot
-		screenShotFileName := fmt.Sprintf("%s_%d.jpeg", speaker, idx)
-		screenShotFilePath := filepath.Join(saveFolderPath, screenShotFileName)
-		err = generateScreenshot(outputFilePath, screenShotFilePath)
-		if err != nil {
-			log.Printf("[processVideo] Error generating screenshot for event %d: %v", idx, err)
-			continue
+		// Only generate screenshot if the original event contains a ScreenShotUrl
+		if event.ScreenShotUrl != "" {
+			// Generate the screenshot
+			screenShotFileName := fmt.Sprintf("%s_%d.jpeg", speaker, speakerIdx)
+			screenShotFilePath := filepath.Join(saveFolderPath, screenShotFileName)
+
+			err = generateScreenshot(outputFilePath, screenShotFilePath)
+			if err != nil {
+				log.Printf("[processVideo] Error generating screenshot for event %d: %v", idx, err)
+				continue
+			}
+			log.Printf("[processVideo] Generated screenshot saved to %s", screenShotFilePath)
+
+			// Update the event's ScreenShotUrl if it was originally present
+			event.ScreenShotUrl = path.Join(baseUrl, screenShotFileName)
 		}
-		log.Printf("[processVideo] Generated screenshot saved to %s", screenShotFilePath)
 
-		// Update the event with videoUrl and screenShotUrl
-		event.VideoUrl = path.Join(baseUrl, fileName)
-		event.ScreenShotUrl = path.Join(baseUrl, screenShotFileName)
-
-		// Update the event in the metadata.Events slice
-		metaData.Events[idx] = event
+	    // Update the event in the metadata.Events slice
+	    metaData.Events[idx] = event
 	}
 
 	// Update metadataUrl
@@ -357,17 +375,39 @@ func extractVideoSegment(inputPath, outputPath string, startSec, durationSec flo
 }
 
 func generateScreenshot(videoFilePath, screenshotFilePath string) error {
-	log.Printf("[generateScreenshot] Generating screenshot from %s to %s", videoFilePath, screenshotFilePath)
-	// Use ffmpeg to extract a frame from the video at 0.5 seconds
-	cmd := exec.Command("ffmpeg", "-ss", "0.5", "-i", videoFilePath, "-vframes", "1", "-q:v", "2", screenshotFilePath)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	err := cmd.Run()
-	if err != nil {
-		log.Printf("[generateScreenshot] Error generating screenshot: %v", err)
-	}
-	return err
+    log.Printf("[generateScreenshot] Generating screenshot from %s to %s", videoFilePath, screenshotFilePath)
+    // Use ffmpeg to extract a frame from the video at 0.5 seconds, and overlay a transparent play symbol
+    drawtext := `drawtext=text='▶':fontcolor=white@0.5:fontsize=50:x=(w-text_w)/2:y=(h-text_h)/2`
+    cmd := exec.Command(
+        "ffmpeg",
+        "-ss", "0.5",
+        "-i", videoFilePath,
+        "-vframes", "1",
+        "-q:v", "2",
+        "-vf", drawtext,
+        screenshotFilePath,
+    )
+    log.Printf("[generateScreenshot] Running command: %v", cmd.Args)
+    cmd.Stdout = os.Stdout
+    cmd.Stderr = os.Stderr
+    err := cmd.Run()
+    if err != nil {
+        log.Printf("[generateScreenshot] Error generating screenshot: %v", err)
+    }
+    return err
 }
+//func generateScreenshot(videoFilePath, screenshotFilePath string) error {
+//	log.Printf("[generateScreenshot] Generating screenshot from %s to %s", videoFilePath, screenshotFilePath)
+//	// Use ffmpeg to extract a frame from the video at 0.5 seconds
+//	cmd := exec.Command("ffmpeg", "-ss", "0.5", "-i", videoFilePath, "-vframes", "1", "-q:v", "2", screenshotFilePath)
+//	cmd.Stdout = os.Stdout
+//	cmd.Stderr = os.Stderr
+//	err := cmd.Run()
+//	if err != nil {
+//		log.Printf("[generateScreenshot] Error generating screenshot: %v", err)
+//	}
+//	return err
+//}
 
 func sendWebhook(payload WebhookPayload) error {
 	log.Printf("[sendWebhook] Sending webhook to %s", config.Cfg.WebhookURL)
