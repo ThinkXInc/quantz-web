@@ -153,6 +153,8 @@ class InterviewResults extends TableView {
         this.listCountTextPlural = listCountTextPlural;
         this.listCountTextSingular = listCountTextSingular;
 
+        this.interviewResults = [];
+
         this.createElements();
         this._addEventHandlers();
     }
@@ -250,6 +252,7 @@ class InterviewResults extends TableView {
                 this.loading(false);
     
                 const { interview_results, count } = res;
+                this.interviewResults = interview_results;
                 this.updateContents(interview_results);
                 //this.updateHeaderCount(count);
                 if (parseInt(count, 0) == 0) {
@@ -332,10 +335,11 @@ class InterviewResults extends TableView {
      */
     tableViewCellSelectedAtIndex(selectedIndex, cell) {
         console.log(`${this.id}: cell ID:${cell.id} Index:${selectedIndex} clicked`)
+        console.log(this.interviewResults[selectedIndex])
         // Dispatch event
-        this.$view.dispatchEvent(new CustomEvent(
+        document.dispatchEvent(new CustomEvent(
             "clickedInterviewResultCell", 
-            { detail: { index: selectedIndex, clientId: cell.content.clientId, cell: cell } }));
+            { detail: { index: selectedIndex, clientId: cell.content.clientId, interview: this.interviewResults[selectedIndex], cell: cell } }));
     }
 
     updateTitleWithClientId(clientId, title) {
