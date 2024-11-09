@@ -186,6 +186,55 @@ def interviews_list(user, lang, lang_name):
         message=locale.get('interviews_list_success', lang),
         data=response_data).http_response()
 
+
+@blueprint_interviews.route('/v1/<lang>/interviews/<interview_id>/results/list', methods=['GET'])
+@language_wrapper
+@session_helper
+def interview_results_list(user, lang, interview_id, lang_name):
+    logger.info(magenta(f'[GET] /v1/{lang}/interviews/{interview_id}/results/list'))
+
+    # Extract 'limit' from query parameters, default to None if not provided
+    limit = request.args.get('limit', type=int, default=None)
+    logger.info(f'Limit parameter received: {limit}')
+
+    try:
+        interview = interaction_model_db.get_one(interview_id)
+        logger.info(f'interview found: {interview}')
+    except InteractionModelNotFoundError:
+        return UnexpectedAPIErrorFormat(
+            lang=lang,
+            message=locale.get('interview_not_found', lang)
+        ).http_response()
+
+    results = []
+    count = 0
+    for client_id in interview.client_ids:
+        if limit is not None and count >= limit:
+            break
+        try:
+            logger.info(f'get ChatData by client_id: {client_id}')
+            chatdata = chat_db_remote.get_chat_data(client_id)
+            if not len(chatdata.client_id):
+                message = f'ChatData not found by client_id: "{client_id}"'
+                logger.error(red(message))
+                raise ChatDataNotFoundError(message)
+            else:
+                logger.info(bold(f'ChatData found by client_id: {client_id} => {chatdata.name} {chatdata.start_time}'))
+                results.append(chatdata.response_json(include_date_str=True, lang=lang))
+                count += 1
+        except Exception as e:
+            logger.warning(yellow(str(e)))
+
+    response_data = {
+        'interview_results': results,
+        'count': count
+    }
+    logger.debug(f'response data: {response_data}')
+    return OKAPISuccessFormat(
+        message=locale.get('interviews_results_success', lang),
+        data=response_data).http_response()
+
+
 # New interview create
 @blueprint_interviews.route('/v1/<lang>/interviews/create', methods=['POST'])
 @language_wrapper
@@ -288,6 +337,8 @@ def delete_all_interviews(user, lang, lang_name):
     except InteractionModelDeleteError as e:
         logger.error(red(f"Error while deleting interviews: {e}"))
         return UnexpectedAPIErrorFormat(lang=lang, message=locale.get('interviews_delete_failed', lang)).http_response()
+
+
 
 
 # webhook from fileserver

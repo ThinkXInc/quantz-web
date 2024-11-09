@@ -1,35 +1,35 @@
-class InterviewResultsView {
-    constructor({
-        id,
-        interviewId,
-        locale,
-        lang
-    }) {
-        this.id = id;
-        this.interviewId = interviewId;
-        this.locale = locale;
-        this.lang = lang;
-
-        this.setupView();
-    }
-
-    setupView() {
-        this.$view = document.createElement('div');
-        this.$view.id = this.id;
-        this.$view.classList.add('InterviewResultsView');
-
-        // Basic structure, add content as needed
-        const $header = document.createElement('h3');
-        $header.textContent = this.locale.get('interview_results_title', this.lang);
-        this.$view.appendChild($header);
-
-        // Add more elements as required
-    }
-
-    mount(element) {
-        element.appendChild(this.$view);
-    }
-}
+//class InterviewResultsView {
+//    constructor({
+//        id,
+//        interviewId,
+//        locale,
+//        lang
+//    }) {
+//        this.id = id;
+//        this.interviewId = interviewId;
+//        this.locale = locale;
+//        this.lang = lang;
+//
+//        this.setupView();
+//    }
+//
+//    setupView() {
+//        this.$view = document.createElement('div');
+//        this.$view.id = this.id;
+//        this.$view.classList.add('InterviewResultsView');
+//
+//        // Basic structure, add content as needed
+//        const $header = document.createElement('h3');
+//        $header.textContent = this.locale.get('interview_results_title', this.lang);
+//        this.$view.appendChild($header);
+//
+//        // Add more elements as required
+//    }
+//
+//    mount(element) {
+//        element.appendChild(this.$view);
+//    }
+//}
 
 /**
  * interviewId -> interaction_model.client_ids -> chatdata -> chatdata.metadata
@@ -40,9 +40,9 @@ class InterviewResultCellContent extends TableViewCellContent {
         interviewId = '',
         clientId = '',
         isChecked = false,
-        dateString = '',
         title = '',
         text = '',
+        label = '',
         icon = '',
         ...otherOptions
     }) {
@@ -50,6 +50,7 @@ class InterviewResultCellContent extends TableViewCellContent {
             title: title,
             text: text,
             icon: icon,
+            label: label,
             ...otherOptions
         });
 
@@ -120,6 +121,7 @@ class InterviewResults extends TableView {
         id,
         lang,
         locale,
+        interviewId,
         tableViewId = "InterviewResults",
         cellClass = InterviewListCell,
         cellContentClass = InterviewListCellContent,
@@ -142,6 +144,7 @@ class InterviewResults extends TableView {
 
         this.lang = lang;
         this.locale = locale;
+        this.interviewId = interviewId;
         this.tableViewId = tableViewId;
         this.maxDisplayTitleLength = maxDisplayTitleLength;
         this.maxDisplayTextLength = maxDisplayTextLength;
@@ -154,15 +157,14 @@ class InterviewResults extends TableView {
         this._addEventHandlers();
     }
 
-    loadResults() {
+    fetchAndUpdate({limit = 20}) {
         this.loading(true);
-        Http.get(`/v1/${this.lang}/interviews/results/list`, 
+        Http.get(`/v1/${this.lang}/interviews/${this.interviewId}/results/list?limit=${limit}`, 
             (res) => {
                 this.loading(false);
-
-                const { interviewResults, count } = res
-                debuglog(interviewResults)
-                this.updateContents(interviewResults);
+    
+                const { interview_results, count } = res;
+                this.updateContents(interview_results);
                 this.updateHeaderCount(count);
             },
             (error) => {
@@ -172,12 +174,34 @@ class InterviewResults extends TableView {
     }
 
     updateContents(interviewResults) {
-        let contents = interviewResults.map(d => new InterviewResultCellContent({
-            interviewId: d.interviewId,
-            clientId: d.clientId,
-            title: d.title,
-            text: d.introduction
-        }));
+        console.log("Received interviewResults:", interviewResults);  // Log the entire input array
+
+        let contents = interviewResults.map(d => {
+            console.log("Processing interview result:", d);  // Log each interview result
+    
+            // Safely access metadata and events
+            let text = "";
+            if (d.metadata && Array.isArray(d.metadata.events) && d.metadata.events.length > 3) {
+                text = d.metadata.events[3].message + '...';
+            } else {
+                console.warn("Event at index 3 not found or metadata is missing for interview result:", d);
+            }
+            const title = d.name;
+            const label = d.date_str;
+
+            const contentData = {
+                interviewId: this.interviewId,
+                clientId: d.client_id,
+                title: title,
+                text: text,
+                label: label,
+                isChecked: d.is_result_checked,
+            };
+
+            console.log("Creating InterviewResultCellContent with:", contentData);  // Log the data used to create each InterviewResultCellContent
+
+            return new InterviewResultCellContent(contentData);
+        });
         this.contents = contents;
     }
 
