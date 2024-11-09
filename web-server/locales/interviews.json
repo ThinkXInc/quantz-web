@@ -47,20 +47,38 @@
     "interview_settings_customize_label": {
         "ja": "ミーティングをカスタマイズ",
         "en": "Customize Meeting",
-        "zh": "",
-        "es": "",
-        "fr": "",
-        "ru": "",
-        "ar": ""
+        "zh": "自定义会议",
+        "es": "Personalizar reunión",
+        "fr": "Personnaliser la réunion",
+        "ru": "Настроить встречу",
+        "ar": "تخصيص الاجتماع"
     },
     "interview_results_title":  {
         "ja": "最新の結果",
         "en": "Latest Results",
-        "zh": "",
-        "es": "",
-        "fr": "",
-        "ru": "",
-        "ar": ""
+        "zh": "最新结果",
+        "es": "Últimos resultados",
+        "fr": "Derniers résultats",
+        "ru": "Последние результаты",
+        "ar": "أحدث النتائج"
+    },
+    "interview_results_more":  {
+        "ja": "もっと見る",
+        "en": "View More",
+        "zh": "查看更多",
+        "es": "Ver más",
+        "fr": "Voir plus",
+        "ru": "Показать больше",
+        "ar": "عرض المزيد"
+    },
+    "interview_results_noresults": {
+        "ja": "結果はありません",
+        "en": "No results",
+        "zh": "没有结果",
+        "es": "Sin resultados",
+        "fr": "Aucun résultat",
+        "ru": "Нет результатов",
+        "ar": "لا توجد نتائج"
     },
     "interview_results_count_plural":  {
         "ja": "$0回のミーティングが実施されました。",

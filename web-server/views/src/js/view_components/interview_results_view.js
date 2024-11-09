@@ -157,15 +157,112 @@ class InterviewResults extends TableView {
         this._addEventHandlers();
     }
 
+    createElements() {
+        // Interview List Header
+        this.createHeader();
+        this.createMessageView();
+        this.createMoreView();
+
+    }
+
+    createHeader () {
+        this.$interviewResultsHeader = document.createElement('div');
+        this.$interviewResultsHeader.classList.add('interviewResultsHeader');
+
+        // Left Container
+        this.$container = document.createElement('div');
+        this.$container.classList.add('container');
+        this.$interviewResultsHeader.appendChild(this.$container);
+
+        this.$interviewResultsHeaderTitle = document.createElement('h1');
+        this.$interviewResultsHeaderTitle.classList.add('interviewResultsHeaderTitle');
+        this.$interviewResultsHeaderTitle.textContent = this.headerTitle;
+        this.$container.appendChild(this.$interviewResultsHeaderTitle);
+
+        this.$interviewResultsCount = document.createElement('h3');
+        this.$interviewResultsCount.classList.add('interviewResultsCount');
+        this.$interviewResultsCount.textContent = this.listCountText;
+        this.$container.appendChild(this.$interviewResultsCount);
+
+        // Insert interviewResultsHeader at the beginning of the $tableViewContainer
+        this.$tableViewContainer.insertBefore(this.$interviewResultsHeader, this.$tableViewContainer.firstChild);
+    }
+
+    createMessageView() {
+        // Create $message element
+        this.$messageContainer = document.createElement('div');
+        this.$messageContainer.classList.add('messageContainer', 'hidden'); // 'hidden' is the default class
+        this.$message = document.createElement('p');
+        this.$message.classList.add('message');
+        this.$messageContainer.appendChild(this.$message);
+        this.$view.appendChild(this.$messageContainer);
+    }
+
+    showMessage(text, type = 'normal') {
+        this.$message.textContent = text;
+        this.$messageContainer.classList.remove('hidden', 'normal', 'alert');
+        this.$messageContainer.classList.add(type);
+    }
+
+    hideMessage() {
+        this.$messageContainer.classList.add('hidden');
+        this.$messageContainer.classList.remove('normal', 'alert');
+    }
+
+    createMoreView() {
+        // Create $message element
+        this.$moreContainer = document.createElement('div');
+        this.$moreContainer.classList.add('moreContainer', 'hidden'); // 'hidden' is the default class
+        this.$more = document.createElement('a');
+        this.$more.classList.add('more');
+        this.$more.textContent = this.locale.get('interview_results_more', this.lang)
+        this.$more.addEventListener('click', (event) => {
+            console.log('[InterviewResults] more clicked.')
+        })
+        this.$moreContainer.appendChild(this.$more);
+        this.$view.appendChild(this.$moreContainer);
+    }
+
+    showMore() {
+        this.$moreContainer.classList.remove('hidden');
+    }
+
+    hideMore() {
+        this.$moreContainer.classList.add('hidden');
+    }
+ 
+    _addEventHandlers() {
+        const _this = this;
+        //this.$createNew.addEventListener('click', () => {
+        //    console.log(`${this.id} ${this.$createNew.id} clicked`);
+        //    // Dispatch event
+        //    this.$view.dispatchEvent(new CustomEvent(
+        //        "clickedNewInterviewButton", 
+        //        { detail: { } }));
+        //})
+    }
+
     fetchAndUpdate({limit = 20}) {
         this.loading(true);
+        console.warn('AAAAAAAASSShou')
         Http.get(`/v1/${this.lang}/interviews/${this.interviewId}/results/list?limit=${limit}`, 
             (res) => {
                 this.loading(false);
     
                 const { interview_results, count } = res;
+                    console.warn('sssssssssSSShou', parseInt(count, 0))
                 this.updateContents(interview_results);
-                this.updateHeaderCount(count);
+                //this.updateHeaderCount(count);
+                    console.warn('SSShou', parseInt(count, 0))
+                if (parseInt(count, 0) == 0) {
+                    console.warn('SSSSSSSSSShou', parseInt(count, 0))
+                    this.showMessage(this.locale.get('interview_results_noresults', this.lang));
+                    this.$tableViewContainer.style.display = 'none';
+                }
+                if (parseInt(count, 0) > 5) {
+                    console.warn('SSSSSSSSSShoutt', parseInt(count, 0))
+                    this.showMore()
+                }
             },
             (error) => {
                 this.loading(false);
@@ -207,9 +304,9 @@ class InterviewResults extends TableView {
 
     updateCount(count) {
         if (count > 1) {
-            this.$count.textContent = this.locale('interview_results_count_plural', this.lang, [count])
+            this.$count.textContent = this.locale.get('interview_results_count_plural', this.lang, [count])
         } else {
-            this.$count.textContent = this.locale('interview_results_count_singular', this.lang, [count])
+            this.$count.textContent = this.locale.get('interview_results_count_singular', this.lang, [count])
         }
     }
 
@@ -262,45 +359,5 @@ class InterviewResults extends TableView {
         // If no cell is found, throw an error
         throw new Error(`No cell found with clientId: ${clientId}`);
     }
-
-    createElements() {
-        // Interview List Header
-        this.createHeader();
-    }
-
-    createHeader () {
-        this.$interviewResultsHeader = document.createElement('div');
-        this.$interviewResultsHeader.classList.add('interviewResultsHeader');
-
-        // Left Container
-        this.$container = document.createElement('div');
-        this.$container.classList.add('container');
-        this.$interviewResultsHeader.appendChild(this.$container);
-
-        this.$interviewResultsHeaderTitle = document.createElement('h1');
-        this.$interviewResultsHeaderTitle.classList.add('interviewResultsHeaderTitle');
-        this.$interviewResultsHeaderTitle.textContent = this.headerTitle;
-        this.$container.appendChild(this.$interviewResultsHeaderTitle);
-
-        this.$interviewResultsCount = document.createElement('h3');
-        this.$interviewResultsCount.classList.add('interviewResultsCount');
-        this.$interviewResultsCount.textContent = this.listCountText;
-        this.$container.appendChild(this.$interviewResultsCount);
-
-        // Insert interviewResultsHeader at the beginning of the $tableViewContainer
-        this.$tableViewContainer.insertBefore(this.$interviewResultsHeader, this.$tableViewContainer.firstChild);
-    }
-
-    _addEventHandlers() {
-        const _this = this;
-        //this.$createNew.addEventListener('click', () => {
-        //    console.log(`${this.id} ${this.$createNew.id} clicked`);
-        //    // Dispatch event
-        //    this.$view.dispatchEvent(new CustomEvent(
-        //        "clickedNewInterviewButton", 
-        //        { detail: { } }));
-        //})
-    }
-
 
 }

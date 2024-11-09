@@ -157,6 +157,55 @@ div#InterviewResultsView {
             }
         }
     }
+
+    div.messageContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 43px;
+        p.message {
+            font-size: 12px;
+        }
+        &.hidden {
+            display: none;
+        }
+        &.alert {
+            display: flex;
+            p.message {
+                color: @alert-red;
+            }
+        }
+        &.normal {
+            display: flex;
+            p.message {
+                color: #444;
+            }
+        }
+    }
+
+    div.moreContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 43px;
+        &.hidden {
+            display: none;
+        }
+        a.more {
+            cursor: pointer;
+            font-size: 12px;
+            border-radius: 18px;
+            padding: 8px 20px;
+            color: #3b8cce;
+            transition: 
+                color 0.4s @cubic-bezier1,
+                background-color 0.4s @cubic-bezier1;
+        }
+        a.more:hover {
+            background-color: #f0f7ff;
+            color: #1f4d73;
+        }
+    }
 }
 
  
