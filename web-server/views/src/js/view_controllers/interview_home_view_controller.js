@@ -16,12 +16,26 @@ class InterviewHomeViewController {
     setupView() {
         this.$MainContent = document.getElementById("MainContent");
 
-        // Append the list container to the left column
+        // InterviewListContainer
         const $listContainer = document.createElement('div');
         $listContainer.id = 'InterviewListContainer';
         $listContainer.classList.add('InterviewListContainer');
         this.$MainContent.appendChild($listContainer);
         this.$listContainer = $listContainer;
+
+        // InterviewResultsViewContainer
+        const $resultsViewContainer = document.createElement('div');
+        $resultsViewContainer.id = 'InterviewResultsViewContainer';
+        $resultsViewContainer.classList.add('InterviewResultsViewContainer');
+        this.$MainContent.appendChild($resultsViewContainer);
+        this.$resultsViewContainer = $resultsViewContainer;
+ 
+        // InterviewPreviewContainer
+        const $previewContainer = document.createElement('div');
+        $previewContainer.id = 'InterviewPreviewContainer';
+        $previewContainer.classList.add('InterviewPreviewContainer');
+        this.$MainContent.appendChild($previewContainer);
+        this.$previewContainer = $previewContainer;
     }
 
     fetchUser(onSuccess) {
@@ -97,6 +111,7 @@ class InterviewHomeViewController {
             //this.openInterviewCreateModalView(this.user, interviewId, this.locale, this.lang);
             //this.openInterviewPreviewView(interviewId);
             this.openInterviewSettingsModalView(this.user, interviewId, this.locale, this.lang);
+            this.openInterviewResults(interviewId)
         })
         this.interviewList.$view.addEventListener("clickedNewInterviewButton", (event)=> {
             this.openInterviewSettingsModalView(this.user, null, this.locale, this.lang);
@@ -170,6 +185,19 @@ class InterviewHomeViewController {
         });
         this.interviewSettingsModalView.mount(this.$MainContent);
         this.interviewSettingsModalView.show();
+    }
+
+    openInterviewResults(interviewId) {
+        this.interviewResults = new InterviewResults({
+            id: 'InterviewResultsViewHome',
+            interviewId: interviewId,
+            locale: this.locale,
+            lang: this.lang
+        });
+        //this.interviewResults.mount(this.$mainContent);
+        this.$resultsViewContainer.appendChild(this.interviewResults.$view);
+        this.interviewResults.fetchAndUpdate({limit: 10});
+        this.$MainContent.classList.add('openInterviewResults');
     }
 
     loading(isLoading) {}

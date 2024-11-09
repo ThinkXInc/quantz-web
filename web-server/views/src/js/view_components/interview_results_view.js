@@ -159,6 +159,7 @@ class InterviewResults extends TableView {
 
     createElements() {
         // Interview List Header
+        this.$view.classList.add('InterviewResultsView')
         this.createHeader();
         this.createMessageView();
         this.createMoreView();
@@ -244,23 +245,18 @@ class InterviewResults extends TableView {
 
     fetchAndUpdate({limit = 20}) {
         this.loading(true);
-        console.warn('AAAAAAAASSShou')
         Http.get(`/v1/${this.lang}/interviews/${this.interviewId}/results/list?limit=${limit}`, 
             (res) => {
                 this.loading(false);
     
                 const { interview_results, count } = res;
-                    console.warn('sssssssssSSShou', parseInt(count, 0))
                 this.updateContents(interview_results);
                 //this.updateHeaderCount(count);
-                    console.warn('SSShou', parseInt(count, 0))
                 if (parseInt(count, 0) == 0) {
-                    console.warn('SSSSSSSSSShou', parseInt(count, 0))
                     this.showMessage(this.locale.get('interview_results_noresults', this.lang));
                     this.$tableViewContainer.style.display = 'none';
                 }
                 if (parseInt(count, 0) > 5) {
-                    console.warn('SSSSSSSSSShoutt', parseInt(count, 0))
                     this.showMore()
                 }
             },
