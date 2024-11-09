@@ -8,16 +8,51 @@
     display: flex;
     flex-direction: row;
 
+    div#InterviewListContainer {
+        max-width: 600px;
+        height: 100vh;
+        border-right: 1px solid #e8e8e8;
+        transition:
+            max-width 0.3s @cubic-bezier1;
+    }
+
+    div.InterviewResultsViewContainer {
+        display: none;
+        min-width: 340px;
+        height: 100vh;
+        overflow-y: auto;
+        border-right: 1px solid #e8e8e8;
+    }
+
+    div.InterviewPreviewContainer {
+        display: none;
+        min-width: 400px;
+        height: 100vh;
+        overflow-y: auto;
+    }
 }
 
-// Left Column
+#MainContent.openInterviewResults {
+    div#InterviewListContainer {
+        max-width: 309px;
+    }
+
+    div.InterviewResultsViewContainer {
+        display: flex;
+    }
+
+    div.InterviewPreviewContainer {
+
+    }
+}
+
+// ListContainer
 
 div#InterviewListContainer {
-    max-width: 600px;
-    height: 100vh;
     div.TableView.interviewList {
         div.tableViewContainer {
             div.interviewListHeader {
+                display: none;
                 div.leftContainer {
                     h1.interviewListHeaderTitle {
                         // Styles here
@@ -38,17 +73,32 @@ div#InterviewListContainer {
                 align-items: center;
                 padding: 20px;
                 height: 65px;
-                background-color: #50636a;
-            
+                background: linear-gradient(90deg, #50636a, transparent) #50636a;; /* Switch to a different gradient */
+                transition: 
+                    background-color 0.3s @cubic-bezier1;
+
                 img.plusIcon {
                     width: 24px;
                     height: 24px;
                     margin-right: 10px;
+                    transition: transform 0.3s @cubic-bezier1;
                 }
             
                 h4.title {
                     font-size: 16px;
                     color: #fff;
+                    transition: 
+                        color 0.3s @cubic-bezier1,
+                        transform 0.3s @cubic-bezier1; 
+                }
+
+                &:hover {
+                    background-color: #46565f;
+                    h4.title {
+                        color: #d9d9d9;
+                    }
+                    img.plusIcon {
+                    }
                 }
             }
             div.tableView.interviewListTableView {
@@ -105,16 +155,22 @@ div#InterviewListContainer {
 }  
 
 
-// Right Column
+// ResultsView
+div#InterviewResultsViewContainer {
+
+    div.InterviewResultsView {
+        width: 100%;
+        margin: 0;
+        div.tableViewContainer {
+            border: none;
+            border-right: 1px solid #e8e8e8;
+        }
+    }
+}
 
 
-// Right Column
+// Preview
 div#InterviewPreviewContainer {
-    padding: 20px;
-    width: 100%;
-    height: 100vh;
-    overflow-y: auto;
-
     div.InterviewPreviewView {
         padding: 20px;
         width: 100%;

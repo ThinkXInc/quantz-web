@@ -1,3 +1,135 @@
-div#InterviewResultsView {
+div#InterviewResultsView, div.InterviewResultsViewHome, div.InterviewResultsView {
+    div.tableViewContainer {
+        border: 1px solid #e8e8e8;
+        div.interviewResultsHeader {
+            div.container {
+                h1.interviewResultsHeaderTitle {
+                }
+                h3.interviewResultsCount {
+                }
+            }
+        }
 
+        div.tableView.InterviewResultsViewTableView {
+            ul.tableListView.InterviewResultsViewListView {
+                li.TableViewCell.tableViewCell.InterviewResultsViewCell {
+                    background-color: #fff;
+                    padding: 0;
+                    border: none;
+                    &:not(:last-child) {
+                        border-bottom: 1px solid #fafafa;
+                    }
+                    transition: 
+                        background-color 0.3s @cubic-bezier1;
+
+                    &.selected {
+                        background-color:#deeaee;
+                    }
+                    &:hover {
+                        background-color: #f2f2f2;//#deeaee;
+
+                    }
+
+                    div.contentWrapper {
+                        height: 100%;
+                        background: none;
+                        border: none;
+                        padding: 10px 17px;
+                        overflow-y: auto;
+
+                        div.header {
+                            span.label {
+                                background: none;
+                                font-weight: 400;
+                                font-size: 12px;
+                            }
+                            h6.title {
+                                font-size: 14px;
+                                font-weight: 500;
+                            }
+                        }
+                        div.body {
+                            p.text {
+                                font-size: 11px;
+                                color: #9a9a9a;
+                            }
+                        }
+                        div.footer {
+                            background-color: none;
+                            margin: 0;
+                            padding: 0;
+                        }
+                    }
+                    div.buttonContainer.right {
+                        display: none;
+                        button {
+                            svg#DeleteIconSVG.deleteIconSVG {
+                                .path {
+                                    fill: #FFFFFF;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            div#TableViewGradientLoader.gradientViewIndicator.TableViewGradientLoader {
+                display: none;
+                div.indicator-container {
+                    div.indicator-wrapper {
+                        svg {
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    div.messageContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 43px;
+        p.message {
+            font-size: 12px;
+        }
+        &.hidden {
+            display: none;
+        }
+        &.alert {
+            display: flex;
+            p.message {
+                color: @alert-red;
+            }
+        }
+        &.normal {
+            display: flex;
+            p.message {
+                color: #444;
+            }
+        }
+    }
+
+    div.moreContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 43px;
+        &.hidden {
+            display: none;
+        }
+        a.more {
+            cursor: pointer;
+            font-size: 12px;
+            border-radius: 18px;
+            padding: 8px 20px;
+            color: #3b8cce;
+            transition: 
+                color 0.4s @cubic-bezier1,
+                background-color 0.4s @cubic-bezier1;
+        }
+        a.more:hover {
+            background-color: #f0f7ff;
+            color: #1f4d73;
+        }
+    }
 }
