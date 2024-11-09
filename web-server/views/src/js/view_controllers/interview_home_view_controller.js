@@ -9,6 +9,7 @@ class InterviewHomeViewController {
         this.lang = lang;
         this.interviews = [];
         this.setupView();
+        this.setupEventListeners();
         this.loadInterviews();
         console.log(`Initialize ${this.id}: with material ${material}`);
     }
@@ -30,12 +31,19 @@ class InterviewHomeViewController {
         this.$MainContent.appendChild($resultsViewContainer);
         this.$resultsViewContainer = $resultsViewContainer;
  
-        // InterviewPreviewContainer
+        // InterviewResultPreviewContainer
         const $previewContainer = document.createElement('div');
-        $previewContainer.id = 'InterviewPreviewContainer';
-        $previewContainer.classList.add('InterviewPreviewContainer');
+        $previewContainer.id = 'InterviewResultPreviewContainer';
+        $previewContainer.classList.add('InterviewResultPreviewContainer');
         this.$MainContent.appendChild($previewContainer);
         this.$previewContainer = $previewContainer;
+    }
+
+    setupEventListeners() {
+        document.addEventListener("clickedInterviewResultCell", (event) => {
+            const {index, clientId, interview, cell } = event.detail;
+            this.openInterviewResultPreview(interview);
+        })
     }
 
     fetchUser(onSuccess) {
@@ -136,6 +144,7 @@ class InterviewHomeViewController {
         }
     }
 
+    /*
     openInterviewPreviewView(interviewId) {
         const interview = this.getInterview(interviewId);
     
@@ -160,6 +169,7 @@ class InterviewHomeViewController {
             this.interviewPreviewView.updateInterview(interview);
         }
     }
+        */
     
 
     openInterviewSettingsModalView(user, interviewId, locale, lang) {
@@ -188,6 +198,7 @@ class InterviewHomeViewController {
     }
 
     openInterviewResults(interviewId) {
+        this.$resultsViewContainer.innerHTML = '';
         this.interviewResults = new InterviewResults({
             id: 'InterviewResultsViewHome',
             interviewId: interviewId,
@@ -198,6 +209,19 @@ class InterviewHomeViewController {
         this.$resultsViewContainer.appendChild(this.interviewResults.$view);
         this.interviewResults.fetchAndUpdate({limit: 10});
         this.$MainContent.classList.add('openInterviewResults');
+    }
+
+    openInterviewResultPreview(interview) {
+        this.interviewSettingsModalView.close();
+        this.$previewViewContainer.innerHTML = '';
+        this.interviewResultPreview = new InterviewResultPreview({
+            id: 'InterviewResultPreview',
+            interview: interview,
+            locale: this.locale,
+            lang: this.lang
+        });
+        this.$previewContainer.appendChild(this.interviewResultPreview.$view);
+        this.$MainContent.classList.add('openInterviewResultPreview');
     }
 
     loading(isLoading) {}
