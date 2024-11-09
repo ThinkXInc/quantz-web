@@ -1,4 +1,32 @@
-div#InterviewResultsView, div.InterviewResultsViewHome, div.InterviewResultsView {
+div#InterviewResultsView {
+    div.tableViewContainer {
+        div.tableView {
+            ul.tableListView {
+                li.TableViewCell.tableViewCell {
+                    border: none;
+                    &:not(:last-child) {
+                        //border-bottom: 1px solid #fafafa;
+                        border-bottom: 1px solid #e8e8e8;
+                    }
+                }
+            }
+        }
+    }
+}
+
+div#InterviewResultsViewHome {
+    div.tableViewContainer {
+        div.tableView {
+            ul.tableListView {
+                li.TableViewCell.tableViewCell {
+                    border-bottom: 1px solid #e8e8e8;
+                }
+            }
+        }
+    }
+}
+
+div#InterviewResultsView, div#InterviewResultsViewHome, div.InterviewResultsView {
     div.tableViewContainer {
         border: 1px solid #e8e8e8;
         div.interviewResultsHeader {
@@ -10,15 +38,11 @@ div#InterviewResultsView, div.InterviewResultsViewHome, div.InterviewResultsView
             }
         }
 
-        div.tableView.InterviewResultsViewTableView {
-            ul.tableListView.InterviewResultsViewListView {
-                li.TableViewCell.tableViewCell.InterviewResultsViewCell {
+        div.tableView {
+            ul.tableListView {
+                li.TableViewCell.tableViewCell {
                     background-color: #fff;
                     padding: 0;
-                    border: none;
-                    &:not(:last-child) {
-                        border-bottom: 1px solid #fafafa;
-                    }
                     transition: 
                         background-color 0.3s @cubic-bezier1;
 
@@ -42,6 +66,7 @@ div#InterviewResultsView, div.InterviewResultsViewHome, div.InterviewResultsView
                                 background: none;
                                 font-weight: 400;
                                 font-size: 12px;
+                                color: #747474;
                             }
                             h6.title {
                                 font-size: 14px;
