@@ -4,12 +4,14 @@ class InterviewListCellContent extends TableViewCellContent {
         title = '',
         text = '',
         icon = '',
+        label = '',
         ...otherOptions
     }) {
         super({
             title: title,
             text: text,
             icon: icon,
+            label: label,
             ...otherOptions
         });
 
@@ -24,6 +26,7 @@ class InterviewListCell extends TableViewCell {
         title = '',
         text = '',
         icon = '',
+        label = '',
         maxDisplayTitleLength = 100,
         maxDisplayTextLength = 100,
         ...otherOptions
@@ -34,6 +37,7 @@ class InterviewListCell extends TableViewCell {
             title: title,
             text: text,
             icon: icon,
+            label: label,
             ...otherOptions
         });
 
@@ -102,6 +106,7 @@ class InterviewList extends TableView {
     constructor({
         id,
         lang,
+        locale,
         tableViewId = "InterviewListTable",
         cellClass = InterviewListCell,
         cellContentClass = InterviewListCellContent,
@@ -123,6 +128,7 @@ class InterviewList extends TableView {
         });
 
         this.lang = lang;
+        this.locale = locale;
         this.tableViewId = tableViewId;
         this.maxDisplayTitleLength = maxDisplayTitleLength;
         this.maxDisplayTextLength = maxDisplayTextLength;
@@ -153,12 +159,21 @@ class InterviewList extends TableView {
     }
 
     updateContentsFromInterviews(interviews) {
-        let contents = interviews.map(d => new InterviewListCellContent({
-            interviewId: d.id,
-            title: d.title,
-            text: d.introduction
-        }));
-        this.contents = contents;
+        this.contents = interviews.map(d => {
+            const contentData = {
+                interviewId: d.id,
+                title: d.title,
+                text: d.introduction,
+                label: this.locale.get('interview_list_cell_label', this.lang, [d.client_ids.length]),
+            };
+    
+            console.log("Processing interview:", d);  // Log the entire interview object
+            console.log("Creating InterviewListCellContent with:", contentData);  // Log the data used to create InterviewListCellContent
+            
+            return new InterviewListCellContent(contentData);
+        });
+    
+        console.warn("Contents created:", this.contents);  // Log the final list of InterviewListCellContent objects
     }
 
     updateHeaderInterviewCounts(count) {
@@ -169,9 +184,9 @@ class InterviewList extends TableView {
         }
     }
 
-    addNewCell(title, text, interviewId, delay = 0, insertCellIndex = 0) {
+    addNewCell(title, text, label, interviewId, delay = 0, insertCellIndex = 0) {
         this.insertCell(
-            new InterviewListCellContent({title: '', text: text, interviewId: interviewId })
+            new InterviewListCellContent({title: '', text: text, label: label, interviewId: interviewId })
             , insertCellIndex, delay, (newCell)=> {
                 newCell.updateTitle(title)
                 this.selectCellAtIndex(newCell.index, newCell);

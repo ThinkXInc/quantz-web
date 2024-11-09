@@ -17,6 +17,24 @@
         "ru": "Не удалось получить список интервью.",
         "ar": "فشل في استرجاع قائمة المقابلات."
     },
+    "interviews_results_success": {
+        "ja": "インタビュー結果の取得に成功しました。",
+        "en": "Successfully retrieved interview results.",
+        "zh": "成功获取面试结果。",
+        "es": "Resultados de la entrevista obtenidos con éxito.",
+        "fr": "Résultats de l'entretien récupérés avec succès.",
+        "ru": "Результаты интервью успешно получены.",
+        "ar": "تم استرجاع نتائج المقابلة بنجاح."
+    },
+    "interviews_results_failed": {
+        "ja": "インタビュー結果の取得に失敗しました。",
+        "en": "Failed to retrieve interview results.",
+        "zh": "获取面试结果失败。",
+        "es": "Error al obtener los resultados de la entrevista.",
+        "fr": "Échec de la récupération des résultats de l'entretien.",
+        "ru": "Не удалось получить результаты интервью.",
+        "ar": "فشل في استرجاع نتائج المقابلة."
+    },
     "interview_not_found": {
         "ja": "Interviewがデータベースに見つかりませんでした",
         "en": "Interview data not found.",

@@ -92,7 +92,9 @@ class InterviewSettingsModalView extends ModalView {
         
         console.warn(this.interviewId)
         if (this.interviewId) {
-            // Display all three views
+
+            // LinkView
+
             this.interviewLinkView = new InterviewLinkView({
                 id: 'InterviewLinkView',
                 interviewId: this.interviewId,
@@ -112,13 +114,17 @@ class InterviewSettingsModalView extends ModalView {
             $separatorResults.classList.add('results');
             this.$mainContent.appendChild($separatorResults);
 
-            this.interviewResultsView = new InterviewResultsView({
+            // ResultsView
+
+            this.interviewResults = new InterviewResults({
                 id: 'InterviewResultsView',
                 interviewId: this.interviewId,
                 locale: this.locale,
                 lang: this.lang
             });
-            this.interviewResultsView.mount(this.$mainContent);
+            //this.interviewResults.mount(this.$mainContent);
+            this.$mainContent.appendChild(this.interviewResults.$view);
+            this.interviewResults.fetchAndUpdate({limit: 10});
 
             const $labelCustomize = document.createElement('span');
             $labelCustomize.classList.add('label');

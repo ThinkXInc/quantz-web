@@ -86,6 +86,7 @@ class InterviewHomeViewController {
         this.interviewList = new InterviewList({
             id: 'interviewList',
             lang: lang,
+            locale: locale,
             createNewButtonTitle: locale.get("create_new_interview_button_title", lang),
             headerTitle: locale.get('interview_list_header_title', lang),
             listCountTextSingular: locale.get('interview_list_count_singular', lang),

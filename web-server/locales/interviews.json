@@ -143,6 +143,15 @@
         "ar": "مقابلات",
         "ru": "интервью"
     },
+    "interview_list_cell_label": {
+        "ja": "$0件のミーティング",
+        "en": "$0 meetings",
+        "zh": "$0次会议",
+        "es": "$0 reuniones",
+        "fr": "$0 réunions",
+        "ru": "$0 встреч",
+        "ar": "$0 اجتماع"
+    },
     "create_interview_introduction_page_title": {
         "ja": "開始時の喋り出し",
         "en": "Opening Remarks",
