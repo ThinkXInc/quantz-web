@@ -32,11 +32,11 @@ class InterviewHomeViewController {
         this.$resultsViewContainer = $resultsViewContainer;
  
         // InterviewResultPreviewContainer
-        const $previewContainer = document.createElement('div');
-        $previewContainer.id = 'InterviewResultPreviewContainer';
-        $previewContainer.classList.add('InterviewResultPreviewContainer');
-        this.$MainContent.appendChild($previewContainer);
-        this.$previewContainer = $previewContainer;
+        const $resultPreviewContainer = document.createElement('div');
+        $resultPreviewContainer.id = 'InterviewResultPreviewContainer';
+        $resultPreviewContainer.classList.add('InterviewResultPreviewContainer');
+        this.$MainContent.appendChild($resultPreviewContainer);
+        this.$resultPreviewContainer = $resultPreviewContainer;
     }
 
     setupEventListeners() {
@@ -213,14 +213,14 @@ class InterviewHomeViewController {
 
     openInterviewResultPreview(interview) {
         this.interviewSettingsModalView.close();
-        this.$previewViewContainer.innerHTML = '';
+        this.$resultPreviewContainer.innerHTML = '';
         this.interviewResultPreview = new InterviewResultPreview({
             id: 'InterviewResultPreview',
             interview: interview,
             locale: this.locale,
             lang: this.lang
         });
-        this.$previewContainer.appendChild(this.interviewResultPreview.$view);
+        this.$resultPreviewContainer.appendChild(this.interviewResultPreview.$view);
         this.$MainContent.classList.add('openInterviewResultPreview');
     }
 

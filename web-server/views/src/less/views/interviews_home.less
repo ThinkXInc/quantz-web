@@ -22,13 +22,18 @@
         height: 100vh;
         overflow-y: auto;
         border-right: 1px solid #e8e8e8;
+        transition:
+            max-width 0.3s @cubic-bezier1;
     }
 
     div.InterviewResultPreviewContainer {
         display: none;
         min-width: 400px;
+        width: 100%;
         height: 100vh;
         overflow-y: auto;
+        transition:
+            max-width 0.3s @cubic-bezier1;
     }
 }
 
@@ -48,12 +53,14 @@
 
 #MainContent.openInterviewResultPreview {
     div#InterviewListContainer {
+        max-width: 309px;
     }
 
     div.InterviewResultsViewContainer {
     }
 
     div.InterviewResultPreviewContainer {
+        display: flex;
     }
 }
 
@@ -180,224 +187,137 @@ div#InterviewResultsViewContainer {
 }
 
 
-// Preview
-//div#InterviewPreviewContainer {
-//    div.InterviewPreviewView {
-//        padding: 20px;
-//        width: 100%;
-//        height: 100vh;
-//
-//        button.editButton {
-//            background-color: transparent; /* Makes background transparent */
-//            color: #50636a; /* Sets icon color to match the desired color */
-//            border: none;
-//            padding: 10px;
-//            cursor: pointer;
-//            margin-bottom: 20px;
-//            float: right;
-//            transition: color 0.3s; /* For gradual color change */
-//    
-//            svg {
-//                width: 24px;
-//                height: 24px;
-//            }
-//        }
-//    
-//        button.editButton:hover {
-//            color: #01a7e3; /* Changes icon color on hover */
-//        }
-//    
-//        button.editButton:active {
-//            color: #00c3ff; /* Changes icon color on click */
-//        }
-//
-//        div.InterviewSummaryView {
-//            h2 {
-//                font-size: 24px;
-//                margin-bottom: 10px;
-//                margin-bottom: 50px;
-//            }
-//
-//            div.introductionContainer {
-//                margin-bottom: 42px;
-//
-//                span.introductionLabel {
-//                    font-size: 13px;
-//                    font-weight: bold;
-//                    display: block;
-//                    margin-bottom: 10px;
-//                }
-//
-//                p.introduction {
-//                    background-color: #f7f7f7;
-//                    padding: 20px;
-//                    border-radius: 7px;
-//                    font-size: 19px;
-//                    font-weight: 600;
-//                }
-//            }
-//
-//            div.stepArrowContainer {
-//                display: flex;
-//                flex-direction: column;
-//                align-items: center;
-//                justify-content: center;
-//
-//                img.stepArrow {
-//                    display: block;
-//                    margin-top: 10px;
-//                    margin-bottom: 10px;
-//                    width: 56px;
-//                }
-//            }
-//
-//            div.stepContainer {
-//                position: relative;
-//                margin-bottom: 13px;
-//
-//                h3.stepTitle {
-//                    position: absolute;
-//                    top: 0;
-//                    left: 8%;
-//                    transform: translate(-50%, -50%);
-//                    background-color: transparent; // Make background transparent
-//                    padding: 0 10px;
-//                    font-size: 17px;
-//                    &::before {
-//                        content: '';
-//                        position: absolute;
-//                        top: 50%;
-//                        left: 50%;
-//                        transform: translate(-50%, -50%);
-//                        width: 95%;
-//                        height: 3px;
-//                        background-color: white;
-//                        z-index: -1;
-//                    }
-//                }
-//
-//                div.stepContent {
-//                    border: 1px solid #ccc;
-//                    border-radius: 10px;
-//                    padding: 20px;
-//                    margin-top: 20px;
-//                    background-color: #fefefe;
-//
-//                    div.questionWrapper,
-//                    div.instructionsWrapper,
-//                    div.finishConditionWrapper,
-//                    div.maxTurnsWrapper {
-//                        margin-top: 10px;
-//                    }
-//
-//                    span.questionLabel,
-//                    span.finishConditionLabel,
-//                    span.maxTurnsLabel,
-//                    span.instructionsLabel {
-//                        font-weight: bold;
-//                        display: block;
-//                        margin-bottom: 6px;
-//                        font-size: 13px;
-//                    }
-//
-//                    p.question,
-//                    p.finishCondition {
-//                        margin: 5px 0 15px 0;
-//                    }
-//
-//                    p.question {
-//                        background-color: #f7f7f7;
-//                        padding: 16px;
-//                        border-radius: 5px;
-//                        font-size: 19px;
-//                        font-weight: 600;
-//                    }
-//
-//                    span.maxTurns {
-//                        margin-left: 5px;
-//                    }
-//
-//                    div.instructionsWrapper {
-//
-//                        ul.instructions {
-//                            list-style: none;
-//                            padding: 0;
-//
-//                            li {
-//                                display: flex;
-//                                align-items: center;
-//                                margin-bottom: 5px;
-//
-//                                span.index {
-//                                    display: inline-block;
-//                                    background-color: #eee;
-//                                    border-radius: 5px;
-//                                    padding: 2px 8px;
-//                                    margin-right: 9px;
-//                                }
-//                            }
-//                        }
-//
-//                        span.moreDetail {
-//                            cursor: pointer;
-//                            display: flex;
-//                            align-items: center;
-//                            margin-top: 20px;
-//
-//                            img.moreDetailArrow {
-//                                transition: transform 0.3s;
-//                                margin-right: 5px;
-//                                width: 13px;
-//                            }
-//
-//                            p.moreDetailLabel {
-//                                color: #525252 !important;
-//                                font-size: 13px;
-//                            }
-//
-//                            &.rotated img.moreDetailArrow {
-//                                transform: rotate(180deg);
-//                                transition: transform 0.7s cubic-bezier(0.4, 0.0, 0.2, 1);
-//                            }
-//                        }
-//
-//                        div.hiddenContent {
-//                            overflow: hidden;
-//                            max-height: 0;
-//                            transition: max-height 0.5s @cubic-bezier1;
-//
-//                            &.expanded {
-//                                max-height: 500px; // Adjust as needed
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//
-//            div.endContainer {
-//                margin-top: 40px;
-//
-//                span.endLabel {
-//                    font-weight: bold;
-//                    display: block;
-//                    margin-bottom: 6px;
-//                    font-size: 13px;
-//                }
-//
-//                p.endText {
-//                    background-color: #f7f7f7;
-//                    padding: 20px;
-//                    border-radius: 7px;
-//                    font-size: 19px;
-//                    font-weight: 600;
-// 
-//                }
-//            }
-//        }
-//
-//        div.InterviewLatestResultsView {
-//            margin-top: 20px;
-//            // Additional styles if needed
-//        }
-//    }
-//}
+// ResultPreview
+div#InterviewResultPreview {
+    color: #333;
+    margin-bottom: 20px;
+    padding: 25px 0px;
+    width: 100%;
+
+    div.header {
+        border-bottom: 1px solid #eaeaea;
+
+        div.info {
+            padding: 0 33px 20px 33px;
+            min-width: 400px;
+            font-weight: 600;
+            color: #5f5f5f;
+            font-size: 13px;
+
+            span.infoItem {
+                margin: 0 0 5px 0;
+                display: flex;
+
+                span.label {
+                    margin-right: 20px;
+                    display: inline-block;
+                    width: 52px;
+                    font-size: 10px;
+                }
+                span.value {
+                    // Additional styles if needed
+                }
+            }
+        }
+    }
+    div.eventsWrapper {
+        padding: 56px 32px 63px 32px;
+        border-bottom: 1px solid #eaeaea;
+        background-color: #fafafa;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        ul.events {
+            max-width: 534px;
+            li.event {
+                font-size: 15px;
+
+                p.message {
+                    padding-bottom: 10px;
+                    margin: 0;
+
+                    span.speaker {
+                        margin-right: 10px;
+                        font-size: 12px;
+                        padding: 2px 4px;
+                        border-radius: 2px;
+
+                        &.systemSpeaker {
+                            background-color: #e3e3e3;
+                            color: #8a8a8a;
+                        }
+                        &.userSpeaker {
+                            //background-color: #dff9fc;
+                            //color: #79a9af;
+                            background-color: #e3d4fa;
+                            color: #611b86;
+                        }
+                        &.otherSpeaker {
+                            background-color: #e3e3e3;
+                            color: #683c15;
+                        }
+                    }
+
+                    span.messageText {
+                        font-size: 15px;
+                        color: #606060;
+
+                        &.systemMessage {
+                            font-weight: 500;
+                            color: #606060;
+                        }
+                        &.userMessage {
+                            //color: #3db3c3;
+                            font-weight: 600;
+                            color: #9d54c3;
+                        }
+                        &.otherMessage {
+                            font-weight: 300;
+                            color: #aaa;
+                        }
+                    }
+                }
+                div.eventVideoContainer {
+                    margin: 18px 0 34px 0;
+
+                    video {
+                        width: 100%;
+                        max-width: 600px;
+                        display: block;
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    div.videoAllContainer {
+        margin-bottom: 20px;
+        padding: 23px 32px;
+        background: #363636;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        div.videoAllWrapper {
+            p.fullVideoLabel {
+                font-size: 11px;
+                width: max-content;
+                color: #dfedf1;
+                background-color: #4a4a4a;
+                //background-color: #465054;
+                padding: 4px 6px;
+                border-radius: 2px;
+                margin-bottom: 13px;
+            }
+            video.videoAll {
+                width: 100%;
+                max-width: 600px;
+                display: block;
+ 
+            }
+        }
+    }
+}

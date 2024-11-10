@@ -368,5 +368,41 @@
         "fr": "Remarques de clôture de l'entretien",
         "ru": "Заключительное слово на собеседовании",
         "ar": "كلمة الختام في المقابلة"
+    },
+    "interview_result_preview_label_name": {
+        "ja": "名前",
+        "en": "Name",
+        "zh": "姓名",
+        "es": "Nombre",
+        "fr": "Nom",
+        "ru": "Имя",
+        "ar": "الاسم"
+    },
+    "interview_result_preview_label_email": {
+        "ja": "メール",
+        "en": "Email",
+        "zh": "电子邮件",
+        "es": "Correo Electrónico",
+        "fr": "Email",
+        "ru": "Электронная почта",
+        "ar": "البريد الإلكتروني"
+    },
+    "interview_result_preview_label_date": {
+        "ja": "開始時刻",
+        "en": "Start Time",
+        "zh": "开始时间",
+        "es": "Hora de Inicio",
+        "fr": "Heure de Début",
+        "ru": "Время начала",
+        "ar": "وقت البدء"
+    },
+    "interview_result_preview_label_full_video": {
+        "ja": "インタビュー全体のビデオ",
+        "en": "Full Interview Video",
+        "zh": "完整面试视频",
+        "es": "Video Completo de la Entrevista",
+        "fr": "Vidéo Complète de l'Entretien",
+        "ru": "Полное видео интервью",
+        "ar": "فيديو المقابلة الكامل"
     }
 }
