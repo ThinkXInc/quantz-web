@@ -367,5 +367,14 @@
         "es": "Gracias a esta reunión proxy, hemos logrado ahorrarte 30 minutos valiosos de tu vida!",
         "ar": "بفضل هذا الاجتماع بالوكالة، نجحنا في توفير 30 دقيقة ثمينة من حياتك!",
         "ru": "Благодаря этому заместительскому собранию, нам удалось сэкономить 30 драгоценных минут вашей жизни!"
+    },
+    "email_interview_result_video_all_label": {
+        "ja": "全体のビデオ",
+        "en": "Full Video",
+        "zh": "面试全程视频",
+        "es": "Video Completo de la Entrevista",
+        "fr": "Vidéo Complète de l'Entretien",
+        "ru": "Полное видео интервью",
+        "ar": "فيديو المقابلة الكامل"
     }
 }

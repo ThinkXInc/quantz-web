@@ -440,7 +440,7 @@ def send_added_to_wait_list_email(general_status: GeneralSystemStatus, user: Use
         except MailSendError as e:
             raise MailSendError
 
-def generate_interview_result_template(metadata, body1, body2, date_label='Date', name_label='Name', email_label='Email', lang='en'):
+def generate_interview_result_template(metadata, body1, body2, date_label='Date', name_label='Name', email_label='Email', video_all_label="Full video", lang='en'):
     # Parse and format the date
     start_datetime_str = metadata.get("startDatetime")
     if start_datetime_str.endswith("Z"):
@@ -471,6 +471,7 @@ def generate_interview_result_template(metadata, body1, body2, date_label='Date'
         date_label=date_label,
         name_label=name_label,
         email_label=email_label,
+        video_all_label=video_all_label,
         name=name,
         email=email,
         video_path_all=video_path_all,
@@ -530,7 +531,8 @@ def send_interview_result_email(user: User, metadata: dict, interview: "Interact
         date_label = locale.get('email_interview_result_date_label', lang)
         name_label = locale.get('email_interview_result_name_label', lang)
         email_label = locale.get('email_interview_result_email_label', lang)
-        html_content = generate_interview_result_template(metadata, body1, body2, date_label, name_label, email_label, lang)
+        video_all_label = locale.get('email_interview_result_video_all_label', lang)
+        html_content = generate_interview_result_template(metadata, body1, body2, date_label, name_label, email_label, video_all_label, lang)
         text_content = generate_interview_result_text(metadata, body1, body2, date_label, name_label, email_label, lang)
 
         try:

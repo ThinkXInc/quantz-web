@@ -558,3 +558,40 @@ def mailsample_send():
     except MailSendError as e:
         logger.error(f"Failed to send sample email: {str(e)}")
         return jsonify({'status': 'error', 'message': 'Failed to send sample email'}), 500
+
+
+# Interview add client_id
+@blueprint_interviews.route('/interviews/<interview_id>/add/<client_id>', methods=['GET'])
+def interview_add_client_id(interview_id, client_id):
+
+    logger.info(magenta(f'[GET] /interviews/{interview_id}/add/{client_id}'))
+
+    lang = 'en'
+
+    try:
+        interview = interaction_model_db.get_one(interview_id)
+        #interview = Interview.get_one(interview_id)
+        logger.info(f'interview found: {interview}')
+    except InteractionModelNotFoundError:
+        return UnexpectedAPIErrorFormat(
+            lang=lang,
+            message=locale.get('interview_not_found', lang)
+        ).http_response()
+
+    interview.client_ids += [client_id]
+
+    # Update interaction model in Redis
+    try:
+        interaction_model_db.set_interaction_model(interview)
+        logger.info(light_green(f'updated interview {interview}'))
+    except InteractionModelNotFoundError:
+        return ResourceNotFoundAPIErrorFormat(
+            lang=lang, message=locale.get('interview_not_found', lang)).http_response()
+    except InteractionModelUpdateError:
+        return UnexpectedAPIErrorFormat(
+            lang=lang, message=locale.get('interview_update_error', lang)).http_response()
+
+    return OKAPISuccessFormat(
+        message=locale.get('interview_updated', lang, [interview_id]),
+        data=interview.response_json()
+    ).http_response()
