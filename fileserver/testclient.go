@@ -150,7 +150,7 @@ func main() {
 
 	// Add the file field
 	// Open the video file
-	videoFilePath := "test_video.webm" // Ensure you have a test video file at this path
+	videoFilePath := "lara.webm" // Ensure you have a test video file at this path
 	videoFile, err := os.Open(videoFilePath)
 	if err != nil {
 		log.Fatalf("Error opening video file: %v", err)
