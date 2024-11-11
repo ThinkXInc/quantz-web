@@ -377,7 +377,7 @@ func extractVideoSegment(inputPath, outputPath string, startSec, durationSec flo
 func generateScreenshot(videoFilePath, screenshotFilePath string) error {
     log.Printf("[generateScreenshot] Generating screenshot from %s to %s", videoFilePath, screenshotFilePath)
     // Use ffmpeg to extract a frame from the video at 0.5 seconds, and overlay a transparent play symbol
-    drawtext := `drawtext=text='▶':fontcolor=white@0.5:fontsize=50:x=(w-text_w)/2:y=(h-text_h)/2`
+    drawtext := `drawtext=text='▶':fontcolor=white@0.7:fontsize=50:x=(w-text_w)/2:y=(h-text_h)/2`
     cmd := exec.Command(
         "ffmpeg",
         "-ss", "0.5",
