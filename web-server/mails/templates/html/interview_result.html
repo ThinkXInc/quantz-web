@@ -12,20 +12,6 @@
 
     <br>
 
-    {% if video_path_all %}
-        <!-- Display screenshot with play button overlay -->
-        <a href="{{ host_url }}{{ video_path_all }}" target="_blank" style="text-decoration: none; position: margin-bottom: 79px; display: inline-block;">
-            <img src="{{ host_url }}{{ screen_shot_url_all }}" alt="Video" style="width: 100%; max-width: 600px; display: block;">
-            {#
-            <!-- Play button overlay -->
-            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-                <!-- Simple triangle play button using HTML entity -->
-                <span style="font-size: 60px; color: rgba(255,255,255,0.7);">&#9658;</span>
-            </div>
-            #}
-        </a>
-    {% endif %}
-
     <br>
 
     {% for event in events %}
@@ -60,6 +46,22 @@
             {% endif %}
         </div>
     {% endfor %}
+
+
+    {% if video_path_all %}
+    <div style="margin-bottom: 20px; margin-top: 58px; padding: 8px 32px 23px 32px; width: max-content; background-color: #363636; display: flex; flex-direction: column; align-items: center;">
+        <div style="width: 100%;">
+            <p style="font-size: 11px; width: max-content; color: #dfedf1; background-color: #4a4a4a; padding: 4px 6px; border-radius: 2px; margin-bottom: 13px;">
+                {{ video_all_label }}
+            </p>
+            <!-- Display screenshot with play button overlay -->
+            <a href="{{ host_url }}{{ video_path_all }}" target="_blank" style="text-decoration: none; display: block;">
+                <img src="{{ host_url }}{{ screen_shot_url_all }}" alt="Video" style="width: 100%; max-width: 600px; display: block;">
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
 
   <div style="font-size: 1.2em; margin-top: 33px;">{{ body2 }}</div>
 
