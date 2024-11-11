@@ -280,23 +280,23 @@ func processVideo(videoPath, saveFolderPath string, metaData MetaData) (err erro
 
 			// Update the event's VideoPath if it was originally present
 			event.VideoPath = path.Join(baseUrl, fileName)
-		}
 
-		// Only generate screenshot if the original event contains a ScreenShotPath
-		if event.ScreenShotPath != "" {
-			// Generate the screenshot
-			screenShotFileName := fmt.Sprintf("%s_%d.jpeg", speaker, speakerIdx)
-			screenShotFilePath := filepath.Join(saveFolderPath, screenShotFileName)
+			// Only generate screenshot if the original event contains a ScreenShotPath
+			if event.ScreenShotPath != "" {
+				// Generate the screenshot
+				screenShotFileName := fmt.Sprintf("%s_%d.jpeg", speaker, speakerIdx)
+				screenShotFilePath := filepath.Join(saveFolderPath, screenShotFileName)
 
-			err = generateScreenshot(outputFilePath, screenShotFilePath)
-			if err != nil {
-				log.Printf("[processVideo] Error generating screenshot for event %d: %v", idx, err)
-				continue
+				err = generateScreenshot(outputFilePath, screenShotFilePath)
+				if err != nil {
+					log.Printf("[processVideo] Error generating screenshot for event %d: %v", idx, err)
+					continue
+				}
+				log.Printf("[processVideo] Generated screenshot saved to %s", screenShotFilePath)
+
+				// Update the event's ScreenShotPath if it was originally present
+				event.ScreenShotPath = path.Join(baseUrl, screenShotFileName)
 			}
-			log.Printf("[processVideo] Generated screenshot saved to %s", screenShotFilePath)
-
-			// Update the event's ScreenShotPath if it was originally present
-			event.ScreenShotPath = path.Join(baseUrl, screenShotFileName)
 		}
 
 	    // Update the event in the metadata.Events slice
