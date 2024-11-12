@@ -10,15 +10,34 @@ div#InterviewCreateView {
 
         // Reset default styles for TextField
         div.TextField {
-            .inputOuter {
+            div.inputOuter {
                 background: #f4f4f4;
-                border: none;
-                .inputWrapper input {
+                border: 1px solid #dfdfdf;
+                transition: 
+                    border 0.3s @cubic-bezier1,
+                    color 0.3s @cubic-bezier1,
+                    background-color 0.3s @cubic-bezier1;
+                &:focus-within {
+                    border: 1px solid #6eb1c7;//#7e7e7e;
+                    background-color: #e3ebed;
+                    div.inputWrapper {
+                        input {
+                            color: #3195b6;
+                        }
+                    }
+                }
+                &:hover {
+                    color: #fafafa;
+                    background-color: #ebebeb;
+                }
+                div.inputWrapper input {
                     margin: 0;
                     padding: 0 5px;
                     border-radius: 7px;
                     width: 100%;
                     height: 30px;
+                    transition: 
+                        color 0.3s @cubic-bezier1;
                 }
                 .footer {
                     padding: 0;
@@ -49,7 +68,6 @@ div#InterviewCreateView {
         div.endContainer {
             div.TextField {
                 div.inputOuter {
-                    background: #f5f5f5;
                 }
             }
         }
@@ -77,12 +95,11 @@ div#InterviewCreateView {
             margin-bottom: 34px;
 
             div.TextField {
-                .inputOuter {
-                    background: #fafafa;
+                div.inputOuter {
                     h6.title {
                         font-size: 10px;
                     }
-                    .inputWrapper input {
+                    div.inputWrapper input {
                         padding: 7px 0px;
                         font-size: 16px;
                         margin: 0;
