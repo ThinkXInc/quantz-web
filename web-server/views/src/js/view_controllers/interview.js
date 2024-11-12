@@ -585,7 +585,9 @@ class MeetingStartDialogueModalView extends ModalView {
         htmlTag = 'div',
         protocols = [],
         validators = [],
-        interviewInstance
+        interviewInstance,
+        showAnimation = AnimationType.EXPAND,
+        closeAnimation = AnimationType.SHRINK
     }) {
         super({
             id,
@@ -596,7 +598,9 @@ class MeetingStartDialogueModalView extends ModalView {
             shouldCloseOnTapBG,
             htmlTag,
             protocols,
-            validators
+            validators,
+            showAnimation,
+            closeAnimation
         });
 
         this.locale = locale;
