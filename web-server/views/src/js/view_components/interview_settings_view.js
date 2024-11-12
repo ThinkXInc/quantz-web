@@ -73,9 +73,7 @@ class InterviewSettingsModalView extends ModalView {
         this.interviewId = interviewId; //'670dcf37aa9bfc2db50d1574';//null;//'670b89cf740b61aa1bf16761';//null;
         this.interview = interview;
 
-        console.warn(this)
         super.createElements();
-        console.warn(this)
 
         this.setupView();
     }
