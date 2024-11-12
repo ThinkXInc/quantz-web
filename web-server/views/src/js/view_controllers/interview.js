@@ -28,9 +28,22 @@ class Interview {
     }
 
     setupView(){
-        const $interviewView = document.getElementById('Interview');
-        // TODO: show userInfo input modal
+        this.$interviewView = document.getElementById('Interview');
 
+        // Show userInfo input modal
+        this.meetingStartModal = new MeetingStartDialogueModalView({
+            id: 'MeetingStartDialogueModalView',
+            locale: this.locale,
+            lang: this.lang,
+            title: this.locale.get('interview_start_dialogue_title', this.lang),
+            doneButtonText: this.locale.get('interview_start_dialogue_continue', this.lang),
+            shouldCloseOnTapBG: false,
+            interviewInstance: this
+        });
+        this.meetingStartModal.mount(this.$interviewView);
+        this.meetingStartModal.show();
+
+        // Setup meeting view
         this.meetingView = new MeetingView({
             hostId: this.hostId,
             interviewId: this.interviewId,
@@ -41,7 +54,7 @@ class Interview {
             userInfo: this.userInfo
         });
         this.meetingView.setupView();
-        this.meetingView.mount($interviewView);
+        this.meetingView.mount(this.$interviewView);
 
         switch (this.meetingView.interviewerMode) {
             case InterviewerMode.GRAPHIC1:
@@ -50,6 +63,32 @@ class Interview {
             case InterviewerMode.MAN1:
                 break;
         }
+    }
+
+    proceedToMeetingView() {
+        if (!this.userInfo.name || this.userInfo.name.length == 0) {
+            console.error('UserInfo.name is empty.')
+        }
+        this.meetingView.$selfViewLabel.textContent = this.userInfo.name;
+        //this.meetingView = new MeetingView({
+        //    hostId: this.hostId,
+        //    interviewId: this.interviewId,
+        //    locale: this.locale,
+        //    lang: this.lang,
+        //    meta: this.interviewMeta,
+        //    interviewerMode: InterviewerMode.GRAPHIC1,
+        //    userInfo: this.userInfo
+        //});
+        //this.meetingView.setupView();
+        //this.meetingView.mount(this.$interviewView);
+
+        //switch (this.meetingView.interviewerMode) {
+        //    case InterviewerMode.GRAPHIC1:
+        //        this.meetingView.createConvexView();
+        //        break;
+        //    case InterviewerMode.MAN1:
+        //        break;
+        //}
     }
 
     setupSignalMonitor() {
@@ -202,10 +241,10 @@ class MeetingView {
         this.isVideoPlaying = false;  
         this.userInfo = userInfo;
         if (!userInfo.name || !userInfo.email) {
-            console.error(`[MeetingView] [ERROR] userInfo.name & userInfo.email must be collected.`);
+            //console.error(`[MeetingView] [ERROR] userInfo.name & userInfo.email must be collected.`);
             // DEBUG
-            this.userInfo = {'name': "Kazuki", 'email': "kaz@mail.com"}
-            console.error('set dummy name & email')
+            //this.userInfo = {'name': "Kazuki", 'email': "kaz@mail.com"}
+            //console.error('set dummy name & email')
             // DEBUG
         }
 
@@ -331,6 +370,7 @@ class MeetingView {
         $selfViewLabel.textContent = 'Self';  // Dynamic name possible
         $selfViewContainer.appendChild($selfViewLabel);
 
+        this.$selfViewLabel = $selfViewLabel;
         this.$selfViewContainer = $selfViewContainer;
         this.$selfView = $selfView;
         this.createMonitorView($leftContainer);
@@ -533,4 +573,140 @@ class MeetingView {
     }
 }
 
+class MeetingStartDialogueModalView extends ModalView {
+    constructor({
+        id,
+        locale,
+        lang = 'en',
+        title = "",
+        text = "",
+        doneButtonText = "Continue",
+        shouldCloseOnTapBG = false,
+        htmlTag = 'div',
+        protocols = [],
+        validators = [],
+        interviewInstance
+    }) {
+        super({
+            id,
+            title,
+            text,
+            cancelButtonText: null,
+            doneButtonText,
+            shouldCloseOnTapBG,
+            htmlTag,
+            protocols,
+            validators
+        });
 
+        this.locale = locale;
+        this.lang = lang;
+        this.interviewInstance = interviewInstance;
+
+        super.createElements();
+
+        this.setupView();
+    }
+
+    setupView() {
+        // Create TextFields for name and email
+        this.nameField = new TextField({
+            id: 'nameField',
+            fieldName: 'name',
+            validators: [
+                new Validator({
+                    errorType: ValidationErrorType.required,
+                    errorMessage: this.locale.get(ValidationErrorType.required, this.lang)
+                }),
+                new Validator({
+                    errorType: ValidationErrorType.maxLength,
+                    errorMessage: this.locale.get(ValidationErrorType.maxLength, this.lang),
+                    maxLength: 50
+                }),
+            ],
+            placeholder: this.locale.get('interview_start_dialogue_name_placeholder', this.lang),
+            isCounter: false,
+            hasTitle: false,
+        });
+
+        this.emailField = new TextField({
+            id: 'emailField',
+            fieldName: 'email',
+            validators: [
+                new Validator({
+                    errorType: ValidationErrorType.required,
+                    errorMessage: this.locale.get(ValidationErrorType.required, this.lang)
+                }),
+                new Validator({
+                    errorType: ValidationErrorType.maxLength,
+                    errorMessage: this.locale.get(ValidationErrorType.maxLength, this.lang),
+                    maxLength: 50
+                }),
+                new Validator({
+                    errorType: ValidationErrorType.emailFormat,
+                    errorMessage: this.locale.get(ValidationErrorType.emailFormat, this.lang),
+                }),
+            ],
+            placeholder: this.locale.get('interview_start_dialogue_email_placeholder', this.lang),
+            isCounter: false,
+            hasTitle: false,
+        });
+ 
+        // Mount the TextFields
+        this.nameField.mount(this.$mainContent);
+        this.emailField.mount(this.$mainContent);
+
+        this.addEnterKeyListener();
+    }
+
+    addEnterKeyListener() {
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                this.done();
+            }
+        });
+    }
+
+    done() {
+        // Validate fields
+        let hasError = false;
+
+        const nameError = this.nameField.validate();
+        if (nameError) {
+            this.nameField.alert(nameError);
+            hasError = true;
+        } else {
+            this.nameField.alert(false);
+        }
+
+        const emailError = this.emailField.validate();
+        if (emailError) {
+            this.emailField.alert(emailError);
+            hasError = true;
+        } else {
+            this.emailField.alert(false);
+        }
+
+        if (hasError) {
+            // Do not close modal
+            return;
+        } else {
+            // All valid
+            const name = this.nameField.value;
+            const email = this.emailField.value;
+
+            // Store values in Interview class instance
+            this.interviewInstance.userInfo = {
+                name: name,
+                email: email
+            };
+
+            // Close the modal
+            this.close();
+
+            // Proceed to setup MeetingView
+            this.interviewInstance.proceedToMeetingView();
+        }
+    }
+}

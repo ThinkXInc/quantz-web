@@ -205,3 +205,118 @@ div.MeetingView {
         }
     }
 }
+
+div#MeetingStartDialogueModalView.ModalView {
+    display: block;
+    
+    div.bg {
+        background-color: rgba(0, 0, 0, 0.5) !important;
+    }
+
+    div.window {
+        
+        div.contentWrapper {
+            background-color: #2e2e2e;
+            padding: 16px 16px 1px 16px;
+            border-top: 1px solid #424040;
+            border-left: 1px solid #424040;
+            border-right: 1px solid #424040;
+            border-bottom: none;
+ 
+            h3.ModalViewTitle {
+                font-size: 18px;
+                color: #cdcdcd;
+            }
+
+            div#MeetingStartDialogueModalViewMainContent.mainContent {
+                
+                div.TextField.nameField,
+                div.TextField.emailField {
+                    
+                    div.inputOuter {
+                        border: none;
+                        div.inputWrapper {
+                            background-color: #3f3f3f;
+                            font-size: 1em;
+                            margin: 0;
+                            border: 1px solid #5a5a5a;
+                            padding: 8px;
+                            border-radius: 4px;
+                            transition: border-color 0.3s @cubic-bezier1, background-color 0.3s @cubic-bezier1;
+
+                            &:focus-within {
+                                border-color: #bebebe;
+                            }
+
+                            &:hover {
+                                background-color: lighten(#4e4e4e, 10%);
+                            }
+                        }
+                        input {
+                            margin: 0;
+                            height: 38px;
+                            color: #fff;
+                            &::placeholder {
+                                font-size: 0.9em;
+                                color: #b7b7b7;
+                            }
+                        }
+                        div.inputAfter {
+                            margin-left: 20px;
+                        }
+                        div.footer {
+                            background-color: transparent;
+                            padding: 0;
+                            div.left {
+                                span.indicator {
+                                }
+                            }
+                            div.middle {
+                                span.message {
+                                }
+                            }
+                            div.right {
+                            }
+                            p.alertMessage {
+                                font-size: 0.8em;
+                                color: #ffa0a0;
+                            }
+                        }
+                    }
+                }
+                div.TextField.nameField {
+                    margin-bottom: 15px;                                
+                }
+            }
+
+            div.ModalViewAlert {
+                
+            }
+        }
+
+        div.footer.modalViewFooter {
+            background-color: #2e2e2e;
+            padding: 4px 16px 16px 16px;
+            border-bottom: 1px solid #424040;
+            border-left: 1px solid #424040;
+            border-right: 1px solid #424040;
+            border-top: none;
+ 
+            
+            button.doneButton {
+                background-color: #3a3a3a;
+                color: #fff;
+                border: 1px solid #656565;
+                font-size: 0.9em;
+                padding: 8px 10px;
+                transition: all 0.4s @cubic-bezier1;
+    
+                &:hover {
+                    border: 1px solid #404040;
+                    color: #656565;
+                    background-color: #454545;
+                }
+            }
+        }
+    }
+}

@@ -404,5 +404,41 @@
         "fr": "Vidéo Complète de l'Entretien",
         "ru": "Полное видео интервью",
         "ar": "فيديو المقابلة الكامل"
+    },
+    "interview_start_dialogue_title": {
+        "en": "Input your information",
+        "ja": "情報を入力してください",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "interview_start_dialogue_continue": {
+        "en": "Continue",
+        "ja": "続ける",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "interview_start_dialogue_name_placeholder": {
+        "en": "Your Name (e.g., Charles)",
+        "ja": "お名前（例：裕子）",
+        "zh": "您的姓名（例如：嘉豪）",
+        "es": "Su Nombre (ej., Alejandro)",
+        "fr": "Votre nom (ex., Olivier)",
+        "ru": "Ваше имя (например, Ольга)",
+        "ar": "اسمك (مثال: سارة)"
+    },
+    "interview_start_dialogue_email_placeholder": {
+        "en": "Your Email",
+        "ja": "メールアドレス",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
     }
 }
