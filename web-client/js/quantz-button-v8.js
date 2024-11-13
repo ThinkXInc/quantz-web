@@ -490,6 +490,13 @@
 
     document.addEventListener('DOMContentLoaded', ns.setup);
 
+    document.addEventListener('userInfoUpdated', (event) => {
+        const { userInfo } = event.detail;
+        ns.userInfo = userInfo;
+        console.log(`[Quantz Button] userInfoUpdated event received.`)
+        console.log(userInfo)
+    })
+
     /* Interactions */
 
 
@@ -520,7 +527,7 @@
                             ns.cores[buttonId].startRecording();
                         } else {
                             console.log(`[Quantz Button ${buttonId}] Connection established.`);
-                            ns.cores[buttonId].sendStartMessage();
+                            ns.cores[buttonId].sendStartMessage(ns.userInfo);
                             ns.interactionControllers[buttonId].start();
                         }
                     });
@@ -541,7 +548,7 @@
                             ns.cores[buttonId].startRecording();
                         } else {
                             console.log(`[Quantz Button ${buttonId}] Connection established.`);
-                            ns.cores[buttonId].sendStartMessage();
+                            ns.cores[buttonId].sendStartMessage(ns.userInfo);
                             ns.interactionControllers[buttonId].start();
                         }
                     });
@@ -568,7 +575,7 @@
                         } else {
                             console.log(`[Quantz Button ${buttonId}] Connection established.`);
                             console.log('*****************************')
-                            ns.cores[buttonId].sendStartMessage();
+                            ns.cores[buttonId].sendStartMessage(ns.userInfo);
                             console.log('*****************************')
                         }
  

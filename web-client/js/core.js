@@ -215,22 +215,36 @@
             }
         }
 
-        sendStartMessage() {
+        sendStartMessage(data) {
+            console.log(`[Core] Prepare start message with data: ${data}`)
             if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
                 console.error("Cannot send start message: WebSocket is not connected.");
                 return;
             }
         
+            let startMessage = ns.START_MESSAGE;
+        
+            if (typeof data === 'object' && data !== null) {
+                try {
+                    const dataString = JSON.stringify(data);
+                    startMessage += dataString; // Append data JSON string to START_MESSAGE
+                } catch (e) {
+                    console.error("Failed to serialize data to JSON:", e);
+                }
+            } else {
+                console.warn("Data is not a valid object, sending START_MESSAGE without data.");
+            }
+            
             const messageType = new Uint8Array([ns.MessageType.WAV_STREAM]); // Adjust messageType if necessary
             const langBytes = new TextEncoder().encode(this.lang);
-            const startMessageBytes = new TextEncoder().encode(ns.START_MESSAGE);
+            const startMessageBytes = new TextEncoder().encode(startMessage);
             const endOfMessageBytes = new TextEncoder().encode(ns.END_OF_MESSAGE);
-        
+            
             // Combine all parts into a single Blob
             const messageBlob = new Blob([messageType, langBytes, startMessageBytes, endOfMessageBytes], { type: 'application/octet-stream' });
-        
+            
             this.socket.send(messageBlob);
-            console.log("Start message sent to server:", ns.START_MESSAGE);
+            console.log("Start message sent to server:", startMessage);
         }
 
         startRecording() {
