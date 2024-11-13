@@ -576,20 +576,30 @@ class InterviewCreateView {
         const title = this.titleForm.value;
         const introduction = this.introductionForm.value;
         const end = this.endForm.value;
-
+    
         const steps = [];
+        let hasQuestionValue = false;
+    
         this.questionForms.forEach((questionForm, index) => {
-            if (questionForm.value.trim() !== '') {
+            if (questionForm?.value?.trim()) {
+                hasQuestionValue = true;
                 const step = {
                     question: questionForm.value,
-                    finish_condition: this.finishConditionForms[index].value,
-                    max_turns: parseInt(this.maxTurnsForms[index].value, 10),
-                    instructions: this.instructionForms[index].map(instructionForm => instructionForm.value)
+                    finish_condition: this.finishConditionForms[index]?.value || '',
+                    max_turns: parseInt(this.maxTurnsForms[index]?.value || '0', 10),
+                    instructions: (this.instructionForms[index] || []).map(instructionForm => instructionForm?.value || '')
                 };
                 steps.push(step);
             }
         });
-
+    
+        // If no question form has value, show an alert on the first question form
+        if (!hasQuestionValue && this.questionForms.length > 0) {
+            this.questionForms[0].alert(this.locale.get("interview_create_no_question_error", this.lang));
+            console.log('No question. return.')
+            return null;
+        }
+    
         return {
             title: title,
             introduction: introduction,
@@ -597,9 +607,14 @@ class InterviewCreateView {
             steps: steps
         };
     }
+    
+    
 
     submitCreateInterview() {
         const interviewJSON = this.interviewObjectFromFormData();
+        if (!interviewJSON) {
+            return
+        }
 
         if (this.$message) {
             this.$message.classList.remove('alert', 'success');
@@ -622,7 +637,7 @@ class InterviewCreateView {
                 }
             },
             (error) => {
-                this.handleError(error, $message);
+                this.handleError(error, this.$message);
             }
         );
     }
@@ -650,10 +665,31 @@ class InterviewCreateView {
         if (error && error.code) {
             console.log(`[error] code:${error.code} reason:${error.reason} message:${error.message}`);
             const { errors, message } = error; 
+    
             if (errors) {
                 errors.forEach(errorObj => {
                     const { field_name, message } = errorObj;
-                    // Handle specific field errors if needed
+    
+                    // Find the relevant TextField based on the field_name and call the error method
+                    switch (field_name) {
+                        case 'title':
+                            this.titleForm?.alert(message);
+                            break;
+                        case 'introduction':
+                            this.introductionForm?.alert(message);
+                            break;
+                        case 'end':
+                            this.endForm?.alert(message);
+                            break;
+                        default:
+                            // Check if the field belongs to a specific step
+                            const stepMatch = field_name.match(/^question_(\d+)$/);
+                            if (stepMatch) {
+                                const stepIndex = parseInt(stepMatch[1], 10);
+                                this.questionForms[stepIndex]?.alert(message);
+                            }
+                            break;
+                    }
                 });
             } else if (message) {
                 $message.classList.add('alert');
@@ -665,4 +701,5 @@ class InterviewCreateView {
             $message.textContent = 'An unexpected error occurred.';
         }
     }
+    
 }

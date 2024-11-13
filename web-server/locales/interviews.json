@@ -101,65 +101,74 @@
     "create_interview_title_page_title": {
         "ja": "インタビュータイトル",
         "en": "Interview Title",
-        "zh": "",
-        "es": "",
-        "fr": "",
-        "ru": "",
-        "ar": ""
+        "zh": "采访标题",
+        "es": "Título de la Entrevista",
+        "fr": "Titre de l'Entretien",
+        "ru": "Название интервью",
+        "ar": "عنوان المقابلة"
     },
     "interview_settings_cancel_button_text": {
         "ja": "戻る",
         "en": "Cancel",
-        "zh": "",
-        "es": "",
-        "fr": "",
-        "ru": "",
-        "ar": ""
+        "zh": "取消",
+        "es": "Cancelar",
+        "fr": "Annuler",
+        "ru": "Отмена",
+        "ar": "إلغاء"
     },
     "interview_settings_done_button_text": {
         "ja": "決定",
         "en": "Done",
-        "zh": "",
-        "es": "",
-        "fr": "",
-        "ru": "",
-        "ar": ""
+        "zh": "完成",
+        "es": "Hecho",
+        "fr": "Terminé",
+        "ru": "Готово",
+        "ar": "تم"
     },
     "interview_create_submit_button_title": {
         "ja": "決定",
         "en": "Done",
-        "zh": "",
-        "es": "",
-        "fr": "",
-        "ru": "",
-        "ar": ""
+        "zh": "完成",
+        "es": "Hecho",
+        "fr": "Terminé",
+        "ru": "Готово",
+        "ar": "تم"
     },
     "interview_create_input_introduction_placeholder": {
         "en": "Enter the introduction.",
-        "ja": "",
-        "zh": "",
-        "es": "",
-        "fr": "",
-        "ru": "",
-        "ar": ""
+        "ja": "紹介を入力してください。",
+        "zh": "输入介绍。",
+        "es": "Ingrese la introducción.",
+        "fr": "Entrez l'introduction.",
+        "ru": "Введите введение.",
+        "ar": "أدخل المقدمة."
     },
     "interview_create_input_question_placeholder": {
         "en": "Enter the question.",
-        "ja": "",
-        "zh": "",
-        "es": "",
-        "fr": "",
-        "ru": "",
-        "ar": ""
+        "ja": "質問を入力してください。",
+        "zh": "输入问题。",
+        "es": "Ingrese la pregunta.",
+        "fr": "Entrez la question.",
+        "ru": "Введите вопрос.",
+        "ar": "أدخل السؤال."
     },
     "interview_create_input_closing_placeholder": {
         "en": "Enter the closing remarks.",
-        "ja": "",
-        "zh": "",
-        "es": "",
-        "fr": "",
-        "ru": "",
-        "ar": ""
+        "ja": "終了の言葉を入力してください。",
+        "zh": "输入结束语。",
+        "es": "Ingrese los comentarios finales.",
+        "fr": "Entrez les remarques de clôture.",
+        "ru": "Введите заключительные замечания.",
+        "ar": "أدخل التعليقات الختامية."
+    },
+    "interview_create_no_question_error": {
+        "en": "At least one question input is required.",
+        "ja": "少なくとも1つの質問が必要です。",
+        "zh": "至少需要输入一个问题。",
+        "es": "Se requiere al menos una pregunta.",
+        "fr": "Au moins une question est requise.",
+        "ru": "Требуется как минимум один вопрос.",
+        "ar": "يتطلب إدخال سؤال واحد على الأقل."
     },
     "interview_list_header_title": {
         "ja": "インタビュー覧",
