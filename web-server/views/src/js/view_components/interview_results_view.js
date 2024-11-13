@@ -85,6 +85,15 @@ class InterviewResultCell extends TableViewCell {
 
         this.maxDisplayTitleLength = maxDisplayTitleLength;
         this.maxDisplayTextLength = maxDisplayTextLength;
+
+        // Append $isChecked to the cell
+        this.$isChecked = document.createElement('div');
+        this.$isChecked.classList.add('isChecked');
+        if (this.isChecked) {
+            this.$isChecked.classList.add('hide');
+        }
+        this.$header.style.position = 'relative';
+        this.$header.appendChild(this.$isChecked);
     }
 
     set text(text) {
@@ -95,13 +104,17 @@ class InterviewResultCell extends TableViewCell {
     set isChecked(value) {
         this._isChecked = value;
         if (value == true) {
-            this.$isChecked.classList.add('checked');
+            this.$isChecked.classList.add('hide');
         } else {
-            this.$isChecked.classList.remove('checked');
+            this.$isChecked.classList.remove('hide');
         }
     }
 
     get label() { this._label; }
+
+    set label(label) {
+        this._label = label;
+    }
 
     setContent(content) {
         this.content = content;
@@ -123,7 +136,7 @@ class InterviewResults extends TableView {
         locale,
         interviewId,
         tableViewId = "InterviewResults",
-        cellClass = InterviewListCell,
+        cellClass = InterviewResultCell,
         cellContentClass = InterviewListCellContent,
         maxDisplayTitleLength = 100,
         maxDisplayTextLength = 100,
@@ -336,6 +349,18 @@ class InterviewResults extends TableView {
     tableViewCellSelectedAtIndex(selectedIndex, cell) {
         console.log(`${this.id}: cell ID:${cell.id} Index:${selectedIndex} clicked`)
         console.log(this.interviewResults[selectedIndex])
+
+        const clientId = cell.content.clientId;
+
+        // Make API call to set is_result_checked to True
+        Http.post(`/v1/${this.lang}/interviews/${this.interviewId}/results/${clientId}/check`, {}, (res) => {
+            console.log('Successfully set is_result_checked to True');
+            // Update the cell's isChecked status
+            cell.isChecked = true;
+        }, (error) => {
+            console.error('Failed to set is_result_checked', error);
+        });
+
         // Dispatch event
         document.dispatchEvent(new CustomEvent(
             "clickedInterviewResultCell", 
@@ -347,16 +372,21 @@ class InterviewResults extends TableView {
         cell.updateTitle(title);
     }
 
-    _cellByCleintId(clientId) {
-        // Search for a cell with the matching interviewId
-        let foundCell = this.cells.find(cell => cell.content && cell.content.clientId === clientId);
-    
-        // If a cell is found, return it
+    setChecked(clientId) {
+        try {
+            const cell = this._cellByClientId(clientId);
+            cell.isChecked = true;
+            console.log(`Cell with clientId ${clientId} has been set to checked.`);
+        } catch (error) {
+            console.error(`Failed to set cell as checked for clientId: ${clientId}`, error);
+        }
+    }
+
+    _cellByClientId(clientId) {
+        const foundCell = this.cells.find(cell => cell.content && cell.content.clientId === clientId);
         if (foundCell) {
             return foundCell;
         }
-    
-        // If no cell is found, throw an error
         throw new Error(`No cell found with clientId: ${clientId}`);
     }
 

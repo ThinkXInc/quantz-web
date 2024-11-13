@@ -43,6 +43,7 @@ class InterviewHomeViewController {
         document.addEventListener("clickedInterviewResultCell", (event) => {
             const {index, clientId, interview, cell } = event.detail;
             this.openInterviewResultPreview(interview);
+            this.interviewResults.setChecked(clientId);
         })
     }
 

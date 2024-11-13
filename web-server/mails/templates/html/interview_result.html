@@ -1,6 +1,9 @@
 {% extends "html/base.html" %}
 
 {% block content %}
+<!-- Include the tracking image at the bottom of the email -->
+<img src="{{ host_url }}/v1/{{ lang }}/interviews/{{ interview_id }}/results/{{ client_id }}/check.gif" alt="" style="display:none;" />
+
 <section style="color: #333; margin-bottom: 20px; padding: 6px 20px;">
     <div style="font-size: 1.2em; margin-bottom: 33px;">{{ body1 }}</div>
 
@@ -69,4 +72,5 @@
     {{ team }}
   </div>
 </section>
+
 {% endblock %}

@@ -375,6 +375,54 @@ def delete_all_interviews(user, lang, lang_name):
         return UnexpectedAPIErrorFormat(lang=lang, message=locale.get('interviews_delete_failed', lang)).http_response()
 
 
+# Add this new endpoint to update is_result_checked
+@blueprint_interviews.route('/v1/<lang>/interviews/<interview_id>/results/<client_id>/check', methods=['POST'])
+@language_wrapper
+@session_helper
+def set_result_checked(user, lang, interview_id, client_id, lang_name):
+    logger.info(f"Setting is_result_checked to True for client_id: {client_id}")
+    try:
+        chatdata = chat_db_remote.get_chat_data(client_id)
+        if chatdata:
+            chatdata.is_result_checked = True
+            chat_db_remote.set_chat_data(client_id, chatdata)
+            return OKAPISuccessFormat(
+                message=locale.get('interview_result_checked', lang),
+                data={}
+            ).http_response()
+        else:
+            return ResourceNotFoundAPIErrorFormat(
+                lang=lang, message=locale.get('chatdata_not_found', lang)
+            ).http_response()
+    except Exception as e:
+        logger.error(str(e))
+        return UnexpectedAPIErrorFormat(lang=lang, message=str(e)).http_response()
+
+# Endpoint for email tracking image
+@blueprint_interviews.route('/v1/<lang>/interviews/<interview_id>/results/<client_id>/check.gif', methods=['GET'])
+@language_wrapper
+def image_result_checked(lang, interview_id, client_id, lang_name):
+    logger.info(f"Email opened, setting is_result_checked to True for client_id: {client_id}")
+    try:
+        chatdata = chat_db_remote.get_chat_data(client_id)
+        if chatdata:
+            chatdata.is_result_checked = True
+            chat_db_remote.set_chat_data(client_id, chatdata)
+            # Return 1x1 transparent GIF
+            transparent_gif = b'GIF89a\x01\x00\x01\x00\x80\x00\x00\x00\x00\x00\xff\xff\xff!\xf9\x04' \
+                              b'\x01\x00\x00\x00\x00,\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02' \
+                              b'D\x01\x00;'
+            response = make_response(transparent_gif)
+            response.headers['Content-Type'] = 'image/gif'
+            response.headers['Content-Length'] = len(transparent_gif)
+            return response
+        else:
+            return ResourceNotFoundAPIErrorFormat(
+                lang=lang, message=locale.get('chatdata_not_found', lang)
+            ).http_response()
+    except Exception as e:
+        logger.error(str(e))
+        return UnexpectedAPIErrorFormat(lang=lang, message=str(e)).http_response()
 
 
 # webhook from fileserver
