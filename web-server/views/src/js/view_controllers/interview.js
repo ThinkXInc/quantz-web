@@ -15,7 +15,7 @@ class Interview {
         this.locale = locale;
         this.lang = lang;
         //this.user = user;
-        this.userInfo = userInfo;
+        this._userInfo = userInfo;
         this.hostId = hostId;
         this.interviewId = interviewId;
         this.interviewTitle = interviewTitle;
@@ -25,6 +25,21 @@ class Interview {
         this.setupView();
         this.setupSignalMonitor();
         this.setupEventListeners();
+    }
+
+    get userInfo() { return this._userInfo; }
+
+    set userInfo(userInfo) {
+        this._userInfo = userInfo;
+        
+        console.log(`[Interview] userInfoUpdated event dispatched with userInfo:`)
+        console.log(userInfo)
+        const event = new CustomEvent("userInfoUpdated", {
+            detail: {
+                userInfo: userInfo,
+            }
+        });
+        document.dispatchEvent(event);
     }
 
     setupView(){

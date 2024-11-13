@@ -425,7 +425,51 @@ def image_result_checked(lang, interview_id, client_id, lang_name):
         return UnexpectedAPIErrorFormat(lang=lang, message=str(e)).http_response()
 
 
-# webhook from fileserver
+# Abstracted method to process metadata
+def process_metadata(metadata, lang):
+    try:
+        # Extract required fields
+        client_id = metadata["clientId"]
+        host_id = metadata["hostId"]
+        identifier = metadata["identifier"]
+
+        logger.info(f'get ids from metadata: [host_id] {host_id} [client_id] {client_id} [identifier] {identifier}')
+
+        # Fetch and update chat data
+        chatdata = chat_db_remote.get_chat_data(client_id)
+        if not chatdata or not len(chatdata.client_id):
+            message = f'Chat data not found by client_id: "{client_id}"'
+            logger.error(red(message))
+            raise ChatDataNotFoundError(message)
+
+        chatdata.metadata = json.dumps(metadata)  # Convert to string
+        chatdata.is_video_saved = True
+        chat_db_remote.set_chat_data(client_id, chatdata)
+        logger.info(light_green(f'Chat data successfully updated with uploaded metadata.'))
+
+        # Fetch interview data
+        interview = interaction_model_db.get_one(identifier)
+        logger.info(f'Interview found: {interview}')
+
+        # Fetch user data and send email
+        user = User.find_user_by_id(host_id)
+        lang_in_chat = chatdata.lang if chatdata.lang else lang
+        send_interview_result_email(user, metadata, interview, lang_in_chat)
+        logger.info(light_green(f'Interview result email successfully sent to {user.email}.'))
+
+        return True  # Indicate successful processing
+
+    except (ChatDataNotFoundError, InteractionModelNotFoundError, UserNotFoundError, UserQueryError) as e:
+        message = f'Failed to process metadata with error: {e}'
+        logger.error(red(message))
+        return message  # Return error message
+
+    except Exception as e:
+        message = f'Failed to deliver interview result with error: {e}'
+        logger.error(red(message))
+        return message  # Return error message
+
+# Modified handler
 @blueprint_interviews.route('/v1/webhook/files/uploaded', methods=['POST'])
 @content_type_check_json
 def webhook_files_uploaded():
@@ -434,106 +478,65 @@ def webhook_files_uploaded():
     payload = request.json
     lang = DEFAULT_LANG
 
-    logger.info(magenta(f'[POST] /v1/webhook/files/uploaded => \n'+'-'*100+f'\n{payload}'+'-'*100))
+    logger.info(magenta(f'[POST] /v1/webhook/files/uploaded => \n' + '-'*100 + f'\n{payload}' + '-'*100))
 
     # Validate payload keys
     if "event" not in payload:
         message = 'Missing "event" key in payload.'
         logger.error(red(message))
         return 'Invalid payload', 400
-    
-    event = payload["event"]
 
+    event = payload["event"]
     logger.info(bold(f'webhook event: {event}'))
 
+    metadata_processed = False
+    metadata_error = None
+
+    # Process metadata if present
+    if "metadata" in payload and payload["metadata"]:
+        result = process_metadata(payload["metadata"], lang)
+        if result is True:
+            metadata_processed = True
+        else:
+            metadata_error = result
+
+    # Handle event-specific logic
     if event == "save.success":
-
-        try:
-            # update chatdata
-            if "metadata" not in payload:
-                raise ValueError("Missing 'metadata' in payload")
-
-            metadata = payload["metadata"]
-
-            if "clientId" not in metadata:
-                raise ValueError("Missing 'clientId' in payload")
-
-            if "identifier" not in metadata:
-                raise ValueError("Missing 'identifier' in payload")
-
-            if "hostId" not in metadata:
-                raise ValueError("Missing 'hostId' in payload")
-
-            client_id = metadata["clientId"]
-            host_id = metadata["hostId"]
-            identifier = metadata["identifier"]
-
-            logger.info(f'get ids from metadata: [host_id] {host_id} [client_id] {client_id} [identifier] {identifier}')
-
-            chatdata = chat_db_remote.get_chat_data(client_id)
-            if not len(chatdata.client_id):
-                message = f'chat data not found by client_id: "{client_id}"'
-                logger.error(red(message))
-                raise ChatDataNotFoundError(message)
-
-            chatdata.metadata = json.dumps(metadata)  # to string
-            chatdata.is_video_saved = True
-
-            # retrieve chatdata from local redis
-            chat_db_remote.set_chat_data(client_id, chatdata)
-            logger.info(light_green(f'chatdata successfully updated with uploaded metadata.'))
-        except Exception as e:
-            message = f'Failed to save metadata with error: {e}'
-            logger.error(red(message))
-            return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
-
-        ### DEBUG
-        chatdata = chat_db_remote.get_chat_data(client_id)
-        logger.info(cyan(f'updated chatdata. {chatdata}'))
-        ###
-
-        try:
-            interview = interaction_model_db.get_one(identifier)
-            logger.info(f'interview found: {interview}')
-        except InteractionModelNotFoundError:
-            return UnexpectedAPIErrorFormat(
-                lang=lang,
-                message=locale.get('interview_not_found', lang)
-            ).http_response()
-
-        try:
-            # Fetch the user from the database
-            user = User.find_user_by_id(host_id)
-            lang_in_chat = chatdata.lang if chatdata.lang else lang
-            send_interview_result_email(user, metadata, interview, lang_in_chat)
-            logger.info(light_green(f'interview result mail successfully sent to {user.email}.'))
-        except UserNotFoundError:
-            message = locale.get('user_not_found', lang)
-            return ResourceNotFoundAPIErrorFormat(lang=lang, message=message).http_response()
-        except UserQueryError:
-            message = locale.get('user_find_single_failed', lang)
-            return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
-        except Exception as e:
-            message = f'Failed to deliver interview result with error: {e}'
-            logger.error(red(message))
-            return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
-
         message = f'Successfully processed {event} event for webhook {request.url}.'
+        if metadata_processed:
+            message += " Metadata processed successfully."
+        elif metadata_error:
+            message += f" Metadata processing failed with error: {metadata_error}"
         logger.info(green(message))
         return OKAPISuccessFormat(message=message).http_response()
 
     elif event == "save.fail.diskfull":
         message = f'Failed to save interview result data because of disk full.'
+        if metadata_processed:
+            message += " However, metadata was processed successfully."
+        elif metadata_error:
+            message += f" Additionally, metadata processing failed with error: {metadata_error}"
         logger.error(red(message))
         return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+
     elif event == "save.fail.unknownerror":
-        message = f'Failed to save interview result data with unknown error'
+        message = f'Failed to save interview result data due to an unknown error.'
+        if metadata_processed:
+            message += " However, metadata was processed successfully."
+        elif metadata_error:
+            message += f" Additionally, metadata processing failed with error: {metadata_error}"
         logger.error(red(message))
         return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+
     else:
-        message = f'{event} is unknown event.'
+        message = f'Event "{event}" is unknown.'
+        if metadata_processed:
+            message += " However, metadata was processed successfully."
+        elif metadata_error:
+            message += f" Additionally, metadata processing failed with error: {metadata_error}"
         logger.error(red(message))
         return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+
 
 
 @blueprint_interviews.route('/interviews/mailsample/send', methods=['GET'])

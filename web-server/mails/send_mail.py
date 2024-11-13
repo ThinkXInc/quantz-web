@@ -440,7 +440,7 @@ def send_added_to_wait_list_email(general_status: GeneralSystemStatus, user: Use
         except MailSendError as e:
             raise MailSendError
 
-def generate_interview_result_template(metadata, body1, body2, date_label='Date', name_label='Name', email_label='Email', video_all_label="Full video", lang='en'):
+def generate_interview_result_template(interview: 'InteractionModel', metadata: dict, body1, body2, date_label='Date', name_label='Name', email_label='Email', video_all_label="Full video", lang='en'):
     # Parse and format the date
     start_datetime_str = metadata.get("startDatetime")
     if start_datetime_str.endswith("Z"):
@@ -461,12 +461,16 @@ def generate_interview_result_template(metadata, body1, body2, date_label='Date'
     # Get events
     events = metadata.get("events", [])
 
+    logger.info(magenta(interview))
+    logger.info(magenta(str(interview.id)))
+
     # Prepare the data for the template
     return render_template(
         'html/interview_result.html',
         body1=body1,
         body2=body2,
         host_url=HOST_URL,
+        interview_id=str(interview.id),
         formatted_date=formatted_date,
         date_label=date_label,
         name_label=name_label,
@@ -480,7 +484,7 @@ def generate_interview_result_template(metadata, body1, body2, date_label='Date'
         team=locale.get('team', lang)
     )
 
-def generate_interview_result_text(metadata, body1, body2, date_label='Date', name_label='Name', email_label='Email', lang='en'):
+def generate_interview_result_text(interview: 'InteractionModel', metadata: dict, body1, body2, date_label='Date', name_label='Name', email_label='Email', lang='en'):
     from datetime import datetime
 
     # Parse and format the date
@@ -532,8 +536,8 @@ def send_interview_result_email(user: User, metadata: dict, interview: "Interact
         name_label = locale.get('email_interview_result_name_label', lang)
         email_label = locale.get('email_interview_result_email_label', lang)
         video_all_label = locale.get('email_interview_result_video_all_label', lang)
-        html_content = generate_interview_result_template(metadata, body1, body2, date_label, name_label, email_label, video_all_label, lang)
-        text_content = generate_interview_result_text(metadata, body1, body2, date_label, name_label, email_label, lang)
+        html_content = generate_interview_result_template(interview, metadata, body1, body2, date_label, name_label, email_label, video_all_label, lang)
+        text_content = generate_interview_result_text(interview, metadata, body1, body2, date_label, name_label, email_label, lang)
 
         try:
             mail.send(
