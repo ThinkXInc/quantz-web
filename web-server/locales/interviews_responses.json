@@ -35,6 +35,24 @@
         "ru": "Не удалось получить результаты интервью.",
         "ar": "فشل في استرجاع نتائج المقابلة."
     },
+    "interview_result_checked": {
+        "ja": "インタビュー結果をチェック済み既にしました。",
+        "en": "Interview result has already been checked.",
+        "zh": "面试结果已检查。",
+        "es": "El resultado de la entrevista ya ha sido verificado.",
+        "fr": "Le résultat de l'entretien a déjà été vérifié.",
+        "ru": "Результат интервью уже проверен.",
+        "ar": "تم التحقق من نتيجة المقابلة بالفعل。"
+    },
+    "chatdata_not_found": {
+        "ja": "ChatDataがデータベースに見つかりません。",
+        "en": "ChatData not found in the database.",
+        "zh": "数据库中未找到ChatData。",
+        "es": "ChatData no se encontró en la base de datos.",
+        "fr": "ChatData introuvable dans la base de données.",
+        "ru": "ChatData не найден в базе данных.",
+        "ar": "لم يتم العثور على بيانات الدردشة في قاعدة البيانات."
+    },
     "interview_not_found": {
         "ja": "Interviewがデータベースに見つかりませんでした",
         "en": "Interview data not found.",
