@@ -38,57 +38,82 @@
     "interview_not_found": {
         "ja": "Interviewがデータベースに見つかりませんでした",
         "en": "Interview data not found.",
-        "zh": "",
-        "es": "",
-        "fr": "",
-        "ru": "",
-        "ar": ""
+        "zh": "未找到面试数据。",
+        "es": "Datos de la entrevista no encontrados.",
+        "fr": "Données de l'entretien introuvables.",
+        "ru": "Данные интервью не найдены.",
+        "ar": "بيانات المقابلة غير موجودة."
     },
     "interview_update_error": {
         "ja": "Interviewの更新に失敗しました。",
         "en": "Interview update failed.",
-        "zh": "",
-        "es": "",
-        "fr": "",
-        "ru": "",
-        "ar": ""
+        "zh": "面试更新失败。",
+        "es": "La actualización de la entrevista falló.",
+        "fr": "Échec de la mise à jour de l'entretien.",
+        "ru": "Не удалось обновить интервью.",
+        "ar": "فشل تحديث المقابلة."
     },
     "interview_updated": {
-        "ja": "Interview $0 が正常に更新されました。",
-        "en": "Interview $0 updated successfully.",
-        "zh": "",
-        "es": "",
-        "fr": "",
-        "ru": "",
-        "ar": ""
+        "ja": "Interview \"$0\" が正常に更新されました。",
+        "en": "Interview \"$0\" updated successfully.",
+        "zh": "面试 \"$0\" 已成功更新。",
+        "es": "Entrevista \"$0\" actualizada con éxito.",
+        "fr": "Entretien \"$0\" mis à jour avec succès.",
+        "ru": "Интервью \"$0\" успешно обновлено.",
+        "ar": "تم تحديث المقابلة \"$0\" بنجاح."
     },
     "interview_save_error": {
         "ja": "Interviewの作成に失敗しました。",
         "en": "Interview create failed.",
-        "zh": "",
-        "es": "",
-        "fr": "",
-        "ru": "",
-        "ar": ""
- 
+        "zh": "面试创建失败。",
+        "es": "Error al crear la entrevista.",
+        "fr": "Échec de la création de l'entretien.",
+        "ru": "Не удалось создать интервью.",
+        "ar": "فشل إنشاء المقابلة."
     },
     "interview_created": {
-        "ja": "Interview $0 が正常に作成されました。",
-        "en": "Interview $0 created successfully.",
-        "zh": "",
-        "es": "",
-        "fr": "",
-        "ru": "",
-        "ar": ""
+        "ja": "Interview \"$0\" が正常に作成されました。",
+        "en": "Interview \"$0\" created successfully.",
+        "zh": "面试 \"$0\" 已成功创建。",
+        "es": "Entrevista \"$0\" creada con éxito.",
+        "fr": "Entretien \"$0\" créé avec succès.",
+        "ru": "Интервью \"$0\" успешно создано.",
+        "ar": "تم إنشاء المقابلة \"$0\" بنجاح."
     },
     "interviews_delete_success": {
         "ja": "$0 つのInterviewが正常に削除されました。",
         "en": "$0 interviews deleted successfully.",
-        "zh": "",
-        "es": "",
-        "fr": "",
-        "ru": "",
-        "ar": ""
- 
+        "zh": "$0 个面试已成功删除。",
+        "es": "$0 entrevistas eliminadas con éxito.",
+        "fr": "$0 entretiens supprimés avec succès.",
+        "ru": "$0 интервью успешно удалено.",
+        "ar": "تم حذف $0 مقابلات بنجاح."
+    },
+    "interview_delete_success": {
+        "ja": "インタビュー \"$0\" が正常に削除されました。",
+        "en": "Interview \"$0\" deleted successfully.",
+        "zh": "面试 \"$0\" 已成功删除。",
+        "es": "Entrevista \"$0\" eliminada con éxito.",
+        "fr": "Entretien \"$0\" supprimé avec succès.",
+        "ru": "Интервью \"$0\" успешно удалено.",
+        "ar": "تم حذف المقابلة \"$0\" بنجاح."
+    },
+    "interview_delete_not_allowed": {
+        "ja": "このインタビューを削除する権限がありません。",
+        "en": "You are not allowed to delete this interview.",
+        "zh": "您无权删除此面试。",
+        "es": "No tienes permiso para eliminar esta entrevista.",
+        "fr": "Vous n'êtes pas autorisé à supprimer cet entretien.",
+        "ru": "У вас нет прав на удаление этого интервью.",
+        "ar": "ليس لديك إذن لحذف هذه المقابلة."
+    },
+    "interviews_delete_failed": {
+        "ja": "インタビューの削除に失敗しました。",
+        "en": "Failed to delete the interview.",
+        "zh": "删除面试失败。",
+        "es": "Error al eliminar la entrevista.",
+        "fr": "Échec de la suppression de l'entretien.",
+        "ru": "Не удалось удалить интервью.",
+        "ar": "فشل في حذف المقابلة."
     }
 }

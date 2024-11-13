@@ -134,6 +134,33 @@
         "ru": "",
         "ar": ""
     },
+    "interview_create_input_introduction_placeholder": {
+        "en": "Enter the introduction.",
+        "ja": "",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "interview_create_input_question_placeholder": {
+        "en": "Enter the question.",
+        "ja": "",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "interview_create_input_closing_placeholder": {
+        "en": "Enter the closing remarks.",
+        "ja": "",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
     "interview_list_header_title": {
         "ja": "インタビュー覧",
         "en": "Your Interviews",
@@ -262,13 +289,13 @@
  
     },
     "interview_create_url_copy_tooltip": {
-        "ja": "埋め込みコードをコピー",
-        "en": "Copy embed code",
-        "zh": "复制嵌入代码",
-        "fr": "Copier le code intégré",
-        "es": "Copiar el código embebido",
-        "ar": "نسخ الكود المضمن",
-        "ru": "Скопировать встроенный код"
+        "ja": "ミーティングリンクをコピー",
+        "en": "Copy meeting link",
+        "zh": "复制会议链接",
+        "fr": "Copier le lien de la réunion",
+        "es": "Copiar enlace de reunión",
+        "ar": "نسخ رابط الاجتماع",
+        "ru": "Скопировать ссылку на встречу"
     },
     "interview_create_url_copy_done_tooltip": {
         "ja": "クリップボードにコピーしました。",

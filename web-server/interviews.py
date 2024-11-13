@@ -284,7 +284,7 @@ def interviews_create(user, lang, lang_name):
     
     # Return Response
     return AcceptedAPISuccessFormat(
-        message=locale.get('interview_created', lang, [str(interview.id)]),
+        message=locale.get('interview_created', lang, [str(interview.title)]),
         data=interview.response_json()).http_response()
 
 
@@ -319,9 +319,45 @@ def interviews_update(user, lang, lang_name, interview_id):
             lang=lang, message=locale.get('interview_update_error', lang)).http_response()
 
     return OKAPISuccessFormat(
-        message=locale.get('interview_updated', lang, [interview_id]),
+        message=locale.get('interview_updated', lang, [interview.title]),
         data=interview.response_json()
     ).http_response()
+
+@blueprint_interviews.route('/v1/<lang>/interviews/<interview_id>/delete', methods=['GET'])
+@language_wrapper
+@session_helper
+def delete_interview(user, lang, interview_id, lang_name):
+    logger.info(magenta(f'[DELETE] /v1/{lang}/interviews/{interview_id}/delete'))
+
+    # Attempt to retrieve the interaction model
+    try:
+        interaction_model = interaction_model_db.get_one(interview_id)
+        logger.info(f'Interaction model found: {interaction_model}')
+    except InteractionModelNotFoundError:
+        message = locale.get('interview_not_found', lang)
+        logger.error(red(f"No interaction model found with ID: {interview_id}"))
+        return ResourceNotFoundAPIErrorFormat(lang=lang, message=message).http_response()
+    except Exception as e:
+        logger.error(red(f"Error retrieving interaction model with ID: {interview_id}: {e}"))
+        return UnexpectedAPIErrorFormat(lang=lang, message=locale.get('interviews_delete_failed', lang)).http_response()
+
+    # Check if the user has permission to delete the interaction model
+    if str(interaction_model.user_id) != str(user.id):
+        message = locale.get('interview_delete_not_allowed', lang)
+        logger.warning(yellow(f"User {user.id} is not authorized to delete interview {interview_id}"))
+        return UnauthorizedAPIErrorFormat(lang=lang, message=message).http_response()
+
+    # Proceed to delete the interaction model
+    try:
+        interaction_model_db.delete(interview_id)
+        return OKAPISuccessFormat(
+            message=locale.get('interview_delete_success', lang, [interaction_model.title]),
+            data={'interview_id': interview_id}
+        ).http_response()
+    except InteractionModelDeleteError as e:
+        logger.error(red(f"Error while deleting interview {interview_id}: {e}"))
+        return UnexpectedAPIErrorFormat(lang=lang, message=locale.get('interviews_delete_failed', lang)).http_response()
+
 
 @blueprint_interviews.route('/v1/<lang>/interviews/deleteall', methods=['GET'])
 @language_wrapper

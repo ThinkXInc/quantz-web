@@ -1,37 +1,47 @@
+const defaultStep = () => ({
+    "question": "",
+    "finish_condition": "Interviewee answered it's done.",
+    "max_turns": 3,
+    "instructions": [
+        "First, read the question.",
+        "When the answer looks done, ask 'Are you sure that\'s it?'"
+    ]
+});
+
 const defaults = {
-    "title": "Interview 001",
+    "title": "",
     //"introduction": "Hello, {name}. I would like to conduct a simple interview with you now. Are you ready?",
     "introduction": "Hello, {name}. Are you ready?",
-    "end": "Thank you {name}. This is the end. Please write the note to supply this interview if you want. Bye.",
+    "end": "Thank you {name}. This is the end. Goodbye.",
     "steps": [
-        {
-            "question": "Introduce yourself in about 1 minutes.",
-            "finish_condition": "Interviewee answerd it's done.",
-            "max_turns": 3,
-            "instructions": [
-                "First, read the question.",
-                "When the answer looks done, ask 'Are you sure that\'s it?'"
-            ]
-        },
-        {
-            "question": "We're building a software automating communications. Our system is written mainly in Python, Go, and JavaScript. Any cloud services are not used to achieve complete privacy. Instead we have our own physical systems. What can you contribute?",
-            "finish_condition": "Interviewee answerd it's done.",
-            "max_turns": 3,
-            "instructions": [
-                "First, read the question.",
-                "Ask if it's okay to stop at this good point."
-            ]
-        },
-        {
-            "question": "Can you explain the concept of 'General purpose computer'?",
-            "finish_condition": "Interviewee answerd it's done.",
-            "max_turns": 3,
-            "instructions": [
-                "First, read the question.",
-                "Once you get the first answer, ask 'Can you explain more detail such that even a child can understand?'",
-                "When the answer looks done, ask 'Are you sure that\'s it?'"
-            ]
-        }
+        defaultStep()
+        //{
+        //    "question": "",
+        //    "finish_condition": "Interviewee answered it's done.",
+        //    "max_turns": 3,
+        //    "instructions": [
+        //        "First, read the question.",
+        //        "When the answer looks done, ask 'Are you sure that\'s it?'"
+        //    ]
+        //},
+        //{
+        //    "question": "",
+        //    "finish_condition": "Interviewee answered it's done.",
+        //    "max_turns": 3,
+        //    "instructions": [
+        //        "First, read the question.",
+        //        "When the answer looks done, ask 'Are you sure that\'s it?'"
+        //    ]
+        //},
+        //{
+        //    "question": "",
+        //    "finish_condition": "Interviewee answered it's done.",
+        //    "max_turns": 3,
+        //    "instructions": [
+        //        "First, read the question.",
+        //        "When the answer looks done, ask 'Are you sure that\'s it?'"
+        //    ]
+        //}
     ]
 }
 
@@ -50,7 +60,9 @@ class InterviewSettingsModalView extends ModalView {
         shouldCloseOnTapBG = true,
         htmlTag = 'div',
         protocols = [],
-        validators = []
+        validators = [],
+        showAnimation = AnimationType.EXPAND,
+        closeAnimation = AnimationType.SHRINK
     }) {
         console.error(locale)
 
@@ -63,7 +75,9 @@ class InterviewSettingsModalView extends ModalView {
             shouldCloseOnTapBG,
             htmlTag,
             protocols,
-            validators
+            validators,
+            showAnimation,
+            closeAnimation
         });
 
         this.user = user;
@@ -81,60 +95,22 @@ class InterviewSettingsModalView extends ModalView {
     setupView() {
         console.warn(this.$mainContent)
 
+        // Create containers for organized layout
+        this.$linkViewContainer = document.createElement('div');
+        this.$resultsViewContainer = document.createElement('div');
+        this.$interviewCreateViewContainer = document.createElement('div');
+
+        this.$mainContent.appendChild(this.$linkViewContainer);
+        this.$mainContent.appendChild(this.$resultsViewContainer);
+        this.$mainContent.appendChild(this.$interviewCreateViewContainer);
+
         const $message = document.createElement('p');
         $message.id = 'InterviewSettingsModalViewMessage';
         $message.classList.add('message');
         this.$view.querySelector('.footer').prepend($message);
         this.$message = $message;
-
         
         console.warn(this.interviewId)
-        if (this.interviewId) {
-
-            // LinkView
-
-            this.interviewLinkView = new InterviewLinkView({
-                id: 'InterviewLinkView',
-                interviewId: this.interviewId,
-                locale: this.locale,
-                lang: this.lang
-            });
-            this.interviewLinkView.mount(this.$mainContent);
-
-            const $labelResults = document.createElement('span');
-            $labelResults.classList.add('label');
-            $labelResults.classList.add('results');
-            $labelResults.textContent = this.locale.get('interview_settings_results_label', this.lang)
-            this.$mainContent.appendChild($labelResults);
-
-            const $separatorResults = document.createElement('span');
-            $separatorResults.classList.add('separator');
-            $separatorResults.classList.add('results');
-            this.$mainContent.appendChild($separatorResults);
-
-            // ResultsView
-
-            this.interviewResults = new InterviewResults({
-                id: 'InterviewResultsView',
-                interviewId: this.interviewId,
-                locale: this.locale,
-                lang: this.lang
-            });
-            //this.interviewResults.mount(this.$mainContent);
-            this.$mainContent.appendChild(this.interviewResults.$view);
-            this.interviewResults.fetchAndUpdate({limit: 10});
-
-            const $labelCustomize = document.createElement('span');
-            $labelCustomize.classList.add('label');
-            $labelCustomize.classList.add('customize');
-            $labelCustomize.textContent = this.locale.get('interview_settings_customize_label', this.lang)
-            this.$mainContent.appendChild($labelCustomize);
-
-            const $separatorCustomize = document.createElement('span');
-            $separatorCustomize.classList.add('separator');
-            $separatorCustomize.classList.add('customize');
-            this.$mainContent.appendChild($separatorCustomize);
-        }
 
         // Always display InterviewCreateView
         this.interviewCreateView = new InterviewCreateView({
@@ -144,9 +120,67 @@ class InterviewSettingsModalView extends ModalView {
             user: this.user,
             interviewId: this.interviewId,
             interview: this.interview,
+            $message: this.$message,
+            onInterviewCreated: (interviewId) => {
+                this.handleInterviewCreated(interviewId);
+            }
         });
         this.interviewCreateView.mount(this.$mainContent);
 
+        // If interviewId exists, display InterviewLinkView
+        if (this.interviewId) {
+            this.displayInterviewLinkView();
+        }
+    }
+
+    handleInterviewCreated(interviewId) {
+        this.interviewId = interviewId;
+        this.displayInterviewLinkView();
+    }
+
+    displayInterviewLinkView() {
+        console.log('Display link view.')
+        // Clear existing content
+        this.$linkViewContainer.innerHTML = '';
+        this.$resultsViewContainer.innerHTML = '';
+    
+        // Create and mount InterviewLinkView
+        this.interviewLinkView = new InterviewLinkView({
+            id: 'InterviewLinkView',
+            interviewId: this.interviewId,
+            locale: this.locale,
+            lang: this.lang
+        });
+        this.interviewLinkView.mount(this.$linkViewContainer);
+    
+        // Add labels and separators
+        const $labelResults = document.createElement('span');
+        $labelResults.classList.add('label', 'results');
+        $labelResults.textContent = this.locale.get('interview_settings_results_label', this.lang);
+        this.$resultsViewContainer.appendChild($labelResults);
+    
+        const $separatorResults = document.createElement('span');
+        $separatorResults.classList.add('separator', 'results');
+        this.$resultsViewContainer.appendChild($separatorResults);
+    
+        // Create and append InterviewResults
+        this.interviewResults = new InterviewResults({
+            id: 'InterviewResultsView',
+            interviewId: this.interviewId,
+            locale: this.locale,
+            lang: this.lang
+        });
+        this.$resultsViewContainer.appendChild(this.interviewResults.$view);
+        this.interviewResults.fetchAndUpdate({ limit: 10 });
+    
+        const $labelCustomize = document.createElement('span');
+        $labelCustomize.classList.add('label', 'customize');
+        $labelCustomize.textContent = this.locale.get('interview_settings_customize_label', this.lang);
+        this.$resultsViewContainer.appendChild($labelCustomize);
+    
+        const $separatorCustomize = document.createElement('span');
+        $separatorCustomize.classList.add('separator', 'customize');
+        this.$resultsViewContainer.appendChild($separatorCustomize);
     }
 
     show() {
