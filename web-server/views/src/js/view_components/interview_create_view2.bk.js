@@ -114,6 +114,27 @@ class InterviewCreateView {
             this.stepContainers[index] = $stepContainer;
         });
 
+        // **Add Step Button**
+        this.$addStepButtonContainer = document.createElement('div');
+        this.$addStepButtonContainer.classList.add('addStepButtonContainer');
+        this.$addStepButtonContainer.classList.add('enable');
+        this.$addStepButtonContainer.style.display = 'flex';
+        this.$addStepButtonContainer.style.justifyContent = 'center';
+
+        this.$addStepButton = document.createElement('img');
+        this.$addStepButton.src = '/img/interviews/plus-icon.svg';
+        this.$addStepButton.classList.add('addStepButton');
+        this.$addStepButton.style.cursor = 'pointer';
+
+        this.$addStepButtonContainer.appendChild(this.$addStepButton);
+        $interviewCreateViewContainer.appendChild(this.$addStepButtonContainer);
+
+        this.$addStepButton.addEventListener('click', () => {
+            this.addStep();
+        });
+
+        this.$view.appendChild($interviewCreateViewContainer);
+
         // **End Container**
         const $endContainer = document.createElement('div');
         $endContainer.classList.add('endContainer');
@@ -139,7 +160,7 @@ class InterviewCreateView {
             ],
             defaultValue: this.interview.end,
             hasTitle: false,
-            placeholder: "Enter the closing remarks.",
+            placeholder: this.locale.get("interview_create_input_closing_placeholder", this.lang),
             isCounter: false,
         });
         this.endForm = endForm;
@@ -147,14 +168,9 @@ class InterviewCreateView {
 
         $interviewCreateViewContainer.appendChild($endContainer);
 
-        // Ensure an empty step at the end if necessary
-        this.ensureEmptyStepAtEnd();
-
-        // append the container to main view
+        // Append the summary view to the main view
         this.$view.appendChild($interviewCreateViewContainer);
         this.$interviewCreateViewContainer = $interviewCreateViewContainer;
-
-        this.updateRemoveButtonVisibility();
     }
 
     createStepContainer(step, index) {
@@ -206,14 +222,6 @@ class InterviewCreateView {
         questionForm.$view.classList.add('questionForm');
         this.questionForms[index] = questionForm;
         $questionWrapper.appendChild(questionForm.$view);
-
-        // **Event Listener for Question Field**
-        questionForm.$textField.addEventListener('textchanged', (e) => {
-            const isLastStep = questionForm === this.questionForms[this.questionForms.length -1];
-            if (isLastStep) {
-                this.ensureEmptyStepAtEnd();
-            }
-        });
  
         // **Remove Step Button**
         const $removeStepButton = document.createElement('img');
@@ -222,7 +230,7 @@ class InterviewCreateView {
         $removeStepButton.style.cursor = 'pointer';
  
         $removeStepButton.addEventListener('click', () => {
-            const idx = this.stepContainers.indexOf($stepContainer);
+            const idx = parseInt($stepContainer.dataset.index);
             this.removeStep(idx);
         });
  
@@ -471,73 +479,70 @@ class InterviewCreateView {
             console.warn('Max steps reached. Cannot add more steps.');
             return;
         }
-    
+
         const newStep = defaultStep();
         this.interview.steps.push(newStep);
-    
+
         console.warn(`Adding new step at index ${this.interview.steps.length - 1}`, newStep);
-    
+
         const index = this.interview.steps.length - 1;
         const $newStepContainer = this.createStepContainer(newStep, index);
-    
-        // Find the position for the new step
-        const $lastStepContainer = this.stepContainers[this.stepContainers.length - 1];
-        const $endContainer = this.$interviewCreateViewContainer.querySelector('.endContainer');
-    
-        // Insert the new step container after the last step container, before the endContainer
-        if ($lastStepContainer) {
-            this.$interviewCreateViewContainer.insertBefore($newStepContainer, $endContainer);
-        } else {
-            this.$interviewCreateViewContainer.appendChild($newStepContainer);
-        }
-    
+        this.$interviewCreateViewContainer.insertBefore($newStepContainer, this.$addStepButtonContainer);
         this.stepContainers.push($newStepContainer);
+
+        this.updatePlusButtonVisibility();
         this.updateRemoveButtonVisibility();
     }
-    
 
     removeStep(index) {
         console.warn(`Removing step at index ${index}`);
-    
-        // Remove the step data from interview steps
+        // Remove the step data
         this.interview.steps.splice(index, 1);
-    
+
         // Remove the step DOM element
         const $stepContainer = this.stepContainers[index];
-        if ($stepContainer && $stepContainer.parentNode) {
-            $stepContainer.parentNode.removeChild($stepContainer);
-        }
-    
+        $stepContainer.parentNode.removeChild($stepContainer);
+
         // Remove the step from arrays
         this.stepContainers.splice(index, 1);
         this.questionForms.splice(index, 1);
         this.finishConditionForms.splice(index, 1);
         this.maxTurnsForms.splice(index, 1);
         this.instructionForms.splice(index, 1);
-    
-        // Update indices for the remaining steps
+
+        // Update indices and visibility
         this.updateStepIndices();
-    
-        // Update remove button visibility
+        this.updatePlusButtonVisibility();
         this.updateRemoveButtonVisibility();
-    
-        // Ensure an empty step if needed
-        this.ensureEmptyStepAtEnd();
-    
+
         console.warn(`Step ${index + 1} removed. Remaining steps: ${this.interview.steps.length}`);
     }
-    
+
     updateStepIndices() {
         console.warn('Updating step indices');
-    
+
         this.stepContainers.forEach(($stepContainer, index) => {
-            $stepContainer.dataset.index = index;  // Update dataset index
+            $stepContainer.dataset.index = index;
             const $stepTitle = $stepContainer.querySelector('.stepTitle');
             const stepLabelTemplate = this.locale.get('interview_create_steps_label', this.lang) || 'Step $0';
-            $stepTitle.textContent = stepLabelTemplate.replace('$0', index + 1); // Update step label
+            $stepTitle.textContent = stepLabelTemplate.replace('$0', index + 1);
         });
-    
+
         console.warn('Step indices updated');
+    }
+
+    updatePlusButtonVisibility() {
+
+        const visible = this.interview.steps.length < this.maxSteps;
+        console.warn(`Setting plus button visibility to ${visible ? 'visible' : 'hidden'}`);
+
+        if (visible) {
+            this.$addStepButtonContainer.classList.remove('disable');
+            this.$addStepButtonContainer.classList.add('enable');
+        } else {
+            this.$addStepButtonContainer.classList.remove('enable');
+            this.$addStepButtonContainer.classList.add('disable');
+        }
     }
 
     updateRemoveButtonVisibility() {
@@ -552,19 +557,6 @@ class InterviewCreateView {
                 const $removeStepButton = $stepContainer.querySelector('.removeStepButton');
                 $removeStepButton.style.display = 'block';
             });
-        }
-    }
-
-    ensureEmptyStepAtEnd() {
-        // Ensure that if the last questionForm is filled, and steps are less than maxSteps, we add a new empty step
-        if (this.interview.steps.length < this.maxSteps) {
-            const lastQuestionForm = this.questionForms[this.questionForms.length -1];
-            if (lastQuestionForm && lastQuestionForm.value && lastQuestionForm.value.trim() !== '') {
-                this.addStep();
-            } else if (!lastQuestionForm) {
-                // If there are no question forms yet, add an initial step
-                this.addStep();
-            }
         }
     }
 

@@ -44,6 +44,20 @@ div#InterviewCreateView {
                 }
             }
         }
+        div.TextField.alert {
+            div.inputOuter {
+                border: 1px solid #8c1111;
+                div.footer {
+                    background-color: transparent;
+                    div.middle {
+                        p.alertMessage {
+                            font-size: 11px;
+                            color: @alert-red;
+                        }
+                    }
+                }
+            }
+        }
 
         // Adjust font size in certain containers
         div.introductionContainer,
@@ -132,7 +146,8 @@ div#InterviewCreateView {
         // Step container styling
         div.stepContainer {
             position: relative;
-            margin-bottom: 35px;
+            margin-bottom: 6px;
+            //margin-bottom: 35px;
 
             h3.stepTitle {
                 position: absolute;
@@ -161,6 +176,24 @@ div#InterviewCreateView {
                 border-radius: 10px;
                 padding: 8px 20px;
                 margin-top: 20px;
+
+                div.questionAndRemoveWrapper {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+
+                    div.questionWrapper {
+                        flex: 1;
+                    }
+
+                    img.removeStepButton {
+                        margin-top: 24px;
+                        margin-left: 10px;
+                        width: 20px;
+                        height: 20px;
+                        cursor: pointer;
+                    }
+                }
 
                 div.questionWrapper,
                 div.finishConditionWrapper,
@@ -257,10 +290,13 @@ div#InterviewCreateView {
                 div.hiddenContent {
                     overflow: hidden;
                     max-height: 0;
-                    transition: max-height 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+                    transition: 
+                        padding 0.5s cubic-bezier(0.4, 0.0, 0.2, 1),
+                        max-height 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
 
                     &.expanded {
                         max-height: 1000px; // Adjust as needed
+                        padding: 10px 0;
                     }
 
                     div.finishConditionWrapper,
@@ -293,37 +329,55 @@ div#InterviewCreateView {
                         div.TextField {
                             display: flex;
                             align-items: center;
+                            div.inputOuter {
+                                border: none;
+                                background: none;
+                                div.inputWrapper {
+                                    flex: 1;
+                                    position: relative;
+                                    input {
+                                        width: 100%;
+                                        box-sizing: border-box;
+                                    }
+                                    div.incrementButton {
+                                        position: absolute;
+                                        right: 0;
+                                        top: 50%;
+                                        transform: translateY(-50%);
+                                        display: flex;
+                                        flex-direction: column;
 
-                            .inputWrapper {
-                                flex: 1;
-                                position: relative;
+                                        button {
+                                            background: none;
+                                            border: none;
+                                            cursor: pointer;
+                                            padding: 0;
 
-                                input {
-                                    width: 100%;
-                                    box-sizing: border-box;
-                                }
+                                            &:focus {
+                                                outline: none;
+                                            }
 
-                                .incrementButton {
-                                    position: absolute;
-                                    right: 0;
-                                    top: 50%;
-                                    transform: translateY(-50%);
-                                    display: flex;
-                                    flex-direction: column;
-
-                                    button {
-                                        background: none;
-                                        border: none;
-                                        cursor: pointer;
-                                        padding: 0;
-
-                                        &:focus {
-                                            outline: none;
+                                            img {
+                                                width: 10px;
+                                                height: 10px;
+                                            }
                                         }
-
-                                        img {
-                                            width: 10px;
-                                            height: 10px;
+                                    }
+                                }
+                            }
+                            &.alert {
+                                div.inputOuter {
+                                    div.inputWrapper {
+                                        input {
+                                            color: @alert-red;
+                                        }
+                                    }
+                                    div.footer {
+                                        div.middle {
+                                            p.alertMessage {
+                                                font-size: 11px;
+                                                color: @alert-red;
+                                            }
                                         }
                                     }
                                 }
@@ -334,8 +388,29 @@ div#InterviewCreateView {
             }
         }
 
+        div.addStepButtonContainer {
+            margin-top: 0px;
+            display: flex;
+            justify-content: center;
+            &.disable {
+                margin-top: 20px;
+                img.addStepButton {
+                    display: none;
+                }
+            }
+            &.enable {
+                img.addStepButton {
+                    display: flex;
+                    width: 24px;
+                    height: 24px;
+                    cursor: pointer;
+                }
+            }
+        }
+        
         // End container styling
         div.endContainer {
+            margin-top: 20px;
             span.endLabel {
             }
 
