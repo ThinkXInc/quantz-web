@@ -52,7 +52,7 @@ from libcommon.validator import Validator, ValidationType
 from libcommon.web.session import RedisSessionInterface, Session
 from libcommon.web.http_response_formatter import ValidationErrorsFormat
 from libcommon.web.http_successes import OKAPISuccessFormat, CreatedAPISuccessFormat, \
-    AcceptedAPISuccessFormat
+    AcceptedAPISuccessFormat, PartialSuccessFormat
 from libcommon.web.http_errors import InvalidContentTypeAPIErrorFormat, \
     UnexpectedAPIErrorFormat, ForbiddenAPIErrorFormat, ResourceNotFoundAPIErrorFormat, \
     BadRequestAPIErrorFormat, UnauthorizedAPIErrorFormat, RateLimitExceededAPIErrorFormat
@@ -444,18 +444,27 @@ def process_metadata(metadata, lang):
 
         chatdata.metadata = json.dumps(metadata)  # Convert to string
         chatdata.is_video_saved = True
+
+        # Check if email has already been sent
+        if chatdata.is_email_sent:
+            logger.info(light_green(f'Email already sent for client_id: {client_id}. Skipping email sending.'))
+        else:
+            # Fetch interview data
+            interview = interaction_model_db.get_one(identifier)
+            logger.info(f'Interview found: {interview}')
+
+            # Fetch user data and send email
+            user = User.find_user_by_id(host_id)
+            lang_in_chat = chatdata.lang if chatdata.lang else lang
+            send_interview_result_email(user, metadata, interview, lang_in_chat)
+            logger.info(light_green(f'Interview result email successfully sent to {user.email}.'))
+
+            # Mark email as sent
+            chatdata.is_email_sent = True
+
+        # Save the updated chat data
         chat_db_remote.set_chat_data(client_id, chatdata)
-        logger.info(light_green(f'Chat data successfully updated with uploaded metadata.'))
-
-        # Fetch interview data
-        interview = interaction_model_db.get_one(identifier)
-        logger.info(f'Interview found: {interview}')
-
-        # Fetch user data and send email
-        user = User.find_user_by_id(host_id)
-        lang_in_chat = chatdata.lang if chatdata.lang else lang
-        send_interview_result_email(user, metadata, interview, lang_in_chat)
-        logger.info(light_green(f'Interview result email successfully sent to {user.email}.'))
+        logger.info(light_green(f'Chat data successfully updated.'))
 
         return True  # Indicate successful processing
 
@@ -469,7 +478,6 @@ def process_metadata(metadata, lang):
         logger.error(red(message))
         return message  # Return error message
 
-# Modified handler
 @blueprint_interviews.route('/v1/webhook/files/uploaded', methods=['POST'])
 @content_type_check_json
 def webhook_files_uploaded():
@@ -510,23 +518,17 @@ def webhook_files_uploaded():
         logger.info(green(message))
         return OKAPISuccessFormat(message=message).http_response()
 
-    elif event == "save.fail.diskfull":
-        message = f'Failed to save interview result data because of disk full.'
+    elif event == "save.fail.diskfull" or event == "save.fail.unknownerror":
+        # Distinguish cases based on metadata processing success
+        base_message = f'Failed to save interview result data due to {("disk full" if event == "save.fail.diskfull" else "an unknown error")}.'
         if metadata_processed:
-            message += " However, metadata was processed successfully."
+            message = base_message + " However, metadata was processed successfully."
+            logger.warning(yellow(message))
+            return PartialSuccessFormat(message=message, error_detail=base_message).http_response()
         elif metadata_error:
-            message += f" Additionally, metadata processing failed with error: {metadata_error}"
-        logger.error(red(message))
-        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
-
-    elif event == "save.fail.unknownerror":
-        message = f'Failed to save interview result data due to an unknown error.'
-        if metadata_processed:
-            message += " However, metadata was processed successfully."
-        elif metadata_error:
-            message += f" Additionally, metadata processing failed with error: {metadata_error}"
-        logger.error(red(message))
-        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+            message = base_message + f" Additionally, metadata processing failed with error: {metadata_error}"
+            logger.error(red(message))
+            return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
 
     else:
         message = f'Event "{event}" is unknown.'
@@ -536,7 +538,6 @@ def webhook_files_uploaded():
             message += f" Additionally, metadata processing failed with error: {metadata_error}"
         logger.error(red(message))
         return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
-
 
 
 @blueprint_interviews.route('/interviews/mailsample/send', methods=['GET'])
