@@ -248,8 +248,17 @@
         }
 
         startRecording() {
+            if (!this.mediaRecorder) {
+                console.warning(`[Core] startRecording called but no mediaRecorder.`);
+                return
+            }
             console.log(`MediaRecorder state before start: ${this.mediaRecorder.state}`);
             if (!this.isRecording) {
+                if (this.isWaitingToDisconnect) {
+                    console.log(`[Core] Cannot start recording. Waiting to disconnect.`);
+                    return;
+                }
+
                 this.audioChunks = [];
                 this.mediaRecorder.start();
                 this.isRecording = true;
@@ -272,6 +281,10 @@
         }
 
         stopRecording() {
+            if (!this.mediaRecorder) {
+                console.warning(`[Core] stopRecording called but no mediaRecorder.`);
+                return
+            }
             console.log(`MediaRecorder state before stop: ${this.mediaRecorder.state}`);
             if (this.isRecording) {
                 this.mediaRecorder.stop();
@@ -823,7 +836,38 @@
             this.finishDispatchingAssistantAudioSignalEvent();
             this.finishDispatchingHumanAudioSignalEvent();
 
+            // Reset the waiting flag
+            this.isWaitingToDisconnect = false;
+
             console.log("Disconnected and resources reset.");
+        }
+
+        waitPlayingBufferAndDisconnect({onPlaybackFinished=() => {}}) {
+            console.log(`[Core] waitPlayingBufferAndDisconnect called.`);
+        
+            // Stop recording if it's ongoing
+            if (this.isRecording) {
+                this.stopRecording();
+            }
+        
+            // Set a flag to prevent further recording
+            this.isWaitingToDisconnect = true;
+        
+            const checkPlaybackFinished = () => {
+                if (this.isAudioPlaying || this.audioBufferQueue.length > 0 || this.playbackQueue.length > 0) {
+                    // Audio is still playing or queued, wait and check again
+                    console.log(`[Core] Waiting for audio playback to finish.`);
+                    setTimeout(checkPlaybackFinished, 100); // Check again after 100ms
+                } else {
+                    // No more audio, disconnect
+                    console.log(`[Core] Audio playback finished. Disconnecting.`);
+                    this.disconnect();
+
+                    onPlaybackFinished()
+                }
+            };
+        
+            checkPlaybackFinished();
         }
     }
 })(Quantz); 

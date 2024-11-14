@@ -73,7 +73,9 @@
         conversationDataUpdatedEventName: 'quantz-conversationDataUpdated',
         reachToLimitEventName: 'quantz-reachToLimit',
         closeMessageReceivedEventName: 'quantz-closeMessageReceived',
+        lastSpeechFinishedEventName: 'quantz-lastSpeechFinished',
         connectionClosedCleanlyEventName: 'quantz-connectionClosedCleanly',
+        didClickLeaveButtonEventName: 'quantz-didClickLeaveButton',
         languageChangeEventName: 'quantz-languageChange',
         autoInteraction: true,
         enableRestart: true,
@@ -88,6 +90,8 @@
     ns.balloons = {};
     ns.signs = {};
     ns.cores = {};
+
+    ns.isConversationEnd = false;
 
     ns.setupIndicator = function({buttonId, button, buttonWidth}) {
         const indicator = button.querySelector(`.${ns.configs[buttonId].prefix}indicator`);
@@ -616,6 +620,12 @@
                     //    controller.switchStandbyToPushSpeak();
                     //}, 5000);
                     //break;
+                    break;
+
+                case ns.ButtonState.leave:
+                    document.dispatchEvent(new CustomEvent(ns.configs[buttonId].didClickLeaveButtonEventName, {detail: {}}));
+                    break;
+
 
             }
         };
@@ -736,8 +746,10 @@
                 ns.interactionControllers[buttonId].didAssistantEndPlayingAudio();
                 // Delay to avoid catching assistant voice
                 setTimeout(() => {
-                    ns.buttonControllers[buttonId].switchToRecording(); // Switch to the recording state
-                    ns.cores[buttonId].startRecording();
+                    if (!ns.isConversationEnd) {
+                        ns.buttonControllers[buttonId].switchToRecording(); // Switch to the recording state
+                        ns.cores[buttonId].startRecording();
+                    }
                 }, 1000)
             }
             if (ns.configs[buttonId].buttonType === ns.ButtonType.A) {
@@ -882,14 +894,29 @@
 
         $buttonLoader.addEventListener(ns.configs[buttonId].closeMessageReceivedEventName, function(event) {
             console.log(`[Quantz Button ${buttonId}] close message received event received`);
-            setTimeout(() => {
-                ns.buttonControllers[buttonId].switchToLeave();
-                ns.cores[buttonId].disconnect();
 
-                if (ns.configs[buttonId].autoInteraction) {
-                    ns.interactionControllers[buttonId].didConversationEnd();
-                }
-            }, 10000)
+            ns.cores[buttonId].waitPlayingBufferAndDisconnect({
+                onPlaybackFinished: () => {
+                    document.dispatchEvent(new CustomEvent(ns.configs[buttonId].lastSpeechFinishedEventName, {detail: {}}));
+                    // gracefully leave
+                    setTimeout(() => {
+                        ns.buttonControllers[buttonId].switchToLeave();
+                        ns.isConversationEnd = true;
+                        if (ns.configs[buttonId].autoInteraction) {
+                            ns.interactionControllers[buttonId].didConversationEnd();
+                        }
+                    }, 1000)
+                }}
+            )
+
+            //setTimeout(() => {
+            //    ns.buttonControllers[buttonId].switchToLeave();
+            //    ns.cores[buttonId].disconnect();
+
+            //    if (ns.configs[buttonId].autoInteraction) {
+            //        ns.interactionControllers[buttonId].didConversationEnd();
+            //    }
+            //}, 10000)
 
             // dispatch to interface
             document.dispatchEvent(new CustomEvent(ns.configs[buttonId].closeMessageReceivedEventName, {detail: {}}));

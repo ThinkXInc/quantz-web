@@ -71,6 +71,32 @@ class Interview {
         this.meetingView.setupView();
         this.meetingView.mount(this.$interviewView);
 
+        this.leaveModal = new ModalView({
+            id: 'MeetingLeaveModalView',
+            title: "",
+            text: this.locale.get('interview_leave_text', this.lang),
+            cancelButtonText: this.locale.get('interview_leave_cancel', this.lang),
+            doneButtonText: this.locale.get('interview_leave_done', this.lang),
+            shouldCloseOnTapBG: false,
+            showAnimation: AnimationType.EXPAND,
+            closeAnimation: AnimationType.SHRINK,
+            baseCSSStyle: ModalViewStyle.DEFAULT,
+            onDone: () => {
+                this.leaveModal.$contentWrapper.style.padding = '30px 20px';
+                this.leaveModal.$title.textContent = this.locale.get('interview_finish_title', this.lang);
+                this.leaveModal.$title.style.textAlign = 'center';
+                this.leaveModal.$mainContent.textContent = this.locale.get('interview_finish_text', this.lang);
+                this.leaveModal.$mainContent.style.textAlign = 'center';
+
+                // Hide the footer
+                this.leaveModal.$footer.style.display = 'none';
+
+                window.close();
+            }
+        })
+        this.leaveModal.mount(this.$interviewView);
+        //this.leaveModal.show();
+
         switch (this.meetingView.interviewerMode) {
             case InterviewerMode.GRAPHIC1:
                 this.meetingView.createConvexView();
@@ -214,20 +240,38 @@ class Interview {
         // \CLOSE received
         document.addEventListener('quantz-closeMessageReceived', (event) => {
             console.log(`[Interview] \\CLOSE received`);
-            this.isInterviewEnd = true;
-            const waitDurationMs = 7000;
-            setTimeout(() => {
-                switch (this.meetingView.interviewerMode) {
-                    case InterviewerMode.GRAPHIC1:
-                        break;
-                    case InterviewerMode.MAN1:
-                        this.meetingView.stopAllVideos();
-                        break;
-                }
-                this.meetingView.uploadData();
-            }, waitDurationMs);
+            //this.isInterviewEnd = true;
+            //const waitDurationMs = 7000;
+            //setTimeout(() => {
+            //    switch (this.meetingView.interviewerMode) {
+            //        case InterviewerMode.GRAPHIC1:
+            //            break;
+            //        case InterviewerMode.MAN1:
+            //            this.meetingView.stopAllVideos();
+            //            break;
+            //    }
+            //    this.meetingView.uploadData();
+            //}, waitDurationMs);
         })
 
+        document.addEventListener('quantz-lastSpeechFinished', (event) => {
+            console.log(`[Interview] lastSpeechFinishedEvent received`);
+
+            this.isInterviewEnd = true;
+            switch (this.meetingView.interviewerMode) {
+                case InterviewerMode.GRAPHIC1:
+                    break;
+                case InterviewerMode.MAN1:
+                    this.meetingView.stopAllVideos();
+                    break;
+            }
+            this.meetingView.uploadData();
+        })
+
+        document.addEventListener('quantz-didClickLeaveButton', (event) => {
+            console.log(`[Interview] didClickLeaveButton event received`);
+            this.leaveModal.show();
+        })
     }
 }
 
@@ -419,13 +463,14 @@ class MeetingView {
                 //    }
                 //});
 
-        navigator.mediaDevices.getUserMedia({ video: true }) // ***
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true }) // ***
             .then(stream => {
+                console.log('Audio tracks:', stream.getAudioTracks()); // Verify audio track
                 $selfView.srcObject = stream;
                 this.uploader.startRecording(stream);
             })
             .catch(err => {
-                console.error('Failed to get video stream: ', err);
+                console.error('Failed to get video/audio stream: ', err);
             });
 
         this.$view.appendChild($leftContainer);
