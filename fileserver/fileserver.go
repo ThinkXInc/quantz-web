@@ -62,16 +62,53 @@ const SCREENSHOT_WHOLE_VIDEO_NAME = "all_compressed.jpeg"
 var ErrDiskFull = errors.New("disk space below threshold")
 
 func main() {
-	// Load configuration
-	addr := fmt.Sprintf("%s:%d", config.Cfg.Host, config.Cfg.Port)
-	http.HandleFunc(config.Cfg.UploadURL, uploadHandler)
+    if len(os.Args) > 1 && os.Args[1] == "reprocess" {
+        if len(os.Args) < 3 {
+            fmt.Println("Usage: fileserver reprocess /path/to/folder")
+            return
+        }
+        folderPath := os.Args[2]
+        err := reprocessFolder(folderPath)
+        if err != nil {
+            log.Fatalf("Error reprocessing folder: %v", err)
+        }
+        return
+    }
 
-	// File server to serve static files
-	fs := http.FileServer(http.Dir(config.Cfg.FilesRootPath))
-	http.Handle(config.Cfg.AccessURL, http.StripPrefix(config.Cfg.AccessURL, fs))
+    // Existing server code
+    addr := fmt.Sprintf("%s:%d", config.Cfg.Host, config.Cfg.Port)
+    http.HandleFunc(config.Cfg.UploadURL, uploadHandler)
 
-	log.Printf("[main] Server started on %s", addr)
-	log.Fatal(http.ListenAndServe(addr, nil))
+    fs := http.FileServer(http.Dir(config.Cfg.FilesRootPath))
+    http.Handle(config.Cfg.AccessURL, http.StripPrefix(config.Cfg.AccessURL, fs))
+
+    log.Printf("[main] Server started on %s", addr)
+    log.Fatal(http.ListenAndServe(addr, nil))
+}
+
+func reprocessFolder(folderPath string) error {
+    // Read metadata.json
+    metadataPath := filepath.Join(folderPath, METADATA_FILE_NAME)
+    metadataBytes, err := os.ReadFile(metadataPath)
+    if err != nil {
+        log.Printf("[reprocessFolder] Error reading metadata.json: %v", err)
+        return err
+    }
+    var metaData MetaData
+    err = json.Unmarshal(metadataBytes, &metaData)
+    if err != nil {
+        log.Printf("[reprocessFolder] Error unmarshaling metadata.json: %v", err)
+        return err
+    }
+    // Determine video path
+    wholeVideoPath := filepath.Join(folderPath, WHOLE_VIDEO_NAME)
+    // Call processVideo
+    err = processVideo(wholeVideoPath, folderPath, metaData)
+    if err != nil {
+        log.Printf("[reprocessFolder] Error processing video: %v", err)
+        return err
+    }
+    return nil
 }
 
 func generateFilePath(root string, metaData MetaData) (string, error) {
@@ -188,20 +225,40 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func processVideo(videoPath, saveFolderPath string, metaData MetaData) (err error) {
-	defer func() {
-		var payload WebhookPayload
-		payload.Data = metaData
-		if err != nil {
-			if errors.Is(err, ErrDiskFull) {
-				payload.Event = "save.fail.diskfull"
-			} else {
-				payload.Event = "save.fail.unknownerror"
-			}
-		} else {
-			payload.Event = "save.success"
-		}
-		sendWebhook(payload)
-	}()
+    defer func() {
+        var payload WebhookPayload
+        payload.Data = metaData
+        status := ""
+        if err != nil {
+            if errors.Is(err, ErrDiskFull) {
+                payload.Event = "save.fail.diskfull"
+            } else {
+                payload.Event = "save.fail.unknownerror"
+            }
+            status = "failed"
+        } else {
+            payload.Event = "save.success"
+            status = "success"
+        }
+        sendWebhook(payload)
+
+        // Write status file
+        statusFilePath := filepath.Join(saveFolderPath, "status.json")
+        statusData := map[string]interface{}{
+            "status":    status,
+            "timestamp": time.Now().Format(time.RFC3339),
+        }
+        if err != nil {
+            statusData["error"] = err.Error()
+        }
+        statusBytes, _ := json.Marshal(statusData)
+        err2 := os.WriteFile(statusFilePath, statusBytes, os.ModePerm)
+        if err2 != nil {
+            log.Printf("[processVideo] Error writing status file: %v", err2)
+        } else {
+            log.Printf("[processVideo] Status file written to %s", statusFilePath)
+        }
+    }()
 
 	log.Printf("[processVideo] Started processing video at %s", videoPath)
 
