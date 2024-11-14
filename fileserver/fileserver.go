@@ -128,6 +128,7 @@ func generateFilePath(root string, metaData MetaData) (string, error) {
 
 
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
+    log.Printf("[uploadHandler] =================================================================")
     log.Printf("[uploadHandler] Received upload request from %s", r.RemoteAddr)
 
     // Parse the multipart form data
@@ -314,51 +315,49 @@ func processVideo(videoPath, saveFolderPath string, metaData MetaData) (err erro
 	    durationMs := event.EndMs - event.StartMs
 	    startSec := float64(event.StartMs) / 1000.0
 	    durationSec := float64(durationMs) / 1000.0
-
+	
 	    speaker := event.Speaker
-
+	
 	    // Get the current index for the speaker and increment it afterwards
 	    speakerIdx := speakerIndexes[speaker]
 	    speakerIndexes[speaker]++
-
-		// Only extract video segment if the original event contains a VideoPath
-		if event.VideoPath != "" {
-			// Create filenames using the speaker-specific index
-			fileName := fmt.Sprintf("%s_%d.mp4", speaker, speakerIdx)
-			outputFilePath := filepath.Join(saveFolderPath, fileName)
-
-			// Extract the video segment
-			err := extractVideoSegment(compressedVideoPath, outputFilePath, startSec, durationSec)
-			if err != nil {
-				log.Printf("[processVideo] Error extracting video segment for event %d: %v", idx, err)
-				continue
-			}
-			log.Printf("[processVideo] Extracted video segment saved to %s", outputFilePath)
-
-			// Update the event's VideoPath if it was originally present
-			event.VideoPath = path.Join(baseUrl, fileName)
-
-			// Only generate screenshot if the original event contains a ScreenShotPath
-			if event.ScreenShotPath != "" {
-				// Generate the screenshot
-				screenShotFileName := fmt.Sprintf("%s_%d.jpeg", speaker, speakerIdx)
-				screenShotFilePath := filepath.Join(saveFolderPath, screenShotFileName)
-
-				err = generateScreenshot(outputFilePath, screenShotFilePath)
-				if err != nil {
-					log.Printf("[processVideo] Error generating screenshot for event %d: %v", idx, err)
-					continue
-				}
-				log.Printf("[processVideo] Generated screenshot saved to %s", screenShotFilePath)
-
-				// Update the event's ScreenShotPath if it was originally present
-				event.ScreenShotPath = path.Join(baseUrl, screenShotFileName)
-			}
-		}
-
+	
+	    // Only extract video segment if the speaker is "user"
+	    if event.Speaker == "user" {
+	        // Create filenames using the speaker-specific index
+	        fileName := fmt.Sprintf("%s_%d.mp4", speaker, speakerIdx)
+	        outputFilePath := filepath.Join(saveFolderPath, fileName)
+		
+	        // Extract the video segment
+	        err := extractVideoSegment(compressedVideoPath, outputFilePath, startSec, durationSec)
+	        if err != nil {
+	            log.Printf("[processVideo] Error extracting video segment for event %d: %v", idx, err)
+	            continue
+	        }
+	        log.Printf("[processVideo] Extracted video segment saved to %s", outputFilePath)
+		
+	        // Update the event's VideoPath
+	        event.VideoPath = path.Join(baseUrl, fileName)
+		
+	        // Generate the screenshot
+	        screenShotFileName := fmt.Sprintf("%s_%d.jpeg", speaker, speakerIdx)
+	        screenShotFilePath := filepath.Join(saveFolderPath, screenShotFileName)
+		
+	        err = generateScreenshot(outputFilePath, screenShotFilePath)
+	        if err != nil {
+	            log.Printf("[processVideo] Error generating screenshot for event %d: %v", idx, err)
+	            continue
+	        }
+	        log.Printf("[processVideo] Generated screenshot saved to %s", screenShotFilePath)
+		
+	        // Update the event's ScreenShotPath
+	        event.ScreenShotPath = path.Join(baseUrl, screenShotFileName)
+	    }
+	
 	    // Update the event in the metadata.Events slice
 	    metaData.Events[idx] = event
 	}
+
 
 	// Update metadataPath
 	metaData.MetadataPath = path.Join(baseUrl, METADATA_FILE_NAME)
