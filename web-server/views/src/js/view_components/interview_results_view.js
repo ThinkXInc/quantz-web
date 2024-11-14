@@ -145,6 +145,7 @@ class InterviewResults extends TableView {
         headerTitle = '',
         listCountTextSingular = ' Item',
         listCountTextPlural = ' Items',
+        hasMoreButton = false,
         ...otherOptions
     }){
         super({
@@ -165,6 +166,7 @@ class InterviewResults extends TableView {
         this.headerTitle = headerTitle;
         this.listCountTextPlural = listCountTextPlural;
         this.listCountTextSingular = listCountTextSingular;
+        this.hasMoreButton = hasMoreButton;
 
         this.interviewResults = [];
 
@@ -177,8 +179,9 @@ class InterviewResults extends TableView {
         this.$view.classList.add('InterviewResultsView')
         this.createHeader();
         this.createMessageView();
-        this.createMoreView();
-
+        if (this.hasMoreButton) {
+            this.createMoreView();
+        }
     }
 
     createHeader () {
@@ -234,6 +237,7 @@ class InterviewResults extends TableView {
         this.$more.textContent = this.locale.get('interview_results_more', this.lang)
         this.$more.addEventListener('click', (event) => {
             console.log('[InterviewResults] more clicked.')
+            document.dispatchEvent(new CustomEvent("interviewResultsMoreClicked", {detail: { interviewId: this.interviewId }}));
         })
         this.$moreContainer.appendChild(this.$more);
         this.$view.appendChild(this.$moreContainer);
@@ -273,7 +277,7 @@ class InterviewResults extends TableView {
                     this.$tableViewContainer.style.display = 'none';
                 }
                 if (parseInt(count, 0) > 5) {
-                    this.showMore()
+                    if(this.hasMoreButton) { this.showMore() }
                 }
             },
             (error) => {

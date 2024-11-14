@@ -208,7 +208,7 @@ def interview_results_list(user, lang, interview_id, lang_name):
 
     results = []
     count = 0
-    for client_id in interview.client_ids:
+    for client_id in set(interview.client_ids):
         if limit is not None and count >= limit:
             break
         try:
