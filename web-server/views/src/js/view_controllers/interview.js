@@ -111,6 +111,7 @@ class Interview {
             console.error('UserInfo.name is empty.')
         }
         this.meetingView.$selfViewLabel.textContent = this.userInfo.name;
+        this.meetingView.userInfo = this.userInfo;
         //this.meetingView = new MeetingView({
         //    hostId: this.hostId,
         //    interviewId: this.interviewId,
