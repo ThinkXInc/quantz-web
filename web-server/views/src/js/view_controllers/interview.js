@@ -65,7 +65,7 @@ class Interview {
             locale: this.locale,
             lang: this.lang,
             meta: this.interviewMeta,
-            interviewerMode: InterviewerMode.GRAPHIC1,  //MAN1,
+            interviewerMode: InterviewerMode.MAN1, //GRAPHIC1,  //MAN1,
             userInfo: this.userInfo
         });
         this.meetingView.setupView();

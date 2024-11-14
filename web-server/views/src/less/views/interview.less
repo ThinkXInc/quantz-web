@@ -102,8 +102,12 @@ div.MeetingView {
 
         div.SignalMonitor {
             height: 80px;
-            width: 100%;
+            width: 100%; // Ensure it fills the parent container
             background: #2e2e2e;
+            canvas {
+                width: 100% !important;
+                height: 100% !important;
+            }
         }
     }
 

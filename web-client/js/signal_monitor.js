@@ -4,6 +4,8 @@
             this.buttonId = buttonId;
             this.lang = defaultLang;
 
+            this.resizeObserver = null;
+
             console.log(`[SignalMonitor] Initializing with buttonId: ${buttonId}, defaultLang: ${defaultLang}`);
 
             this.interactionController = interactionController;
@@ -60,6 +62,34 @@
             // Append canvas to $dom
             this.$dom.appendChild(this.canvas);
             console.log('[SignalMonitor] Canvas appended to DOM.');
+
+            // Update canvas size based on the parent container
+            this.updateCanvasSize();
+
+            // Set up ResizeObserver
+            this.resizeObserver = new ResizeObserver(entries => {
+                for (let entry of entries) {
+                    this.updateCanvasSize();
+                }
+            });
+            this.resizeObserver.observe(this.$dom);
+        }
+
+        updateCanvasSize() {
+            if (this.$dom) {
+                const width = this.$dom.clientWidth;
+                const height = this.$dom.clientHeight;
+                this.width = width;
+                this.height = height;
+                this.canvas.width = this.width;
+                this.canvas.height = this.height;
+            }
+        }
+
+        disconnect() {
+            if (this.resizeObserver) {
+                this.resizeObserver.disconnect();
+            }
         }
 
         startMonitoring() {
