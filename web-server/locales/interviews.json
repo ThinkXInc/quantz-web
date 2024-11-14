@@ -476,5 +476,51 @@
         "fr": "",
         "ru": "",
         "ar": ""
-    }
+    },
+    "interview_leave_text": {
+        "en": "Are you sure you want to leave the meeting?",
+        "ja": "ミーティングを退出します。よろしいですか？",
+        "zh": "您确定要离开会议吗？",
+        "es": "¿Está seguro de que desea salir de la reunión?",
+        "fr": "Êtes-vous sûr de vouloir quitter la réunion ?",
+        "ru": "Вы уверены, что хотите покинуть встречу?",
+        "ar": "هل أنت متأكد أنك تريد مغادرة الاجتماع؟"
+    },
+    "interview_leave_cancel": {
+        "en": "Cancel",
+        "ja": "キャンセル",
+        "zh": "取消",
+        "es": "Cancelar",
+        "fr": "Annuler",
+        "ru": "Отмена",
+        "ar": "إلغاء"
+    },
+    "interview_leave_done": {
+        "en": "Leave",
+        "ja": "退出",
+        "zh": "离开",
+        "es": "Salir",
+        "fr": "Quitter",
+        "ru": "Выйти",
+        "ar": "مغادرة"
+    },
+"interview_finish_title": {
+    "en": "The meeting is complete",
+    "ja": "ミーティングが完了しました。ありがとうございました。このウインドを閉じてください。",
+    "zh": "会议已完成。谢谢。请关闭此窗口。",
+    "es": "La reunión ha terminado. Gracias. Por favor, cierre esta ventana.",
+    "fr": "La réunion est terminée. Merci. Veuillez fermer cette fenêtre.",
+    "ru": "Встреча завершена. Спасибо. Пожалуйста, закройте это окно.",
+    "ar": "تم الانتهاء من الاجتماع. شكرًا لك. يرجى إغلاق هذه النافذة."
+},
+"interview_finish_text": {
+    "en": "Please close this window. Thank you.",
+    "ja": "ミーティングが完了しました。ありがとうございました。このウインドを閉じてください。",
+    "zh": "会议已完成。谢谢。请关闭此窗口。",
+    "es": "La reunión ha terminado. Gracias. Por favor, cierre esta ventana.",
+    "fr": "La réunion est terminée. Merci. Veuillez fermer cette fenêtre.",
+    "ru": "Встреча завершена. Спасибо. Пожалуйста, закройте это окно.",
+    "ar": "تم الانتهاء من الاجتماع. شكرًا لك. يرجى إغلاق هذه النافذة."
+}
+
 }

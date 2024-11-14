@@ -464,6 +464,8 @@ def generate_interview_result_template(interview: 'InteractionModel', metadata: 
     logger.info(magenta(interview))
     logger.info(magenta(str(interview.id)))
 
+    client_id = metadata.get("client_id", "")
+
     # Prepare the data for the template
     return render_template(
         'html/interview_result.html',
@@ -471,6 +473,7 @@ def generate_interview_result_template(interview: 'InteractionModel', metadata: 
         body2=body2,
         host_url=HOST_URL,
         interview_id=str(interview.id),
+        client_id=client_id,
         formatted_date=formatted_date,
         date_label=date_label,
         name_label=name_label,
