@@ -45,6 +45,12 @@ class InterviewHomeViewController {
             this.openInterviewResultPreview(interview);
             this.interviewResults.setChecked(clientId);
         })
+        document.addEventListener("interviewResultsMoreClicked", (event) => {
+            const { interviewId } = event.detail;
+            console.warn('\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\.')
+            this.interviewSettingsModalView.close();
+            this.openInterviewResults(interviewId);
+        })
     }
 
     fetchUser(onSuccess) {
@@ -208,7 +214,7 @@ class InterviewHomeViewController {
         });
         //this.interviewResults.mount(this.$mainContent);
         this.$resultsViewContainer.appendChild(this.interviewResults.$view);
-        this.interviewResults.fetchAndUpdate({limit: 10});
+        this.interviewResults.fetchAndUpdate({limit: 200});
         this.$MainContent.classList.add('openInterviewResults');
     }
 

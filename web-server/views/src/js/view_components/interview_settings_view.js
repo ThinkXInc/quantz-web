@@ -168,7 +168,8 @@ class InterviewSettingsModalView extends ModalView {
             id: 'InterviewResultsView',
             interviewId: this.interviewId,
             locale: this.locale,
-            lang: this.lang
+            lang: this.lang,
+            hasMoreButton: true
         });
         this.$resultsViewContainer.appendChild(this.interviewResults.$view);
         this.interviewResults.fetchAndUpdate({ limit: 10 });

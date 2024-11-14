@@ -43,11 +43,30 @@ class InterviewListCell extends TableViewCell {
 
         this.maxDisplayTitleLength = maxDisplayTitleLength;
         this.maxDisplayTextLength = maxDisplayTextLength;
+
+        // Append $isChecked to the cell
+        // TODO: option in modalview
+        this.$isChecked = document.createElement('div');
+        this.$isChecked.classList.add('isChecked');
+        if (this.isChecked) {
+            this.$isChecked.classList.add('hide');
+        }
+        this.$header.style.position = 'relative';
+        this.$header.appendChild(this.$isChecked);
     }
 
     set text(text) {
         this._text = text;
         this.$text.textContent = truncateText(text, this.maxDisplayTextLength);
+    }
+
+    set isChecked(value) {
+        this._isChecked = value;
+        if (value == true) {
+            this.$isChecked.classList.add('hide');
+        } else {
+            this.$isChecked.classList.remove('hide');
+        }
     }
 
     updateTitle(title, maxCharacterLength = this.maxDisplayTitleLength, flashDuration = 10, cursorChar = ' ', truncateSuffix = "...") {
@@ -164,7 +183,8 @@ class InterviewList extends TableView {
                 interviewId: d.id,
                 title: d.title,
                 text: d.introduction,
-                label: this.locale.get('interview_list_cell_label', this.lang, [d.client_ids.length]),
+                label: this.locale.get('interview_list_cell_label', this.lang, [new Set(d.client_ids).size]),
+                isChecked: d.is_result_checked,
             };
     
             console.log("Processing interview:", d);  // Log the entire interview object
@@ -184,9 +204,9 @@ class InterviewList extends TableView {
         }
     }
 
-    addNewCell(title, text, label, interviewId, delay = 0, insertCellIndex = 0) {
+    addNewCell(title, text, label, interviewId, isChecked, delay = 0, insertCellIndex = 0) {
         this.insertCell(
-            new InterviewListCellContent({title: '', text: text, label: label, interviewId: interviewId })
+            new InterviewListCellContent({title: '', text: text, label: label, interviewId: interviewId, isChecked: isChecked })
             , insertCellIndex, delay, (newCell)=> {
                 newCell.updateTitle(title)
                 this.selectCellAtIndex(newCell.index, newCell);
@@ -204,6 +224,7 @@ class InterviewList extends TableView {
     tableViewCellSelectedAtIndex(selectedIndex, cell) {
         console.log(`${this.id}: cell ID:${cell.id} Index:${selectedIndex} clicked`)
         // Dispatch event
+        cell.isChecked = true;
         this.$view.dispatchEvent(new CustomEvent(
             "clickedInterviewCell", 
             { detail: { index: selectedIndex, interviewId: cell.content.interviewId, cell: cell } }));
@@ -212,6 +233,16 @@ class InterviewList extends TableView {
     updateTitleWithInterviewId(interviewId, title) {
         let cell = this._cellByInterviewId(interviewId);
         cell.updateTitle(title);
+    }
+
+    setChecked(clientId) {
+        try {
+            const cell = this._cellByClientId(clientId);
+            cell.isChecked = true;
+            console.log(`Cell with clientId ${clientId} has been set to checked.`);
+        } catch (error) {
+            console.error(`Failed to set cell as checked for clientId: ${clientId}`, error);
+        }
     }
 
     _cellByInterviewId(interviewId) {
