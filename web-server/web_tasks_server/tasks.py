@@ -33,7 +33,7 @@ REQUIRED_KEYS_IN_CONFIG = [
     'REDIS_ACCESS_PORT',
     'REDIS_ACCESS_DB_NUMBER',
     'STRIPE_SECRET_KEY',
-    'MONTHLY_FREE_CALL',
+    'MONTHLY_FREE_CREDIT',
     'PAYMENT_MAX_RETRIES',
     'PAYMENT_RETRY_DELAY',
     "REDIS_CHATDATA_HOST",
@@ -107,7 +107,7 @@ from celery import current_task
 
 DESCRIPTION_DATE_FORMAT = "%Y-%m-%d"
 
-MONTHLY_FREE_CALL = Config.MONTHLY_FREE_CALL
+MONTHLY_FREE_CREDIT = Config.MONTHLY_FREE_CREDIT
 PAYMENT_MAX_RETRIES = Config.PAYMENT_MAX_RETRIES
 PAYMENT_RETRY_DELAY = Config.PAYMENT_RETRY_DELAY
 
@@ -190,7 +190,7 @@ def run_payment(user_id, lang):
         user.save()
 
         # update free call & next billing
-        user.free_call = MONTHLY_FREE_CALL
+        user.free_call = MONTHLY_FREE_CREDIT
         user.start_billing = User.ensure_utc(user.next_billing)
         user.next_billing = User.ensure_utc(user.calculate_next_billing_date(user.start_billing))
         logger.info(green(f"Next billing date updated to {user.next_billing} {user.next_billing.tzinfo}"))

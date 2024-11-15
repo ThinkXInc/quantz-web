@@ -696,20 +696,20 @@ class User(MongoModel):
         return utc_now
 
     @staticmethod
-    def get_billing_dates() -> Tuple[datetime, datetime]:
+    def get_billing_dates(is_debug=False) -> Tuple[datetime, datetime]:
         start_billing = User.get_start_billing_date()
-        next_billing = User.calculate_next_billing_date(start_billing)
+        next_billing = User.calculate_next_billing_date(start_billing, is_debug=is_debug)
         return start_billing, next_billing
 
     @staticmethod
-    def calculate_next_billing_date(start_date: datetime) -> datetime:
+    def calculate_next_billing_date(start_date: datetime, is_debug=False) -> datetime:
         """
         Calculate the next billing date according to the billing schedule configuration.
         """
         if start_date.tzinfo is None or start_date.tzinfo.utcoffset(start_date) is None:
             raise ValueError(f"start_date must be timezone-aware and in UTC but {start_date} {start_date.tzinfo}")
 
-        schedule = NEXT_BILLING_SCHEDULE
+        schedule = NEXT_BILLING_SCHEDULE if not is_debug else BillingSchedule.MINUTES_5
         if schedule == BillingSchedule.MONTHLY:
             one_month_later = start_date.replace(day=1) + timedelta(days=32)
             max_day_of_next_month = one_month_later.replace(day=1) - timedelta(days=1)

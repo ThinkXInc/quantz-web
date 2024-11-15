@@ -10,14 +10,14 @@ from jinja2 import ChoiceLoader, FileSystemLoader
 # Config
 from config import Config, check_config
 REQUIRED_KEYS_IN_CONFIG = [
-    'FIRST_MONTH_FREE_CALL',
+    'FIRST_MONTH_FREE_CREDIT',
     'UNIT_PRICE_USD',
     'DEFAULT_LANG',
     'MAIL_SUPPORT',
 ]
 check_config(Config, REQUIRED_KEYS_IN_CONFIG)
 ENV = Config.ENV 
-FIRST_MONTH_FREE_CALL = Config.FIRST_MONTH_FREE_CALL
+FIRST_MONTH_FREE_CREDIT = Config.FIRST_MONTH_FREE_CREDIT
 UNIT_PRICE_USD = Config.UNIT_PRICE_USD
 MAIL_SUPPORT = Config.MAIL_SUPPORT
 
@@ -105,7 +105,7 @@ def top_handler(lang, lang_name):
         'index.html',
         lang=lang,
         lang_name=lang_name,
-        free_call=FIRST_MONTH_FREE_CALL,
+        free_call=FIRST_MONTH_FREE_CREDIT,
         unit_price=UNIT_PRICE_USD,
         locale_json=locale.to_json_string(),
         locale_dict=locale.dict(),

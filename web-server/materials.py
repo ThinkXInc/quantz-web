@@ -18,6 +18,8 @@ REQUIRED_KEYS_IN_CONFIG = [
 check_config(Config, REQUIRED_KEYS_IN_CONFIG)
 
 UNIT_PRICE_USD = Config.UNIT_PRICE_USD
+GENERAL_CREDIT_PER_RESPONSE = Config.GENERAL_CREDIT_PER_RESPONSE
+INTERVIEW_CREDIT_PER_RESPONSE = Config.INTERVIEW_CREDIT_PER_RESPONSE
 
 # Set logger
 from libcommon.logger import Logger
@@ -98,6 +100,8 @@ def home(user, lang, lang_name):
         lang_name=lang_name,
         locale_json=locale.to_json_string(),
         unit_price=UNIT_PRICE_USD,
+        general_credit_per_response=GENERAL_CREDIT_PER_RESPONSE,
+        interview_credit_per_response=INTERVIEW_CREDIT_PER_RESPONSE,
         settings_menu_title=locale.get('settings_menu_title', lang),
         logout_menu_title=locale.get('logout_menu_title', lang),
         metadata=locale.dict()["metadata_home"][lang])

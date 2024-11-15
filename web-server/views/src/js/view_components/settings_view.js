@@ -543,7 +543,7 @@ class SettingsView {
                     max: max
                 })
             ],
-            defaultValue: String(this.user.usage_limit),
+            defaultValue: String(this.user.usage_limit*this.unitPrice),
             isCounter: false,
             isIncrementer: true,
             incrementButtonPlace: TextFieldPlaceTo.inputAfter,
@@ -557,17 +557,18 @@ class SettingsView {
         const $maxCharge = document.createElement('span');
         $maxCharge.classList.add('maxCharge');
         $maxCharge.textContent = locale.get('settings_limit_max_charge', lang);
-        const $maxChargePrice = document.createElement('span');
-        $maxChargePrice.classList.add('maxChargePrice')
-        $maxChargePrice.textContent = locale.get('settings_limit_max_charge_price', lang, [maxChargeDefault]);
+        const $maxEstimatedUsage = document.createElement('span');
+        $maxEstimatedUsage.classList.add('maxEstimatedUsage')
+        this.averageInterviewPrice = interviewCreditPerResponse*unitPrice*8; // USD
+        $maxEstimatedUsage.textContent = locale.get('settings_limit_max_estimated_usage', lang, [parseInt(this.limitForm.value/this.averageInterviewPrice)]);
 
         $limitLine1.appendChild($max);
         $limitLine1.appendChild(this.limitForm.$view);
         $limitLine1.appendChild($maxDesc);
         $limitLine1.appendChild($maxCharge);
-        $limitLine1.appendChild($maxChargePrice);
+        $limitLine1.appendChild($maxEstimatedUsage);
 
-        this.$maxChargePrice = $maxChargePrice;
+        this.$maxEstimatedUsage = $maxEstimatedUsage;
 
         const $limitAlert = document.createElement('p');
         $limitAlert.id = 'limitAlert';
@@ -739,8 +740,9 @@ class SettingsView {
             e.preventDefault();
             const {newValue} = e.detail;
             debuglog(`limit changed: ${newValue}`)
+            this.averageInterviewPrice = interviewCreditPerResponse*unitPrice*8; // USD
             if(!_this.limitForm.validate()) {
-                _this.$maxChargePrice.textContent = _this.locale.get('settings_limit_max_charge_price', lang, [this.calcMaxChage(newValue)])
+                _this.$maxEstimatedUsage.textContent = _this.locale.get('settings_limit_max_estimated_usage', lang, [parseInt(newValue/this.averageInterviewPrice)])
                 _this.submitLimit(newValue);
             }
         })
@@ -1121,8 +1123,8 @@ class SettingsView {
         $balloonSizeTitle.classList.add('subtitle');
         $balloonSizeTitle.textContent = locale.get('settings_customize_balloon_size_title', lang)
 
-        const min = 100;
-        const max = 2000;
+        const min = 1;
+        const max = 100;
  
         const balloonWidthForm = new TextField({
             id: 'BalloonWidthForm',
