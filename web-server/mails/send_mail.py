@@ -257,18 +257,18 @@ def send_free_call_given_email(user: User):
     logger.debug(flask_app.jinja_loader.searchpath)
     with flask_app.app_context(): # celery worker process needs context
         free_call_in_usd = UNIT_PRICE_USD * user.free_call
-        subject = locale.get('free_call_given_subject', lang, [str(user.free_call), str(free_call_in_usd)])
+        subject = locale.get('free_call_given_subject', lang, [str(user.free_call*free_call_in_usd)])
         html_content = render_template(
             'html/free_call_given.html',
             body1=locale.get('free_call_given_body1', lang),
-            body2=locale.get('free_call_given_body2', lang, [str(user.free_call)], str(free_call_in_usd)),
+            body2=locale.get('free_call_given_body2', lang, [str(user.free_call*free_call_in_usd)]),
             body3=locale.get('free_call_given_body3', lang),
             team=locale.get('team', lang)
             )
         text_content = render_template(
             'plain/free_call_given.txt',
             body1=locale.get('free_call_given_body1', lang),
-            body2=locale.get('free_call_given_body2', lang, [str(user.free_call), str(free_call_in_usd)]),
+            body2=locale.get('free_call_given_body2', lang, [str(user.free_call*free_call_in_usd)]),
             body3=locale.get('free_call_given_body3', lang),
             team=locale.get('team', lang)
             )

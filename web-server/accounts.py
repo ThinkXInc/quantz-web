@@ -8,7 +8,7 @@ REQUIRED_KEYS_IN_CONFIG = [
     'ENV',
     'HOST_URL',
     'LOCALES_ROOT',
-    'FIRST_MONTH_FREE_CALL',
+    'FIRST_MONTH_FREE_CREDIT',
     'UNIT_PRICE_USD',
     'REDIS_ACCESS_HOST',
     'REDIS_ACCESS_PORT',
@@ -18,11 +18,14 @@ check_config(Config, REQUIRED_KEYS_IN_CONFIG)
 
 ENV = Config.ENV
 HOST_URL = Config.HOST_URL
-FIRST_MONTH_FREE_CALL = Config.FIRST_MONTH_FREE_CALL
+FIRST_MONTH_FREE_CREDIT = Config.FIRST_MONTH_FREE_CREDIT
 UNIT_PRICE_USD = Config.UNIT_PRICE_USD
+GENERAL_CREDIT_PER_RESPONSE = Config.GENERAL_CREDIT_PER_RESPONSE
+INTERVIEW_CREDIT_PER_RESPONSE = Config.INTERVIEW_CREDIT_PER_RESPONSE
 REDIS_ACCESS_HOST = Config.REDIS_ACCESS_HOST
 REDIS_ACCESS_PORT = Config.REDIS_ACCESS_PORT
 REDIS_ACCESS_DB_NUMBER = Config.REDIS_ACCESS_DB_NUMBER
+
 
 # Set logger
 from libcommon.logger import Logger
@@ -122,8 +125,10 @@ def signup(lang, lang_name):
         'main/signup.html',
         lang=lang,
         lang_name=lang_name,
-        free_call=FIRST_MONTH_FREE_CALL,
+        free_call=FIRST_MONTH_FREE_CREDIT,
         unit_price=UNIT_PRICE_USD,
+        general_credit_per_response=GENERAL_CREDIT_PER_RESPONSE,
+        interview_credit_per_response=INTERVIEW_CREDIT_PER_RESPONSE,
         locale_json=locale.to_json_string(),
         metadata=locale.dict()["metadata_signup"][lang])
 
@@ -252,10 +257,14 @@ def users_create(lang, lang_name):
 
     # Save results in the database using the create_new method
     try:
-        start_billing, next_billing = User.get_billing_dates()
+        if email in ["dev1@thinkxinc.com", "dev2@thinkxinc.com", "dev3@thinkxinc.com", "dev4@thinkxinc.com"]:
+            is_debug = True
+        else:
+            is_debug = False
+        start_billing, next_billing = User.get_billing_dates(is_debug=is_debug)
         user = User.create_new(
             suspended_email=email, password=password,
-            free_call=FIRST_MONTH_FREE_CALL,
+            free_call=FIRST_MONTH_FREE_CREDIT,
             lang=lang,
             start_billing=start_billing, next_billing=next_billing)
         if not user:
@@ -324,7 +333,7 @@ def users_create_googleoauth(email, google_id, lang, lang_name):
         start_billing, next_billing = User.get_billing_dates()
         user = User.create_new_google_oauth(
             email=email, google_id=google_id,
-            free_call=FIRST_MONTH_FREE_CALL,
+            free_call=FIRST_MONTH_FREE_CREDIT,
             lang=lang,
             start_billing=start_billing, next_billing=next_billing)
         if not user:
@@ -699,7 +708,8 @@ def users_update_limit(user, lang, lang_name):
     if validation_error:
         return validation_error.http_response()
 
-    new_limit = int(request.json.get('usage_limit'))
+    new_limit_usd = int(request.json.get('usage_limit'))  # now in USD
+    new_limit = int(new_limit_usd/UNIT_PRICE_USD)
     logger.info(magenta(f'[POST] users/update/usage_limit => \n'+'-'*100+f'\n{new_limit}'+'-'*100))
 
     try:

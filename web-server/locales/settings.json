@@ -298,31 +298,31 @@
         "ru": "Максимально"
     },
     "settings_limit_max_description": {
-        "en": "calls per month",
-        "ja": "回/月",
-        "zh": "次/月",
-        "fr": "appels par mois",
-        "es": "llamadas por mes",
-        "ar": "مكالمة/الشهر",
-        "ru": "звонков в месяц"
+        "en": "USD/month",
+        "ja": "USD/月",
+        "zh": "USD/月",
+        "fr": "USD/mois",
+        "es": "USD/mes",
+        "ar": "دولار أمريكي/شهر",
+        "ru": "USD/месяц"
     },
     "settings_limit_max_charge": {
-        "en": "Monthly Budget Limit",
-        "ja": "１ヶ月あたりの請求上限金額",
-        "zh": "每月预算上限",
-        "fr": "Limite de budget mensuel",
-        "es": "Límite de presupuesto mensual",
-        "ar": "الحد الأقصى للميزانية الشهرية",
-        "ru": "Месячный лимит бюджета"
+        "en": "Estimated number of interviews per month",
+        "ja": "インタビュー利用回数目安",
+        "zh": "预计面试次数",
+        "fr": "Nombre estimé d'entretiens",
+        "es": "Número estimado de entrevistas",
+        "ar": "العدد المقدر للمقابلات شهريًا",
+        "ru": "Предполагаемое количество интервью в месяц"
     },
-    "settings_limit_max_charge_price": {
-        "en": "$$0 /month",
-        "ja": "$$0 /月",
-        "zh": "$$0 /月",
-        "fr": "$$0 /mois",
-        "es": "$$0 /mes",
-        "ar": "$$0 /شهر",
-        "ru": "$$0 /месяц"
+    "settings_limit_max_estimated_usage": {
+        "en": "$0 times / month",
+        "ja": "$0回 /月",
+        "zh": "$0次 /月",
+        "fr": "$0 fois / mois",
+        "es": "$0 veces / mes",
+        "ar": "$0 مرات / الشهر",
+        "ru": "$0 раз / месяц"
     },
     "settings_customize_page_title": {
         "en": "Customize Button",

@@ -87,6 +87,9 @@ class Config:
         "REDIS_SESSION_PORT",
         "REDIS_SESSION_LOGLEVEL",
         "REDIS_SESSION_EXPIRATION_TIME_SEC",
+        "REDIS_ACCESS_HOST",
+        "REDIS_ACCESS_PORT",
+        "REDIS_ACCESS_DB_NUMBER",
         "REDIS_CHATDATA_HOST",
         "REDIS_CHATDATA_PORT",
         "REDIS_CHATDATA_DB_NUMBER",
@@ -232,10 +235,12 @@ class Config:
     MAIL_SUPPORT = 'support@quantz.thinkxinc.com'  # necessary
     MAIL_SYSTEM = 'system@quantz.thinkxinc.com'
 
-    FIRST_MONTH_FREE_CALL = 50
-    MONTHLY_FREE_CALL = 10
+    FIRST_MONTH_FREE_CREDIT = 200
+    MONTHLY_FREE_CREDIT = 10
     UNIT_PRICE_USD = 0.05
     USAGE_LIMIT_DEFAULT = 200
+    GENERAL_CREDIT_PER_RESPONSE = 1
+    INTERVIEW_CREDIT_PER_RESPONSE = 2
  
     PAYMENT_MAX_RETRIES = 3
 

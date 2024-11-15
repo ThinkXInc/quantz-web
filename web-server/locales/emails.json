@@ -171,13 +171,13 @@
         "ru": "До регистрации действующей карты использование системы будет временно приостановлено. Мы ценим ваше немедленное внимание к этому вопросу, чтобы вы могли продолжать наслаждаться нашими услугами без перерывов."
     },
     "free_call_given_subject": {
-        "en": "You Got $0 Free Quantz Credits!",
-        "ja": "$0回分($1ドル分)の無料のクレジットが付与されました",
-        "zh": "已授予免费额度",
-        "fr": "Crédit gratuit accordé",
-        "es": "Crédito gratuito concedido",
-        "ar": "تم منحك رصيد مجاني",
-        "ru": "Бесплатные кредиты предоставлены"
+        "en": "You Got $0 USD Free Quantz Credits!",
+        "ja": "$1ドル分の無料のクレジットが付与されました",
+        "zh": "您获得了 $0 USD 的免费额度！",
+        "fr": "Vous avez reçu $0 USD de crédits gratuits Quantz !",
+        "es": "¡Tienes $0 USD en créditos gratuitos de Quantz!",
+        "ar": "لقد حصلت على رصيد مجاني بقيمة $0 دولار أمريكي من Quantz!",
+        "ru": "Вы получили $0 USD бесплатных кредитов Quantz!"
     },
     "free_call_given_body1": {
         "en": "We hope you’ve been enjoying Quantz so far!",

@@ -162,13 +162,13 @@
         "ru": "Проверка успешно завершена."
     },
     "signup_verified_present_highlight": {
-        "en": "50 free call credits*",
-        "ja": "1ヶ月使用できる無料の50回分*",
-        "zh": "您现在有50次免费通话，有效期为一个月*",
-        "fr": "Vous disposez maintenant de 50 appels gratuits valables un mois*",
-        "es": "Ahora tienes 50 llamadas gratis válidas por un mes*",
-        "ar": "لديك الآن 50 مكالمة مجانية صالحة لمدة شهر*",
-        "ru": "У вас теперь есть 50 бесплатных звонков, действительных на один месяц*"
+        "en": "$0 USD free credits*",
+        "ja": "$0ドル分の無料クレジット*",
+        "zh": "$0 USD 的免费额度*",
+        "fr": "$0 USD de crédits gratuits*",
+        "es": "$0 USD en créditos gratuitos*",
+        "ar": "$0 دولار أمريكي كرصيد مجاني*",
+        "ru": "$0 USD бесплатных кредитов*"
     },
     "signup_verified_present_unhighlight": {
         "en": "have been added to your account as a welcome gift!",
@@ -180,13 +180,13 @@
         "ru": "были начислены на ваш счет."
     },
     "signup_verified_present_sub": {
-        "en": "*valid for 30 days. 1 free call = 10 exchanges max",
-        "ja": "*1回のやりとりは最大10往復です。",
-        "zh": "*每次互动最多可包含10次交换。",
-        "fr": "*Chaque interaction peut comporter jusqu'à 10 échanges.",
-        "es": "*Cada interacción puede consistir en hasta 10 intercambios.",
-        "ar": "*يمكن أن تتكون كل تفاعل من ما يصل إلى 10 تبادلات.",
-        "ru": "*Каждое взаимодействие может состоять из не более чем 10 обменов."
+        "en": "*valid for 30 days.",
+        "ja": "*30日間有効です。",
+        "zh": "*有效期为30天。",
+        "fr": "*valide pendant 30 jours.",
+        "es": "*válido por 30 días.",
+        "ar": "*صالح لمدة 30 يومًا.",
+        "ru": "*действительно в течение 30 дней."
     },
     "signup_origin_form_title": {
         "en": "Site Domain or Page URL",
@@ -288,13 +288,13 @@
         "ru": "Месячный лимит использования"
     },
     "signup_limit_subtitle": {
-        "en": "Stay within your budget by setting a limit for the number of calls you will be accepting via the Quantz button every month.",
-        "ja": "最大利用回数を設定することで、月毎の請求に上限を設けることができます。",
-        "zh": "设定最大使用次数以限制每月账单。",
-        "fr": "Définissez un nombre maximal d'utilisations pour limiter votre facturation mensuelle.",
-        "es": "Establezca un número máximo de usos para limitar su facturación mensual.",
-        "ar": "اضبط الحد الأقصى لعدد الاستخدامات لتحديد فاتورتك الشهرية.",
-        "ru": "Установите максимальное количество использований, чтобы ограничить ваш ежемесячный счет."
+        "en": "Stay within your budget by setting a limit.",
+        "ja": "月毎の請求に上限を設けることができます。",
+        "zh": "通过设置限额保持在您的预算范围内。",
+        "fr": "Restez dans votre budget en définissant une limite.",
+        "es": "Mantente dentro de tu presupuesto estableciendo un límite.",
+        "ar": "ابق ضمن ميزانيتك عن طريق تحديد حد.",
+        "ru": "Оставайтесь в рамках своего бюджета, установив лимит."
     },
     "signup_limit_max": {
         "en": "Maximum",
@@ -306,58 +306,58 @@
         "ru": "Максимально"
     },
     "signup_limit_max_description": {
-        "en": "calls per month*",
-        "ja": "回/月",
-        "zh": "次/月",
-        "fr": "fois par mois",
-        "es": "veces al mes",
-        "ar": "مرات في الشهر",
-        "ru": "раз в месяц"
+        "en": "USD/month",
+        "ja": "USD/月",
+        "zh": "USD/月",
+        "fr": "USD/mois",
+        "es": "USD/mes",
+        "ar": "دولار أمريكي/شهر",
+        "ru": "USD/месяц"
     },
     "signup_limit_max_charge": {
-        "en": "Monthly Maximum Charge Amount",
-        "ja": "１ヶ月あたりの請求上限金額",
-        "zh": "每月最大收费额",
-        "fr": "Montant maximum de la charge mensuelle",
-        "es": "Monto máximo de carga mensual",
-        "ar": "الحد الأقصى لمبلغ الشحن الشهري",
-        "ru": "Максимальная сумма ежемесячного платежа"
+        "en": "Estimated number of interviews per month",
+        "ja": "インタビュー利用回数目安",
+        "zh": "预计面试次数",
+        "fr": "Nombre estimé d'entretiens",
+        "es": "Número estimado de entrevistas",
+        "ar": "العدد المقدر للمقابلات شهريًا",
+        "ru": "Предполагаемое количество интервью в месяц"
     },
-    "signup_limit_max_charge_price": {
-        "en": "$$0 /month",
-        "ja": "$$0 /月",
-        "zh": "$$0 /月",
-        "fr": "$$0 /mois",
-        "es": "$$0 /mes",
-        "ar": "$$0 /شهر",
-        "ru": "$$0 /месяц"
+    "signup_limit_max_estimated_usage": {
+        "en": "$0 times / month",
+        "ja": "$0回 /月",
+        "zh": "$0次 /月",
+        "fr": "$0 fois / mois",
+        "es": "$0 veces / mes",
+        "ar": "$0 مرات / الشهر",
+        "ru": "$0 раз / месяц"
     },
     "signup_limit_note1": {
-        "en": "*Doesn’t include 50 free calls credited as a welcome gift.",
-        "ja": "*初月は$0回分が無料で付与されます。",
-        "zh": "*首月包含$0次免费使用。",
-        "fr": "*Le premier mois inclut $0 utilisations gratuites.",
-        "es": "*El primer mes incluye $0 usos gratuitos.",
-        "ar": "*الشهر الأول يشمل $0 استخدامًا مجانيًا.",
-        "ru": "*В первый месяц входит $0 бесплатных использований."
+        "en": "*Doesn’t include $0 USD credited as a welcome gift.",
+        "ja": "*初月は無料の$0米ドル分が適用されます。",
+        "zh": "*不包括作为欢迎礼物的 $0 USD 额度。",
+        "fr": "*N'inclut pas les $0 USD crédités en cadeau de bienvenue.",
+        "es": "*No incluye los $0 USD acreditados como regalo de bienvenida.",
+        "ar": "*لا يشمل $0 دولار أمريكي كهدية ترحيبية.",
+        "ru": "*Не включает $0 USD, начисленные в качестве приветственного подарка."
     },
     "signup_limit_note2": {
-        "en": "*You will be charged based on the number of calls, 1 call = $0",
-        "ja": "*上限に達するまで$$0/回の従量課金が適用されます。",
-        "zh": "*达到上限前，每次使用将收费$$0。",
-        "fr": "*L'utilisation jusqu'à la limite sera facturée $$0 par occurrence.",
-        "es": "*El uso hasta el límite se cobrará a $$0 por cada vez.",
-        "ar": "*الاستخدام حتى الحد الأقصى سيتم تحصيله بسعر $$0 لكل مرة.",
-        "ru": "*Использование до лимита будет стоить $$0 за каждый раз."
+        "en": "*You will be charged based on the number of responses: $0 per response for Quantz, and $1 per response for Quantz Interview.",
+        "ja": "*上限に達するまで$0米ドル/応答(Quantz)、$1米ドル/応答(Quantz Interview)の従量課金が適用されます。",
+        "zh": "*收费将基于响应数量，Quantz 每次响应 $0，Quantz 面试每次响应 $1。",
+        "fr": "*Vous serez facturé en fonction du nombre de réponses : $0 par réponse pour Quantz et $1 par réponse pour Quantz Interview.",
+        "es": "*Se le cobrará en función del número de respuestas: $0 por respuesta para Quantz y $1 por respuesta para Quantz Interview.",
+        "ar": "*سيتم فرض رسوم بناءً على عدد الردود: $0 لكل رد لـ Quantz و $1 لكل رد لـ Quantz Interview.",
+        "ru": "*С вас будет взиматься плата в зависимости от количества ответов: $0 за ответ для Quantz и $1 за ответ для Quantz Interview."
     },
     "signup_limit_note3": {
-        "en": "(each up to $0 exchanges), until you reach the set limit.",
-        "ja": "*1回のやりとりは最大$0往復です。",
-        "zh": "*每次交互最多$0往返。",
-        "fr": "*Chaque interaction est limitée à un maximum de $0 allers-retours.",
-        "es": "*Cada interacción está limitada a un máximo de $0 idas y vueltas.",
-        "ar": "*كل تفاعل محدود بحد أقصى $0 رحلات ذهاب وإياب.",
-        "ru": "*Каждое взаимодействие ограничено максимумом $0 поездок туда и обратно."
+        "en": "*There is a limit to the number of responses per conversation.",
+        "ja": "*1回の対話での応答数には上限があります。",
+        "zh": "*每次对话的响应次数有限制。",
+        "fr": "*Il y a une limite au nombre de réponses par conversation.",
+        "es": "*Hay un límite en el número de respuestas por conversación.",
+        "ar": "*هناك حد لعدد الردود لكل محادثة.",
+        "ru": "*Существует ограничение на количество ответов за один разговор."
     },
     "signup_terms_title": {
         "ja": "Quantzサービス利用規約",

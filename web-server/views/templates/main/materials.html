@@ -39,6 +39,8 @@
 
     const freeCall = "{{ free_call }}"
     const unitPrice = "{{ unit_price }}"
+    const generalCreditPerResponse = "{{ general_credit_per_response }}"
+    const interviewCreditPerResponse = "{{ interview_credit_per_response }}"
 
     const localeDict = {{ locale_json | safe }};
     if (!localeDict) {
@@ -56,8 +58,10 @@
     window.lang = lang;
     window.langName = langName;
 
-    window.freeCall = freeCall;
-    window.unitPrice = unitPrice;
+    window.freeCall = parseInt(freeCall);
+    window.unitPrice = parseFloat(unitPrice);
+    window.generalCreditPerResponse = parseInt(generalCreditPerResponse);
+    window.interviewCreditPerResponse = parseInt(interviewCreditPerResponse);
 }
 </script>
 <script src=/js/view_controllers/materials.js></script>

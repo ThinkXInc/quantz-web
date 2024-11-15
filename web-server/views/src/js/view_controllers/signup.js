@@ -640,7 +640,7 @@ class Signup {
         $presentNoticeMain.classList.add('presentNoticeMain')
         const $presentNoticeHighlightText = document.createElement('p');
         $presentNoticeHighlightText.classList.add('mainHighlightText');
-        $presentNoticeHighlightText.textContent = locale.get('signup_verified_present_highlight', lang)
+        $presentNoticeHighlightText.textContent = locale.get('signup_verified_present_highlight', lang, [window.freeCall*window.unitPrice])
         const $presentNoticeUnHighlightText = document.createElement('p');
         $presentNoticeUnHighlightText.classList.add('mainUnhighlightText');
         $presentNoticeUnHighlightText.textContent = locale.get('signup_verified_present_unhighlight', lang)
@@ -1058,8 +1058,9 @@ class Signup {
 
         const min = 1;
         const max = 99999;
-        const defaultLimit = 200;
+        const defaultLimit = 20;
         const maxMessage = 10;
+        this.averageInterviewPrice = interviewCreditPerResponse*unitPrice*8; // USD
 
         const $line1 = document.createElement('div');
         $line1.classList.add('line1')
@@ -1097,25 +1098,27 @@ class Signup {
         const $maxCharge = document.createElement('span');
         $maxCharge.classList.add('maxCharge');
         $maxCharge.textContent = locale.get('signup_limit_max_charge', lang);
-        const $maxChargePrice = document.createElement('span');
-        $maxChargePrice.classList.add('maxChargePrice')
-        $maxChargePrice.textContent = locale.get('signup_limit_max_charge_price', lang, [maxChargeDefault]);
+        const $maxEstimatedUsage = document.createElement('span');
+        $maxEstimatedUsage.classList.add('maxEstimatedUsage')
+        $maxEstimatedUsage.textContent = locale.get('signup_limit_max_estimated_usage', lang, [parseInt(this.limitForm.value/this.averageInterviewPrice)]);
         $line2.appendChild($maxCharge);
-        $line2.appendChild($maxChargePrice);
+        $line2.appendChild($maxEstimatedUsage);
 
         const $notes = document.createElement('div');
         $notes.classList.add('notes');
         const $note1 = document.createElement('p');
         $note1.classList.add('note')
-        $note1.textContent = locale.get('signup_limit_note1', lang, [freeCall]);
+        $note1.textContent = locale.get('signup_limit_note1', lang, [freeCall*unitPrice]);
         const $note2 = document.createElement('p');
         $note2.classList.add('note')
-        $note2.textContent = locale.get('signup_limit_note2', lang, [unitPrice]);
+        const pricePerResponseGeneral = unitPrice*generalCreditPerResponse;
+        const pricePerResponseInterview = unitPrice*interviewCreditPerResponse;
+        $note2.textContent = locale.get('signup_limit_note2', lang, ...[parseFloat(pricePerResponseGeneral.toFixed(2)), parseFloat(pricePerResponseInterview.toFixed(2))]);
         const $note3 = document.createElement('p');
         $note3.classList.add('note')
         $note3.textContent = locale.get('signup_limit_note3', lang, [maxMessage]);
-        $notes.appendChild($note1);
         $notes.appendChild($note2);
+        $notes.appendChild($note1);
         $notes.appendChild($note3);
 
         const limitPageNextButton = new LoadButton({
@@ -1130,7 +1133,7 @@ class Signup {
         $limitPageAlert.classList.add('pageAlert');
         $limitPageAlert.style.display = 'none';
 
-        this.$maxChargePrice = $maxChargePrice;
+        this.$maxEstimatedUsage = $maxEstimatedUsage;
         this.limitPageNextButton = limitPageNextButton;
         this.$limitPageAlert = $limitPageAlert;
 
@@ -1152,7 +1155,7 @@ class Signup {
             const {newValue} = e.detail;
             debuglog(`limit changed: ${newValue}`)
             if(!this.limitForm.validate()) {
-                this.$maxChargePrice.textContent = locale.get('signup_limit_max_charge_price', lang, [this.calcMaxChage(newValue)])
+                this.$maxEstimatedUsage.textContent = locale.get('signup_limit_max_estimated_usage', lang, [parseInt(newValue/this.averageInterviewPrice)])
             }
 
         })
