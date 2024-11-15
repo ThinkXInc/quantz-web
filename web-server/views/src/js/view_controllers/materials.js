@@ -293,7 +293,7 @@ class MaterialsView {
                     shouldCloseOnTapBG: true,
                 });
                 this.settingsModalView.mount('#MainContent');
-                //document.getElementById('SettingsModalView').style.display = 'block'; // DEBUG
+                document.getElementById('SettingsModalView').style.display = 'block'; // DEBUG
             })
             .catch(error => {
                 console.error('Unexpected error occurred when init:', error);
