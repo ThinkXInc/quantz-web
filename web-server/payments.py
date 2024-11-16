@@ -206,11 +206,13 @@ def stripe_webhook():
 @session_helper
 def payments_method_status(user, lang, lang_name):
     logger.info(magenta(f'[POST] payements/method/status'))
+    logger.debug(cyan(f"User Details: {user}"))
 
     # no cutomer_id
     if not user.stripe_customer_id:
         message = locale.get("method_status_no_customer_id", lang)
-        logger.info(yellow(message))
+        logger.warning(yellow(f"Missing Stripe Customer ID for user: {user.id}"))
+        logger.info(yellow(f"Response Message: {message}"))
         return OKAPISuccessFormat(
                     message=message,
                     data={'status': 'no_customer_id'}
@@ -219,7 +221,8 @@ def payments_method_status(user, lang, lang_name):
     # no payment_method_id
     if not user.payment_method_id:
         message = locale.get("method_status_no_payment_method_id", lang)
-        logger.info(yellow(message))
+        logger.warning(yellow(f"Missing Payment Method ID for user: {user.id}"))
+        logger.info(yellow(f"Response Message: {message}"))
         return OKAPISuccessFormat(
                     message=message,
                     data={'status': 'no_payment_method_id'}
@@ -227,20 +230,42 @@ def payments_method_status(user, lang, lang_name):
 
     # call stripe payment_method_id check
     try:
+        logger.info(f"Retrieving payment method from Stripe for user: {user.id}")
         payment_method = stripe.PaymentMethod.retrieve(user.payment_method_id)
         payment_method_updated_at = datetime.fromtimestamp(
             payment_method['created'],
             tz=pytz.utc 
         )
-        logger.info(f"Payment Method details: {payment_method}")
-        card_brand = payment_method.card.brand
-        last4 = payment_method.card.last4
+        logger.info(cyan(f"Stripe Payment Method Retrieved: {payment_method}"))
+
+        # Initialize default values
+        card_brand = "N/A"
+        last4 = "N/A"
+
+        # Check for card details
+        if payment_method.type == "card":
+            # Standard card payment method
+            card_brand = payment_method.card.brand
+            last4 = payment_method.card.last4
+            logger.info(green(f"Payment Method Card: {card_brand} ****{last4}"))
+        elif payment_method.type == "link" and "card" in payment_method:
+            # Link payment method with card details
+            card_brand = payment_method.card.brand
+            last4 = payment_method.card.last4
+            logger.info(green(f"Link Payment Method Card: {card_brand} ****{last4}"))
+        elif payment_method.type == "link" and "billing_details" in payment_method:
+            # Extract potential card details from billing_details
+            pass
+        else:
+            logger.warning(yellow(f"Payment method is not a card or does not include card details. Type: {payment_method.type}"))
 
         if user.last_payment_status == PaymentStatus.CARD_DECLINED.value:
+            logger.info(yellow(f"Last payment status was 'CARD_DECLINED' for user: {user.id}"))
             if payment_method_updated_at > User.ensure_utc(user.last_payment_date):
+                logger.info(yellow(f"Payment method updated after the last declined payment for user: {user.id}"))
                 # Payment method was updated after the last declined payment
                 message = locale.get("method_status_card_declined_but_updated", lang)
-                logger.info(yellow(message))
+                logger.info(yellow(f"Response Message: {message}"))
                 return OKAPISuccessFormat(
                     message=message,
                     data={
@@ -251,8 +276,9 @@ def payments_method_status(user, lang, lang_name):
                 ).http_response()
             else:
                 # Card was declined and no new updates
+                logger.warning(yellow(f"No updates to payment method after declined status for user: {user.id}"))
                 message = locale.get("method_status_card_declined", lang)
-                logger.info(yellow(message))
+                logger.info(yellow(f"Response Message: {message}"))
                 return OKAPISuccessFormat(
                     message=message,
                     data={
@@ -262,8 +288,10 @@ def payments_method_status(user, lang, lang_name):
                     }
                 ).http_response()
 
+        # Valid payment method
+        logger.info(green(f"Payment method is valid for user: {user.id}"))
         message = locale.get("method_status_valid", lang)
-        logger.info(green(message))
+        logger.info(green(f"Response Message: {message}"))
         return OKAPISuccessFormat(
                     message=message,
                     data={
@@ -273,7 +301,7 @@ def payments_method_status(user, lang, lang_name):
                         'last4': last4}
                 ).http_response()
     except stripe.error.StripeError as e:
-        logger.info(red(f"Error retrieving payment method: {e}"))
+        logger.error(red(f"Stripe API Error for user {user.id}: {e}"))
         message = locale.get("method_status_stripe_error", lang, [str(e)])   
-        logger.error(red(message))
+        logger.error(red(f"Response Message: {message}"))
         return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()

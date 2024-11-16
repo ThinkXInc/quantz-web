@@ -333,7 +333,7 @@
         "ru": "$0 раз / месяц"
     },
     "signup_limit_note1": {
-        "en": "*Doesn’t include $0 USD credited as a welcome gift.",
+        "en": "*The first month includes a $0 USD welcome gift applied for free.",
         "ja": "*初月は無料の$0米ドル分が適用されます。",
         "zh": "*不包括作为欢迎礼物的 $0 USD 额度。",
         "fr": "*N'inclut pas les $0 USD crédités en cadeau de bienvenue.",
@@ -342,7 +342,7 @@
         "ru": "*Не включает $0 USD, начисленные в качестве приветственного подарка."
     },
     "signup_limit_note2": {
-        "en": "*You will be charged based on the number of responses: $0 per response for Quantz, and $1 per response for Quantz Interview.",
+        "en": "*You will be charged based on the number of responses: $$0 per response for Quantz, and $$1 per response for Quantz Interview.",
         "ja": "*上限に達するまで$0米ドル/応答(Quantz)、$1米ドル/応答(Quantz Interview)の従量課金が適用されます。",
         "zh": "*收费将基于响应数量，Quantz 每次响应 $0，Quantz 面试每次响应 $1。",
         "fr": "*Vous serez facturé en fonction du nombre de réponses : $0 par réponse pour Quantz et $1 par réponse pour Quantz Interview.",

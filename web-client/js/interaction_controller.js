@@ -17,7 +17,7 @@
 
     ns.InteractionController = class {
 
-        constructor({ buttonId, frequencyMs = 100, analysisWindowMs = 500, responseMode = ns.ResponseMode.TEMPO_ORIENTED, defaultLang = 'en' }) {
+        constructor({ buttonId, frequencyMs = 100, analysisWindowMs = 500, responseMode = ns.ResponseMode.NORMAL, defaultLang = 'en' }) {
             this.buttonId = buttonId;
             this.$buttonLoader = document.getElementById(
                 `${ns.configs[buttonId].prefix}button-loader-${buttonId}`
@@ -34,23 +34,34 @@
 
             switch (this.responseMode) {
                 case ns.ResponseMode.TEMPO_ORIENTED:
+                    console.log(`[InteractionController] InteractionController setup with responseMode: TEMPO_ORIENTED`)
+                    this.SHORT_HUMAN_SILENCE_THRESHOLD_MS = 1000;
+                    this.DEFAULT_HUMAN_SILENCE_THRESHOLD_MS = 1000;
+                    this.LONG_HUMAN_SILENCE_THRESHOLD_MS = 2000;
+                    this.SPEECH_DURATION_THRESHOLD_MS = 4000;
+                    this.ADJUSTED_DURATION_THRESHOLD_MS = 3000;
+                    break;
+                case ns.ResponseMode.NORMAL:
+                    console.log(`[InteractionController] InteractionController setup with responseMode: NORMAL`)
                     this.SHORT_HUMAN_SILENCE_THRESHOLD_MS = 2000;
                     this.DEFAULT_HUMAN_SILENCE_THRESHOLD_MS = 3000;
                     this.LONG_HUMAN_SILENCE_THRESHOLD_MS = 4000;
                     this.SPEECH_DURATION_THRESHOLD_MS = 3000;
                     this.ADJUSTED_DURATION_THRESHOLD_MS = 7000;
                     break;
-                case ns.ResponseMode.NORMAL:
-                    this.SHORT_HUMAN_SILENCE_THRESHOLD_MS = 3000;
-                    this.DEFAULT_HUMAN_SILENCE_THRESHOLD_MS = 5000;
-                    this.LONG_HUMAN_SILENCE_THRESHOLD_MS = 6000;
-                    this.SPEECH_DURATION_THRESHOLD_MS = 3000;
-                    this.ADJUSTED_DURATION_THRESHOLD_MS = 7000;
-                    break;
                  case ns.ResponseMode.CAREFUL_LISTENING:
+                    console.log(`[InteractionController] InteractionController setup with responseMode: CAREFUL_LISTENING`)
                     this.SHORT_HUMAN_SILENCE_THRESHOLD_MS = 5000;
                     this.DEFAULT_HUMAN_SILENCE_THRESHOLD_MS = 5000;
                     this.LONG_HUMAN_SILENCE_THRESHOLD_MS = 7000;
+                    this.SPEECH_DURATION_THRESHOLD_MS = 3000;
+                    this.ADJUSTED_DURATION_THRESHOLD_MS = 7000;
+                    break;
+                default:
+                    console.warning(`[InteractionController] Unknown responseMode: ${this.responseMode}`)
+                    this.SHORT_HUMAN_SILENCE_THRESHOLD_MS = 2000;
+                    this.DEFAULT_HUMAN_SILENCE_THRESHOLD_MS = 3000;
+                    this.LONG_HUMAN_SILENCE_THRESHOLD_MS = 4000;
                     this.SPEECH_DURATION_THRESHOLD_MS = 3000;
                     this.ADJUSTED_DURATION_THRESHOLD_MS = 7000;
                     break;
