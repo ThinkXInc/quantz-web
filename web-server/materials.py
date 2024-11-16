@@ -48,12 +48,14 @@ from libcommon.locale import Locale, COMMON_LOCALES_FILE_PATHS
 LOCALES_ROOT = Config.LOCALES_ROOT
 METADATA_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/metadata.json'
 SETTINGS_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/settings.json'
+HEADER_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/header.json'
 MATERIALS_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/materials.json'
 MATERIALS_RESPONSES_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/materials_responses.json'
 locale = Locale([
     METADATA_LOCALE_FILE_PATH,
     SETTINGS_LOCALE_FILE_PATH,
     MATERIALS_LOCALE_FILE_PATH,
+    HEADER_LOCALE_FILE_PATH,
     MATERIALS_RESPONSES_LOCALE_FILE_PATH] + COMMON_LOCALES_FILE_PATHS
 )
 
@@ -102,8 +104,9 @@ def home(user, lang, lang_name):
         unit_price=UNIT_PRICE_USD,
         general_credit_per_response=GENERAL_CREDIT_PER_RESPONSE,
         interview_credit_per_response=INTERVIEW_CREDIT_PER_RESPONSE,
-        settings_menu_title=locale.get('settings_menu_title', lang),
-        logout_menu_title=locale.get('logout_menu_title', lang),
+        header_interview_menu_title=locale.get('header_interview_menu_title', lang),
+        header_settings_menu_title=locale.get('header_settings_menu_title', lang),
+        header_logout_menu_title=locale.get('header_logout_menu_title', lang),
         metadata=locale.dict()["metadata_home"][lang])
 
 # Material list
