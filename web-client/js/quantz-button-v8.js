@@ -160,6 +160,7 @@
         ns.configs[buttonId].balloonRectWidth = config.balloonRectWidth;
         ns.configs[buttonId].balloonRectHeight = config.balloonRectHeight;
         ns.configs[buttonId].defaultLang = config.defaultLang;
+        ns.configs[buttonId].responseMode = config.responseMode;
         ns.configs[buttonId].buttonElementId = `${ns.configs[buttonId].prefix}button-${buttonId}`;
         ns.configs[buttonId].buttonContainerId = `${ns.configs[buttonId].prefix}button-container-${buttonId}`;
         ns.configs[buttonId].buttonTextContainerId = `${ns.configs[buttonId].prefix}button-text-container-${buttonId}`;
@@ -488,7 +489,12 @@
     }
 
     ns.setupAutoInteraction = function(buttonId, config) {
-        ns.interactionControllers[buttonId] = new ns.InteractionController({buttonId: buttonId, frequencyMs: ns.configs[buttonId].spectrumFrequencyMs, defaultLang: config.defaultLang});
+        console.log(`[Quantz Button] Setup auto interaction with responseMode => ${ns.configs[buttonId].responseMode}`)
+        ns.interactionControllers[buttonId] = new ns.InteractionController({
+            buttonId: buttonId,
+            frequencyMs: ns.configs[buttonId].spectrumFrequencyMs,
+            responseMode: parseInt(ns.configs[buttonId].responseMode) ?? ns.ResponseMode.NORMAL,
+            defaultLang: config.defaultLang});
     }
 
 

@@ -1322,7 +1322,8 @@ class SettingsView {
             displayLocale: true,
             balloonRectWidth: `${this.balloonWidthForm.value}vw`,
             balloonRectHeight: `${this.balloonHeightForm.value}vh`,
-            defaultLang: this.lang
+            defaultLang: this.lang,
+            responseMode: 0
         });
         return configString
     }
@@ -1341,7 +1342,8 @@ class SettingsView {
             displayLocale: true,
             balloonRectWidth: `${this.balloonWidthForm.value}vw`,
             balloonRectHeight: `${this.balloonHeightForm.value}vh`,
-            defaultLang: this.lang
+            defaultLang: this.lang,
+            responseMode: 0  // FAST
         });
     
         const loaderCode = `<div class="QBTN-button-loader" data-publisher-id="${this.user._id}" data-quantz-config='${config}'></div>`;
