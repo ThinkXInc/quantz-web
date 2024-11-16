@@ -133,21 +133,25 @@ class AsyncTaskClient {
                 },
                 body: JSON.stringify({ origin })
             });
-
+    
             if (!response.ok) {
                 throw new Error('Token request was denied. Status: ' + response.status);
             }
-
-            return await response.text();
+    
+            const data = await response.json();
+            return data; // Return the entire data object
         } catch (error) {
             console.error('Error obtaining token:', error);
             return null;
         }
     }
-
+    
     initializeWebSocket() {
-        this.obtainToken().then((token) => {
-            if (!token) return;
+        this.obtainToken().then((data) => {
+            if (!data) return;
+        
+            const { token, clientId } = data;
+            console.warning(token)
 
             const serverUrl = `wss://${HOST}/stream/ws?token=${encodeURIComponent(token)}`;
             this.socket = new WebSocket(serverUrl);

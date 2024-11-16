@@ -69,8 +69,10 @@ LOCALES_ROOT = Config.LOCALES_ROOT
 METADATA_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/metadata.json'
 INVERVIEWS_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/interviews.json'
 INVERVIEW_RESPONSES_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/interviews_responses.json'
+HEADER_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/header.json'
 locale = Locale([
     METADATA_LOCALE_FILE_PATH,
+    HEADER_LOCALE_FILE_PATH,
     INVERVIEWS_LOCALE_FILE_PATH,
     INVERVIEW_RESPONSES_LOCALE_FILE_PATH] + COMMON_LOCALES_FILE_PATHS
 )
@@ -128,6 +130,9 @@ def interview_home(user, lang, lang_name):
         lang=lang,
         lang_name=lang_name,
         locale_json=locale.to_json_string(),
+        header_interview_menu_title=locale.get('header_interview_menu_title', lang),
+        header_settings_menu_title=locale.get('header_settings_menu_title', lang),
+        header_logout_menu_title=locale.get('header_logout_menu_title', lang),
         metadata=locale.dict()["metadata_home"][lang])
 
 # interview page

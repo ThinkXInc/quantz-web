@@ -1,22 +1,4 @@
 {
-    "settings_menu_title": {
-        "en": "Settings",
-        "ja": "設定",
-        "zh": "设置",
-        "fr": "Paramètres",
-        "es": "Configuración",
-        "ar": "الإعدادات",
-        "ru": "Настройки"
-    },
-    "logout_menu_title": {
-        "en": "Log out",
-        "ja": "ログアウト",
-        "zh": "登出",
-        "fr": "Déconnexion",
-        "es": "Cerrar sesión",
-        "ar": "تسجيل الخروج",
-        "ru": "Выйти"
-    },
     "MaterialList_header_title": {
         "en": "Quantz's Knowledge Base",
         "ja": "Quantz's Knowledge Base",

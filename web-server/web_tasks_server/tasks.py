@@ -156,7 +156,7 @@ def run_payment(user_id, lang):
         billing_usage = max(usage - user.free_call, 0)
         price = round_price(UNIT_PRICE_USD * billing_usage)
 
-        logger.debug(magenta(f"Calculated price: {price} for billing usage: {billing_usage} ({user.free_call} free)"))
+        logger.debug(magenta(f"Calculated price: {price} for billing usage: {billing_usage} ({usage} - {user.free_call} free)"))
 
         if user.free_call > 0:
             description = locale.get('billing_description_with_free_call', lang, [
@@ -199,6 +199,9 @@ def run_payment(user_id, lang):
         user.last_payment_error = ""
         user.last_payment_date = datetime.now(pytz.utc)
         user.save()
+
+        # Schedule the next payment
+        user.schedule_payment(lang)
 
         if user.free_call > 0:
             send_free_call_given_email(user)

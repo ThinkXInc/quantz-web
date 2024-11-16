@@ -25,5 +25,32 @@
         "es": "Iniciar sesión",
         "ar": "تسجيل الدخول",
         "ru": "Вход"
+    },
+    "header_settings_menu_title": {
+        "en": "Settings",
+        "ja": "設定",
+        "zh": "设置",
+        "fr": "Paramètres",
+        "es": "Configuración",
+        "ar": "الإعدادات",
+        "ru": "Настройки"
+    },
+    "header_logout_menu_title": {
+        "en": "Log out",
+        "ja": "ログアウト",
+        "zh": "登出",
+        "fr": "Déconnexion",
+        "es": "Cerrar sesión",
+        "ar": "تسجيل الخروج",
+        "ru": "Выйти"
+    },
+    "header_interview_menu_title": {
+        "en": "Interview",
+        "ja": "インタビュー",
+        "zh": "访谈",
+        "fr": "Entrevue",
+        "es": "Entrevista",
+        "ar": "مقابلة",
+        "ru": "Интервью"
     }
 }

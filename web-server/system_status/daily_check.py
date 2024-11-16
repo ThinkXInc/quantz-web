@@ -87,22 +87,33 @@ from system_status.clean_orphan_data import (
     delete_orphan_chatdata
 )
 
-
+# Celery Task
+from web_tasks_server.tasks import run_payment
 
 # Stats
 
-def num_new_users(last_hours=24) -> int:
-    """the number of User's creates in the last 24 hours."""
+def num_new_users(last_hours=24):
     logger.info('\n\n')
     logger.info('----- new users')
     try:
         time_threshold = datetime.utcnow().replace(tzinfo=pytz.utc) - timedelta(hours=last_hours)
-        new_users_count = User.objects(created__gte=time_threshold).count()
+        new_users = User.objects(created__gte=time_threshold)
+        new_users_count = new_users.count()
         logger.info(green(f'Number of new user registrations in the last {last_hours} hours: => {new_users_count}'))
-        return new_users_count
+
+        new_users_list = []
+        for user in new_users:
+            user_info = {
+                'email': user.email or user.suspended_email,
+                'origin': user.origin or 'N/A'
+            }
+            new_users_list.append(user_info)
+            logger.debug(f"New user: {user_info}")
+
+        return new_users_count, new_users_list
     except Exception as e:
-        logger.error(red(f"Error counting new users: {e}"))
-        return 0
+        logger.error(red(f"Error retrieving new users: {e}"))
+        return 0, []
 
 def num_usage(last_hours=24):
     """Total the number of usages for the past 24 hours for all origins."""
@@ -197,13 +208,43 @@ def update_daily_status(new_users_count: int, new_materials_count: int, daily_ac
     except Exception as e:
         logger.error(red(f"Failed to update daily system status: {e}"))
 
+# Payment Scheduling Function
+def schedule_due_payments(dryrun=False):
+    logger.info('\n\n')
+    logger.info(bold('Scheduling due payments for users...'))
+    now_utc = datetime.now(pytz.utc)
+    users = User.objects(next_billing__lte=now_utc)
+    logger.info(f'Found {users.count()} users with due payments.')
+
+    payment_details = []
+    for user in users:
+        detail = f'User {user.id} ({user.email}) '
+        logger.info(f'Scheduling payment for user {user.id} ({user.email})')
+        if dryrun:
+            logger.info('[dryrun] Skipping scheduling payment.')
+            detail += '[dryrun] Skipped scheduling payment.'
+            payment_details.append(detail)
+            continue
+        try:
+            task_id = user.schedule_payment(user.lang, execute_now=True)
+            logger.info(f'Payment scheduled for user {user.id}, task ID: {task_id}')
+            detail += f'Payment scheduled, task ID: {task_id}'
+            payment_details.append(detail)
+        except Exception as e:
+            logger.error(red(f'Failed to schedule payment for user {user.id}: {e}'))
+            detail += f'Failed to schedule payment: {e}'
+            payment_details.append(detail)
+    return payment_details
+
 # Mail
 def mail_template(
         subject: str,
         new_users_count: int, new_materials_count: int, daily_active_users_count: int, active_users_count: int, total_usage_count: int,
         daily_system_statuses_with_congestion: [DailySystemStatus],
         yesterday_status: DailySystemStatus,
-        general_status: GeneralSystemStatus) -> str:
+        general_status: GeneralSystemStatus,
+        payment_details: [str],
+        new_users_list: [dict]) -> str:
     today = datetime.utcnow().replace(tzinfo=pytz.utc)
     yesterday = today - timedelta(days=1)
     today_date = datetime(today.year, today.month, today.day)
@@ -222,6 +263,24 @@ def mail_template(
     text += f'-------------------------------------------------\n\n'
 
     text += f'-------------------------------------------------\n'
+    text += f'[New users]\n'
+    if new_users_list:
+        for user_info in new_users_list:
+            text += f"Email: {user_info['email']}, Origin: {user_info['origin']}\n"
+    else:
+        text += 'No new users registered today.\n'
+    text += f'-------------------------------------------------\n\n'
+
+    text += f'-------------------------------------------------\n'
+    text += f'[Payment Scheduling Details]\n'
+    if payment_details:
+        for detail in payment_details:
+            text += f'{detail}\n'
+    else:
+        text += 'No payments scheduled.\n'
+    text += f'-------------------------------------------------\n\n'
+
+    text += f'-------------------------------------------------\n'
     text += f'[congestion in last 7 days]\n'
     text += f'{daily_system_statuses_with_congestion.count()} congestions found.\n'
     for i, daily_system_status in enumerate(daily_system_statuses_with_congestion):
@@ -230,7 +289,7 @@ def mail_template(
     text += f'-------------------------------------------------\n\n'
 
     text += f'-------------------------------------------------\n'
-    text += f'[udpated daily system status]\n'
+    text += f'[updated daily system status]\n'
     text += f'{yesterday_status.response_json()}'
     text += f'-------------------------------------------------\n\n'
 
@@ -265,7 +324,8 @@ def stats():
     - The number of times used
     - The number of users used in the day
     - The number of Active users (used at least once in the past 3 days)
-    - the number of saved Materials
+    - The number of saved Materials
+    - The list of new users (email and origin)
     are aggregated and reported by e-mail.
     """
     logger.info('='*80)
@@ -284,7 +344,7 @@ def stats():
         logger.error(red(f'Failed to get_or_create DailyStatus: {e}'))
 
     # Gather statistics
-    new_users_count = num_new_users()
+    new_users_count, new_users_list = num_new_users()
     total_usage_count = num_usage()
     daily_active_users_count = num_users_used() 
     active_users_count = num_active_users() 
@@ -310,7 +370,7 @@ def stats():
         active_users_count,
         total_usage_count)
 
-    return  new_users_count, total_usage_count, daily_active_users_count, active_users_count, new_materials_count
+    return  new_users_count, total_usage_count, daily_active_users_count, active_users_count, new_materials_count, new_users_list
 
 
 
@@ -433,8 +493,11 @@ def parse_arguments():
 
 if __name__ == '__main__':
     args = parse_arguments()
-    new_users_count, total_usage_count, daily_active_users_count, active_users_count, new_materials_count = stats()
+    new_users_count, total_usage_count, daily_active_users_count, active_users_count, new_materials_count, new_users_list = stats()
     daily_system_statuses_with_congestion = check_recent_congestions(active_users_count, dryrun=args.dryrun)
+
+    # Schedule due payments and collect details
+    payment_details = schedule_due_payments(dryrun=args.dryrun)
 
     today = datetime.utcnow().replace(tzinfo=pytz.utc)
     yesterday = today - timedelta(days=1)
@@ -457,7 +520,9 @@ if __name__ == '__main__':
         new_users_count, new_materials_count, daily_active_users_count, active_users_count, total_usage_count,
         daily_system_statuses_with_congestion,
         yesterday_status,
-        general_status)
+        general_status,
+        payment_details,
+        new_users_list)
     logger.debug(f'-------------------------------------------------------')
     logger.debug(f'[Subject] {subject}')
     logger.debug(f'[Text]\n{mail_text}')
