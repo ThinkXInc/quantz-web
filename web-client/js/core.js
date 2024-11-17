@@ -429,7 +429,6 @@
                     let uint8Array = new Uint8Array(arrayBuffer);
                     // Convert Uint8Array to String to check for the message type
                     let messageString = new TextDecoder().decode(uint8Array);
-                    console.error(messageString)
                 
                     if (messageString.startsWith('\\USER')) {
                         let userMessage = messageString.substring(5); // Remove '\\USER' (5 characters)

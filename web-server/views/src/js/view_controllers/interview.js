@@ -450,7 +450,8 @@ class MeetingView {
             displayLocale: true,
             balloonRectWidth: "17vw",
             balloonRectHeight: "30vh",
-            defaultLang: "en"
+            defaultLang: "en",
+            responseMode: 1,
         }));
         $selfViewContainer.appendChild($quantzButtonLoader);
 

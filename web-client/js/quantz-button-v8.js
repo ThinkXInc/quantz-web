@@ -767,7 +767,8 @@
             console.log(`[Quantz Button ${buttonId}] assistant end turn event received`);
             if (ns.configs[buttonId].autoInteraction) {
                 ns.interactionControllers[buttonId].didAssistantEndTurn();
-                ns.buttonControllers[buttonId].switchToRestart();
+                //ns.buttonControllers[buttonId].switchToRestart();
+                //ns.buttonControllers[buttonId].switchToReplying();
             } else {
                 ns.buttonControllers[buttonId].switchToPushSpeak();
                 if (ns.configs[buttonId].buttonType === ns.ButtonType.A) {
