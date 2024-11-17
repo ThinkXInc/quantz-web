@@ -33,10 +33,7 @@
 
             this.isConnected = false;
             this.connectionRetryCount = 0;
-<<<<<<< HEAD
-=======
             this.rateLimitExceeded = false; 
->>>>>>> interview2
 
             this.mediaRecorder;
             this.audioChunks = [];
@@ -160,10 +157,7 @@
         }
 
         async connect(onConnected) {
-<<<<<<< HEAD
-=======
             this.rateLimitExceeded = false;
->>>>>>> interview2
             if(!this.token) {
                 console.log("[Core] No existing token, requesting new token...");
                 const result = await this.getToken();
@@ -204,14 +198,10 @@
                 this.socket.onmessage = this.handleWebSocketMessage.bind(this);;
                 this.socket.onclose = (e) => {
                     this.isConnected = false;
-<<<<<<< HEAD
-                    if (e.wasClean) {
-=======
                     if (this.rateLimitExceeded) {
                         console.log(`[Core] Connection closed due to rate limit exceeded.`);
                         // Do not attempt to reconnect
                     } else if (e.wasClean) {
->>>>>>> interview2
                         console.log(`[Core] Connection closed cleanly, code=${e.code}, reason=${e.reason}`);
                         this.dispatchConnectionClosedCleanlyEvent();
                     } else {
@@ -264,11 +254,7 @@
 
         startRecording() {
             if (!this.mediaRecorder) {
-<<<<<<< HEAD
-                console.warning(`[Core] startRecording called but no mediaRecorder.`);
-=======
                 console.warn(`[Core] startRecording called but no mediaRecorder.`);
->>>>>>> interview2
                 return
             }
             console.log(`MediaRecorder state before start: ${this.mediaRecorder.state}`);
