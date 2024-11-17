@@ -930,12 +930,14 @@
 
         $buttonLoader.addEventListener(ns.configs[buttonId].reachToLimitEventName, function(event) {
             console.log(`[Quantz Button ${buttonId}] reach to limit event received`);
+            ns.isConversationEnd = true;
             ns.buttonControllers[buttonId].switchToStandby();
             ns.indicatorControllers[buttonId].resetToStandby();
             ns.cores[buttonId].disconnect();
 
             if (ns.configs[buttonId].autoInteraction) {
                 ns.interactionControllers[buttonId].didReachToLimitReceived();
+                ns.interactionControllers[buttonId].didConversationEnd();
             }
         })
 

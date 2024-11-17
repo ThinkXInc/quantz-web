@@ -33,6 +33,7 @@
 
             this.isConnected = false;
             this.connectionRetryCount = 0;
+            this.rateLimitExceeded = false; 
 
             this.mediaRecorder;
             this.audioChunks = [];
@@ -156,6 +157,7 @@
         }
 
         async connect(onConnected) {
+            this.rateLimitExceeded = false;
             if(!this.token) {
                 console.log("[Core] No existing token, requesting new token...");
                 const result = await this.getToken();
@@ -196,7 +198,10 @@
                 this.socket.onmessage = this.handleWebSocketMessage.bind(this);;
                 this.socket.onclose = (e) => {
                     this.isConnected = false;
-                    if (e.wasClean) {
+                    if (this.rateLimitExceeded) {
+                        console.log(`[Core] Connection closed due to rate limit exceeded.`);
+                        // Do not attempt to reconnect
+                    } else if (e.wasClean) {
                         console.log(`[Core] Connection closed cleanly, code=${e.code}, reason=${e.reason}`);
                         this.dispatchConnectionClosedCleanlyEvent();
                     } else {
@@ -249,7 +254,7 @@
 
         startRecording() {
             if (!this.mediaRecorder) {
-                console.warning(`[Core] startRecording called but no mediaRecorder.`);
+                console.warn(`[Core] startRecording called but no mediaRecorder.`);
                 return
             }
             console.log(`MediaRecorder state before start: ${this.mediaRecorder.state}`);
@@ -424,6 +429,7 @@
                     let uint8Array = new Uint8Array(arrayBuffer);
                     // Convert Uint8Array to String to check for the message type
                     let messageString = new TextDecoder().decode(uint8Array);
+                    console.error(messageString)
                 
                     if (messageString.startsWith('\\USER')) {
                         let userMessage = messageString.substring(5); // Remove '\\USER' (5 characters)
@@ -461,6 +467,7 @@
                         console.log('[Core] [Limit exceeded]:', message);
                         this.appendToHistory(ns.SenderType.ANNOUNCE, message);
                         this.dispatchReachToLimitEvent(message);
+                        this.rateLimitExceeded = true; 
                     } else {
                         // Normal data processing
                         this.decodeAndBufferAudioChunk(uint8Array);
