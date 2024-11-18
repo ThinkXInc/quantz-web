@@ -1,0 +1,161 @@
+@cubic-bezier1: cubic-bezier(.65, 0, .34, 1);
+
+
+section#InterviewTop {
+    button.arrow-button {
+        padding: 5px 12px;
+        border: 2px solid;
+        background: transparent;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+    
+        img.arrow-icon {
+            transition: transform 0.3s;
+            transform: rotate(30deg);
+        }
+    
+        &:hover img.arrow-icon {
+            transform: rotate(0deg);
+        }
+    }
+
+
+    div#header-top {
+        height: 100px;
+        background: #1a1a1a;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+
+        div.right-container {
+            display: flex;
+            align-items: center;
+
+            div.button-wrapper {
+                display: flex;
+                margin-right: 40px;
+
+                button.contact, button.try-now {
+                    //padding: 0px 39px;
+                    //border-radius: 31px;
+                    padding: 0px 14px;
+                    border-radius: 17px;
+                    font-size: 14px;
+                    p {
+                        margin-right: 12px;
+                    }
+                    img.arrow-icon {
+                        width: 22px;
+                    }
+                }
+
+                button.try-now {
+                    border-color: #fff;
+
+                    &:hover {
+                        background-color: lighten(#1a1a1a, 10%);
+                    }
+                }
+
+                button.contact {
+                    border: none;
+                    background: #4d4d4d;
+                    margin-right: 20px;
+
+                    &:hover {
+                        background-color: lighten(#4d4d4d, 10%);
+                    }
+                }
+            }
+        }
+    }
+
+    div#header-main {
+        height: calc(100vh - 100px);
+        padding: 5px 20px;
+        background: #1a1a1a;
+        display: flex;
+        flex-direction: column;
+
+        div.header-main-top {
+            height: 100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            div.center-container {
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+
+                h1.top-copy {
+                    font-size: 15px;
+                    color: #fff;
+                    margin-bottom: 3px;
+                    font-weight: 200;
+                }
+
+                img.logo {
+                    height: 71px;
+                }
+            }
+        }
+
+        div.header-main-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            div.left-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                max-width: 50vw;
+                padding: 62px 0px 62px 39px;
+                margin-right: 28px;
+
+                h2.main-copy {
+                    font-size: 50px;
+                    font-weight: 800;
+                    color: #fff;
+                    margin: 0;
+                    margin-bottom: 55px;
+                }
+
+                button.get-start {
+                    height: 80px;
+                    background-color: #929292;
+                    border: none;
+                    border-radius: 42px;
+                    padding: 0px 54px;
+
+                    p {
+                        font-size: 28px;
+                        margin-right: 28px;
+                    }
+                    img.arrow-icon {
+                        width: 28px;
+                    }
+
+                    &:hover {
+                        background-color: lighten(#1a1a1a, 10%);
+                    }
+                }
+            }
+
+            div.right-container {
+                flex: 1; // remaining space
+                video {
+                    width: 100%;
+                    height: auto;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,425 @@
+{
+    "interview_top_header_button_contact": {
+        "en": "Contact Sales",
+        "ja": "営業に連絡",
+        "zh": "联系销售",
+        "fr": "Contacter les ventes",
+        "es": "Contactar Ventas",
+        "ar": "اتصل بالمبيعات",
+        "ru": "Связаться с отделом продаж"
+    },
+    "interview_top_header_button_try_now": {
+        "en": "Try now",
+        "ja": "今すぐ試す",
+        "zh": "立即尝试",
+        "fr": "Essayez maintenant",
+        "es": "Prueba ahora",
+        "ar": "جرّب الآن",
+        "ru": "Попробовать сейчас"
+    },
+    "interview_top_header_top_copy": {
+        "en": "The world’s first practical AI interview system",
+        "ja": "世界初の実用的なAI面接システム",
+        "zh": "世界首个实用的AI面试系统",
+        "fr": "Le premier système d'entretien AI pratique au monde",
+        "es": "El primer sistema de entrevistas de IA práctico del mundo",
+        "ar": "أول نظام مقابلة عملي بالذكاء الاصطناعي في العالم",
+        "ru": "Первая в мире практическая система AI-интервью"
+    },
+    "interview_top_header_main_copy": {
+        "en": "Delegate your meetings and free up hours of valuable time.",
+        "ja": "会議を委任して貴重な時間を節約しましょう。",
+        "zh": "委派您的会议，释放宝贵的时间。",
+        "fr": "Déléguez vos réunions et libérez des heures de temps précieux.",
+        "es": "Delegue sus reuniones y libere horas de tiempo valioso.",
+        "ar": "فوّض اجتماعاتك وحرر ساعات من وقتك الثمين.",
+        "ru": "Делегируйте свои встречи и освободите часы ценного времени."
+    },
+    "interview_top_header_button_get_start": {
+        "en": "Start Free Trial",
+        "ja": "無料で始める",
+        "zh": "开始",
+        "fr": "Commencer",
+        "es": "Comenzar",
+        "ar": "ابدأ",
+        "ru": "Начать"
+    },
+    "interview_top_technology_catch_copy": {
+        "en": "No external APIs. No cloud servers.",
+        "ja": "外部APIなし。クラウドサーバーなし。",
+        "zh": "没有外部API。没有云服务器。",
+        "fr": "Pas d'APIs externes. Pas de serveurs cloud.",
+        "es": "Sin APIs externas. Sin servidores en la nube.",
+        "ar": "لا توجد واجهات برمجة تطبيقات خارجية. لا توجد خوادم سحابية.",
+        "ru": "Без внешних API. Без облачных серверов."
+    },
+    "interview_top_technology_main_copy": {
+        "en": "10x cost-effective technology enables the world’s first practical auto-interview.",
+        "ja": "10倍コスト効果の高い技術が世界初の実用的な自動面接を可能にします。",
+        "zh": "10倍性价比的技术实现了世界上第一个实用的自动面试。",
+        "fr": "Une technologie 10 fois plus économique permet le premier entretien automatique pratique au monde.",
+        "es": "Tecnología 10 veces más rentable permite la primera entrevista automática práctica del mundo.",
+        "ar": "تقنية أكثر فعالية من حيث التكلفة بمقدار 10 أضعاف تمكن من إجراء أول مقابلة عملية تلقائية في العالم.",
+        "ru": "Технология, в 10 раз более эффективная по затратам, позволяет провести первое в мире практическое автоинтервью."
+    },
+    "interview_top_technology_sub_copy": {
+        "en": "Why spend good money on meetings only to have an AI do it? Quantz Interview has been developed to be 10x more cost-effective than systems based on cloud infrastructure + APIs, thanks to the fact that it runs completely on our own servers. The world's first practical autonomous interview system is now ready to use.",
+        "ja": "会議に多額の費用を費やす価値がありますか？Quantz Interviewは、クラウドインフラとAPIに基づくシステムよりも10倍コスト効率が高いように設計されています。完全に自社サーバー上で動作するためです。世界初の実用的な自律面接システムが今すぐ利用可能です。",
+        "zh": "为什么花大价钱开会却让AI来完成？Quantz Interview的开发使其比基于云基础设施和API的系统更具成本效益，达到10倍，因为它完全在我们自己的服务器上运行。世界上第一个实用的自主面试系统现在已准备好使用。",
+        "fr": "Pourquoi dépenser beaucoup d'argent pour des réunions uniquement pour qu'une IA s'en charge ? Quantz Interview a été développé pour être 10 fois plus rentable que les systèmes basés sur l'infrastructure cloud et les API, grâce au fait qu'il fonctionne entièrement sur nos propres serveurs. Le premier système d'entretien autonome pratique au monde est désormais prêt à être utilisé.",
+        "es": "¿Por qué gastar mucho dinero en reuniones solo para que lo haga una IA? Quantz Interview ha sido desarrollado para ser 10 veces más rentable que los sistemas basados en infraestructura en la nube y APIs, gracias a que funciona completamente en nuestros propios servidores. El primer sistema de entrevistas autónomas práctico del mundo está listo para usar.",
+        "ar": "لماذا تنفق أموالاً كثيرة على الاجتماعات فقط لجعل الذكاء الاصطناعي يقوم بها؟ تم تطوير Quantz Interview ليكون أكثر فعالية من حيث التكلفة بمقدار 10 أضعاف مقارنة بالأنظمة القائمة على البنية التحتية السحابية وواجهات برمجة التطبيقات، نظرًا لأنه يعمل بالكامل على خوادمنا. أول نظام عملي للمقابلات الذاتية في العالم جاهز الآن للاستخدام.",
+        "ru": "Зачем тратить деньги на встречи, чтобы их проводил ИИ? Quantz Interview разработан для того, чтобы быть в 10 раз более эффективным по затратам, чем системы на основе облачной инфраструктуры и API, благодаря тому, что он полностью работает на наших собственных серверах. Первая в мире практическая автономная система интервью готова к использованию."
+    },
+    "interview_top_technology_chart_left_price": {
+        "en": "$20",
+        "ja": "$20",
+        "zh": "¥20",
+        "fr": "20 $",
+        "es": "$20",
+        "ar": "20 دولارًا",
+        "ru": "20 $"
+    },
+    "interview_top_technology_chart_right_price": {
+        "en": "$0.8",
+        "ja": "$0.8",
+        "zh": "¥0.8",
+        "fr": "0,8 $",
+        "es": "$0.8",
+        "ar": "0.8 دولارًا",
+        "ru": "0.8 $"
+    },
+    "interview_top_technology_chart_per_interview": {
+        "en": "/interview",
+        "ja": "/面接",
+        "zh": "/面试",
+        "fr": "/entretien",
+        "es": "/entrevista",
+        "ar": "/مقابلة",
+        "ru": "/интервью"
+    },
+    "interview_top_technology_chart_left_name": {
+        "en": "APIs & Cloud based",
+        "ja": "APIとクラウドベース",
+        "zh": "基于API和云",
+        "fr": "Basé sur API et Cloud",
+        "es": "Basado en API y Cloud",
+        "ar": "واجهة برمجة التطبيقات وقائم على السحابة",
+        "ru": "API и облачные технологии"
+    },
+    "interview_top_technology_chart_right_name": {
+        "en": "Quantz Interview",
+        "ja": "Quantz Interview",
+        "zh": "Quantz Interview",
+        "fr": "Quantz Interview",
+        "es": "Quantz Interview",
+        "ar": "Quantz Interview",
+        "ru": "Quantz Interview"
+    },
+    "interview_top_needs_recruiting_head": {
+        "en": "Recruiting Interviews",
+        "ja": "採用面接",
+        "zh": "招聘面试",
+        "fr": "Entretiens de recrutement",
+        "es": "Entrevistas de reclutamiento",
+        "ar": "مقابلات التوظيف",
+        "ru": "Рекрутинговые интервью"
+    },
+    "interview_top_needs_recruiting_text": {
+        "en": "I spend 30–60 minutes daily on initial interviews just to get a sense of each candidate. If I could automate this, I’d have more time for key tasks, reach more candidates, and reduce the chance of missing out on top talent.",
+        "ja": "候補者ごとの感触を掴むためだけに、毎日30〜60分を初回面接に費やしています。これを自動化できれば、主要業務に充てる時間を増やし、より多くの候補者に接触し、優秀な人材を見逃す可能性を減らせます。",
+        "zh": "我每天花30到60分钟进行初次面试，只是为了了解每个候选人的情况。如果能将此过程自动化，我将有更多时间处理关键任务，接触更多候选人，并减少错过顶尖人才的可能性。",
+        "fr": "Je consacre 30 à 60 minutes par jour aux entretiens initiaux uniquement pour me faire une idée de chaque candidat. Si je pouvais automatiser cela, j'aurais plus de temps pour les tâches clés, je pourrais atteindre plus de candidats et réduire le risque de passer à côté des meilleurs talents.",
+        "es": "Paso entre 30 y 60 minutos diarios en entrevistas iniciales solo para tener una idea de cada candidato. Si pudiera automatizar esto, tendría más tiempo para tareas clave, podría llegar a más candidatos y reducir la posibilidad de perder talentos excepcionales.",
+        "ar": "أقضي من 30 إلى 60 دقيقة يوميًا في المقابلات الأولية فقط للحصول على فكرة عن كل مرشح. إذا تمكنت من أتمتة هذا، فسأحصل على مزيد من الوقت للمهام الرئيسية، وسأصل إلى المزيد من المرشحين، وسأقلل من فرصة فقدان أفضل المواهب.",
+        "ru": "Я трачу 30–60 минут ежедневно на первичные интервью, чтобы понять каждого кандидата. Если бы я мог автоматизировать этот процесс, у меня было бы больше времени на ключевые задачи, возможность охватить больше кандидатов и снизить риск упустить лучшие таланты."
+    },
+    "interview_top_needs_reporting_head": {
+        "en": "Results Reporting Meetings",
+        "ja": "結果報告会議",
+        "zh": "结果汇报会议",
+        "fr": "Réunions de rapport de résultats",
+        "es": "Reuniones de informe de resultados",
+        "ar": "اجتماعات تقرير النتائج",
+        "ru": "Отчётные встречи"
+    },
+    "interview_top_needs_reporting_text": {
+        "en": "Results meetings often require a verbal check to grasp the 'feel,' but I’m spending 30–60 minutes a day on routine updates. A system to handle these on my behalf would be ideal.",
+        "ja": "結果報告会議では「感触」を掴むための口頭確認が必要なことが多いですが、日常的な更新に毎日30〜60分を費やしています。これを代行できるシステムがあれば理想的です。",
+        "zh": "结果汇报会议通常需要通过口头检查来掌握“感觉”，但我每天花30到60分钟处理常规更新。如果有一个系统能代替我完成这些工作，那就太理想了。",
+        "fr": "Les réunions de résultats nécessitent souvent une vérification verbale pour saisir le 'ressenti', mais je passe 30 à 60 minutes par jour sur des mises à jour de routine. Un système pour gérer cela à ma place serait idéal.",
+        "es": "Las reuniones de resultados a menudo requieren una verificación verbal para captar la 'sensación', pero paso entre 30 y 60 minutos diarios en actualizaciones de rutina. Un sistema que se encargue de esto por mí sería ideal.",
+        "ar": "تتطلب اجتماعات النتائج في كثير من الأحيان مراجعة شفهية لفهم 'الإحساس'، لكنني أقضي من 30 إلى 60 دقيقة يوميًا في التحديثات الروتينية. سيكون النظام الذي يتولى هذا العمل نيابة عني مثاليًا.",
+        "ru": "Отчётные встречи часто требуют устной проверки, чтобы понять общую картину, но я трачу 30–60 минут в день на рутинные обновления. Система, которая могла бы делать это за меня, была бы идеальной."
+    },
+    "interview_top_needs_sales_head": {
+        "en": "Sales Consultations",
+        "ja": "営業相談",
+        "zh": "销售咨询",
+        "fr": "Consultations commerciales",
+        "es": "Consultas de ventas",
+        "ar": "استشارات المبيعات",
+        "ru": "Консультации по продажам"
+    },
+    "interview_top_needs_sales_text": {
+        "en": "I’m interested in certain products or services, but time for meetings is limited. A system for quick, simple inquiries would let me gauge interest without full discussions.",
+        "ja": "特定の製品やサービスに興味がありますが、会議の時間が限られています。簡単な問い合わせを迅速に行えるシステムがあれば、詳細な議論をせずに関心を測ることができます。",
+        "zh": "我对某些产品或服务感兴趣，但会议时间有限。一个快速、简单的查询系统可以让我在无需全面讨论的情况下评估兴趣。",
+        "fr": "Je suis intéressé par certains produits ou services, mais le temps pour les réunions est limité. Un système pour des demandes rapides et simples me permettrait d'évaluer l'intérêt sans discussions complètes.",
+        "es": "Estoy interesado en ciertos productos o servicios, pero el tiempo para reuniones es limitado. Un sistema para consultas rápidas y simples me permitiría evaluar el interés sin discusiones completas.",
+        "ar": "أنا مهتم بمنتجات أو خدمات معينة، لكن الوقت المخصص للاجتماعات محدود. يمكن أن يساعدني نظام للاستفسارات السريعة والبسيطة على قياس الاهتمام دون مناقشات كاملة.",
+        "ru": "Меня интересуют определённые продукты или услуги, но времени на встречи не хватает. Система для быстрых и простых запросов позволила бы мне оценить интерес без длительных обсуждений."
+    },
+    "interview_top_steps_step1": {
+        "en": "Step 1",
+        "ja": "ステップ 1",
+        "zh": "步骤 1",
+        "fr": "Étape 1",
+        "es": "Paso 1",
+        "ar": "الخطوة 1",
+        "ru": "Шаг 1"
+    },
+    "interview_top_steps_step1_title": {
+        "en": "Create a meeting template",
+        "ja": "会議テンプレートを作成する",
+        "zh": "创建会议模板",
+        "fr": "Créer un modèle de réunion",
+        "es": "Crear una plantilla de reunión",
+        "ar": "إنشاء قالب اجتماع",
+        "ru": "Создать шаблон встречи"
+    },
+    "interview_top_steps_step1_main": {
+        "en": "Create a Meeting Plan in Just 10 Minutes",
+        "ja": "たった10分で会議計画を作成",
+        "zh": "仅需 10 分钟创建会议计划",
+        "fr": "Créez un plan de réunion en seulement 10 minutes",
+        "es": "Cree un plan de reunión en solo 10 minutos",
+        "ar": "قم بإنشاء خطة اجتماع في 10 دقائق فقط",
+        "ru": "Создайте план встречи всего за 10 минут"
+    },
+    "interview_top_steps_step1_sub": {
+        "en": "Simply outline a few scenarios and instructions, and you can set up the entire flow of conversation. No coding required, of course.",
+        "ja": "いくつかのシナリオと指示を簡単に概要化するだけで、会話の全体の流れを設定できます。もちろん、コーディングは必要ありません。",
+        "zh": "只需概述几个场景和说明，即可设置整个对话流程。当然不需要编码。",
+        "fr": "Il suffit de définir quelques scénarios et instructions pour configurer l'ensemble du déroulement de la conversation. Aucune programmation nécessaire, bien sûr.",
+        "es": "Simplemente describa algunos escenarios e instrucciones y podrá configurar todo el flujo de la conversación. Por supuesto, no se requiere codificación.",
+        "ar": "ما عليك سوى تحديد بعض السيناريوهات والتعليمات، وستتمكن من إعداد سير المحادثة بالكامل. بالطبع، لا حاجة للبرمجة.",
+        "ru": "Просто опишите несколько сценариев и инструкций, и вы сможете настроить весь ход беседы. Разумеется, никакого программирования не требуется."
+    },
+    "interview_top_steps_step2": {
+        "en": "Step 2",
+        "ja": "ステップ 2",
+        "zh": "步骤 2",
+        "fr": "Étape 2",
+        "es": "Paso 2",
+        "ar": "الخطوة 2",
+        "ru": "Шаг 2"
+    },
+    "interview_top_steps_step2_title": {
+        "en": "Test Interview",
+        "ja": "インタビューをテストする",
+        "zh": "测试面试",
+        "fr": "Tester l'entretien",
+        "es": "Prueba de entrevista",
+        "ar": "اختبار المقابلة",
+        "ru": "Проверка интервью"
+    },
+    "interview_top_steps_step2_main": {
+        "en": "Try Out Your Meeting Right Away",
+        "ja": "すぐに会議を試してみよう",
+        "zh": "立即尝试您的会议",
+        "fr": "Essayez votre réunion immédiatement",
+        "es": "Pruebe su reunión de inmediato",
+        "ar": "جرب اجتماعك على الفور",
+        "ru": "Попробуйте свою встречу прямо сейчас"
+    },
+    "interview_top_steps_step2_button": {
+        "en": "Run your meeting instantly",
+        "ja": "すぐに会議を実行",
+        "zh": "立即运行您的会议",
+        "fr": "Lancez votre réunion instantanément",
+        "es": "Ejecute su reunión al instante",
+        "ar": "قم بتشغيل اجتماعك على الفور",
+        "ru": "Запустите вашу встречу мгновенно"
+    },
+    "interview_top_steps_step2_button_suppply": {
+        "en": "Try it now",
+        "ja": "今すぐ試す",
+        "zh": "立即试试",
+        "fr": "Essayez maintenant",
+        "es": "Pruébalo ahora",
+        "ar": "جربها الآن",
+        "ru": "Попробуйте сейчас"
+    },
+    "interview_top_steps_step3": {
+        "en": "Step 3",
+        "ja": "ステップ3",
+        "zh": "步骤3",
+        "fr": "Étape 3",
+        "es": "Paso 3",
+        "ar": "الخطوة 3",
+        "ru": "Шаг 3"
+    },
+    "interview_top_steps_step3_title": {
+        "en": "Send the interview link",
+        "ja": "面接リンクを送信",
+        "zh": "发送面试链接",
+        "fr": "Envoyer le lien de l'entretien",
+        "es": "Enviar el enlace de la entrevista",
+        "ar": "إرسال رابط المقابلة",
+        "ru": "Отправить ссылку на интервью"
+    },
+    "interview_top_steps_step3_main": {
+        "en": "Send a Link by Email and Let the Meeting Happen",
+        "ja": "メールでリンクを送信し、会議を開催",
+        "zh": "通过电子邮件发送链接，让会议进行",
+        "fr": "Envoyez un lien par e-mail et laissez la réunion se dérouler",
+        "es": "Envía un enlace por correo electrónico y deja que la reunión ocurra",
+        "ar": "أرسل رابطًا عبر البريد الإلكتروني ودع الاجتماع يتم",
+        "ru": "Отправьте ссылку по электронной почте, и встреча состоится"
+    },
+    "interview_top_steps_step3_mail_recruiting_recepient": {
+        "en": "lara@mail.com",
+        "ja": "lara@mail.com",
+        "zh": "lara@mail.com",
+        "fr": "lara@mail.com",
+        "es": "lara@mail.com",
+        "ar": "lara@mail.com",
+        "ru": "lara@mail.com"
+    },
+    "interview_top_steps_step3_mail_recruiting_title": {
+        "en": "Initial Interview Invitation",
+        "ja": "初回面接の招待",
+        "zh": "初次面试邀请",
+        "fr": "Invitation à l'entretien initial",
+        "es": "Invitación a la entrevista inicial",
+        "ar": "دعوة المقابلة الأولى",
+        "ru": "Приглашение на первичное интервью"
+    },
+    "interview_top_steps_step3_mail_recruiting_text": {
+        "en": "Please complete your initial interview with AI using the link below",
+        "ja": "以下のリンクを使用してAIによる初回面接を完了してください",
+        "zh": "请使用以下链接完成您的AI初次面试",
+        "fr": "Veuillez compléter votre entretien initial avec l'IA en utilisant le lien ci-dessous",
+        "es": "Por favor, complete su entrevista inicial con IA usando el enlace a continuación",
+        "ar": "يرجى إكمال المقابلة الأولى باستخدام الرابط أدناه",
+        "ru": "Пожалуйста, пройдите первичное интервью с ИИ, используя ссылку ниже"
+    },
+    "interview_top_steps_step3_mail_recruiting_link": {
+        "en": "https://quantz.thinkxinc.com/v1/en/interviews/4be68a2f3fcef6a7b59daff3",
+        "ja": "https://quantz.thinkxinc.com/v1/en/interviews/4be68a2f3fcef6a7b59daff3",
+        "zh": "https://quantz.thinkxinc.com/v1/en/interviews/4be68a2f3fcef6a7b59daff3",
+        "fr": "https://quantz.thinkxinc.com/v1/en/interviews/4be68a2f3fcef6a7b59daff3",
+        "es": "https://quantz.thinkxinc.com/v1/en/interviews/4be68a2f3fcef6a7b59daff3",
+        "ar": "https://quantz.thinkxinc.com/v1/en/interviews/4be68a2f3fcef6a7b59daff3",
+        "ru": "https://quantz.thinkxinc.com/v1/en/interviews/4be68a2f3fcef6a7b59daff3"
+    },
+    "interview_top_steps_step3_mail_reporting_recepient": {
+        "en": "lara@mail.com",
+        "ja": "lara@mail.com",
+        "zh": "lara@mail.com",
+        "fr": "lara@mail.com",
+        "es": "lara@mail.com",
+        "ar": "lara@mail.com",
+        "ru": "lara@mail.com"
+    },
+    "interview_top_steps_step3_mail_reporting_title": {
+        "en": "Today's work report",
+        "ja": "本日の作業報告",
+        "zh": "今日工作报告",
+        "fr": "Rapport de travail d'aujourd'hui",
+        "es": "Informe de trabajo de hoy",
+        "ar": "تقرير العمل اليومي",
+        "ru": "Отчёт о сегодняшней работе"
+    },
+    "interview_top_steps_step3_mail_reporting_text": {
+        "en": "Use the link below to submit today’s work report.",
+        "ja": "以下のリンクを使用して本日の作業報告を提出してください。",
+        "zh": "请使用以下链接提交今日工作报告。",
+        "fr": "Utilisez le lien ci-dessous pour soumettre le rapport de travail d'aujourd'hui.",
+        "es": "Utilice el enlace a continuación para enviar el informe de trabajo de hoy.",
+        "ar": "استخدم الرابط أدناه لتقديم تقرير العمل اليوم.",
+        "ru": "Используйте ссылку ниже, чтобы отправить сегодняшний рабочий отчёт."
+    },
+    "interview_top_steps_step3_mail_reporting_link": {
+        "en": "https://quantz.thinkxinc.com/v1/en/interviews/4be68a2f3fcef6a7b59daff3",
+        "ja": "https://quantz.thinkxinc.com/v1/en/interviews/4be68a2f3fcef6a7b59daff3",
+        "zh": "https://quantz.thinkxinc.com/v1/en/interviews/4be68a2f3fcef6a7b59daff3",
+        "fr": "https://quantz.thinkxinc.com/v1/en/interviews/4be68a2f3fcef6a7b59daff3",
+        "es": "https://quantz.thinkxinc.com/v1/en/interviews/4be68a2f3fcef6a7b59daff3",
+        "ar": "https://quantz.thinkxinc.com/v1/en/interviews/4be68a2f3fcef6a7b59daff3",
+        "ru": "https://quantz.thinkxinc.com/v1/en/interviews/4be68a2f3fcef6a7b59daff3"
+    },
+    "interview_top_steps_step3_mail_sales_recepient": {
+        "en": "salesman@mail.com",
+        "ja": "salesman@mail.com",
+        "zh": "salesman@mail.com",
+        "fr": "salesman@mail.com",
+        "es": "salesman@mail.com",
+        "ar": "salesman@mail.com",
+        "ru": "salesman@mail.com"
+    },
+    "interview_top_steps_step3_mail_sales_title": {
+        "en": "AI-led consultation",
+        "ja": "AI主導の相談",
+        "zh": "AI主导的咨询",
+        "fr": "Consultation dirigée par l'IA",
+        "es": "Consulta dirigida por IA",
+        "ar": "استشارة بقيادة الذكاء الاصطناعي",
+        "ru": "Консультация с участием ИИ"
+    },
+    "interview_top_steps_step3_mail_sales_text": {
+        "en": "We’d like to get some initial insights on your product. Please use the link below to join an AI-led consultation.",
+        "ja": "製品に関する初期的な洞察を得たいと考えています。以下のリンクを使用してAI主導の相談に参加してください。",
+        "zh": "我们希望获得一些关于您产品的初步见解。请使用以下链接加入AI主导的咨询。",
+        "fr": "Nous aimerions obtenir des informations initiales sur votre produit. Veuillez utiliser le lien ci-dessous pour participer à une consultation dirigée par l'IA.",
+        "es": "Nos gustaría obtener algunas ideas iniciales sobre su producto. Utilice el enlace a continuación para unirse a una consulta dirigida por IA.",
+        "ar": "نرغب في الحصول على بعض الأفكار الأولية حول منتجك. يرجى استخدام الرابط أدناه للانضمام إلى استشارة بقيادة الذكاء الاصطناعي.",
+        "ru": "Мы хотели бы получить первоначальное представление о вашем продукте. Пожалуйста, используйте ссылку ниже, чтобы присоединиться к консультации с участием ИИ."
+    },
+    "interview_top_steps_step3_mail_sales_link": {
+        "en": "https://quantz.thinkxinc.com/v1/en/interviews/4be68a2f3fcef6a7b59daff3",
+        "ja": "https://quantz.thinkxinc.com/v1/en/interviews/4be68a2f3fcef6a7b59daff3",
+        "zh": "https://quantz.thinkxinc.com/v1/en/interviews/4be68a2f3fcef6a7b59daff3",
+        "fr": "https://quantz.thinkxinc.com/v1/en/interviews/4be68a2f3fcef6a7b59daff3",
+        "es": "https://quantz.thinkxinc.com/v1/en/interviews/4be68a2f3fcef6a7b59daff3",
+        "ar": "https://quantz.thinkxinc.com/v1/en/interviews/4be68a2f3fcef6a7b59daff3",
+        "ru": "https://quantz.thinkxinc.com/v1/en/interviews/4be68a2f3fcef6a7b59daff3"
+    },
+    "interview_top_steps_step4": {
+        "en": "Step 4",
+        "ja": "ステップ 4",
+        "zh": "步骤 4",
+        "fr": "Étape 4",
+        "es": "Paso 4",
+        "ar": "الخطوة 4",
+        "ru": "Шаг 4"
+    },
+    "interview_top_steps_step4_title": {
+        "en": "Get the result of the meeting.",
+        "ja": "会議の結果を取得する",
+        "zh": "获取会议结果",
+        "fr": "Obtenez le résultat de la réunion.",
+        "es": "Obtén el resultado de la reunión.",
+        "ar": "احصل على نتيجة الاجتماع.",
+        "ru": "Получите результат встречи."
+    },
+    "interview_top_steps_step4_main": {
+        "en": "Results Delivered by Email. Review in Seconds While You’re on the Go.",
+        "ja": "結果はメールで配信されます。外出先でも数秒で確認できます。",
+        "zh": "结果通过电子邮件发送。随时随地快速查看。",
+        "fr": "Résultats envoyés par e-mail. Consultez-les en quelques secondes où que vous soyez.",
+        "es": "Resultados enviados por correo electrónico. Revíselos en segundos mientras está en movimiento.",
+        "ar": "يتم إرسال النتائج عبر البريد الإلكتروني. قم بمراجعتها في ثوانٍ أثناء التنقل.",
+        "ru": "Результаты отправляются по электронной почте. Просмотрите их за секунды, где бы вы ни находились."
+    },
+    "interview_top_signup_for_free_button": {
+        "en": "Sign up for free",
+        "ja": "無料でサインアップ",
+        "zh": "免费注册",
+        "fr": "Inscrivez-vous gratuitement",
+        "es": "Regístrate gratis",
+        "ar": "اشترك مجانًا",
+        "ru": "Зарегистрируйтесь бесплатно"
+    }
+}

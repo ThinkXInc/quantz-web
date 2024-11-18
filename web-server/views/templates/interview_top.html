@@ -1,0 +1,104 @@
+{%extends "general/base.html" %}
+
+{% block head %}
+<link rel=stylesheet href=/css/main.css>
+<script src="/js/simplicity/dist/simplicity.js"></script>
+{% endblock %}
+
+{% block content %}
+<script>
+{
+    const lang = "{{ lang }}"
+    const langName = "{{ lang_name }}"
+
+    const freeCall = "{{ free_call }}"
+    const unitPrice = "{{ unit_price }}"
+    const generalCreditPerResponse = "{{ general_credit_per_response }}"
+    const interviewCreditPerResponse = "{{ interview_credit_per_response }}"
+
+    const localeDict = {{ locale_json | safe }};
+    if (!localeDict) {
+        console.error('locale_json not received.');
+    }
+    const locale = new Locale(localeDict);
+
+    console.log(locale);
+
+    window.locale = locale;
+    window.lang = lang;
+    window.langName = langName;
+
+    window.freeCall = parseInt(freeCall);
+    window.unitPrice = parseFloat(unitPrice);
+    window.generalCreditPerResponse = parseInt(generalCreditPerResponse);
+    window.interviewCreditPerResponse = parseInt(interviewCreditPerResponse);
+
+    function redirectToSignup(tag) {
+      // Build the URL dynamically based on whether a language is set
+      const signupUrl = lang ? `/v1/${lang}/signup` : '/v1/signup';
+      window.location.href = signupUrl + `?tag=${tag}`;
+  }
+}
+</script>
+<section id="InterviewTop">
+    <!-- Header Top -->
+    <div id="header-top">
+        <div class="left-container"></div>
+        <div class="center-container"></div>
+        <div class="right-container">
+            <div class="button-wrapper">
+                <!-- Contact Button -->
+                <button class="contact arrow-button">
+                    <p>{{ locale_dict["interview_top_header_button_contact"][lang] }}</p>
+                    <img class="arrow-icon" src="/img/interview_top/button-arrow.svg" alt="Arrow">
+                </button>
+                <!-- Try Now Button -->
+                <button class="try-now arrow-button">
+                    <p>{{ locale_dict["interview_top_header_button_try_now"][lang] }}</p>
+                    <img class="arrow-icon" src="/img/interview_top/button-arrow.svg" alt="Arrow">
+                </button>
+            </div>            <!-- Locale Selector -->
+            <div class="locale">
+                {% include 'common/lang_selector.html' %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Header Main -->
+    <div id="header-main">
+        <!-- Main Top Section -->
+        <div class="header-main-top">
+            <div class="left-container"></div>
+            <div class="center-container">
+                <!-- Top Copy -->
+                <h1 class="top-copy">{{ locale_dict["interview_top_header_top_copy"][lang] }}</h1>
+                <!-- Logo -->
+                <img class="logo" src="/img/interview_top/logo-interview@2x.png" alt="Logo">
+            </div>
+            <div class="right-container"></div>
+        </div>
+
+        <!-- Main Content Section -->
+        <div class="header-main-main">
+            <div class="left-container">
+                <!-- Main Copy -->
+                <h2 class="main-copy">{{ locale_dict["interview_top_header_main_copy"][lang] }}</h2>
+                 <!-- Get Started Button -->
+                 <button class="get-start arrow-button">
+                    <p>{{ locale_dict["interview_top_header_button_get_start"][lang] }}</p>
+                    <img class="arrow-icon" src="/img/interview_top/button-arrow.svg" alt="Arrow">
+                </button>
+           </div>
+            <div class="right-container">
+                <!-- Video -->
+                <video src="/video/interview_top/interview-top.mp4" autoplay controls></video>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block foot %}
+<script src=/js/top/interview_top.js></script>
+{% endblock %}

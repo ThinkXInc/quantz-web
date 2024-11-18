@@ -18,6 +18,7 @@ from config import Config, check_config
 REQUIRED_KEYS_IN_CONFIG = [
     'DEFAULT_LANG',
     'LOCALES_ROOT',
+    'FIRST_MONTH_FREE_CREDIT',
     'UNIT_PRICE_USD',
     'REDIS_ACCESS_HOST',
     'REDIS_ACCESS_PORT',
@@ -31,6 +32,7 @@ REQUIRED_KEYS_IN_CONFIG = [
 check_config(Config, REQUIRED_KEYS_IN_CONFIG)
 
 DEFAULT_LANG = Config.DEFAULT_LANG
+FIRST_MONTH_FREE_CREDIT = Config.FIRST_MONTH_FREE_CREDIT
 UNIT_PRICE_USD = Config.UNIT_PRICE_USD
 REDIS_ACCESS_HOST = Config.REDIS_ACCESS_HOST
 REDIS_ACCESS_PORT = Config.REDIS_ACCESS_PORT
@@ -66,6 +68,7 @@ from libcommon.language import Language
 # Local files
 from libcommon.locale import Locale, COMMON_LOCALES_FILE_PATHS
 LOCALES_ROOT = Config.LOCALES_ROOT
+INTERVIEW_TOP_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/interview_top.json'
 METADATA_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/metadata.json'
 INVERVIEWS_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/interviews.json'
 INVERVIEW_RESPONSES_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/interviews_responses.json'
@@ -73,7 +76,6 @@ HEADER_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/header.json'
 locale = Locale([
     METADATA_LOCALE_FILE_PATH,
     HEADER_LOCALE_FILE_PATH,
-    INVERVIEWS_LOCALE_FILE_PATH,
     INVERVIEW_RESPONSES_LOCALE_FILE_PATH] + COMMON_LOCALES_FILE_PATHS
 )
 
@@ -114,17 +116,32 @@ from mails.send_mail import (
     MailSendError
 )
 
+
+# interview top
+@blueprint_interviews.route('/<lang>/interview', methods=['GET'])
+@language_wrapper
+def interview_top(lang, lang_name):
+    logger.info(magenta(f'[GET] /{lang}/interviews'))
+    locale.add_locale_file(INTERVIEW_TOP_LOCALE_FILE_PATH)
+    return render_template(
+        'interview_top.html',
+        lang=lang,
+        lang_name=lang_name,
+        free_call=FIRST_MONTH_FREE_CREDIT,
+        unit_price=UNIT_PRICE_USD,
+        locale_json=locale.to_json_string(),
+        locale_dict=locale.dict(),
+        metadata=locale.dict()["metadata_interview_top"][lang])
+ 
 # main page
 @blueprint_interviews.route('/v1/<lang>/interviews', methods=['GET'])
 @session_helper
 @language_wrapper
 def interview_home(user, lang, lang_name):
-    logger.info(magenta(f'[GET] /{lang}/interviews'))
+    logger.info(magenta(f'[GET] /v1/{lang}/interviews'))
 
-    # DEBUG
-    #Session.start('6608eee0010a17bff9abcd0c')
-    #Session.start('660fb470cdab5917fb9023e6')
- 
+    locale.add_locale_file(INTERVIEWS_LOCALE_FILE_PATH)
+
     return render_template(
         'main/interviews.html',
         lang=lang,
@@ -140,6 +157,8 @@ def interview_home(user, lang, lang_name):
 @language_wrapper
 def interview_window(lang, interview_id, lang_name):
     logger.info(magenta(f'[GET] /{lang}/interviews/{interview_id}'))
+
+    locale.add_locale_file(INTERVIEWS_LOCALE_FILE_PATH)
 
     # DEBUG
     #Session.start('6608eee0010a17bff9abcd0c')
