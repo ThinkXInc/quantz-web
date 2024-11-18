@@ -41,60 +41,115 @@
 }
 </script>
 <section id="InterviewTop">
-    <!-- Header Top -->
-    <div id="header-top">
-        <div class="left-container"></div>
-        <div class="center-container"></div>
-        <div class="right-container">
-            <div class="button-wrapper">
-                <!-- Contact Button -->
-                <button class="contact arrow-button">
-                    <p>{{ locale_dict["interview_top_header_button_contact"][lang] }}</p>
-                    <img class="arrow-icon" src="/img/interview_top/button-arrow.svg" alt="Arrow">
-                </button>
-                <!-- Try Now Button -->
-                <button class="try-now arrow-button">
-                    <p>{{ locale_dict["interview_top_header_button_try_now"][lang] }}</p>
-                    <img class="arrow-icon" src="/img/interview_top/button-arrow.svg" alt="Arrow">
-                </button>
-            </div>            <!-- Locale Selector -->
-            <div class="locale">
-                {% include 'common/lang_selector.html' %}
-            </div>
-        </div>
-    </div>
-
-    <!-- Header Main -->
-    <div id="header-main">
-        <!-- Main Top Section -->
-        <div class="header-main-top">
+    <div id="header">
+        <!-- Header Top -->
+        <div id="header-top">
             <div class="left-container"></div>
-            <div class="center-container">
-                <!-- Top Copy -->
-                <h1 class="top-copy">{{ locale_dict["interview_top_header_top_copy"][lang] }}</h1>
-                <!-- Logo -->
-                <img class="logo" src="/img/interview_top/logo-interview@2x.png" alt="Logo">
+            <div class="center-container"></div>
+            <div class="right-container">
+                <div class="button-wrapper">
+                    <!-- Contact Button -->
+                    <button class="contact arrow-button">
+                        <p>{{ locale_dict["interview_top_header_button_contact"][lang] }}</p>
+                        <img class="arrow-icon" src="/img/interview_top/button-arrow.svg" alt="Arrow">
+                    </button>
+                    <!-- Try Now Button -->
+                    <button class="try-now arrow-button">
+                        <p>{{ locale_dict["interview_top_header_button_try_now"][lang] }}</p>
+                        <img class="arrow-icon" src="/img/interview_top/button-arrow.svg" alt="Arrow">
+                    </button>
+                </div>
+                <!-- Locale Selector -->
+                <div class="locale">
+                    {% include 'common/lang_selector.html' %}
+                </div>
             </div>
-            <div class="right-container"></div>
         </div>
 
-        <!-- Main Content Section -->
-        <div class="header-main-main">
-            <div class="left-container">
-                <!-- Main Copy -->
-                <h2 class="main-copy">{{ locale_dict["interview_top_header_main_copy"][lang] }}</h2>
-                 <!-- Get Started Button -->
-                 <button class="get-start arrow-button">
-                    <p>{{ locale_dict["interview_top_header_button_get_start"][lang] }}</p>
-                    <img class="arrow-icon" src="/img/interview_top/button-arrow.svg" alt="Arrow">
-                </button>
-           </div>
-            <div class="right-container">
-                <!-- Video -->
-                <video src="/video/interview_top/interview-top.mp4" autoplay controls></video>
+        <!-- Header Main -->
+        <div id="header-main">
+            <!-- Main Top Section -->
+            <div class="header-main-top">
+                <div class="left-container"></div>
+                <div class="center-container">
+                    <!-- Top Copy -->
+                    <h1 class="top-copy">{{ locale_dict["interview_top_header_top_copy"][lang] }}</h1>
+                    <!-- Logo -->
+                    <img class="logo" src="/img/interview_top/logo-interview@2x.png" alt="Logo">
+                </div>
+                <div class="right-container"></div>
+            </div>
+
+            <!-- Main Content Section -->
+            <div class="header-main-main">
+                <div class="left-container">
+                    <!-- Main Copy -->
+                    <h2 class="main-copy">{{ locale_dict["interview_top_header_main_copy"][lang] }}</h2>
+                     <!-- Get Started Button -->
+                     <button class="get-start arrow-button">
+                        <p>{{ locale_dict["interview_top_header_button_get_start"][lang] }}</p>
+                        <img class="arrow-icon" src="/img/interview_top/button-arrow.svg" alt="Arrow">
+                    </button>
+               </div>
+                <div class="right-container">
+                    <!-- Video -->
+                    <video src="/video/interview_top/interview-top.mp4" autoplay controls></video>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Technology -->
+    <div id="technology">
+        <div class="container">
+            <!-- Copy Wrapper -->
+            <div class="copy-wrapper">
+                <h3 class="catch-copy">{{ locale_dict["interview_top_technology_catch_copy"][lang] }}</h3>
+                <h2 class="main-copy">
+                    <span>{{ locale_dict["interview_top_technology_main_copy_highlight"][lang] }}</span>
+                    {{ locale_dict["interview_top_technology_main_copy"][lang] }}
+                </h2>
+            </div>
+    
+            <!-- Content Wrapper -->
+            <div class="content-wrapper">
+                <div class="left">
+                    <p class="text">{{ locale_dict["interview_top_technology_text"][lang] }}</p>
+                </div>
+                <div class="right">
+                    <div id="chart">
+                        <div class="chart-ghraph">
+                            <span class="emphasize">10x</span>
+                            <span class="left-bar"></span>
+                            <span class="right-bar"></span>
+                            <ul class="lines">
+                                <li class="line"></li>
+                                <li class="line"></li>
+                                <li class="line"></li>
+                                <li class="line"></li>
+                            </ul>
+                            <span class="x-axis"></span>
+                        </div>
+                        <div class="chart-left-box">
+                            <div class="label">
+                                <span class="chart-left-price">{{ locale_dict["interview_top_technology_chart_left_price"][lang] }}</span>
+                                <span class="chart-left-per-interview">{{ locale_dict["interview_top_technology_chart_per_interview"][lang] }}</span>
+                            </div>
+                            <span class="chart-left-name">{{ locale_dict["interview_top_technology_chart_left_name"][lang] }}</span>
+                        </div>
+                        <div class="chart-right-box">
+                            <div class="label">
+                                <span class="chart-right-price">{{ locale_dict["interview_top_technology_chart_right_price"][lang] }}</span>
+                                <span class="chart-right-per-interview">{{ locale_dict["interview_top_technology_chart_per_interview"][lang] }}</span>
+                            </div>
+                            <span class="chart-right-name">{{ locale_dict["interview_top_technology_chart_right_name"][lang] }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </section>
 
 {% endblock %}

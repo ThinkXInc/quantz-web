@@ -20,6 +20,13 @@ class InterviewTop {
         this.locale = locale;
         this.lang = lang;
 
+        this.showChart()
+    }
+
+    showChart() {
+        console.log(`[InterviewTop] show chart`)
+        const chart = document.getElementById('chart');
+        chart.classList.add('show');
     }
 }
 

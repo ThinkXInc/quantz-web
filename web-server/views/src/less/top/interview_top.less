@@ -23,8 +23,10 @@ section#InterviewTop {
             transform: rotate(0deg);
         }
     }
+}
 
 
+section#InterviewTop div#header {
     div#header-top {
         height: 100px;
         background: #1a1a1a;
@@ -158,4 +160,206 @@ section#InterviewTop {
             }
         }
     }
+}
+
+section#InterviewTop div#technology {
+    div.container {
+        padding: 75px 82px;
+        div.copy-wrapper {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 20px;
+    
+            h3.catch-copy {
+                margin: 0;
+                color: #808080;
+                font-size: 30px;
+                font-weight: 400;
+                margin-bottom: 20px;
+            }
+    
+            h2.main-copy {
+                color: #000;
+                font-size: 45px;
+                margin: 0;
+                font-weight: 600;
+    
+                span {
+                    color: #18577a; /* Highlight */
+                }
+            }
+        }
+    
+        div.content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+    
+            div.left {
+                width: 50%;
+                min-width: 200px;
+                margin-right: 40px;
+    
+                p.text {
+                    padding: 3px 0;
+                    margin: 0;
+                    color: #000;
+                    font-size: 18px;
+                }
+            }
+    
+            div.right {
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+            }
+    
+        }
+    }
+}
+section#InterviewTop div#technology div.container div.content-wrapper div.right {
+    @left-bar-target: 20px;
+    @right-bar-target: 180px;
+    div#chart {
+        position: relative;
+        width: 40vw;
+        height: 200px;
+        margin: 0 auto;
+
+        div.chart-ghraph {
+            position: relative;
+            width: 100%;
+            height: 100%;
+
+            span.emphasize {
+                position: absolute;
+                left: 74%;
+                top: -20px;
+                font-size: 34px;
+                font-weight: 400;
+                color: #000;
+                z-index: 10;
+            }
+
+            span.left-bar,
+            span.right-bar {
+                position: absolute;
+                z-index: 5;
+                bottom: 0;
+                width: 31%;
+                height: 0;
+                transition: height 1s cubic-bezier(.65, 0, .34, 1);
+            }
+
+            span.left-bar {
+                left: 25%;
+                background-color: #000;
+            }
+
+            span.right-bar {
+                left: 65%;
+                background-color: #18577a;
+            }
+
+            span.x-axis {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 1px;
+                background-color: #d3d3d3;
+            }
+
+            ul.lines {
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                height: 100%;
+                list-style: none;
+                padding: 0;
+                margin: 0;
+
+                li.line {
+                    position: absolute;
+                    z-index: 1;
+                    left: 0;
+                    width: 100%;
+                    height: 1px;
+                    background-color: #f3f3f3;
+                    bottom: 0;
+                    transition: bottom 1s cubic-bezier(.65, 0, .34, 1);
+                }
+            }
+        }
+
+        &.show {
+            div.chart-ghraph {
+                span.left-bar {
+                    height: @left-bar-target;
+                }
+
+                span.right-bar {
+                    height: @right-bar-target;
+                }
+
+                ul.lines li.line:nth-child(1) {
+                    bottom: 25%;
+                }
+
+                ul.lines li.line:nth-child(2) {
+                    bottom: 50%;
+                }
+
+                ul.lines li.line:nth-child(3) {
+                    bottom: 75%;
+                }
+
+                ul.lines li.line:nth-child(4) {
+                    bottom: 100%;
+                }
+            }
+        }
+
+        div.chart-left-box,
+        div.chart-right-box {
+            position: absolute;
+            width: max-content;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            div.label {
+                margin-bottom: 12px;
+                span.chart-left-price,
+                span.chart-right-price {
+                    color: #808080;
+                    font-size: 22px;
+                    font-weight: 500;
+                }
+                span.chart-left-per-interview,
+                span.chart-right-per-interview {
+                    color: #808080;
+                    font-size: 14px;
+                }
+            }
+            span.chart-left-name,
+            span.chart-right-name {
+                font-size: 13px;
+                color: #808080;
+            }
+        }
+
+        div.chart-left-box {
+            left: 39%;
+            transform: translateX(-50%);
+        }
+
+        div.chart-right-box {
+            left: 80%;
+            transform: translateX(-50%);
+        }
+    }
+    
 }
