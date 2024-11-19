@@ -135,7 +135,7 @@
         "ru": "Рекрутинговые интервью"
     },
     "interview_top_needs_recruiting_text": {
-        "en": "I spend 30–60 minutes daily on initial interviews just to get a sense of each candidate. If I could automate this, I’d have more time for key tasks, reach more candidates, and reduce the chance of missing out on top talent.",
+        "en": "I <span class='highlight'>spend 30–60 minutes daily</span> on initial interviews just to get a sense of each candidate. If I could automate this, I’d have more time for key tasks, reach more candidates, and reduce the chance of missing out on top talent.",
         "ja": "候補者ごとの感触を掴むためだけに、毎日30〜60分を初回面接に費やしています。これを自動化できれば、主要業務に充てる時間を増やし、より多くの候補者に接触し、優秀な人材を見逃す可能性を減らせます。",
         "zh": "我每天花30到60分钟进行初次面试，只是为了了解每个候选人的情况。如果能将此过程自动化，我将有更多时间处理关键任务，接触更多候选人，并减少错过顶尖人才的可能性。",
         "fr": "Je consacre 30 à 60 minutes par jour aux entretiens initiaux uniquement pour me faire une idée de chaque candidat. Si je pouvais automatiser cela, j'aurais plus de temps pour les tâches clés, je pourrais atteindre plus de candidats et réduire le risque de passer à côté des meilleurs talents.",
@@ -153,7 +153,7 @@
         "ru": "Отчётные встречи"
     },
     "interview_top_needs_reporting_text": {
-        "en": "Results meetings often require a verbal check to grasp the 'feel,' but I’m spending 30–60 minutes a day on routine updates. A system to handle these on my behalf would be ideal.",
+        "en": "Results meetings often require a verbal check <span class='highlight'>to grasp the 'feel,'</span> but <span class='highlight'>I’m spending 30–60 minutes a day on routine updates</span>. A system to handle these on my behalf would be ideal.",
         "ja": "結果報告会議では「感触」を掴むための口頭確認が必要なことが多いですが、日常的な更新に毎日30〜60分を費やしています。これを代行できるシステムがあれば理想的です。",
         "zh": "结果汇报会议通常需要通过口头检查来掌握“感觉”，但我每天花30到60分钟处理常规更新。如果有一个系统能代替我完成这些工作，那就太理想了。",
         "fr": "Les réunions de résultats nécessitent souvent une vérification verbale pour saisir le 'ressenti', mais je passe 30 à 60 minutes par jour sur des mises à jour de routine. Un système pour gérer cela à ma place serait idéal.",
@@ -171,13 +171,13 @@
         "ru": "Консультации по продажам"
     },
     "interview_top_needs_sales_text": {
-        "en": "I’m interested in certain products or services, but time for meetings is limited. A system for quick, simple inquiries would let me gauge interest without full discussions.",
-        "ja": "特定の製品やサービスに興味がありますが、会議の時間が限られています。簡単な問い合わせを迅速に行えるシステムがあれば、詳細な議論をせずに関心を測ることができます。",
-        "zh": "我对某些产品或服务感兴趣，但会议时间有限。一个快速、简单的查询系统可以让我在无需全面讨论的情况下评估兴趣。",
-        "fr": "Je suis intéressé par certains produits ou services, mais le temps pour les réunions est limité. Un système pour des demandes rapides et simples me permettrait d'évaluer l'intérêt sans discussions complètes.",
-        "es": "Estoy interesado en ciertos productos o servicios, pero el tiempo para reuniones es limitado. Un sistema para consultas rápidas y simples me permitiría evaluar el interés sin discusiones completas.",
-        "ar": "أنا مهتم بمنتجات أو خدمات معينة، لكن الوقت المخصص للاجتماعات محدود. يمكن أن يساعدني نظام للاستفسارات السريعة والبسيطة على قياس الاهتمام دون مناقشات كاملة.",
-        "ru": "Меня интересуют определённые продукты или услуги, но времени на встречи не хватает. Система для быстрых и простых запросов позволила бы мне оценить интерес без длительных обсуждений."
+        "en": "I’m interested in certain products or services, but <span class='highlight'>time for meetings is limited</span>. A system for quick, simple inquiries would <span class='highlight'>let me gauge interest without full discussions</span>.",
+        "ja": "特定の製品やサービスに興味がありますが、<span class='highlight'>会議の時間が限られています</span>。簡単な問い合わせを迅速に行えるシステムがあれば、<span class='highlight'>詳細な議論をせずに関心を測ることができます</span>。",
+        "zh": "我对某些产品或服务感兴趣，但<span class='highlight'>会议时间有限</span>。一个快速、简单的查询系统可以让我在<span class='highlight'>无需全面讨论的情况下评估兴趣</span>。",
+        "fr": "Je suis intéressé par certains produits ou services, mais <span class='highlight'>le temps pour les réunions est limité</span>. Un système pour des demandes rapides et simples me permettrait de <span class='highlight'>évaluer l'intérêt sans discussions complètes</span>.",
+        "es": "Estoy interesado en ciertos productos o servicios, pero <span class='highlight'>el tiempo para reuniones es limitado</span>. Un sistema para consultas rápidas y simples me permitiría <span class='highlight'>evaluar el interés sin discusiones completas</span>.",
+        "ar": "أنا مهتم بمنتجات أو خدمات معينة، لكن <span class='highlight'>الوقت المخصص للاجتماعات محدود</span>. يمكن أن يساعدني نظام للاستفسارات السريعة والبسيطة على <span class='highlight'>قياس الاهتمام دون مناقشات كاملة</span>.",
+        "ru": "Меня интересуют определённые продукты или услуги, но <span class='highlight'>времени на встречи не хватает</span>. Система для быстрых и простых запросов позволила бы мне <span class='highlight'>оценить интерес без длительных обсуждений</span>."
     },
     "interview_top_steps_step1": {
         "en": "Step 1",
@@ -394,6 +394,15 @@
         "es": "https://quantz.thinkxinc.com/v1/en/interviews/4be68a2f3fcef6a7b59daff3",
         "ar": "https://quantz.thinkxinc.com/v1/en/interviews/4be68a2f3fcef6a7b59daff3",
         "ru": "https://quantz.thinkxinc.com/v1/en/interviews/4be68a2f3fcef6a7b59daff3"
+    },
+    "interview_top_steps_step3_mail_send_button": {
+        "en": "Send",
+        "ja": "送信",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
     },
     "interview_top_steps_step4": {
         "en": "Step 4",

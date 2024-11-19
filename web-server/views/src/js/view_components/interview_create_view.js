@@ -1,3 +1,22 @@
+const defaultStep = () => ({
+    "question": "",
+    "finish_condition": "Interviewee answered it's done.",
+    "max_turns": 3,
+    "instructions": [
+        "First, read the question.",
+        "When the answer looks done, ask 'Are you sure that\'s it?'"
+    ]
+});
+
+const defaults = {
+    "title": "",
+    "introduction": "Hello, {name}. Are you ready?",
+    "end": "Thank you {name}. This is the end. Goodbye.",
+    "steps": [
+        defaultStep()
+    ]
+}
+
 class InterviewCreateView {
     constructor({
         id,
@@ -147,12 +166,14 @@ class InterviewCreateView {
 
         $interviewCreateViewContainer.appendChild($endContainer);
 
+        // Assign the container before calling methods that use it
+        this.$interviewCreateViewContainer = $interviewCreateViewContainer;
+
         // Ensure an empty step at the end if necessary
         this.ensureEmptyStepAtEnd();
 
         // append the container to main view
         this.$view.appendChild($interviewCreateViewContainer);
-        this.$interviewCreateViewContainer = $interviewCreateViewContainer;
 
         this.updateRemoveButtonVisibility();
     }

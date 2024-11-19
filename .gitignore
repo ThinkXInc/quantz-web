@@ -34,7 +34,7 @@ web-server/redis_session/data/*
 web-server/redis_session/logs/*
 web-server/views/css/*
 web-server/views/js/*
-web-server/views/video/interview/top/interview-top.mp4
+web-server/views/video/interview/top/*
 web-server/views/node_modules/
 web-server/views/package-lock.json
 web-server/views/video/top/TutorialJessicas_v2_volumes2.mp4

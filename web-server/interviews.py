@@ -70,13 +70,13 @@ from libcommon.locale import Locale, COMMON_LOCALES_FILE_PATHS
 LOCALES_ROOT = Config.LOCALES_ROOT
 INTERVIEW_TOP_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/interview_top.json'
 METADATA_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/metadata.json'
-INVERVIEWS_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/interviews.json'
-INVERVIEW_RESPONSES_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/interviews_responses.json'
+INTERVIEWS_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/interviews.json'
+INTERVIEW_RESPONSES_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/interviews_responses.json'
 HEADER_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/header.json'
 locale = Locale([
     METADATA_LOCALE_FILE_PATH,
     HEADER_LOCALE_FILE_PATH,
-    INVERVIEW_RESPONSES_LOCALE_FILE_PATH] + COMMON_LOCALES_FILE_PATHS
+    INTERVIEW_RESPONSES_LOCALE_FILE_PATH] + COMMON_LOCALES_FILE_PATHS
 )
 
 # MongoDB
@@ -123,6 +123,7 @@ from mails.send_mail import (
 def interview_top(lang, lang_name):
     logger.info(magenta(f'[GET] /{lang}/interviews'))
     locale.add_locale_file(INTERVIEW_TOP_LOCALE_FILE_PATH)
+    locale.add_locale_file(INTERVIEWS_LOCALE_FILE_PATH)
     return render_template(
         'interview_top.html',
         lang=lang,
