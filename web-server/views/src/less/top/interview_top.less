@@ -401,9 +401,15 @@ section#InterviewTop div#needs {
             h4.title {
                 //font-size: 18px;
                 font-size: 27px;
-                font-weight: 300;
+                font-weight: 600;
+                //font-weight: 300;
                 text-align: center;
                 margin-bottom: 38px;
+            }
+            &.highlight {
+                h4 {
+                    color: #3ba1db;// #18577a;
+                }
             }
 
             div.box {
@@ -429,6 +435,13 @@ section#InterviewTop div#needs {
                     span.highlight {
                         color: #3784b0;
                     }
+                }
+            }
+            &.highlight {
+                div.box {
+                    background: #28343b;
+                    border: 1px solid #46565f;
+                    transform: scale(1.02);
                 }
             }
 
@@ -460,23 +473,14 @@ section#InterviewTop div#needs {
                         right: -18px;
                     }
                 }
-
             }
-
             &.highlight {
-                h4 {
-                    color: #18577a;
-                }
-                div.box {
-                    background: #28343b;
-                    border: 1px solid #46565f;
-                    transform: scale(1.02);
-                }
                 div.circle {
                     background: #28343b;
                     border-color: #46565f;
                 }
             }
+
             &.highlight:hover div.box {
                 transform: scale(1.03); /* Only scale the box */
                 div.circles {
@@ -597,7 +601,8 @@ section#InterviewTop div#steps {
                     max-width: 72vw;
                     h2.step-copy {
                         font-size: 40px;
-                        font-weight: 500;
+                        //font-weight: 500;
+                        font-weight: 600;
                         text-align: center;
                         margin: 10px 0 31px 0;
                     }
@@ -844,7 +849,7 @@ section#InterviewTop div#steps {
     }
 }
 
-div#InterviewCreateView {
+section#InterviewTop div#InterviewCreateView {
     height: max-content !important;
     div.InterviewCreateViewContainer {
         height: max-content !important;

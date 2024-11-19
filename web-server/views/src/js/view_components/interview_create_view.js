@@ -666,18 +666,17 @@ class InterviewCreateView {
     submitUpdateInterview(interviewId) {
         const interviewJSON = this.interviewObjectFromFormData();
 
-        const $message = document.getElementById('InterviewSettingsModalViewMessage');
-        $message.textContent = '';
+        this.$message.textContent = '';
 
         Http.post(`/v1/${this.lang}/interviews/${interviewId}/update`, interviewJSON,
             (res) => {
                 const { code, message } = res;
                 console.log(`[${code} success] ${message}`);
-                $message.classList.add('success');
-                $message.textContent = message;
+                this.$message.classList.add('success');
+                this.$message.textContent = message;
             },
             (error) => {
-                this.handleError(error, $message);
+                this.handleError(error, this.$message);
             }
         );
     }
