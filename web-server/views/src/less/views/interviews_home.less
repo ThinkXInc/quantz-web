@@ -321,3 +321,146 @@ div#InterviewResultPreview {
         }
     }
 }
+
+@tablet-width: 768px;
+@smartphone-width: 480px;
+
+@media (min-width: @tablet-width) {
+}
+
+@media (max-width: @smartphone-width) {
+    // MainContent
+    #MainContent.interviews {
+        div#InterviewListContainer {
+        }
+        div.InterviewResultsViewContainer {
+        }
+        div.InterviewResultPreviewContainer {
+        }
+    }
+    
+    #MainContent.openInterviewResults {
+        div#InterviewListContainer {
+        }
+        div.InterviewResultsViewContainer {
+        }
+        div.InterviewResultPreviewContainer {
+        }
+    }
+    
+    #MainContent.openInterviewResultPreview {
+        div#InterviewListContainer {
+        }
+        div.InterviewResultsViewContainer {
+        }
+        div.InterviewResultPreviewContainer {
+        }
+    }
+    
+    // ListContainer
+    div#InterviewListContainer {
+        div.TableView.interviewList {
+            div.tableViewContainer {
+                div.interviewListHeader {
+                    div.leftContainer {
+                        h1.interviewListHeaderTitle {
+                        }
+                        h3.interviewListCount {
+                        }
+                    }
+                    div.rightContainer {
+                        img.search_icon {
+                        }
+                    }
+                }
+                div.createNew {
+                    img.plusIcon {
+                    }
+                    h4.title {
+                    }
+                }
+                div.tableView.interviewListTableView {
+                    ul.tableListView.interviewListListView {
+                        li.TableViewCell.tableViewCell.interviewListCell {
+                            div.contentWrapper {
+                                div.header {
+                                    span.label {
+                                    }
+                                    h6.title {
+                                    }
+                                }
+                                div.body {
+                                    p.text {
+                                    }
+                                }
+                                div.footer {
+                                }
+                            }
+                            div.buttonContainer.right {
+                                button {
+                                    svg.deleteIconSVG {
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    div.gradientViewIndicator.TableViewGradientLoader {
+                        div.indicator-container {
+                            div.indicator-wrapper {
+                                svg {
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    // ResultsView
+    div#InterviewResultsViewContainer {
+        div.InterviewResultsView {
+            div.tableViewContainer {
+            }
+        }
+    }
+    
+    // ResultPreview
+    div#InterviewResultPreview {
+        div.header {
+            div.info {
+                span.infoItem {
+                    span.label {
+                    }
+                    span.value {
+                    }
+                }
+            }
+        }
+        div.eventsWrapper {
+            ul.events {
+                li.event {
+                    p.message {
+                        span.speaker {
+                        }
+                        span.messageText {
+                        }
+                    }
+                    div.eventVideoContainer {
+                        video {
+                        }
+                    }
+                }
+            }
+        }
+        div.videoAllContainer {
+            div.videoAllWrapper {
+                p.fullVideoLabel {
+                }
+                video.videoAll {
+                }
+            }
+        }
+    }
+
+}

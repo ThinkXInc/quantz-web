@@ -359,3 +359,126 @@ div#MeetingLeaveModalView.ModalView {
         }
     }
 }
+
+@tablet-width: 768px;
+@smartphone-width: 480px;
+
+@media (min-width: @tablet-width) {
+}
+
+@media (max-width: @smartphone-width) {
+    div.MeetingView {
+        .QBTN-balloon-container {
+        }
+        div.LeftContainer {
+            div.VideoContainer {
+                div.InterviewerView {
+                    video {
+                    }
+                    div.NameLabel {
+                    }
+                }
+                div.SelfViewContainer {
+                    div.NameLabel {
+                    }
+                    video.SelfView {
+                    }
+                    div.QBTN-balloon-container {
+                        div.QBTN-balloon-rect {
+                        }
+                    }
+                }
+            }
+            div.SignalMonitor {
+                canvas {
+                }
+            }
+        }
+        div.ChatView {
+            div.ChatLog {
+                ul.ChatLogMessageList {
+                    li.messageItem {
+                        span.speaker {
+                        }
+                        span.messageContainer {
+                            p.message {
+                            }
+                        }
+                    }
+                }
+            }
+            div.ChatLogFooter {
+                div.ChatLogAnnotation {
+                }
+            }
+        }
+    }
+    
+    div#MeetingStartDialogueModalView.ModalView {
+        div.bg {
+        }
+        div.window {
+            div.contentWrapper {
+                h3.ModalViewTitle {
+                }
+                div#MeetingStartDialogueModalViewMainContent.mainContent {
+                    div.TextField.nameField,
+                    div.TextField.emailField {
+                        div.inputOuter {
+                            div.inputWrapper {
+                                input {
+                                    &::placeholder {
+                                    }
+                                }
+                            }
+                            div.inputAfter {
+                            }
+                            div.footer {
+                                div.left {
+                                    span.indicator {
+                                    }
+                                }
+                                div.middle {
+                                    span.message {
+                                    }
+                                }
+                                div.right {
+                                }
+                                p.alertMessage {
+                                }
+                            }
+                        }
+                    }
+                }
+                div.ModalViewAlert {
+                }
+            }
+            div.footer.modalViewFooter {
+                button.doneButton {
+                }
+            }
+        }
+    }
+    
+    div#MeetingLeaveModalView.ModalView {
+        div.bg {
+        }
+        div.window {
+            div.contentWrapper {
+                h3.ModalViewTitle {
+                }
+                div.mainContent {
+                }
+                div.ModalViewAlert {
+                }
+            }
+            div.footer.modalViewFooter {
+                button.cancelButton {
+                }
+                button.doneButton {
+                }
+            }
+        }
+    }
+
+}

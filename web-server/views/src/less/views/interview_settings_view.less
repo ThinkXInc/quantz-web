@@ -69,3 +69,48 @@ div#InterviewSettingsModalViewMainContent {
         margin-bottom: 20px;
     }
 }
+
+@tablet-width: 768px;
+@smartphone-width: 480px;
+
+@media (min-width: @tablet-width) {
+}
+
+@media (max-width: @smartphone-width) {
+    // ModalView
+    div#InterviewSettingsModalView {
+        div.bg {
+        }
+        div.window {
+            div.contentWrapper {
+                h3.ModalViewTitle {
+                }
+            }
+            div.modalViewFooter {
+                p.message {
+                }
+                p.alert {
+                }
+                p.success {
+                }
+                button {
+                    &.cancelButton {
+                    }
+                    &.doneButton {
+                    }
+                }
+            }
+        }
+    }
+
+    div#InterviewSettingsModalViewMainContent {
+        div.InterviewLinkView {
+        }
+        span.label {
+        }
+        span.separator {
+        }
+        div.InterviewResultsView {
+        }
+    }
+}

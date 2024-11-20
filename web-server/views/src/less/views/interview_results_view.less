@@ -172,3 +172,93 @@ div#InterviewResultsView, div#InterviewResultsViewHome, div.InterviewResultsView
         }
     }
 }
+
+@tablet-width: 768px;
+@smartphone-width: 480px;
+
+@media (min-width: @tablet-width) {
+}
+
+@media (max-width: @smartphone-width) {
+    div#InterviewResultsView {
+        div.tableViewContainer {
+            div.tableView {
+                ul.tableListView {
+                    li.TableViewCell.tableViewCell {
+                        div.isChecked {
+                        }
+                        div.contentWrapper {
+                            div.header {
+                                span.label {
+                                }
+                                h6.title {
+                                }
+                            }
+                            div.body {
+                                p.text {
+                                }
+                            }
+                            div.footer {
+                            }
+                        }
+                        div.buttonContainer.right {
+                            button {
+                                svg#DeleteIconSVG.deleteIconSVG {
+                                    .path {
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                div#TableViewGradientLoader.gradientViewIndicator.TableViewGradientLoader {
+                    div.indicator-container {
+                        div.indicator-wrapper {
+                            svg {
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    div#InterviewResultsViewHome {
+        div.tableViewContainer {
+            div.tableView {
+                ul.tableListView {
+                    li.TableViewCell.tableViewCell {
+                    }
+                }
+            }
+        }
+    }
+    
+    div#InterviewResultsView, div#InterviewResultsViewHome, div.InterviewResultsView {
+        div.tableViewContainer {
+            div.interviewResultsHeader {
+                div.container {
+                    h1.interviewResultsHeaderTitle {
+                    }
+                    h3.interviewResultsCount {
+                    }
+                }
+            }
+            div.tableView {
+                ul.tableListView {
+                    li.TableViewCell.tableViewCell {
+                    }
+                }
+            }
+        }
+        div.messageContainer {
+            p.message {
+            }
+        }
+        div.moreContainer {
+            a.more {
+            }
+        }
+    }
+
+}
