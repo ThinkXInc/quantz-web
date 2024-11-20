@@ -18,8 +18,8 @@
         "ru": "Попробовать сейчас"
     },
     "interview_top_header_top_copy": {
-        "en": "The world’s first practical AI interview system",
-        "ja": "世界初の実用的なAI面接システム",
+        "en": "The world’s first truly practical AI interview system",
+        "ja": "世界初の本当に実用的なAI面接システム",
         "zh": "世界首个实用的AI面试系统",
         "fr": "Le premier système d'entretien AI pratique au monde",
         "es": "El primer sistema de entrevistas de IA práctico del mundo",
@@ -54,13 +54,13 @@
         "ru": "Без внешних API. Без облачных серверов."
     },
     "interview_top_technology_main_copy_highlight": {
-        "en": "10x cost-effective technology",
-        "ja": "10倍コスト効果の高い技術",
-        "zh": "10倍性价比的技术",
-        "fr": "Une technologie 10 fois plus économique",
-        "es": "Tecnología 10 veces más rentable",
-        "ar": "تقنية أكثر فعالية من حيث التكلفة بمقدار 10 أضعاف",
-        "ru": "Технология, в 10 раз более эффективная по затратам"
+        "en": "25x cost-effective technology",
+        "ja": "25倍コスト効果の高い技術",
+        "zh": "25倍性价比的技术",
+        "fr": "Une technologie 25 fois plus économique",
+        "es": "Tecnología 25 veces más rentable",
+        "ar": "تقنية أكثر فعالية من حيث التكلفة بمقدار 25 ضعفًا",
+        "ru": "Технология, в 25 раз более эффективная по затратам"
     },
     "interview_top_technology_main_copy": {
         "en": "enables the world’s first practical auto-interview.",
@@ -72,13 +72,13 @@
         "ru": "позволяет провести первое в мире практическое автоинтервью."
     },
     "interview_top_technology_text": {
-        "en": "Why spend good money on meetings only to have an AI do it? Quantz Interview has been developed to be 10x more cost-effective than systems based on cloud infrastructure + APIs, thanks to the fact that it runs completely on our own servers. The world's first practical autonomous interview system is now ready to use.",
-        "ja": "会議に多額の費用を費やす価値がありますか？Quantz Interviewは、クラウドインフラとAPIに基づくシステムよりも10倍コスト効率が高いように設計されています。完全に自社サーバー上で動作するためです。世界初の実用的な自律面接システムが今すぐ利用可能です。",
-        "zh": "为什么花大价钱开会却让AI来完成？Quantz Interview的开发使其比基于云基础设施和API的系统更具成本效益，达到10倍，因为它完全在我们自己的服务器上运行。世界上第一个实用的自主面试系统现在已准备好使用。",
-        "fr": "Pourquoi dépenser beaucoup d'argent pour des réunions uniquement pour qu'une IA s'en charge ? Quantz Interview a été développé pour être 10 fois plus rentable que les systèmes basés sur l'infrastructure cloud et les API, grâce au fait qu'il fonctionne entièrement sur nos propres serveurs. Le premier système d'entretien autonome pratique au monde est désormais prêt à être utilisé.",
-        "es": "¿Por qué gastar mucho dinero en reuniones solo para que lo haga una IA? Quantz Interview ha sido desarrollado para ser 10 veces más rentable que los sistemas basados en infraestructura en la nube y APIs, gracias a que funciona completamente en nuestros propios servidores. El primer sistema de entrevistas autónomas práctico del mundo está listo para usar.",
-        "ar": "لماذا تنفق أموالاً كثيرة على الاجتماعات فقط لجعل الذكاء الاصطناعي يقوم بها؟ تم تطوير Quantz Interview ليكون أكثر فعالية من حيث التكلفة بمقدار 10 أضعاف مقارنة بالأنظمة القائمة على البنية التحتية السحابية وواجهات برمجة التطبيقات، نظرًا لأنه يعمل بالكامل على خوادمنا. أول نظام عملي للمقابلات الذاتية في العالم جاهز الآن للاستخدام.",
-        "ru": "Зачем тратить деньги на встречи, чтобы их проводил ИИ? Quantz Interview разработан для того, чтобы быть в 10 раз более эффективным по затратам, чем системы на основе облачной инфраструктуры и API, благодаря тому, что он полностью работает на наших собственных серверах. Первая в мире практическая автономная система интервью готова к использованию."
+        "en": "Why spend good money on meetings only to have an AI do it? Quantz Interview has been developed to be 25x more cost-effective than systems based on cloud infrastructure + APIs, thanks to the fact that it runs completely on our own servers. The world's first practical autonomous interview system is now ready to use.",
+        "ja": "会議に多額の費用を費やす価値がありますか？Quantz Interviewは、クラウドインフラとAPIに基づくシステムよりも25倍コスト効率が高いように設計されています。完全に自社サーバー上で動作するためです。世界初の実用的な自律面接システムが今すぐ利用可能です。",
+        "zh": "为什么花大价钱开会却让AI来完成？Quantz Interview的开发使其比基于云基础设施和API的系统更具成本效益，达到25倍，因为它完全在我们自己的服务器上运行。世界上第一个实用的自主面试系统现在已准备好使用。",
+        "fr": "Pourquoi dépenser beaucoup d'argent pour des réunions uniquement pour qu'une IA s'en charge ? Quantz Interview a été développé pour être 25 fois plus rentable que les systèmes basés sur l'infrastructure cloud et les API, grâce au fait qu'il fonctionne entièrement sur nos propres serveurs. Le premier système d'entretien autonome pratique au monde est désormais prêt à être utilisé.",
+        "es": "¿Por qué gastar mucho dinero en reuniones solo para que lo haga una IA? Quantz Interview ha sido desarrollado para ser 25 veces más rentable que los sistemas basados en infraestructura en la nube y APIs, gracias a que funciona completamente en nuestros propios servidores. El primer sistema de entrevistas autónomas práctico del mundo está listo para usar.",
+        "ar": "لماذا تنفق أموالاً كثيرة على الاجتماعات فقط لجعل الذكاء الاصطناعي يقوم بها؟ تم تطوير Quantz Interview ليكون أكثر فعالية من حيث التكلفة بمقدار 25 ضعفًا مقارنة بالأنظمة القائمة على البنية التحتية السحابية وواجهات برمجة التطبيقات، نظرًا لأنه يعمل بالكامل على خوادمنا. أول نظام عملي للمقابلات الذاتية في العالم جاهز الآن للاستخدام.",
+        "ru": "Зачем тратить деньги на встречи, чтобы их проводил ИИ? Quantz Interview разработан для того, чтобы быть в 25 раз более эффективным по затратам, чем системы на основе облачной инфраструктуры и API, благодаря тому, что он полностью работает на наших собственных серверах. Первая в мире практическая автономная система интервью готова к использованию."
     },
     "interview_top_technology_chart_left_price": {
         "en": "$20",
@@ -124,6 +124,15 @@
         "es": "Quantz Interview",
         "ar": "Quantz Interview",
         "ru": "Quantz Interview"
+    },
+    "interview_top_technology_price_annotation": {
+        "en": "The amount is calculated based on typical costs for voice interaction AI APIs, cloud usage, and profit margins. The price for Quantz Interview is based on a rate of $0.05 per response (as of November 2024), assuming an average of 8 responses per interview.",
+        "ja": "一般的な音声対話AIのAPI価格、クラウド費用、利益率に基づき当社で算出した金額です。Quantz Interviewの金額は1応答あたり$0.05の価格(2024年11月時点)に基づき、1インタビューあたり平均8応答として求めた価格です。",
+        "zh": "该金额基于典型的语音交互AI API费用、云使用成本以及利润率计算得出。Quantz Interview的价格基于每次响应$0.05的费率（截至2024年11月），假设每次采访平均有8次响应。",
+        "fr": "Le montant est calculé sur la base des coûts typiques des API d'intelligence artificielle pour les interactions vocales, des coûts de cloud et des marges bénéficiaires. Le prix de Quantz Interview est basé sur un tarif de 0,05 $ par réponse (en novembre 2024), en supposant une moyenne de 8 réponses par interview.",
+        "es": "El monto se calcula en función de los costos típicos de las API de inteligencia artificial para interacciones de voz, el uso de la nube y los márgenes de beneficio. El precio de Quantz Interview se basa en una tarifa de $0.05 por respuesta (a noviembre de 2024), suponiendo un promedio de 8 respuestas por entrevista.",
+        "ar": "المبلغ محسوب بناءً على التكاليف النموذجية لواجهات برمجة التطبيقات (API) الخاصة بالذكاء الاصطناعي للتفاعل الصوتي، واستخدام السحابة وهوامش الربح. سعر Quantz Interview يعتمد على معدل 0.05 دولار لكل استجابة (اعتبارًا من نوفمبر 2024)، بافتراض متوسط 8 استجابات لكل مقابلة.",
+        "ru": "Сумма рассчитана на основе типичных затрат на API для голосового взаимодействия с ИИ, использования облачных технологий и маржи прибыли. Цена на Quantz Interview основана на ставке $0,05 за ответ (по состоянию на ноябрь 2024 года), при средней продолжительности интервью в 8 ответов."
     },
     "interview_top_needs_recruiting_head": {
         "en": "Recruiting Interviews",
@@ -198,13 +207,13 @@
         "ru": "Создать шаблон встречи"
     },
     "interview_top_steps_step1_main": {
-        "en": "Create a Meeting Plan in Just 10 Minutes",
-        "ja": "たった10分で会議計画を作成",
-        "zh": "仅需 10 分钟创建会议计划",
-        "fr": "Créez un plan de réunion en seulement 10 minutes",
-        "es": "Cree un plan de reunión en solo 10 minutos",
-        "ar": "قم بإنشاء خطة اجتماع في 10 دقائق فقط",
-        "ru": "Создайте план встречи всего за 10 минут"
+        "en": "Create a Meeting Plan in Just 2 Minutes",
+        "ja": "たった2分で会議計画を作成",
+        "zh": "仅需 2 分钟创建会议计划",
+        "fr": "Créez un plan de réunion en seulement 2 minutes",
+        "es": "Cree un plan de reunión en solo 2 minutos",
+        "ar": "قم بإنشاء خطة اجتماع في 2 دقائق فقط",
+        "ru": "Создайте план встречи всего за 2 минут"
     },
     "interview_top_steps_step1_sub": {
         "en": "Simply outline a few scenarios and instructions, and you can set up the entire flow of conversation. No coding required, of course.",
@@ -306,13 +315,13 @@
         "ru": "Приглашение на первичное интервью"
     },
     "interview_top_steps_step3_mail_recruiting_text": {
-        "en": "Please complete your initial interview with AI using the link below",
-        "ja": "以下のリンクを使用してAIによる初回面接を完了してください",
-        "zh": "请使用以下链接完成您的AI初次面试",
-        "fr": "Veuillez compléter votre entretien initial avec l'IA en utilisant le lien ci-dessous",
-        "es": "Por favor, complete su entrevista inicial con IA usando el enlace a continuación",
-        "ar": "يرجى إكمال المقابلة الأولى باستخدام الرابط أدناه",
-        "ru": "Пожалуйста, пройдите первичное интервью с ИИ, используя ссылку ниже"
+        "en": "Please complete your initial interview with AI using the link below.",
+        "ja": "以下のリンクをクリックして、AIによる初回面接を完了してください。",
+        "zh": "请点击以下链接完成您的AI初次面试。",
+        "fr": "Veuillez cliquer sur le lien ci-dessous pour compléter votre entretien initial avec l'IA.",
+        "es": "Haga clic en el enlace a continuación para completar su entrevista inicial con IA.",
+        "ar": "يرجى النقر على الرابط أدناه لإكمال المقابلة الأولى مع الذكاء الاصطناعي.",
+        "ru": "Пожалуйста, нажмите на ссылку ниже, чтобы пройти первичное интервью с ИИ."
     },
     "interview_top_steps_step3_mail_recruiting_link": {
         "en": "https://quantz.thinkxinc.com/v1/en/interviews/4be68a2f3fcef6a7b59daff3",

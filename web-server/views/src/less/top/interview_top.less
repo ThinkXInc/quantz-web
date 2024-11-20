@@ -264,6 +264,8 @@ section#InterviewTop div#technology {
 section#InterviewTop div#technology div.container div.content-wrapper div.right {
     @left-bar-target: 20px;
     @right-bar-target: 180px;
+    flex-direction: column;
+    align-items: start;
     div#chart {
         position: relative;
         width: 40vw;
@@ -418,7 +420,17 @@ section#InterviewTop div#technology div.container div.content-wrapper div.right 
             transform: translateX(-50%);
         }
     }
-    
+    span.annotation {
+        max-width: 37vw;
+        font-size: 12px;
+        sup {
+            font-size: 75%;
+            top: 0.5em;
+            margin-right: 4px;
+        }
+        display: flex;
+        color: #4d4d4d;
+    }
 }
 
 section#InterviewTop div#needs {
@@ -1127,8 +1139,16 @@ section#InterviewTop div#register {
                     }
                 }
                 div.right {
+                    flex-direction: column;
+                    align-items: start;
                     div#chart {
                         width: 80vw;
+                    }
+                    span.annotation {
+                        max-width: 90vw;
+                        font-size: 11px;
+                        sup {
+                        }
                     }
                 }
             }
