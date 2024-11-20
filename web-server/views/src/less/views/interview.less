@@ -372,16 +372,25 @@ div#MeetingLeaveModalView.ModalView {
         }
         div.LeftContainer {
             div.VideoContainer {
+                padding: 30px 10px 30px 10px;
                 div.InterviewerView {
+                    width: 95vw;
+                    height: 191px;
                     video {
                     }
                     div.NameLabel {
                     }
                 }
                 div.SelfViewContainer {
+                    flex-direction: column;
                     div.NameLabel {
+                        bottom: 103px;
+                        left: 11px;
                     }
                     video.SelfView {
+                        width: 95vw;
+                        height: 191px;
+                        margin-bottom: 52px;
                     }
                     div.QBTN-balloon-container {
                         div.QBTN-balloon-rect {
@@ -395,6 +404,7 @@ div#MeetingLeaveModalView.ModalView {
             }
         }
         div.ChatView {
+            display: none;
             div.ChatLog {
                 ul.ChatLogMessageList {
                     li.messageItem {
@@ -418,6 +428,7 @@ div#MeetingLeaveModalView.ModalView {
         div.bg {
         }
         div.window {
+            width: 92vw;
             div.contentWrapper {
                 h3.ModalViewTitle {
                 }
