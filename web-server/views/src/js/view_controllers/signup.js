@@ -966,10 +966,10 @@ class Signup {
  
         const cardInputView = new CardInputView({
             id: 'CardInputView',
-            lagn: this.lang,
+            lang: this.lang,
             mountElementId: 'CardInputView',
-            redirectUrl: `https://quantz.thinkxinc.com/v1/${lang}/signup?page=limit&email=${this.user.email}`
-        })
+            redirectUrl: `https://quantz.thinkxinc.com/v1/${lang}/signup?page=limit&email=${this.user.email}&service=${new URLSearchParams(window.location.search).get('service') || ''}`
+        });
         this.cardInputView = cardInputView;
     } 
 
@@ -1334,12 +1334,23 @@ class Signup {
 
     handleEventCompletePage() {
         const _this = this;
-        this.completePageNextButton.$view.addEventListener('click', ()=> {
+        this.completePageNextButton.$view.addEventListener('click', () => {
             console.log('All done');
             this.completePageNextButton.load(true);
-            console.log('Redirecting to main page...');
-            window.location.href = `/v1/${lang}/home`;
-        })
+            console.log('Redirecting to the appropriate page...');
+    
+            // Check if `service` parameter exists in the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const service = urlParams.get('service');
+    
+            if (service === 'interview') {
+                // Redirect to interviews page
+                window.location.href = `/v1/${lang}/interviews`;
+            } else {
+                // Default redirection to home page
+                window.location.href = `/v1/${lang}/home`;
+            }
+        });
     }
 
     createRestrictedPage() {

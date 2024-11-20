@@ -39,7 +39,7 @@
     function redirectToSignup(tag) {
       // Build the URL dynamically based on whether a language is set
       const signupUrl = lang ? `/v1/${lang}/signup` : '/v1/signup';
-      window.location.href = signupUrl + `?tag=${tag}`;
+      window.location.href = signupUrl + `?tag=${tag}&service=interview`;
   }
 }
 </script>
@@ -52,12 +52,14 @@
             <div class="right-container">
                 <div class="button-wrapper">
                     <!-- Contact Button -->
-                    <button class="contact arrow-button">
-                        <p>{{ locale_dict["interview_top_header_button_contact"][lang] }}</p>
-                        <img class="arrow-icon" src="/img/interview_top/button-arrow.svg" alt="Arrow">
-                    </button>
+                    <a target="_blank" href="https://thinkxinc.com/{{ lang }}//inquiry/product">
+                        <button class="contact arrow-button">
+                            <p>{{ locale_dict["interview_top_header_button_contact"][lang] }}</p>
+                            <img class="arrow-icon" src="/img/interview_top/button-arrow.svg" alt="Arrow">
+                        </button>
+                    </a>
                     <!-- Try Now Button -->
-                    <button class="try-now arrow-button">
+                    <button onclick="redirectToSignup('header-top')" class="try-now arrow-button">
                         <p>{{ locale_dict["interview_top_header_button_try_now"][lang] }}</p>
                         <img class="arrow-icon" src="/img/interview_top/button-arrow.svg" alt="Arrow">
                     </button>
@@ -89,7 +91,7 @@
                     <!-- Main Copy -->
                     <h2 class="main-copy">{{ locale_dict["interview_top_header_main_copy"][lang] }}</h2>
                      <!-- Get Started Button -->
-                     <button class="get-start arrow-button">
+                     <button onclick="redirectToSignup('header-main')" class="get-start arrow-button">
                         <p>{{ locale_dict["interview_top_header_button_get_start"][lang] }}</p>
                         <img class="arrow-icon" src="/img/interview_top/button-arrow.svg" alt="Arrow">
                     </button>
@@ -295,7 +297,7 @@
     <!-- Register -->
     <div id="register">
         <div class="container">
-             <button class="register-button arrow-button">
+             <button onclick="redirectToSignup('register')" class="register-button arrow-button">
                 <p>{{ locale_dict["interview_top_signup_for_free_button"][lang] }}</p>
                 <img class="arrow-icon" src="/img/interview_top/button-arrow.svg" alt="Arrow">
             </button>
