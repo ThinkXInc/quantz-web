@@ -207,6 +207,9 @@ class InterviewTop {
     }
 
     layoutHeaderOnScrollPosition() {
+        if (window.innerWidth <= 480) {
+            return; // Exit the function if the screen width is 480px or less
+        }
         //console.warn(window.scrollY);
         // Key position components
         const HEADER_TOP_HEIGHT = this.$headerTop.offsetHeight;

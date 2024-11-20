@@ -1033,3 +1033,294 @@ section#InterviewTop div#register {
         }
     }
 }
+
+@tablet-width: 768px;
+@smartphone-width: 480px;
+
+@media (min-width: @tablet-width) {
+
+}
+
+@media (max-width: @smartphone-width) {
+    section#InterviewTop div#header {
+        div#header-top {
+            div.right-container {
+                div.button-wrapper {
+                    button.contact, button.try-now {
+                        padding: 12px 12px;
+                        p {
+                            font-size: 13px;
+                        }
+                        img.arrow-icon {
+                        }
+                    }
+                    button.try-now {
+                    }
+                    button.contact {
+                    }
+                }
+            }
+        }
+    
+        div#header-main {
+            div.header-with-logo {
+                div.center-container {
+                    h1.top-copy {
+                        font-size: 11px;
+                    }
+                    h1.top-copy.mutate {
+                    }
+                    img.logo {
+                        height: 48px;
+                    }
+                    img.logo.mutate {
+                    }
+                }
+                div.center-container.mutate {
+                }
+                div.center-container.mutate2 {
+                }
+            }
+    
+            div.header-main-main {
+                flex-direction: column;
+                div.left-container {
+                    max-width: 100%;
+                    padding: 34px 14px 42px 14px;
+                    margin-right: 0;
+                    h2.main-copy {
+                        font-size: 39px;
+                        margin-bottom: 36px;
+                        text-align: center;
+                    }
+                    button.get-start {
+                        p {
+                            font-size: 21px;
+                        }
+                        img.arrow-icon {
+                        }
+                    }
+                }
+                div.right-container {
+                    video {
+                    }
+                }
+            }
+        }
+    }
+    section#InterviewTop div#technology {
+        div.container {
+            padding: 73px 27px;
+            div.copy-wrapper {
+                h3.catch-copy {
+                }
+                h2.main-copy {
+                    span {
+                    }
+                }
+            }
+            div.content-wrapper {
+                flex-direction: column;
+                div.left {
+                    width: 100%;
+                    p.text {
+                    }
+                }
+                div.right {
+                    div#chart {
+                        width: 80vw;
+                    }
+                }
+            }
+        }
+    }
+
+    section#InterviewTop div#needs {
+        padding: 100px 22px 100px 22px;
+        div.container {
+            flex-direction: column;
+            div.part {
+                margin-bottom: 80px;
+                h4.title {
+                    margin-bottom: 20px;
+                }
+                div.box {
+                    p.comment {
+                        span.highlight {
+                        }
+                    }
+                }
+                div.circles {
+                    div.circle {
+                        &.M {
+                        }
+                        &.S {
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    section#InterviewTop div#steps {
+        div.steps-header {
+            ul.step-heads {
+                li.step-head {
+                    flex: auto;
+                    height: 97px;
+                    padding: 7px 11px;
+                    span.label {
+                        font-size: 12px;
+                    }
+                    span.title {
+                        font-size: 13px;
+                    }
+                }
+            }
+            div.indicator {
+                span.bar {
+                }
+            }
+        }
+        div.step-content-wrapper {
+            ul.step-contents {
+                li.step {
+                    min-height: 84vh;
+                    padding: 15px 15px;
+                    position: relative;    
+                    overflow: hidden;
+                    div.header {
+                        h2.step-copy {
+                            font-size: 26px;
+                            margin: 10px 0 13px 0;
+                        }
+                        h4.step-subcopy {
+                            font-size: 13px;
+                        }
+                    }
+                    div.video-background-sp {
+                        display: flex !important;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        opacity: 0.3;
+                        width: 100%;
+                        height: 100%;
+                        overflow: hidden;
+                        video {
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover; /* Ensures the video covers the area while maintaining aspect ratio */
+                        }
+                    }
+                    div.content {
+                        div.left {
+                            video {
+                            }
+                        }
+                        div.right {
+                        }
+                    }
+                    &.one.create {
+                        div.left {
+                            display: none;
+                        }
+                    }
+                    
+                    &.two.test {
+                        div.video-background-sp {
+                            video {
+                                width: 219%;
+                            }
+                        }
+                        div.header {
+                            h2.step-copy {
+                            }
+                        }
+                        div.content {
+                            div.left {
+                                display: none;
+                            }
+                            div.right {
+                                button.run-meeting {
+                                    margin-top: 100px;
+                                    p {
+                                    }
+                                    img.arrow-icon {
+                                    }
+                                }
+                                p.try-announce {
+                                }
+                            }
+                        }
+                    }
+                    &.three.send {
+                        div.mail-container {
+                            div.mail {
+                                width: 81vw;
+                                span.mail-recepient {
+                                    padding: 5px 42px;
+                                }
+                                span.mail-title {
+                                    padding: 5px 42px;
+                                }
+                                span.mail-text {
+                                    padding: 44px 42px;
+                                    span.url {
+                                    }
+                                }
+                                div.mail-footer {
+                                    div.send-button {
+                                        img.mail-icon {
+                                        }
+                                        p.send-button-label {
+                                        }
+                                        img.pointer {
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    &.four.result {
+                        div.header {
+                            h2.step-copy {
+                            }
+                        }
+                        div.content {
+                            div.container {
+                                div.smartphone {
+                                }
+                                div.laptop {
+                                    width: 87vw;
+                                }
+                                video.smartphone-video {
+                                    height: 100vw;
+                                }
+                                video.laptop-video {
+                                    width: 100vw;
+                                    top: -5%;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Register
+    section#InterviewTop div#register {
+        div.container {
+            button.register-button {
+                p {
+                    font-size: 21px;
+                }
+                img.arrow-icon {
+                }
+            }
+        }
+    }
+
+
+}
