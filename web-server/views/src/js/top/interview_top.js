@@ -19,30 +19,32 @@ class InterviewTop {
     }) {
         this.locale = locale;
         this.lang = lang;
-        this.currentStep = 1;
         this.currentKey = 'recruiting';
+        this.currentStep = 1;
+        this.currentStepKey = null;
 
-        // technology: chart
-        this.showChart();
+        // key elements
+        this.$interviewTop = document.getElementById('InterviewTop');
+        this.$headerTop = document.getElementById('header-top');
+        this.$headerMain = document.getElementById('header-main');
+        this.$headerWithLogo = document.getElementById('header-with-logo');
+        this.$stepsWrapper = document.getElementById('steps-wrapper'); // Added
+        this.$steps = document.getElementById('steps');
+        this.STEPS_TOP_Y = this.$steps.getBoundingClientRect().top + window.scrollY;
+        this.STEPS_WRAPPER_TOP_Y = this.$stepsWrapper.getBoundingClientRect().top + window.scrollY; // Updated
+
+        // scroll event listener
+        window.addEventListener('scroll', (event) => {
+            this.layoutHeaderOnScrollPosition();
+            this.layoutTecnhologyOnScrollPosition();
+            this.layoutStepsOnScrollPosition();
+        })
 
         // needs
         this.initNeedsSection();
+
+        // 
         this.updateMailTexts();
-
-        // steps
-        this.stepHeads = document.querySelectorAll('#steps .step-head');
-        this.stepContents = document.querySelectorAll('#steps .step');
-        this.bar = document.querySelector('#steps .indicator .bar');
-        this.stepsElement = document.getElementById('steps');
-        this.stepThresholds = [
-            0,    // Step 1 starts at 0px from stepsElement offsetTop
-            500,  // Step 2 starts at 500px
-            1000, // Step 3 starts at 1000px
-            1500  // Step 4 starts at 1500px
-        ];
-        //this.initSteps();
-        //this.initScrollListener();
-
 
         const defaultInterviewRecruiting = {
             "title": "Recruiting Interview",
@@ -89,12 +91,112 @@ class InterviewTop {
  
         // 4. result
         this.$smartphone = document.getElementById('smartphone');
-        this.$smartphone.innerHTML = this.smartphoneSvg();
-        this.startSmartphoneAnimation()
+        this.svgAnimationSmartphone = new SVGAnimation({svg: "smartphone"});
+        this.svgAnimationSmartphone.mount(this.$smartphone);
 
         this.$laptop = document.getElementById('laptop');
-        this.$laptop.innerHTML = this.laptopSvg();
-        this.startLaptopAnimation();
+        this.svgAnimationLaptop = new SVGAnimation({svg: "laptop"});
+        this.svgAnimationLaptop.mount(this.$laptop);
+    }
+
+    layoutHeaderOnScrollPosition() {
+        //console.warn(window.scrollY);
+        // Key position components
+        const HEADER_TOP_HEIGHT = this.$headerTop.offsetHeight;
+        const HEADER_WITH_LOGO_INITIAL_HEIGHT = this.$headerWithLogo.offsetHeight;
+        const HEADER_MAIN_HEIGHT = this.$headerMain.offsetHeight;
+        const Y_RANGE = HEADER_MAIN_HEIGHT - 40; // Define the range over which the transition occurs
+        const scrollStart = HEADER_TOP_HEIGHT;
+        const scrollEnd = HEADER_TOP_HEIGHT + Y_RANGE;
+    
+        const $centerContainer = this.$headerWithLogo.querySelector('.center-container');
+        const $logo = this.$headerWithLogo.querySelector('.logo');
+        const $topCopy = this.$headerWithLogo.querySelector('.top-copy');
+    
+        // Helper function to interpolate values
+        const interpolate = (start, goal, progress) => start + (goal - start) * progress;
+    
+        // Calculate the progress based on scroll position
+        const scrollValue = Math.max(0, Math.min(Y_RANGE, window.scrollY - scrollStart));
+        const progress = scrollValue / Y_RANGE;
+    
+        if (window.scrollY >= HEADER_TOP_HEIGHT) {
+            // Append the alternative header if not already appended
+            if (!document.getElementById('header-with-logo-alternative')) {
+                const $headerWithLogoAlternative = document.createElement('div');
+                $headerWithLogoAlternative.id = 'header-with-logo-alternative';
+                $headerWithLogoAlternative.style.height = `${HEADER_WITH_LOGO_INITIAL_HEIGHT}px`;
+                $headerWithLogoAlternative.style.background = '#1a1a1a';
+                this.$headerMain.insertBefore($headerWithLogoAlternative, this.$headerMain.firstChild);
+            }
+
+            //this.$headerTop.style.marginBottom = `${HEADER_WITH_LOGO_INITIAL_HEIGHT}px`;
+            this.$headerWithLogo.style.position = 'fixed';
+            this.$headerWithLogo.style.top = '0';
+            this.$headerWithLogo.style.zIndex = '99';
+            this.$headerWithLogo.style.background = '#000';//'#0d1114';//'#000';
+            this.$headerWithLogo.style.width = '100%';
+
+            // Gradually update styles
+            this.$headerWithLogo.style.height = `${interpolate(100, 42, progress)}px`;
+            this.$headerWithLogo.style.opacity = `${interpolate(0, 0.8, progress)}`;
+    
+            $centerContainer.style.height = `${interpolate(100, 42, progress)}px`;
+            $centerContainer.style.width = `${interpolate(80, 100, progress)}%`; // Assuming original width is 80%
+    
+            $logo.style.position = 'absolute';
+            $logo.style.height = `${interpolate(71, 29, progress)}px`;
+            $logo.style.top = `${interpolate(20, 8, progress)}px`; // Assuming original top is 20px
+            $logo.style.left = `${interpolate(34, 84, progress)}vw`; // Assuming original left is 70vw
+    
+            $topCopy.style.position = 'absolute';
+            $topCopy.style.fontSize = `${interpolate(15, 12, progress)}px`;
+            $topCopy.style.left = `${interpolate(39, 66, progress)}vw`; // Assuming original left is 5px
+            $topCopy.style.top = `${interpolate(20, 13, progress)}px`; // Assuming original top is 20px
+        } else {
+            // Remove the alternative header if it exists
+            const $headerWithLogoAlternative = document.getElementById('header-with-logo-alternative');
+            if ($headerWithLogoAlternative) {
+                $headerWithLogoAlternative.remove();
+            }
+
+            this.$headerTop.style.marginBottom = ``;
+            this.$headerWithLogo.style.position = 'relative';
+            this.$headerWithLogo.style.background = '';
+            this.$headerWithLogo.style.opacity = '';
+            this.$headerWithLogo.style.width = '';
+
+
+            // Reset styles to original state
+            this.$headerWithLogo.style.top = '';
+            this.$headerWithLogo.style.height = '100px';
+    
+            $centerContainer.style.height = '100px';
+            $centerContainer.style.width = '80%';
+    
+            $logo.style.position = '';
+            $logo.style.height = '71px';
+            $logo.style.top = '20px';
+            $logo.style.left = '70vw';
+    
+            $topCopy.style.position = '';
+            $topCopy.style.fontSize = '15px';
+            $topCopy.style.left = '5px';
+            $topCopy.style.top = '20px';
+        }
+    }
+
+    layoutTecnhologyOnScrollPosition() {
+
+        // Key position components
+        this.$technology = document.getElementById('technology');
+        const TECHNOLOGY_TOP_Y = this.$technology.getBoundingClientRect().top + window.scrollY;
+        const ADJUST = -200;
+ 
+        if (window.scrollY >= TECHNOLOGY_TOP_Y + ADJUST) {
+            this.showChart();
+        } else {
+        }
     }
 
     showChart() {
@@ -129,60 +231,268 @@ class InterviewTop {
     }
 
 
-    initSteps() {
-        // Initially show the first step
-        this.showStep(1);
-    }
+    layoutStepsOnScrollPosition() {
+        const scrollTop = window.scrollY;
+    
+        // Key elements
+        const $steps = document.getElementById('steps');
+        const $stepsHeader = document.getElementById('steps-header');
+        const $stepsIndicator = document.getElementById('steps-indicator');
+        const $stepsIndicatorBar = document.getElementById('steps-indicator-bar');
+    
+        const $stepCreate = document.getElementById('step-create');
+        const $stepTest = document.getElementById('step-test');
+        const $stepSend = document.getElementById('step-send'); // Updated to 'send'
+        const $stepResult = document.getElementById('step-result');
+    
+        // Initial setup
+        const SCROLL_START = this.STEPS_TOP_Y;
+    
+        // Y-ranges for each step
+        const Y_RANGE_CREATE = 4000;
+        const Y_RANGE_TEST = 4000;
+        const Y_RANGE_SEND = 4000;
+        const Y_RANGE_RESULT = 8000;
+    
+        // Start and end positions of each step
+        const Y_CREATE_START = SCROLL_START;
+        const Y_CREATE_END = Y_CREATE_START + Y_RANGE_CREATE;
+        const Y_TEST_START = Y_CREATE_END;
+        const Y_TEST_END = Y_TEST_START + Y_RANGE_TEST;
+        const Y_SEND_START = Y_TEST_END;
+        const Y_SEND_END = Y_SEND_START + Y_RANGE_SEND;
+        const Y_RESULT_START = Y_SEND_END;
+        const Y_RESULT_END = Y_RESULT_START + Y_RANGE_RESULT;
+    
+        // Helper function to calculate progress
+        const calculateProgress = (scrollStart, range, currentScroll) => {
+            const scrollValue = Math.max(0, Math.min(range, currentScroll - scrollStart));
+            return scrollValue / range;
+        };
+    
+        // Calculate overall progress
+        const TOTAL_RANGE = Y_RANGE_CREATE + Y_RANGE_TEST + Y_RANGE_SEND + Y_RANGE_RESULT;
+        const overallProgress = calculateProgress(SCROLL_START, TOTAL_RANGE, scrollTop);
 
-    initScrollListener() {
-        window.addEventListener('scroll', () => this.onScroll());
-    }
+        this.$stepsWrapper.style.height = `${TOTAL_RANGE + 400}px`;
+    
+        // Calculate progress for each step
+        const progressCreate = calculateProgress(Y_CREATE_START, Y_RANGE_CREATE, scrollTop);
+        const progressTest = calculateProgress(Y_TEST_START, Y_RANGE_TEST, scrollTop);
+        const progressSend = calculateProgress(Y_SEND_START, Y_RANGE_SEND, scrollTop); // Updated to 'send'
+        const progressResult = calculateProgress(Y_RESULT_START, Y_RANGE_RESULT, scrollTop);
+    
+        // Update indicator bar width
+        if ($stepsIndicatorBar) {
+            $stepsIndicatorBar.style.width = `${overallProgress * 100}%`;
+        }
+    
+        // Implement position fixing for $steps
+        if (scrollTop >= SCROLL_START && scrollTop <= SCROLL_START + TOTAL_RANGE) {
+            this.$headerWithLogo.style.display = 'none';
 
-    onScroll() {
-        const scrollTop = window.scrollY || window.pageYOffset;
-        const stepsOffsetTop = this.stepsElement.offsetTop;
-        const scrollPosition = scrollTop - stepsOffsetTop;
+            this.$steps.style.position = 'fixed';
+            this.$steps.style.top = '0';
 
-        // Determine current step based on scrollPosition and thresholds
-        let newStep = 1;
-        for (let i = 0; i < this.stepThresholds.length; i++) {
-            if (scrollPosition >= this.stepThresholds[i]) {
-                newStep = i + 1;
+        } else {
+            if (scrollTop < SCROLL_START) {
+                this.$headerWithLogo.style.display = 'flex';
+            }
+            this.$steps.style.position = '';
+            this.$steps.style.top = '';
+        }
+
+        // Helper functions
+        const getCurrentStep = (scrollTop) => {
+            if (scrollTop >= Y_CREATE_START && scrollTop < Y_CREATE_END) {
+                return 'create';
+            } else if (scrollTop >= Y_TEST_START && scrollTop < Y_TEST_END) {
+                return 'test';
+            } else if (scrollTop >= Y_SEND_START && scrollTop < Y_SEND_END) {
+                return 'send';
+            } else if (scrollTop >= Y_RESULT_START && scrollTop <= Y_RESULT_END) {
+                return 'result';
+            } else {
+                return null;
+            }
+        }
+    
+        const didStepSwitch = (newStepKey) => {
+            // Remove .highlight from all step heads
+            const stepHeads = $stepsHeader.querySelectorAll('.step-head');
+            stepHeads.forEach(stepHead => stepHead.classList.remove('highlight'));
+    
+            // Add .highlight to the current step head
+            const currentStepHead = $stepsHeader.querySelector(`.step-head.${newStepKey}`);
+            if (currentStepHead) {
+                currentStepHead.classList.add('highlight');
+            }
+    
+            // Hide all steps
+            $stepCreate.classList.remove('show');
+            $stepTest.classList.remove('show');
+            $stepSend.classList.remove('show'); // Updated to 'send'
+            $stepResult.classList.remove('show');
+    
+            // Show the current step
+            switch (newStepKey) {
+                case 'create':
+                    $stepCreate.classList.add('show');
+                    break;
+                case 'test':
+                    $stepTest.classList.add('show');
+                    break;
+                case 'send': // Updated to 'send'
+                    $stepSend.classList.add('show');
+                    break;
+                case 'result':
+                    $stepResult.classList.add('show');
+                    break;
             }
         }
 
-        if (newStep !== this.currentStep) {
-            this.showStep(newStep);
+    
+        // Determine the current step
+        const newStepKey = getCurrentStep(scrollTop);
+    
+        // Check if the step has changed and call didStepSwitch
+        if (newStepKey && newStepKey !== this.currentStepKey) {
+            this.currentStepKey = newStepKey;
+            didStepSwitch(newStepKey);
         }
 
-        // Update progress bar
-        const totalThreshold = this.stepThresholds[this.stepThresholds.length - 1];
-        let progress = (scrollPosition / totalThreshold) * 100;
-        progress = Math.min(Math.max(progress, 0), 100);
-        this.bar.style.width = `${progress}%`;
-    }
+        const mapProgressClamped = (value, start, end) => {
+            const progress = (value - start) / (end - start);
+            return Math.max(0, Math.min(1, progress));
+        };
 
-    showStep(stepNumber) {
-        this.currentStep = stepNumber;
+        switch (newStepKey) {
+            case 'create':
+                // Get input elements
+                const introductionInput = $stepCreate.querySelector('input.introductionform');
+                const question0Input = $stepCreate.querySelector('input.question_0form');
+                const question1Input = $stepCreate.querySelector('input.question_1form');
+                const endInput = $stepCreate.querySelector('input.endform');
+    
+                // Decide which input to focus on
+                if (progressCreate > 0.1 && progressCreate <= 0.3) {
+                    if (document.activeElement !== introductionInput) {
+                        introductionInput.focus();
+                    }
+                } else if (progressCreate > 0.3 && progressCreate <= 0.5) {
+                    if (document.activeElement !== question0Input) {
+                        question0Input.focus();
+                    }
+                } else if (progressCreate > 0.5 && progressCreate <= 0.8) {
+                    if (document.activeElement !== question1Input) {
+                        question1Input.focus();
+                    }
+                } else if (progressCreate > 0.8 && progressCreate <= 1.0) {
+                    if (document.activeElement !== endInput) {
+                        endInput.focus();
+                    }
+                } else {
+                    // Remove focus from any of them
+                    if (document.activeElement === introductionInput || document.activeElement === question0Input || document.activeElement === question1Input || document.activeElement === endInput) {
+                        document.activeElement.blur();
+                    }
+                }
+                break;
+            case 'test':
+                // Add or remove 'on' class based on progressTest
+                const runMeetingButton = document.getElementById('run-meeting-button');
+                if (progressTest >= 0.6 && progressTest <= 1.0) {
+                    runMeetingButton.classList.add('on');
+                } else {
+                    runMeetingButton.classList.remove('on');
+                }
+                break;
+            case 'send':
+                // Call updateMailTexts() only once when progressSend is < 0.1
+                if (progressSend < 0.1 && !this.mailTextsUpdated) {
+                    this.updateMailTexts();
+                    this.mailTextsUpdated = true;
+                }
+                break;
+            case 'result':
+                // Get the elements
+                const $result = document.getElementById('step-result');
+                const $smartphone = document.getElementById('smartphone');
+                const $smartphoneVideo = document.getElementById('smartphone-video');
+                const $laptop = document.getElementById('laptop');
+                const $laptopVideo = document.getElementById('laptop-video');
 
-        // Update step contents
-        this.stepContents.forEach((stepContent, index) => {
-            if (index === stepNumber - 1) {
-                stepContent.classList.add('show');
-            } else {
-                stepContent.classList.remove('show');
-            }
+                // 1) Between 0.1 and 0.3, update svgAnimationSmartphone
+                {
+                    const progress = mapProgressClamped(progressResult, 0.1, 0.5);
+                    this.svgAnimationSmartphone.update(progress);
+                }
+
+                // 2) Between 0.2 and 0.4, move smartphone and scale smartphone-video
+                {
+                    const progress = mapProgressClamped(progressResult, 0.2, 0.4);
+                    const targetX = -$result.offsetWidth/4 * progress;
+                    $smartphone.style.transform = `translateX(${targetX}px)`;
+
+                    const scale = progress;
+                    $smartphoneVideo.style.transform = `scale(${scale})`;
+                }
+
+                // 3) Between 0.4 and 0.6, set opacity of smartphone and smartphone-video
+                {
+                    const progress = mapProgressClamped(progressResult, 0.2, 0.4);
+                    const opacity = 1 - progress;
+                    $smartphone.style.opacity = opacity;
+                }
+                {
+                    const progress = mapProgressClamped(progressResult, 0.5, 0.6);
+                    const opacity = 1 - progress;
+                    $smartphoneVideo.style.opacity = opacity;
+                }
+
+                // 4) Between 0.5 and 0.7, update svgAnimationLaptop
+                {
+                    const progress = mapProgressClamped(progressResult, 0.6, 0.9);
+                    this.svgAnimationLaptop.update(progress);
+                }
+
+                // 4) Between 0.5 and 0.7, move laptop and scale laptop-video
+                {
+                    const progress = mapProgressClamped(progressResult, 0.7, 0.9);
+                    const targetX = -$result.offsetWidth/4 * progress;
+                    $laptop.style.transform = `translateX(${targetX}px)`;
+
+                    const scale = progress;
+                    $laptopVideo.style.transform = `scale(${scale})`;
+                }
+
+                // 5) Between 0.7 and 0.9, set opacity of laptop and laptop-video
+                {
+                    const progress = mapProgressClamped(progressResult, 0.8, 0.9);
+                    const opacity = 1 - progress;
+                    $laptop.style.opacity = opacity;
+                }
+                {
+                    const progress = mapProgressClamped(progressResult, 0.9, 1.0);
+                    const opacity = 1 - progress;
+                    $laptopVideo.style.opacity = opacity;
+                }
+
+
+
+                break;
+        }
+    
+        // Debugging: Log progress for development
+        console.log({
+            overallProgress,
+            progressCreate,
+            progressTest,
+            progressSend,
+            progressResult,
         });
-
-        // Update step-head highlights
-        this.stepHeads.forEach((stepHead, index) => {
-            if (index === stepNumber - 1) {
-                stepHead.classList.add('highlight');
-            } else {
-                stepHead.classList.remove('highlight');
-            }
-        });
     }
+        
 
     updateMailTexts() {
         const key = this.currentKey;
@@ -277,7 +587,51 @@ class InterviewTop {
         const textIntervalId = setInterval(updateText, 15);
     }
 
-    smartphoneSvg() {
+}
+
+class SVGAnimation {
+    constructor({ svg }) {
+        this.defaultDashOffset = 2000;
+
+        this.svgMap = {
+            smartphone: SVGAnimation.smartphoneSvg,
+            laptop: SVGAnimation.laptopSvg,
+        };
+
+        if (!this.svgMap[svg]) {
+            throw new Error(`Unsupported SVG type: ${svg}`);
+        }
+
+        this.$svgElement = SVGAnimation.createSvgElement(this.svgMap[svg]());
+        this.paths = Array.from(this.$svgElement.querySelectorAll('.st0'));
+        //this.pathLengths = this.paths.map(path => path.getTotalLength());
+
+        //// Initialize the paths with the correct stroke-dasharray and stroke-dashoffset
+        //this.paths.forEach((path, index) => {
+        //    const length = this.pathLengths[index];
+        //    path.style.strokeDasharray = length;
+        //    path.style.strokeDashoffset = length; // Initially hidden
+        //});
+        this.update(0);
+    }
+
+    static createSvgElement(svgString) {
+        const $container = document.createElement('div');
+        $container.innerHTML = svgString.trim();
+        return $container.firstElementChild;
+    }
+
+    mount(container) {
+        container.appendChild(this.$svgElement);
+    }
+
+    update(progress) {
+        this.paths.forEach((path, index) => {
+            path.style.strokeDashoffset = this.defaultDashOffset * (1 - progress);
+        });
+    }
+
+    static smartphoneSvg(color = "#3784b0") {
         return `
             <svg
                 version="1.1"
@@ -293,11 +647,11 @@ class InterviewTop {
                 <style type="text/css">
                     .st0 {
                         fill: none;
-                        stroke: #00FFFF;
+                        stroke: ${color};
                         stroke-miterlimit: 10;
                         stroke-dasharray: 1000;
-                        stroke-dashoffset: 1000;
-                        transition: stroke-dashoffset 2s linear;
+                        stroke-dashoffset: ${this.defaultDashOffset};
+                        //transition: stroke-dashoffset 2s linear;
                     }
 
                     /* Animation when the .animate class is added */
@@ -309,7 +663,7 @@ class InterviewTop {
                     <path
                         class="st0"
                         d="M47.2,33.2l124.6-20.5c0,0,6,1.2,6,7.7s-20,345.7-20,345.7s-0.8,7.3-6,7.3c-5.3,0-125.4-6.6-125.4-6.6
-            		s-6,0-5.3-8.5S35.5,46.3,35.5,46.3S37,34.3,47.2,33.2z"
+            		    s-6,0-5.3-8.5S35.5,46.3,35.5,46.3S37,34.3,47.2,33.2z"
                     />
                     <path
                         class="st0"
@@ -332,7 +686,7 @@ class InterviewTop {
                     <path
                         class="st0"
                         d="M45.1,31.1L170.7,8.8c0,0,10.7,0.6,10.7,10.2s-19.2,348.4-19.2,348.4s-2.3,13-9.6,11.9
-            		c-7.3-1.1-128.2-9-128.2-9s-6.5-1.3-6.2-9.5c0.3-8.2,15.2-314.9,15.2-314.9S35.9,32.6,45.1,31.1"
+            		    c-7.3-1.1-128.2-9-128.2-9s-6.5-1.3-6.2-9.5c0.3-8.2,15.2-314.9,15.2-314.9S35.9,32.6,45.1,31.1"
                     />
                     <path
                         class="st0"
@@ -342,7 +696,7 @@ class InterviewTop {
                     <path
                         class="st0"
                         d="M181.1,81.1c0,0,0.6-2.1,1.5-1.9c0.9,0.2,3-0.9,3,1.9s-2.6,42.7-2.6,42.7s-0.9,0.6-1.9,0.4
-            		c-0.9-0.2-2.3-1.5-2.3-2.8S181.1,81.1,181.1,81.1z"
+            		    c-0.9-0.2-2.3-1.5-2.3-2.8S181.1,81.1,181.1,81.1z"
                     />
                     <polygon
                         class="st0"
@@ -351,32 +705,21 @@ class InterviewTop {
                     <line class="st0" x1="162.2" y1="368.3" x2="174.4" y2="369" />
                 </g>
             </svg>
-
         `;
     }
 
-    laptopSvg() {
-
-    }
-
-    startSmartphoneAnimation() {
-        setTimeout(() => {
-            this.$smartphone.querySelector('svg').classList.add('animate');
-        }, 50); // Delay to ensure proper rendering
-    }
-
-    laptopSvg() {
+    static laptopSvg(color = "#00FFFF") {
         return `
             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                 viewBox="0 0 721.7 439.3" style="enable-background:new 0 0 721.7 439.3;" xml:space="preserve">
                 <style type="text/css">
                     .st0 {
                         fill: none;
-                        stroke: #00FFFF;
+                        stroke: ${color};
                         stroke-miterlimit: 10;
                         stroke-dasharray: 2000;
-                        stroke-dashoffset: 2000;
-                        transition: stroke-dashoffset 2s linear;
+                        stroke-dashoffset: ${this.defaultDashOffset};
+                        //transition: stroke-dashoffset 2s linear;
                     }
                 
                     /* Animation when the .animate class is added */
@@ -423,10 +766,5 @@ class InterviewTop {
         `;
     }
 
-    startLaptopAnimation() {
-        setTimeout(() => {
-            this.$laptop.querySelector('svg').classList.add('animate');
-        }, 50); // Delay to ensure proper rendering
-    }
 
 }

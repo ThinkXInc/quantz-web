@@ -72,7 +72,7 @@
         <!-- Header Main -->
         <div id="header-main">
             <!-- Main Top Section -->
-            <div class="header-main-top">
+            <div id="header-with-logo" class="header-with-logo">
                 <div class="left-container"></div>
                 <div class="center-container">
                     <!-- Top Copy -->
@@ -96,7 +96,7 @@
                </div>
                 <div class="right-container">
                     <!-- Video -->
-                    <video src="/video/interview/top/interview-top.mp4" autoplay controls loop playsinline></video>
+                    <video src="/video/interview/top/interview-top.mp4" autoplay controls muted loop playsinline></video>
                 </div>
             </div>
         </div>
@@ -190,103 +190,105 @@
     </div>
 
     <!-- Steps -->
-    <div id="steps">
-        <div class="steps-header">
-            <ul class="step-heads">
-                <li class="step-head one create">
-                    <span class="label">{{ locale_dict["interview_top_steps_step1"][lang] }}</span>
-                    <span class="title">{{ locale_dict["interview_top_steps_step1_title"][lang] }}</span>
-                </li>
-                <li class="step-head two test">
-                    <span class="label">{{ locale_dict["interview_top_steps_step2"][lang] }}</span>
-                    <span class="title">{{ locale_dict["interview_top_steps_step2_title"][lang] }}</span>
-                </li>
-                <li class="step-head three send">
-                    <span class="label">{{ locale_dict["interview_top_steps_step3"][lang] }}</span>
-                    <span class="title">{{ locale_dict["interview_top_steps_step3_title"][lang] }}</span>
-                </li>
-                <li class="step-head four result">
-                    <span class="label">{{ locale_dict["interview_top_steps_step4"][lang] }}</span>
-                    <span class="title">{{ locale_dict["interview_top_steps_step4_title"][lang] }}</span>
-                </li>
-            </ul>
-            <div class="indicator">
-                <span class="bar"></span>
+    <div id="steps-wrapper">
+        <div id="steps">
+            <div id="steps-header" class="steps-header">
+                <ul class="step-heads">
+                    <li class="step-head one create">
+                        <span class="label">{{ locale_dict["interview_top_steps_step1"][lang] }}</span>
+                        <span class="title">{{ locale_dict["interview_top_steps_step1_title"][lang] }}</span>
+                    </li>
+                    <li class="step-head two test">
+                        <span class="label">{{ locale_dict["interview_top_steps_step2"][lang] }}</span>
+                        <span class="title">{{ locale_dict["interview_top_steps_step2_title"][lang] }}</span>
+                    </li>
+                    <li class="step-head three send">
+                        <span class="label">{{ locale_dict["interview_top_steps_step3"][lang] }}</span>
+                        <span class="title">{{ locale_dict["interview_top_steps_step3_title"][lang] }}</span>
+                    </li>
+                    <li class="step-head four result">
+                        <span class="label">{{ locale_dict["interview_top_steps_step4"][lang] }}</span>
+                        <span class="title">{{ locale_dict["interview_top_steps_step4_title"][lang] }}</span>
+                    </li>
+                </ul>
+                <div id="steps-indicator" class="indicator">
+                    <span id="steps-indicator-bar" class="bar"></span>
+                </div>
             </div>
-        </div>
-        <div class="step-content-wrapper">
-            <ul class="step-contents">
-                {# 1. create #}
-                <li class="step one create show">
-                    <div class="header">
-                        <h2 class="step-copy">{{ locale_dict["interview_top_steps_step1_main"][lang] }}</h2>
-                        <h4 class="step-subcopy">{{ locale_dict["interview_top_steps_step1_sub"][lang] }}</h4> 
-                    </div>
-                    <div class="content">
-                        <div class="left">
-                            <video src="/video/interview/top/interview-create.mp4" autoplay muted loop playsinline></video>
+            <div class="step-content-wrapper">
+                <ul class="step-contents">
+                    {# 1. create #}
+                    <li id="step-create" class="step one create show">
+                        <div class="header">
+                            <h2 class="step-copy">{{ locale_dict["interview_top_steps_step1_main"][lang] }}</h2>
+                            <h4 class="step-subcopy">{{ locale_dict["interview_top_steps_step1_sub"][lang] }}</h4> 
                         </div>
-                        <div id="CreateInterviewDemo" class="right"></div>
-                        <p id="CreateInterviewDemoMessage"></p>
-                    </div>
-                </li>
-                {# 2. test #}
-                <li class="step two test show">
-                    <div class="header">
-                        <h2 class="step-copy">{{ locale_dict["interview_top_steps_step2_main"][lang] }}</h2>
-                    </div>
-                    <div class="content">
-                        <div class="left">
-                            <video src="/video/interview/top/interview-lara.mp4" autoplay muted loop playsinline></video>
+                        <div class="content">
+                            <div class="left">
+                                <video src="/video/interview/top/interview-create.mp4" autoplay muted loop playsinline></video>
+                            </div>
+                            <div id="CreateInterviewDemo" class="right"></div>
+                            <p id="CreateInterviewDemoMessage"></p>
                         </div>
-                    <div class="right">
-                        <button class="run-meeting arrow-button">
-                            <p>{{ locale_dict["interview_top_steps_step2_button"][lang] }}</p>
-                            <img class="arrow-icon" src="/img/interview_top/button-arrow.svg" alt="Arrow">
-                        </button>
-                        <p class="try-announce">{{ locale_dict["interview_top_steps_step2_button_suppply"][lang] }}</p>
-                    </div>
-                </li>
-                {# 3. mail #}
-                <li class="step three send show">
-                    <div class="header">
-                        <h2 class="step-copy">{{ locale_dict["interview_top_steps_step3_main"][lang] }}</h2>
-                    </div>
-                    <div class="mail-container">
-                        <div id="mail" class="mail">
-                            <span class="mail-recepient">{# interview_top_steps_step3_mail_{key}_recepient #}</span>
-                            <span class="mail-title">{# interview_top_steps_step3_mail_{key}_title #}</span>
-                            <span class="mail-text">
-                                {# interview_top_steps_step3_mail_{key}_text #}
-                                <!-- <span class="url">Your dynamic URL here</span> -->
-                            </span>
-                            <div class="mail-footer">
-                                <div class="send-button">
-                                    <img class="mail-icon" src="/img/interview_top/mail-icon.svg" alt="Mail Icon">
-                                    <p class="send-button-label">{{ locale_dict["interview_top_steps_step3_mail_send_button"][lang] }}</p>
-                                    <img class="pointer" src="/img/interview_top/pointer.png" alt="Mail Icon">
+                    </li>
+                    {# 2. test #}
+                    <li id="step-test" class="step two test show">
+                        <div class="header">
+                            <h2 class="step-copy">{{ locale_dict["interview_top_steps_step2_main"][lang] }}</h2>
+                        </div>
+                        <div class="content">
+                            <div class="left">
+                                <video src="/video/interview/top/interview-lara.mp4" autoplay muted loop playsinline></video>
+                            </div>
+                        <div class="right">
+                            <button id="run-meeting-button" class="run-meeting arrow-button">
+                                <p>{{ locale_dict["interview_top_steps_step2_button"][lang] }}</p>
+                                <img class="arrow-icon" src="/img/interview_top/button-arrow.svg" alt="Arrow">
+                            </button>
+                            <p class="try-announce">{{ locale_dict["interview_top_steps_step2_button_suppply"][lang] }}</p>
+                        </div>
+                    </li>
+                    {# 3. send #}
+                    <li id="step-send" class="step three send show">
+                        <div class="header">
+                            <h2 class="step-copy">{{ locale_dict["interview_top_steps_step3_main"][lang] }}</h2>
+                        </div>
+                        <div class="mail-container">
+                            <div id="mail" class="mail">
+                                <span class="mail-recepient">{# interview_top_steps_step3_mail_{key}_recepient #}</span>
+                                <span class="mail-title">{# interview_top_steps_step3_mail_{key}_title #}</span>
+                                <span class="mail-text">
+                                    {# interview_top_steps_step3_mail_{key}_text #}
+                                    <!-- <span class="url">Your dynamic URL here</span> -->
+                                </span>
+                                <div class="mail-footer">
+                                    <div class="send-button">
+                                        <img class="mail-icon" src="/img/interview_top/mail-icon.svg" alt="Mail Icon">
+                                        <p class="send-button-label">{{ locale_dict["interview_top_steps_step3_mail_send_button"][lang] }}</p>
+                                        <img class="pointer" src="/img/interview_top/pointer.png" alt="Mail Icon">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </li>
-                {# 4. result #}
-                <li class="step four result show">
-                    <div class="header">
-                        <h2 class="step-copy">{{ locale_dict["interview_top_steps_step4_main"][lang] }}</h2>
-                    </div>
-                    <div class="content">
-                        <div class="left">
-                            <div id="smartphone" class="smartphone"></div>
-                            <div id="laptop" class="laptop"></div>
-                            {#<img class="smartphone" src="/img/interview_top/smartphone-animate.svg"/>#}
-                            {#<img class="laptop" src="/img/interview_top/laptop.svg"/>#}
-                            <video class="smartphone-video" src="/video/interview/top/smartphone-mail-result.mp4" autoplay muted loop playsinline></video>
-                            <video class="laptop-video" src="/video/interview/top/interview-result-pc.mp4" autoplay muted loop playsinline></video>
+                    </li>
+                    {# 4. result #}
+                    <li id="step-result" class="step four result show">
+                        <div class="header">
+                            <h2 class="step-copy">{{ locale_dict["interview_top_steps_step4_main"][lang] }}</h2>
                         </div>
-                    </div>
-                </li>
-            </ul>
+                        <div class="content">
+                            <div class="container">
+                                <div id="smartphone" class="smartphone"></div>
+                                <div id="laptop" class="laptop"></div>
+                                {#<img class="smartphone" src="/img/interview_top/smartphone-animate.svg"/>#}
+                                {#<img class="laptop" src="/img/interview_top/laptop.svg"/>#}
+                                <video id="smartphone-video" class="smartphone-video" src="/video/interview/top/smartphone-mail-result.mp4" autoplay muted loop playsinline></video>
+                                <video id="laptop-video" class="laptop-video" src="/video/interview/top/interview-result-pc.mp4" autoplay muted loop playsinline></video>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 

@@ -1,7 +1,9 @@
 @cubic-bezier1: cubic-bezier(.65, 0, .34, 1);
 
-
 section#InterviewTop {
+    background-color: #1a1a1a;
+    overflow-x: hidden;
+    width: 100%;
     button.arrow-button {
         padding: 5px 12px;
         border: 2px solid;
@@ -80,16 +82,16 @@ section#InterviewTop div#header {
 
     div#header-main {
         height: calc(100vh - 100px);
-        padding: 5px 20px;
         background: #1a1a1a;
         display: flex;
         flex-direction: column;
 
-        div.header-main-top {
+        div.header-with-logo {
             height: 100px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 5px 0 0 0;
 
             div.center-container {
                 display: flex;
@@ -102,13 +104,34 @@ section#InterviewTop div#header {
                     margin-bottom: 3px;
                     font-weight: 200;
                 }
+                h1.top-copy.mutate {
+                    font-size: 12px;
+                    position: absolute;
+                    left: 0;
+                    top: 13px;
+                }
 
                 img.logo {
                     height: 71px;
                 }
+
+                img.logo.mutate {
+                    height: 29px;
+                    position: absolute;
+                    top: 8px;
+                    left: 84vw;
+                }
             }
 
             div.center-container.mutate {
+                height: 42px;
+                position: fixed;
+                background: #000;
+                opacity: 0.9;
+                width: 100%;
+                top: 0;
+            }
+            div.center-container.mutate2 {
                 position: fixed;
                 z-index: 99;
                 left: 80%;
@@ -125,6 +148,7 @@ section#InterviewTop div#header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 0 20px;
 
             div.left-container {
                 display: flex;
@@ -165,9 +189,13 @@ section#InterviewTop div#header {
             }
 
             div.right-container {
-                //flex: 1; // remaining space
+                min-width: 50vw; /* or a fixed width in pixels */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            
                 video {
-                    width: 100%;
+                    max-width: 100%;
                     height: auto;
                 }
             }
@@ -176,6 +204,7 @@ section#InterviewTop div#header {
 }
 
 section#InterviewTop div#technology {
+    background: #fff;;
     div.container {
         padding: 75px 82px;
         div.copy-wrapper {
@@ -250,11 +279,15 @@ section#InterviewTop div#technology div.container div.content-wrapper div.right 
             span.emphasize {
                 position: absolute;
                 left: 72%;
-                top: -34px;
+                top: 130px;
                 font-size: 50px;
                 font-weight: 500;
                 color: #000;
                 z-index: 10;
+                opacity: 0;
+                transition:
+                    top 1s cubic-bezier(.65, 0, .34, 1),
+                    opacity 1s cubic-bezier(.65, 0, .34, 1);
             }
 
             span.left-bar,
@@ -317,6 +350,11 @@ section#InterviewTop div#technology div.container div.content-wrapper div.right 
 
                 span.right-bar {
                     height: @right-bar-target;
+                }
+
+                span.emphasize {
+                    top: -34px; /* Target position */
+                    opacity: 1; /* Fully visible */
                 }
 
                 ul.lines li.line:nth-child(1) {
@@ -412,6 +450,32 @@ section#InterviewTop div#needs {
                 }
             }
 
+            @keyframes breatheBox {
+                0%, 100% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.02);
+                }
+            }
+            @keyframes breatheCircleM {
+                0%, 100% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.2);
+                }
+            }
+            @keyframes breatheCircleS {
+                0%, 100% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.3);
+                }
+            }
+
+
             div.box {
                 position: relative;
                 padding: 26px 20px 50px 20px;
@@ -442,6 +506,7 @@ section#InterviewTop div#needs {
                     background: #28343b;
                     border: 1px solid #46565f;
                     transform: scale(1.02);
+                    animation: breatheBox 3.4s infinite @cubic-bezier1;
                 }
             }
 
@@ -478,10 +543,17 @@ section#InterviewTop div#needs {
                 div.circle {
                     background: #28343b;
                     border-color: #46565f;
+                    &.M {
+                        animation: breatheCircleM 2.4s infinite @cubic-bezier1;
+                    }
+                    &.S {
+                        animation: breatheCircleS 2s infinite @cubic-bezier1;
+                    }
                 }
             }
 
             &.highlight:hover div.box {
+                animation-play-state: paused;
                 transform: scale(1.03); /* Only scale the box */
                 div.circles {
                     div.circle {
@@ -522,6 +594,7 @@ section#InterviewTop div#needs {
 }
 
 section#InterviewTop div#steps {
+    width: 100%;
     div.steps-header {
         display: flex;
         flex-direction: column;
@@ -594,6 +667,10 @@ section#InterviewTop div#steps {
                 align-items: center;
                 padding: 50px 16px;
 
+                &.show {
+                    display: flex;
+                }
+
                 div.header {
                     display: flex;
                     flex-direction: column;
@@ -663,6 +740,10 @@ section#InterviewTop div#steps {
                             &:hover {
                                 background-color: lighten(#1a1a1a, 10%);
                             }
+
+                            &.on {
+                                background-color: lighten(#85d2ff, 10%);
+                            }
                         }
 
                         @keyframes moveUpDown {
@@ -684,6 +765,7 @@ section#InterviewTop div#steps {
                 }
                 &.three.send {
                     background-color: #fff;
+                    min-height: 80vh;
                     div.header {
                         h2.step-copy {
                         }
@@ -812,6 +894,7 @@ section#InterviewTop div#steps {
                 // 4. result
                 &.four.result {
                     background-color: #333333;
+                    min-height: 85vh;
                     div.header {
                         h2.step-copy {
                             color: #fff;
@@ -822,27 +905,33 @@ section#InterviewTop div#steps {
                         padding: 5px 20px;
                         display: flex;
                         flex-direction: row;
-                        div.left {
+                        div.container {
                             padding: 62px 0;
-                            img.smartphone {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            position: relative;
+                            width: 100%;
+                            div.smartphone {
+                                position: absolute;
                                 width: 148px;
                             }
-                            img.laptop {
-                                width: 300px;
+                            div.laptop {
+                                position: absolute;
+                                width: 513px;
                             }
                             video.smartphone-video {
-                                width: 20vw;
+                                height: 35vw;
+                                top: -5%;
+                                position: absolute;
                             }
                             video.laptop-video {
-
+                                height: 52vh;
+                                top: -5%;
+                                position: absolute;
                             }
                         }
-
-
                     }
-                }
-                &.show {
-                    display: flex;
                 }
             }
         }
