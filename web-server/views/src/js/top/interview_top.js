@@ -43,9 +43,7 @@ class InterviewTop {
         // needs
         this.initNeedsSection();
 
-        // 
-        this.updateMailTexts();
-
+        // Create meeting demo
         const defaultInterviewRecruiting = {
             "title": "Recruiting Interview",
             "introduction": "Hello, {name}. Are you ready?",
@@ -72,6 +70,8 @@ class InterviewTop {
             ]
         }
 
+        this.$createInterviewDemo = document.getElementById('CreateInterviewDemo')
+
         this.interviewCreateView = new InterviewCreateView({
             id: "InterviewCreateView",
             locale: this.locale,
@@ -85,9 +85,17 @@ class InterviewTop {
             },
             maxSteps: 3
         })
-        console.error(this.interviewCreateView);
-        console.error(document.getElementById('CreateInterviewDemo'))
-        this.interviewCreateView.mount(document.getElementById('CreateInterviewDemo'))
+        this.interviewCreateView.mount(this.$createInterviewDemo)
+
+        this.$createInterviewDemoMessage = document.createElement('p');
+        this.$createInterviewDemoMessage.id = "CreateInterviewDemoMessage";
+        this.$createInterviewDemo.appendChild(this.$createInterviewDemoMessage);
+
+
+        this.$runMeetingButton = document.getElementById('run-meeting-button')
+        this.$runMeetingButton.addEventListener('click', ()=> {
+            this.startDemoMeetinng()
+        })
  
         // 4. result
         this.$smartphone = document.getElementById('smartphone');
@@ -97,6 +105,105 @@ class InterviewTop {
         this.$laptop = document.getElementById('laptop');
         this.svgAnimationLaptop = new SVGAnimation({svg: "laptop"});
         this.svgAnimationLaptop.mount(this.$laptop);
+    }
+
+    scrollToCreateInterview() {
+        const targetY = this.STEPS_TOP_Y;
+        const duration = 500; // Smooth scroll duration in milliseconds
+        const startY = window.scrollY;
+        const startTime = performance.now();
+    
+        const smoothScroll = (currentTime) => {
+            const elapsedTime = currentTime - startTime;
+            const progress = Math.min(elapsedTime / duration, 1);
+            const easedProgress = progress * (2 - progress); // Ease-in-out
+    
+            window.scrollTo(0, startY + (targetY - startY) * easedProgress);
+    
+            if (progress < 1) {
+                window.requestAnimationFrame(smoothScroll);
+            }
+        };
+    
+        window.requestAnimationFrame(smoothScroll);
+    }
+
+
+    startDemoMeetinng() {
+        console.log(`[InterviewTop] clicked demo meeting button.`);
+        
+        if (this.$createInterviewDemoMessage) {
+            this.$createInterviewDemoMessage.classList.remove('alert', 'success');
+            this.$createInterviewDemoMessage.textContent = '';
+        } else {
+            console.error(`$createInterviewDemoMessage not exist.`);
+        }
+
+        const interviewJSON = this.interviewCreateView.interviewObjectFromFormData();
+        if (interviewJSON.steps.length < 2) {
+            interviewJSON.steps.push(
+                {
+                    "question": "Why are you interested in this position, and how do you think your skills align with the role?",
+                    "finish_condition": "Interviewee answered that they've finished.",
+                    "instructions": [
+                        "First, read the question.",
+                        "Ask if it's okay to stop at this good point."
+                    ],
+                    "max_turns": 3,
+                }
+            )
+        }
+        if (!interviewJSON || interviewJSON.steps.length < 2) {
+            console.warn('No interviewJSON');
+            const message = this.locale.get("interview_top_create_demo_please_input", this.lang);
+            this.$createInterviewDemoMessage.textContent = message;
+            this.$createInterviewDemoMessage.classList.add('alert');
+            this.scrollToCreateInterview();
+            setTimeout(()=>{
+                const $stepCreate = document.getElementById('step-create');
+                const question0Input = $stepCreate.querySelector('input.question_0form');
+                question0Input.focus()
+            }, 1000)
+            return;
+        }
+
+        // Convert interviewJSON into URL query parameters
+        const queryParams = new URLSearchParams({
+            title: interviewJSON.title,
+            introduction: interviewJSON.introduction,
+            end: interviewJSON.end,
+            steps: JSON.stringify(interviewJSON.steps) // Serialize the steps array
+        }).toString();
+
+        const url = `/${this.lang}/interview/demo?${queryParams}`;
+    
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.interview.id) {
+                    // open demo
+                    const demoUrl = `/v1/${this.lang}/interviews/${data.interview.id}`;
+                    console.log(`[InterviewTop] Redirecting to demo page: ${demoUrl}`);
+                    window.open(demoUrl, '_blank');
+                } else if(data.message) {
+                    this.$createInterviewDemoMessage.textContent = data.message;
+                    this.$createInterviewDemoMessage.classList.add('success');
+                } else {
+                    console.warn('No message in response');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching the demo interview page:', error);
+                if (error.message) {
+                    this.$createInterviewDemoMessage.textContent = message;
+                    this.$createInterviewDemoMessage.classList.add('alert');
+                    this.scrollToCreateInterview();
+                } else {
+                    this.$createInterviewDemoMessage.textContent = "unknown error";
+                    this.$createInterviewDemoMessage.classList.add('alert');
+                    this.scrollToCreateInterview();
+                }
+            });
     }
 
     layoutHeaderOnScrollPosition() {

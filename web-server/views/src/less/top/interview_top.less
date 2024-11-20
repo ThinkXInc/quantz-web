@@ -1,4 +1,5 @@
 @cubic-bezier1: cubic-bezier(.65, 0, .34, 1);
+@alert-red: #8c1111;
 
 section#InterviewTop {
     background-color: #1a1a1a;
@@ -938,57 +939,70 @@ section#InterviewTop div#steps {
     }
 }
 
-section#InterviewTop div#InterviewCreateView {
-    height: max-content !important;
-    div.InterviewCreateViewContainer {
+section#InterviewTop div#CreateInterviewDemo {
+    div#InterviewCreateView {
         height: max-content !important;
-        div.TextField {
-            div.inputOuter {
-                h6.title {}
-                div.inputWrapper {
-                    input.titleform {}
-                    div.inputAfter {}
-                }
-                div.footer {
-                    div.left {
-                        padding: 0 !important;
-                        span.indicator {}
+        div.InterviewCreateViewContainer {
+            height: max-content !important;
+            div.TextField {
+                div.inputOuter {
+                    h6.title {}
+                    div.inputWrapper {
+                        input.titleform {}
+                        div.inputAfter {}
                     }
-                    div.middle {
-                        span.message {}
+                    div.footer {
+                        div.left {
+                            padding: 0 !important;
+                            span.indicator {}
+                        }
+                        div.middle {
+                            span.message {}
+                        }
+                        div.right {}
                     }
-                    div.right {}
                 }
             }
-        }
-        div.titleContainer {
-            display: none;
-            div#titleForm.TextField.titleForm {
+            div.titleContainer {
+                display: none;
+                div#titleForm.TextField.titleForm {
+                }
             }
-        }
-        div.introductionContainer {
-            span.introductionLabel {}
-            div#introductionForm.TextField.introductionForm {
+            div.introductionContainer {
+                span.introductionLabel {}
+                div#introductionForm.TextField.introductionForm {
+                }
             }
-        }
-        div.stepContainer {
-            &[data-index="0"] {
-                h3.stepTitle {}
-                div.stepContent {}
+            div.stepContainer {
+                &[data-index="0"] {
+                    h3.stepTitle {}
+                    div.stepContent {}
+                }
+                &[data-index="1"] {
+                    h3.stepTitle {}
+                    div.stepContent {}
+                }
             }
-            &[data-index="1"] {
-                h3.stepTitle {}
-                div.stepContent {}
-            }
-        }
-        div.endContainer {
-            span.endLabel {}
-            div#endForm.TextField.endForm {
+            div.endContainer {
+                span.endLabel {}
+                div#endForm.TextField.endForm {
+                }
             }
         }
     }
-}
 
+    p#CreateInterviewDemoMessage {
+        display: block;
+        width: 100%;
+        font-size: 10px;
+        font-weight: bold;
+        color: #333;
+        text-align: center;
+        &.alert {
+            color: @alert-red;
+        }
+    }
+}
 
 // Register
 section#InterviewTop div#register {

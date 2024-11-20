@@ -133,5 +133,23 @@
         "fr": "Échec de la suppression de l'entretien.",
         "ru": "Не удалось удалить интервью.",
         "ar": "فشل في حذف المقابلة."
+    },
+    "interview_demo_create_error": {
+        "ja": "デモインタビューの作成に失敗しました。",
+        "en": "Failed to create the demo interview.",
+        "zh": "创建面试演示失败。",
+        "es": "Error al crear la entrevista de demostración.",
+        "fr": "Échec de la création de l'entretien de démonstration.",
+        "ru": "Не удалось создать демо-интервью.",
+        "ar": "فشل في إنشاء المقابلة التجريبية."
+    },
+    "interview_demo_input_error": {
+        "ja": "次の項目が空です。[$0]",
+        "en": "The following field is empty: [$0]",
+        "zh": "以下字段为空: [$0]",
+        "es": "El siguiente campo está vacío: [$0]",
+        "fr": "Le champ suivant est vide : [$0]",
+        "ru": "Следующее поле пусто: [$0]",
+        "ar": "الحقل التالي فارغ: [$0]"
     }
 }

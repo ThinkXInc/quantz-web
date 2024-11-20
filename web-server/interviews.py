@@ -136,6 +136,94 @@ def interview_top(lang, lang_name):
         locale_dict=locale.dict(),
         metadata=locale.dict()["metadata_interview_top"][lang])
  
+@blueprint_interviews.route('/<lang>/interview/demo', methods=['GET'])
+@language_wrapper
+def interview_demo(lang, lang_name):
+    logger.info(magenta(f'[GET] /{lang}/interview/demo'))
+
+    # 0. Get parameters
+    try:
+        logger.info(cyan("Attempting to retrieve parameters from the request"))
+        title = request.args.get('title', '').strip()
+        introduction = request.args.get('introduction', '').strip()
+        end = request.args.get('end', '').strip()
+        steps = request.args.get('steps', '[]')  # Default to empty list if not provided
+        steps = json.loads(steps)  # Parse the steps JSON string into a Python list
+        logger.info(yellow(f"Parameters received - Title: {title}, Introduction: {introduction}, End: {end}, Steps: {steps}"))
+    except Exception as e:
+        logger.error(red(f"Failed to parse parameters: {e}"))
+        message = f"{locale.get('interview_demo_create_error', lang)}: {e}"
+        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+
+    # Check if empty
+    if not title:
+        key = 'title'
+        message = locale.get('interview_demo_input_error', lang, [key])
+        logger.error(red(f"Validation error: Title is empty"))
+        return UnexpectedAPIErrorFormat(lang=lang, field_name=key, message=message).http_response()
+
+    if not introduction:
+        key = 'introduction'
+        message = locale.get('interview_demo_input_error', lang, [key])
+        logger.error(red(f"Validation error: Introduction is empty"))
+        return UnexpectedAPIErrorFormat(lang=lang, field_name=key, message=message).http_response()
+
+    if not end:
+        key = 'end'
+        message = locale.get('interview_demo_input_error', lang, [key])
+        logger.error(red(f"Validation error: End is empty"))
+        return UnexpectedAPIErrorFormat(lang=lang, field_name=key, message=message).http_response()
+
+    for i, step in enumerate(steps):
+        question = step.get('question', '').strip()
+        if not question:
+            key = f'step.question[{i}]'  # Indicate which step caused the issue
+            message = locale.get('interview_demo_input_error', lang, [key])
+            logger.error(red(f"Validation error: Step question at index {i} is empty"))
+            return UnexpectedAPIErrorFormat(lang=lang, field_name=key, message=message).http_response()
+
+    # 1. Create interview
+    user_id = "66961e8cdb50d5d0004bd6e3"  # support@quantz.thinkxinc.com
+    try:
+        logger.info(cyan(f"Creating interview for user_id: {user_id}"))
+        interview = InteractionModel(
+            title=title,
+            introduction=introduction,
+            end=end,
+            user_id=user_id,
+            steps=[InteractionModelStep(**step) for step in steps if step['question'].strip() != '']
+        )
+        interview = interaction_model_db.create(interview)
+        if not interview:
+            raise InteractionModelSaveError("Failed to create interview")
+        logger.info(cyan(f"Interview created successfully: {interview}"))
+
+        # Host manager setup
+        logger.info(yellow("Setting interview ID in host manager"))
+        host_manager = HostManager(
+            host=REDIS_ACCESS_HOST,
+            port=REDIS_ACCESS_PORT,
+            db_number=REDIS_ACCESS_DB_NUMBER)
+        host_manager.set_id_in_service_with_host_id("interviews", str(interview.id), user_id)
+        logger.info(cyan("Host manager updated successfully"))
+    except HostSettingError as e:
+        message = str(e)
+        logger.error(red(f"Host manager error: {message}"))
+        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+    except InteractionModelSaveError as e:
+        message = locale.get('interview_save_error', lang)
+        logger.error(red(f"Failed to save interaction model: {message}"))
+        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+
+    # Prepare response
+    response_data = {
+        'interview': interview
+    }
+    logger.debug(yellow(f"Response data prepared: {response_data}"))
+    return OKAPISuccessFormat(
+        message=locale.get('interview_created', lang, [interview.id]),
+        data=response_data).http_response()
+
 # main page
 @blueprint_interviews.route('/v1/<lang>/interviews', methods=['GET'])
 @session_helper

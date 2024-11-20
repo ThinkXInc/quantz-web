@@ -439,5 +439,14 @@
         "es": "Regístrate gratis",
         "ar": "اشترك مجانًا",
         "ru": "Зарегистрируйтесь бесплатно"
+    },
+    "interview_top_create_demo_please_input": {
+        "en": "Please input into the fields to create an interview.",
+        "ja": "フィールドに入力してインタビューを作成してください。",
+        "zh": "请填写字段以创建采访。",
+        "fr": "Veuillez remplir les champs pour créer une interview.",
+        "es": "Por favor, complete los campos para crear una entrevista.",
+        "ar": "يرجى إدخال المعلومات في الحقول لإنشاء مقابلة.",
+        "ru": "Пожалуйста, заполните поля, чтобы создать интервью."
     }
 }
