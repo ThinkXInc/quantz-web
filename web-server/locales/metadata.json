@@ -39,38 +39,38 @@
     "metadata_interview_top": {
         "ja": {
             "title": "Quantz Interview",
-            "description": "Quantz Interviewは、AIを活用した面接・ミーティングプラットフォームのナンバーワン。10倍のコスト効率を実現。",
+            "description": "ナンバーワンAI自動面接/ミーティングクラウドサービス。25倍のコスト効率を実現。",
             "keywords": "Quantz Interview, クオンツインタビュー, 音声AI, 音声対話AI, トップ, 高速, AI面接, 面談, AIインタビュー, AI営業自動化, ノーコード"
         },
         "en": {
             "title": "Quantz Interview",
-            "description": "The #1 AI Interview Platform with 10x cost effective technology",
+            "description": "The #1 AI Auto-Interview Cloud Service with 25x cost effective technology",
             "keywords": "Quantz Interview, AI interview, AI meeting, meeting automation, no code, no programming"
         },
         "zh": {
             "title": "Quantz Interview",
-            "description": "Quantz Interview是领先的AI面试和会议平台，提供高达10倍成本效益的先进技术。",
+            "description": "领先的AI自动面试和会议云服务，提供高达25倍成本效益的技术。",
             "keywords": "Quantz Interview, AI面试, AI会议, 会议自动化, 高性价比, 无需编程, 无代码"
         },
         "es": {
-            "title": "Quantz Entrevista",
-            "description": "Quantz Entrevista es la plataforma líder impulsada por IA para entrevistas y reuniones, con una tecnología 10 veces más eficiente en costos.",
+            "title": "Quantz Interview",
+            "description": "El servicio en la nube de entrevistas automáticas con IA líder, con una tecnología 25 veces más eficiente en costos.",
             "keywords": "Quantz Entrevista, entrevista con IA, reunión con IA, automatización de reuniones, eficiente en costos, sin programación, sin código"
         },
         "fr": {
-            "title": "Quantz Entretien",
-            "description": "Quantz Entretien est la plateforme numéro 1 alimentée par l'IA pour les entretiens et les réunions, offrant une efficacité de coûts multipliée par 10.",
+            "title": "Quantz Interview",
+            "description": "Le service cloud d'entretiens automatiques IA numéro 1, avec une technologie 25 fois plus rentable.",
             "keywords": "Quantz Entretien, entretien IA, réunion IA, automatisation des réunions, technologie économique, sans code, sans programmation"
         },
         "ru": {
-            "title": "Quantz Интервью",
-            "description": "Quantz Interview – ведущая платформа для интервью и встреч на основе ИИ, обеспечивающая 10-кратную эффективность затрат.",
+            "title": "Quantz Interview",
+            "description": "Лидирующий облачный сервис автоматических интервью на основе ИИ с 25-кратной эффективностью затрат.",
             "keywords": "Quantz Интервью, интервью с ИИ, встречи с ИИ, автоматизация встреч, эффективная технология, без кода, без программирования"
         },
         "ar": {
-          "title": "Quantz المقابلة",
-          "description": "Quantz Interview هي المنصة الرائدة للمقابلات والاجتماعات المعتمدة على الذكاء الاصطناعي، توفر فعالية في التكلفة تصل إلى 10 أضعاف.",
-          "keywords": "Quantz Interview, مقابلة بالذكاء الاصطناعي, اجتماع بالذكاء الاصطناعي, أتمتة الاجتماعات, تقنية فعالة, بدون كود, بدون برمجة"
+            "title": "Quantz Interview",
+            "description": "الخدمة السحابية الرائدة للمقابلات والاجتماعات الآلية بالذكاء الاصطناعي، توفر فعالية في التكلفة تصل إلى 25 ضعفًا.",
+            "keywords": "Quantz Interview, مقابلة بالذكاء الاصطناعي, اجتماع بالذكاء الاصطناعي, أتمتة الاجتماعات, تقنية فعالة, بدون كود, بدون برمجة"
         }
     },
     "metadata_signup": {
