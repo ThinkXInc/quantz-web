@@ -925,6 +925,10 @@ section#InterviewTop div#steps {
                             align-items: center;
                             position: relative;
                             width: 100%;
+                            video.taxi-video {
+                                width: 48vw;
+                                //width: 12vw;
+                            }
                             div.smartphone {
                                 position: absolute;
                                 width: 148px;
@@ -1055,6 +1059,7 @@ section#InterviewTop div#register {
 
 @media (max-width: @smartphone-width) {
     section#InterviewTop div#header {
+        min-height: 120vh;
         div#header-top {
             div.right-container {
                 div.button-wrapper {
@@ -1223,7 +1228,6 @@ section#InterviewTop div#register {
                         position: absolute;
                         top: 0;
                         left: 0;
-                        opacity: 0.3;
                         width: 100%;
                         height: 100%;
                         overflow: hidden;
@@ -1242,13 +1246,22 @@ section#InterviewTop div#register {
                         }
                     }
                     &.one.create {
-                        div.left {
-                            display: none;
+                        div.video-background-sp {
+                            opacity: 0.05;
+                        }
+                        div.header {
+
+                        }
+                        div.content {
+                            div.left {
+                                display: none;
+                            }
                         }
                     }
                     
                     &.two.test {
                         div.video-background-sp {
+                            opacity: 0.3;
                             video {
                                 width: 219%;
                             }
@@ -1309,6 +1322,9 @@ section#InterviewTop div#register {
                         }
                         div.content {
                             div.container {
+                                video.taxi-video {
+                                    width: 96vw;
+                                }
                                 div.smartphone {
                                 }
                                 div.laptop {

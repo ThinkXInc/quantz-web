@@ -499,6 +499,12 @@ class MeetingView {
     }
 
     openChatView() {
+        const smartphoneWidth = 480;
+        const devicePixelRatio = window.devicePixelRatio || 1;
+        
+        if (window.innerWidth / devicePixelRatio <= smartphoneWidth) {
+            return; // Exit if the effective screen width is <= 480px
+        }
         this.$view.classList.add('openChatView');
     }
 

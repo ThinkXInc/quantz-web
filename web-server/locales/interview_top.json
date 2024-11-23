@@ -1,7 +1,7 @@
 {
     "interview_top_header_button_contact": {
         "en": "Contact Sales",
-        "ja": "営業に連絡",
+        "ja": "サポートに連絡",
         "zh": "联系销售",
         "fr": "Contacter les ventes",
         "es": "Contactar Ventas",
@@ -19,7 +19,7 @@
     },
     "interview_top_header_top_copy": {
         "en": "The world’s first truly practical AI interview system",
-        "ja": "世界初の本当に実用的なAI面接システム",
+        "ja": "本当に実用的なAI面接システム",
         "zh": "世界首个实用的AI面试系统",
         "fr": "Le premier système d'entretien AI pratique au monde",
         "es": "El primer sistema de entrevistas de IA práctico del mundo",
@@ -73,12 +73,21 @@
     },
     "interview_top_technology_text": {
         "en": "Why spend good money on meetings only to have an AI do it? Quantz Interview has been developed to be 25x more cost-effective than systems based on cloud infrastructure + APIs, thanks to the fact that it runs completely on our own servers. The world's first practical autonomous interview system is now ready to use.",
-        "ja": "会議に多額の費用を費やす価値がありますか？Quantz Interviewは、クラウドインフラとAPIに基づくシステムよりも25倍コスト効率が高いように設計されています。完全に自社サーバー上で動作するためです。世界初の実用的な自律面接システムが今すぐ利用可能です。",
+        "ja": "まだ会議に多額の費用を費やしていますか？AIにミーティングさせるのに多くのコストをかけるのは意味がありません。Quantz Interviewは、クラウドインフラとAPIに基づくシステムよりも25倍コスト効率が高いように設計されています。コストを心配することなく、毎日ミーティングを実施することができます。実用的な自律ミーティングシステムが今すぐ利用可能になりました。",
         "zh": "为什么花大价钱开会却让AI来完成？Quantz Interview的开发使其比基于云基础设施和API的系统更具成本效益，达到25倍，因为它完全在我们自己的服务器上运行。世界上第一个实用的自主面试系统现在已准备好使用。",
         "fr": "Pourquoi dépenser beaucoup d'argent pour des réunions uniquement pour qu'une IA s'en charge ? Quantz Interview a été développé pour être 25 fois plus rentable que les systèmes basés sur l'infrastructure cloud et les API, grâce au fait qu'il fonctionne entièrement sur nos propres serveurs. Le premier système d'entretien autonome pratique au monde est désormais prêt à être utilisé.",
         "es": "¿Por qué gastar mucho dinero en reuniones solo para que lo haga una IA? Quantz Interview ha sido desarrollado para ser 25 veces más rentable que los sistemas basados en infraestructura en la nube y APIs, gracias a que funciona completamente en nuestros propios servidores. El primer sistema de entrevistas autónomas práctico del mundo está listo para usar.",
         "ar": "لماذا تنفق أموالاً كثيرة على الاجتماعات فقط لجعل الذكاء الاصطناعي يقوم بها؟ تم تطوير Quantz Interview ليكون أكثر فعالية من حيث التكلفة بمقدار 25 ضعفًا مقارنة بالأنظمة القائمة على البنية التحتية السحابية وواجهات برمجة التطبيقات، نظرًا لأنه يعمل بالكامل على خوادمنا. أول نظام عملي للمقابلات الذاتية في العالم جاهز الآن للاستخدام.",
         "ru": "Зачем тратить деньги на встречи, чтобы их проводил ИИ? Quantz Interview разработан для того, чтобы быть в 25 раз более эффективным по затратам, чем системы на основе облачной инфраструктуры и API, благодаря тому, что он полностью работает на наших собственных серверах. Первая в мире практическая автономная система интервью готова к использованию."
+    },
+    "interview_top_technology_emphasize_times": {
+        "en": "25x",
+        "ja": "25x",
+        "zh": "25x",
+        "fr": "25x",
+        "es": "25x",
+        "ar": "25x",
+        "ru": "25x"
     },
     "interview_top_technology_chart_left_price": {
         "en": "$20",
@@ -90,13 +99,13 @@
         "ru": "20 $"
     },
     "interview_top_technology_chart_right_price": {
-        "en": "$0.8",
-        "ja": "$0.8",
-        "zh": "¥0.8",
-        "fr": "0,8 $",
-        "es": "$0.8",
-        "ar": "0.8 دولارًا",
-        "ru": "0.8 $"
+        "en": "$0.80",
+        "ja": "$0.80",
+        "zh": "¥0.80",
+        "fr": "0.80 $",
+        "es": "$0.80",
+        "ar": "0.80 دولارًا",
+        "ru": "0.80 $"
     },
     "interview_top_technology_chart_per_interview": {
         "en": "/interview",
@@ -126,13 +135,13 @@
         "ru": "Quantz Interview"
     },
     "interview_top_technology_price_annotation": {
-        "en": "The amount is calculated based on typical costs for voice interaction AI APIs, cloud usage, and profit margins. The price for Quantz Interview is based on a rate of $0.05 per response (as of November 2024), assuming an average of 8 responses per interview.",
-        "ja": "一般的な音声対話AIのAPI価格、クラウド費用、利益率に基づき当社で算出した金額です。Quantz Interviewの金額は1応答あたり$0.05の価格(2024年11月時点)に基づき、1インタビューあたり平均8応答として求めた価格です。",
-        "zh": "该金额基于典型的语音交互AI API费用、云使用成本以及利润率计算得出。Quantz Interview的价格基于每次响应$0.05的费率（截至2024年11月），假设每次采访平均有8次响应。",
-        "fr": "Le montant est calculé sur la base des coûts typiques des API d'intelligence artificielle pour les interactions vocales, des coûts de cloud et des marges bénéficiaires. Le prix de Quantz Interview est basé sur un tarif de 0,05 $ par réponse (en novembre 2024), en supposant une moyenne de 8 réponses par interview.",
-        "es": "El monto se calcula en función de los costos típicos de las API de inteligencia artificial para interacciones de voz, el uso de la nube y los márgenes de beneficio. El precio de Quantz Interview se basa en una tarifa de $0.05 por respuesta (a noviembre de 2024), suponiendo un promedio de 8 respuestas por entrevista.",
-        "ar": "المبلغ محسوب بناءً على التكاليف النموذجية لواجهات برمجة التطبيقات (API) الخاصة بالذكاء الاصطناعي للتفاعل الصوتي، واستخدام السحابة وهوامش الربح. سعر Quantz Interview يعتمد على معدل 0.05 دولار لكل استجابة (اعتبارًا من نوفمبر 2024)، بافتراض متوسط 8 استجابات لكل مقابلة.",
-        "ru": "Сумма рассчитана на основе типичных затрат на API для голосового взаимодействия с ИИ, использования облачных технологий и маржи прибыли. Цена на Quantz Interview основана на ставке $0,05 за ответ (по состоянию на ноябрь 2024 года), при средней продолжительности интервью в 8 ответов."
+        "en": "The amount is calculated based on typical costs for voice interaction AI APIs, cloud usage, and profit margins. The price for Quantz Interview is based on a rate of $0.10 per response (as of November 2024), assuming an average of 8 responses per interview.",
+        "ja": "一般的な音声対話AIのAPI価格、クラウド費用、利益率に基づき当社で算出した金額。Quantz Interviewの金額は1応答あたり$0.10の価格(2024年11月時点)に基づき、1インタビューあたり平均8応答として求めた価格。",
+        "zh": "该金额基于典型的语音交互AI API费用、云使用成本以及利润率计算得出。Quantz Interview的价格基于每次响应$0.10的费率（截至2024年11月），假设每次采访平均有8次响应。",
+        "fr": "Le montant est calculé sur la base des coûts typiques des API d'intelligence artificielle pour les interactions vocales, des coûts de cloud et des marges bénéficiaires. Le prix de Quantz Interview est basé sur un tarif de 0.10 $ par réponse (en novembre 2024), en supposant une moyenne de 8 réponses par interview.",
+        "es": "El monto se calcula en función de los costos típicos de las API de inteligencia artificial para interacciones de voz, el uso de la nube y los márgenes de beneficio. El precio de Quantz Interview se basa en una tarifa de $0.10 por respuesta (a noviembre de 2024), suponiendo un promedio de 8 respuestas por entrevista.",
+        "ar": "المبلغ محسوب بناءً على التكاليف النموذجية لواجهات برمجة التطبيقات (API) الخاصة بالذكاء الاصطناعي للتفاعل الصوتي، واستخدام السحابة وهوامش الربح. سعر Quantz Interview يعتمد على معدل 0.10 دولار لكل استجابة (اعتبارًا من نوفمبر 2024)، بافتراض متوسط 8 استجابات لكل مقابلة.",
+        "ru": "Сумма рассчитана на основе типичных затрат на API для голосового взаимодействия с ИИ, использования облачных технологий и маржи прибыли. Цена на Quantz Interview основана на ставке $0.10 за ответ (по состоянию на ноябрь 2024 года), при средней продолжительности интервью в 8 ответов."
     },
     "interview_top_needs_recruiting_head": {
         "en": "Recruiting Interviews",
@@ -145,12 +154,12 @@
     },
     "interview_top_needs_recruiting_text": {
         "en": "I <span class='highlight'>spend 30–60 minutes daily</span> on initial interviews just to get a sense of each candidate. If I could automate this, I’d have more time for key tasks, reach more candidates, and reduce the chance of missing out on top talent.",
-        "ja": "候補者ごとの感触を掴むためだけに、毎日30〜60分を初回面接に費やしています。これを自動化できれば、主要業務に充てる時間を増やし、より多くの候補者に接触し、優秀な人材を見逃す可能性を減らせます。",
-        "zh": "我每天花30到60分钟进行初次面试，只是为了了解每个候选人的情况。如果能将此过程自动化，我将有更多时间处理关键任务，接触更多候选人，并减少错过顶尖人才的可能性。",
-        "fr": "Je consacre 30 à 60 minutes par jour aux entretiens initiaux uniquement pour me faire une idée de chaque candidat. Si je pouvais automatiser cela, j'aurais plus de temps pour les tâches clés, je pourrais atteindre plus de candidats et réduire le risque de passer à côté des meilleurs talents.",
-        "es": "Paso entre 30 y 60 minutos diarios en entrevistas iniciales solo para tener una idea de cada candidato. Si pudiera automatizar esto, tendría más tiempo para tareas clave, podría llegar a más candidatos y reducir la posibilidad de perder talentos excepcionales.",
-        "ar": "أقضي من 30 إلى 60 دقيقة يوميًا في المقابلات الأولية فقط للحصول على فكرة عن كل مرشح. إذا تمكنت من أتمتة هذا، فسأحصل على مزيد من الوقت للمهام الرئيسية، وسأصل إلى المزيد من المرشحين، وسأقلل من فرصة فقدان أفضل المواهب.",
-        "ru": "Я трачу 30–60 минут ежедневно на первичные интервью, чтобы понять каждого кандидата. Если бы я мог автоматизировать этот процесс, у меня было бы больше времени на ключевые задачи, возможность охватить больше кандидатов и снизить риск упустить лучшие таланты."
+        "ja": "候補者ごとの人となりを見るためだけに、<span class='highlight'>毎日30〜60分を初回面接に費やしています</span>。これを自動化できれば、主要業務に充てる時間を増やし、より多くの候補者に接触し、優秀な人材を見逃す可能性を減らせます。",
+        "zh": "我每天<span class='highlight'>花30到60分钟进行初次面试</span>，只是为了了解每个候选人的情况。如果能将此过程自动化，我将有更多时间处理关键任务，接触更多候选人，并减少错过顶尖人才的可能性。",
+        "fr": "Je <span class='highlight'>consacre 30 à 60 minutes par jour aux entretiens initiaux</span> uniquement pour me faire une idée de chaque candidat. Si je pouvais automatiser cela, j'aurais plus de temps pour les tâches clés, je pourrais atteindre plus de candidats et réduire le risque de passer à côté des meilleurs talents.",
+        "es": "Paso entre <span class='highlight'>30 y 60 minutos diarios en entrevistas iniciales</span> solo para tener una idea de cada candidato. Si pudiera automatizar esto, tendría más tiempo para tareas clave, podría llegar a más candidatos y reducir la posibilidad de perder talentos excepcionales.",
+        "ar": "أقضي <span class='highlight'>من 30 إلى 60 دقيقة يوميًا في المقابلات الأولية</span> فقط للحصول على فكرة عن كل مرشح. إذا تمكنت من أتمتة هذا، فسأحصل على مزيد من الوقت للمهام الرئيسية، وسأصل إلى المزيد من المرشحين، وسأقلل من فرصة فقدان أفضل المواهب.",
+        "ru": "Я <span class='highlight'>трачу 30–60 минут ежедневно на первичные интервью</span>, чтобы понять каждого кандидата. Если бы я мог автоматизировать этот процесс, у меня было бы больше времени на ключевые задачи, возможность охватить больше кандидатов и снизить риск упустить лучшие таланты."
     },
     "interview_top_needs_reporting_head": {
         "en": "Results Reporting Meetings",
@@ -163,12 +172,12 @@
     },
     "interview_top_needs_reporting_text": {
         "en": "Results meetings often require a verbal check <span class='highlight'>to grasp the 'feel,'</span> but <span class='highlight'>I’m spending 30–60 minutes a day on routine updates</span>. A system to handle these on my behalf would be ideal.",
-        "ja": "結果報告会議では「感触」を掴むための口頭確認が必要なことが多いですが、日常的な更新に毎日30〜60分を費やしています。これを代行できるシステムがあれば理想的です。",
-        "zh": "结果汇报会议通常需要通过口头检查来掌握“感觉”，但我每天花30到60分钟处理常规更新。如果有一个系统能代替我完成这些工作，那就太理想了。",
-        "fr": "Les réunions de résultats nécessitent souvent une vérification verbale pour saisir le 'ressenti', mais je passe 30 à 60 minutes par jour sur des mises à jour de routine. Un système pour gérer cela à ma place serait idéal.",
-        "es": "Las reuniones de resultados a menudo requieren una verificación verbal para captar la 'sensación', pero paso entre 30 y 60 minutos diarios en actualizaciones de rutina. Un sistema que se encargue de esto por mí sería ideal.",
-        "ar": "تتطلب اجتماعات النتائج في كثير من الأحيان مراجعة شفهية لفهم 'الإحساس'، لكنني أقضي من 30 إلى 60 دقيقة يوميًا في التحديثات الروتينية. سيكون النظام الذي يتولى هذا العمل نيابة عني مثاليًا.",
-        "ru": "Отчётные встречи часто требуют устной проверки, чтобы понять общую картину, но я трачу 30–60 минут в день на рутинные обновления. Система, которая могла бы делать это за меня, была бы идеальной."
+        "ja": "結果報告会議では<span class='highlight'>「感触」を掴むための口頭確認が必要</span>なことが多いですが、<span class='highlight'>日次の結果確認に毎日30〜60分を費やしています</span>。これを代行できるシステムがあれば理想的です。",
+        "zh": "结果汇报会议通常需要<span class='highlight'>通过口头检查来掌握“感觉”</span>，但我<span class='highlight'>每天花30到60分钟处理常规更新</span>。如果有一个系统能代替我完成这些工作，那就太理想了。",
+        "fr": "Les réunions de résultats nécessitent souvent <span class='highlight'>une vérification verbale pour saisir le 'ressenti'</span>, mais <span class='highlight'>je passe 30 à 60 minutes par jour sur des mises à jour de routine</span>. Un système pour gérer cela à ma place serait idéal.",
+        "es": "Las reuniones de resultados a menudo requieren <span class='highlight'>una verificación verbal para captar la 'sensación'</span>, pero <span class='highlight'>paso entre 30 y 60 minutos diarios en actualizaciones de rutina</span>. Un sistema que se encargue de esto por mí sería ideal.",
+        "ar": "تتطلب اجتماعات النتائج في كثير من الأحيان <span class='highlight'>مراجعة شفهية لفهم 'الإحساس'</span>، لكنني <span class='highlight'>أقضي من 30 إلى 60 دقيقة يوميًا في التحديثات الروتينية</span>. سيكون النظام الذي يتولى هذا العمل نيابة عني مثاليًا.",
+        "ru": "Отчётные встречи часто требуют <span class='highlight'>устной проверки, чтобы понять общую картину</span>, но я <span class='highlight'>трачу 30–60 минут в день на рутинные обновления</span>. Система, которая могла бы делать это за меня, была бы идеальной."
     },
     "interview_top_needs_sales_head": {
         "en": "Sales Consultations",
@@ -180,13 +189,13 @@
         "ru": "Консультации по продажам"
     },
     "interview_top_needs_sales_text": {
-        "en": "I’m interested in certain products or services, but <span class='highlight'>time for meetings is limited</span>. A system for quick, simple inquiries would <span class='highlight'>let me gauge interest without full discussions</span>.",
-        "ja": "特定の製品やサービスに興味がありますが、<span class='highlight'>会議の時間が限られています</span>。簡単な問い合わせを迅速に行えるシステムがあれば、<span class='highlight'>詳細な議論をせずに関心を測ることができます</span>。",
-        "zh": "我对某些产品或服务感兴趣，但<span class='highlight'>会议时间有限</span>。一个快速、简单的查询系统可以让我在<span class='highlight'>无需全面讨论的情况下评估兴趣</span>。",
-        "fr": "Je suis intéressé par certains produits ou services, mais <span class='highlight'>le temps pour les réunions est limité</span>. Un système pour des demandes rapides et simples me permettrait de <span class='highlight'>évaluer l'intérêt sans discussions complètes</span>.",
-        "es": "Estoy interesado en ciertos productos o servicios, pero <span class='highlight'>el tiempo para reuniones es limitado</span>. Un sistema para consultas rápidas y simples me permitiría <span class='highlight'>evaluar el interés sin discusiones completas</span>.",
-        "ar": "أنا مهتم بمنتجات أو خدمات معينة، لكن <span class='highlight'>الوقت المخصص للاجتماعات محدود</span>. يمكن أن يساعدني نظام للاستفسارات السريعة والبسيطة على <span class='highlight'>قياس الاهتمام دون مناقشات كاملة</span>.",
-        "ru": "Меня интересуют определённые продукты или услуги, но <span class='highlight'>времени на встречи не хватает</span>. Система для быстрых и простых запросов позволила бы мне <span class='highlight'>оценить интерес без длительных обсуждений</span>."
+    "en": "I’m interested in certain products or services, but <span class='highlight'>time for meetings is limited</span>. A system for quick, simple inquiries would <span class='highlight'>allow us to assess if they suit us, without the need for time-consuming meetings</span>.",
+    "ja": "特定の製品やサービスに興味がありますが、<span class='highlight'>会議の時間が限られています</span>。迅速で簡単な問い合わせができるシステムがあれば、<span class='highlight'>面倒な会議をせずに要件だけチェックできます</span>。",
+    "zh": "我对某些产品或服务感兴趣，但<span class='highlight'>会议时间有限</span>。一个快速、简单的查询系统可以让我<span class='highlight'>在无需耗时会议的情况下评估它们是否适合我们</span>。",
+    "fr": "Je suis intéressé par certains produits ou services, mais <span class='highlight'>le temps pour les réunions est limité</span>. Un système de demandes rapides et simples nous permettrait de <span class='highlight'>évaluer si ces produits nous conviennent, sans avoir besoin de réunions chronophages</span>.",
+    "es": "Estoy interesado en ciertos productos o servicios, pero <span class='highlight'>el tiempo para reuniones es limitado</span>. Un sistema de consultas rápidas y simples nos permitiría <span class='highlight'>evaluar si nos convienen sin necesidad de reuniones largas</span>.",
+    "ar": "أنا مهتم بمنتجات أو خدمات معينة، لكن <span class='highlight'>الوقت المخصص للاجتماعات محدود</span>. يمكن أن يساعدني نظام للاستفسارات السريعة والبسيطة على <span class='highlight'>تقييم مدى ملاءمتها دون الحاجة إلى اجتماعات مطولة</span>.",
+    "ru": "Меня интересуют определённые продукты или услуги, но <span class='highlight'>времени на встречи не хватает</span>. Система для быстрых и простых запросов позволила бы <span class='highlight'>оценить их соответствие без необходимости проводить длительные встречи</span>."
     },
     "interview_top_steps_step1": {
         "en": "Step 1",
@@ -288,13 +297,13 @@
         "ru": "Отправить ссылку на интервью"
     },
     "interview_top_steps_step3_main": {
-        "en": "Send a Link by Email and Let the Meeting Happen",
-        "ja": "メールでリンクを送信し、会議を開催",
-        "zh": "通过电子邮件发送链接，让会议进行",
-        "fr": "Envoyez un lien par e-mail et laissez la réunion se dérouler",
-        "es": "Envía un enlace por correo electrónico y deja que la reunión ocurra",
-        "ar": "أرسل رابطًا عبر البريد الإلكتروني ودع الاجتماع يتم",
-        "ru": "Отправьте ссылку по электронной почте, и встреча состоится"
+        "en": "Send a Link and Let Quantz Interview Take Care of the Rest",
+        "ja": "リンクを送信し、あとはQuantz Interviewにお任せ",
+        "zh": "发送链接，其余交给Quantz Interview处理",
+        "fr": "Envoyez un lien et laissez Quantz Interview s'occuper du reste",
+        "es": "Envía un enlace y deja que Quantz Interview se encargue del resto",
+        "ar": "أرسل رابطًا ودع Quantz Interview يتولى الباقي",
+        "ru": "Отправьте ссылку, и Quantz Interview позаботится обо всём остальном"
     },
     "interview_top_steps_step3_mail_recruiting_recepient": {
         "en": "lara@mail.com",
@@ -441,13 +450,13 @@
         "ru": "Результаты отправляются по электронной почте. Просмотрите их за секунды, где бы вы ни находились."
     },
     "interview_top_signup_for_free_button": {
-        "en": "Sign up for free",
-        "ja": "無料でサインアップ",
-        "zh": "免费注册",
-        "fr": "Inscrivez-vous gratuitement",
-        "es": "Regístrate gratis",
-        "ar": "اشترك مجانًا",
-        "ru": "Зарегистрируйтесь бесплатно"
+        "en": "Try it now for free",
+        "ja": "今すぐ無料で試す",
+        "zh": "立即免费试用",
+        "fr": "Essayez-le gratuitement dès maintenant",
+        "es": "Pruébalo gratis ahora",
+        "ar": "جرّبه الآن مجانًا",
+        "ru": "Попробуйте сейчас бесплатно"
     },
     "interview_top_create_demo_please_input": {
         "en": "Please input into the fields to create an interview.",

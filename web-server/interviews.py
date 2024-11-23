@@ -119,6 +119,7 @@ from mails.send_mail import (
 
 
 # interview top
+@blueprint_interviews.route('/interview', methods=['GET'])
 @blueprint_interviews.route('/<lang>/interview', methods=['GET'])
 @language_wrapper
 def interview_top(lang, lang_name):

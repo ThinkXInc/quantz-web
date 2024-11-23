@@ -47,7 +47,8 @@ class InterviewTop {
         const defaultInterviewRecruiting = {
             "title": "Recruiting Interview",
             "introduction": "Hello, {name}. Are you ready?",
-            "end": "Thank you {name}. This is the end. Goodbye.",
+            //"end": "Thank you {name}. This is the end. If you have any question, feel free to contact us. Goodbye.",
+            "end": "Thank you {name}. This is the end. If you have any questions, feel free to reach out to our sales support team for assistance. Goodbye.",
             "steps": [
                 {
                     "question": "Could you briefly introduce yourself?",
@@ -207,8 +208,11 @@ class InterviewTop {
     }
 
     layoutHeaderOnScrollPosition() {
-        if (window.innerWidth <= 480) {
-            return; // Exit the function if the screen width is 480px or less
+        const smartphoneWidth = 480;
+        const devicePixelRatio = window.devicePixelRatio || 1;
+        
+        if (window.innerWidth / devicePixelRatio <= smartphoneWidth) {
+            return; // Exit if the effective screen width is <= 480px
         }
         //console.warn(window.scrollY);
         // Key position components
@@ -261,8 +265,8 @@ class InterviewTop {
     
             $topCopy.style.position = 'absolute';
             $topCopy.style.fontSize = `${interpolate(15, 12, progress)}px`;
-            $topCopy.style.left = `${interpolate(39, 66, progress)}vw`; // Assuming original left is 5px
-            $topCopy.style.top = `${interpolate(20, 13, progress)}px`; // Assuming original top is 20px
+            $topCopy.style.left = `${interpolate(39, 64, progress)}vw`; // Assuming original left is 5px
+            $topCopy.style.top = `${interpolate(20, 15, progress)}px`; // Assuming original top is 20px
         } else {
             // Remove the alternative header if it exists
             const $headerWithLogoAlternative = document.getElementById('header-with-logo-alternative');
@@ -360,9 +364,9 @@ class InterviewTop {
     
         // Y-ranges for each step
         const Y_RANGE_CREATE = 4000;
-        const Y_RANGE_TEST = 4000;
-        const Y_RANGE_SEND = 4000;
-        const Y_RANGE_RESULT = 8000;
+        const Y_RANGE_TEST = 6000;
+        const Y_RANGE_SEND = 5000;
+        const Y_RANGE_RESULT = 12000;
     
         // Start and end positions of each step
         const Y_CREATE_START = SCROLL_START;
@@ -527,18 +531,34 @@ class InterviewTop {
             case 'result':
                 // Get the elements
                 const $result = document.getElementById('step-result');
+                const $taxiVideo = document.getElementById('taxi-video');
                 const $smartphone = document.getElementById('smartphone');
                 const $smartphoneVideo = document.getElementById('smartphone-video');
                 const $laptop = document.getElementById('laptop');
                 const $laptopVideo = document.getElementById('laptop-video');
 
-                // 1) Between 0.1 and 0.3, update svgAnimationSmartphone
+
+                // 1) Between 0.1 and 0.2, show up taxi-video
+                //{
+                //    const progress = mapProgressClamped(progressResult, 0.1, 0.15);
+                //    const target = 48 * progress;
+                //    $taxiVideo.style.width = `${target}vw`;
+                //}
                 {
-                    const progress = mapProgressClamped(progressResult, 0.1, 0.5);
+                    const progress = mapProgressClamped(progressResult, 0.1, 0.2);
+                    const targetX = -68 * progress;
+                    const opacity = 1 - progress;
+                    $taxiVideo.style.opacity = opacity;
+                    $taxiVideo.style.transform = `translateX(${targetX}px)`;
+                }
+
+                // 2) Between 0.3 and 0.5, update svgAnimationSmartphone
+                {
+                    const progress = mapProgressClamped(progressResult, 0.14, 0.4);
                     this.svgAnimationSmartphone.update(progress);
                 }
 
-                // 2) Between 0.2 and 0.4, move smartphone and scale smartphone-video
+                // 3) Between 0.2 and 0.4, move smartphone and scale smartphone-video
                 {
                     const progress = mapProgressClamped(progressResult, 0.2, 0.4);
                     const targetX = -$result.offsetWidth/4 * progress;
@@ -548,27 +568,27 @@ class InterviewTop {
                     $smartphoneVideo.style.transform = `scale(${scale})`;
                 }
 
-                // 3) Between 0.4 and 0.6, set opacity of smartphone and smartphone-video
+                // 4) Between 0.4 and 0.6, set opacity of smartphone and smartphone-video
                 {
-                    const progress = mapProgressClamped(progressResult, 0.2, 0.4);
+                    const progress = mapProgressClamped(progressResult, 0.4, 0.6);
                     const opacity = 1 - progress;
                     $smartphone.style.opacity = opacity;
                 }
                 {
-                    const progress = mapProgressClamped(progressResult, 0.5, 0.6);
+                    const progress = mapProgressClamped(progressResult, 0.6, 0.7);
                     const opacity = 1 - progress;
                     $smartphoneVideo.style.opacity = opacity;
                 }
 
                 // 4) Between 0.5 and 0.7, update svgAnimationLaptop
                 {
-                    const progress = mapProgressClamped(progressResult, 0.6, 0.9);
+                    const progress = mapProgressClamped(progressResult, 0.64, 0.9);
                     this.svgAnimationLaptop.update(progress);
                 }
 
                 // 4) Between 0.5 and 0.7, move laptop and scale laptop-video
                 {
-                    const progress = mapProgressClamped(progressResult, 0.7, 0.9);
+                    const progress = mapProgressClamped(progressResult, 0.8, 0.9);
                     const targetX = -$result.offsetWidth/4 * progress;
                     $laptop.style.transform = `translateX(${targetX}px)`;
 
@@ -587,6 +607,64 @@ class InterviewTop {
                     const opacity = 1 - progress;
                     $laptopVideo.style.opacity = opacity;
                 }
+
+
+
+                //// 1) Between 0.1 and 0.3, update svgAnimationSmartphone
+                //{
+                //    const progress = mapProgressClamped(progressResult, 0.1, 0.5);
+                //    this.svgAnimationSmartphone.update(progress);
+                //}
+
+                //// 2) Between 0.2 and 0.4, move smartphone and scale smartphone-video
+                //{
+                //    const progress = mapProgressClamped(progressResult, 0.2, 0.4);
+                //    const targetX = -$result.offsetWidth/4 * progress;
+                //    $smartphone.style.transform = `translateX(${targetX}px)`;
+
+                //    const scale = progress;
+                //    $smartphoneVideo.style.transform = `scale(${scale})`;
+                //}
+
+                //// 3) Between 0.4 and 0.6, set opacity of smartphone and smartphone-video
+                //{
+                //    const progress = mapProgressClamped(progressResult, 0.2, 0.4);
+                //    const opacity = 1 - progress;
+                //    $smartphone.style.opacity = opacity;
+                //}
+                //{
+                //    const progress = mapProgressClamped(progressResult, 0.5, 0.6);
+                //    const opacity = 1 - progress;
+                //    $smartphoneVideo.style.opacity = opacity;
+                //}
+
+                //// 4) Between 0.5 and 0.7, update svgAnimationLaptop
+                //{
+                //    const progress = mapProgressClamped(progressResult, 0.6, 0.9);
+                //    this.svgAnimationLaptop.update(progress);
+                //}
+
+                //// 4) Between 0.5 and 0.7, move laptop and scale laptop-video
+                //{
+                //    const progress = mapProgressClamped(progressResult, 0.7, 0.9);
+                //    const targetX = -$result.offsetWidth/4 * progress;
+                //    $laptop.style.transform = `translateX(${targetX}px)`;
+
+                //    const scale = progress;
+                //    $laptopVideo.style.transform = `scale(${scale})`;
+                //}
+
+                //// 5) Between 0.7 and 0.9, set opacity of laptop and laptop-video
+                //{
+                //    const progress = mapProgressClamped(progressResult, 0.8, 0.9);
+                //    const opacity = 1 - progress;
+                //    $laptop.style.opacity = opacity;
+                //}
+                //{
+                //    const progress = mapProgressClamped(progressResult, 0.9, 1.0);
+                //    const opacity = 1 - progress;
+                //    $laptopVideo.style.opacity = opacity;
+                //}
 
 
 
