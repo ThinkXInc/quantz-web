@@ -103,7 +103,7 @@
 
         toggleSelectorVisible() {
             if (this.locale.classList.contains(ns.configs[this.buttonId].prefix + 'locale-show')) {
-                this.locale.classList.remove(ns.configs[this.buttonId].prefix + 'locale-show');
+                this.close();
             } else {
                 this.locale.classList.add(ns.configs[this.buttonId].prefix + 'locale-show');
             }
@@ -130,7 +130,7 @@
     
         close() {
             console.log('locale close');
-            this.toggleSelectorVisible();
+            this.locale.classList.remove(ns.configs[this.buttonId].prefix + 'locale-show');
         }
     }
 })(Quantz); 

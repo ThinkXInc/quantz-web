@@ -451,7 +451,7 @@
         }
 
         handleWebSocketMessage(e) {
-            console.log(`Data received from server:`, e.data);
+            //console.log(`Data received from server:`, e.data);
 
             if (e.data instanceof Blob) {
                 e.data.arrayBuffer().then(arrayBuffer => {
@@ -459,7 +459,7 @@
                     let uint8Array = new Uint8Array(arrayBuffer);
                     // Convert Uint8Array to String to check for the message type
                     let messageString = new TextDecoder().decode(uint8Array);
-                
+
                     if (messageString.startsWith('\\USER')) {
                         let userMessage = messageString.substring(5); // Remove '\\USER' (5 characters)
                         console.log('[Core] User message received:', userMessage);
@@ -501,7 +501,7 @@
                         this.rateLimitExceeded = true; 
                     } else {
                         // Normal data processing
-                        console.log('[Core] byte data received', arrayBuffer);
+                        //console.log('[Core] byte data received', arrayBuffer);
                         //this.decodeAndBufferAudioChunk(uint8Array);
                         this.bufferAudioChunk(arrayBuffer);
                     }

@@ -22,7 +22,7 @@
 }
 .QBTN-button-container .QBTN-locale.QBTN-locale-show .QBTN-selector {
   opacity: 1;
-  transform: translateY(10px); /* Move down slightly */
+  transform: translateY(5px); /* Move down slightly */
   pointer-events: auto; /* Enable interaction */
 }
   
