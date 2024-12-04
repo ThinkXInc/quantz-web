@@ -122,53 +122,10 @@
   height: 12px;
   width: 30px;
   background-color: #fff;
-  border: 1px solid #aaa;
   cursor: pointer;
   padding: 4px 6px 4px 5px;
   border-radius: 3px;
 }
-.QBTN-button-container.QBTN-TYPE-B .QBTN-locale-button .QBTN-locale-icon {
-
-}
-.QBTN-button-container.QBTN-TYPE-B .QBTN-locale-button .QBTN-arrow-icon {
-  width: 10px;
-}
-
-/* Icons inside the localeButton */
-.QBTN-button-container.QBTN-TYPE-B .QBTN-locale-button img {
-  /* Assuming the icons are appropriately sized, you might need additional styles for alignment and sizing */
-  height: 100%; /* Adjust based on actual icon size */
-}
-.QBTN-button-container.QBTN-TYPE-B .QBTN-selector {
-  cursor: pointer;
-  display: none; /* Initially hidden */
-  flex-direction: column;
-  background-color: white;
-  position: absolute;
-  top: 25px; /* Adjust based on the actual needs, considering borders and padding */
-  left: 0;
-  color: #555;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-}
-.QBTN-button-container.QBTN-TYPE-B .QBTN-selector p {
-  font-family: 'Helvetica', 'san-serif';
-  font-size: 0.8em;
-  margin: 0;
-  padding: 10px 10px; /* Provides padding inside each language option */
-  cursor: pointer;
-}
-
-.QBTN-button-container.QBTN-TYPE-A .QBTN-selector p.disabled,
-.QBTN-button-container.QBTN-TYPE-A .QBTN-selector p.disabled:hover {
-  background-color: #dedede;
-  color: #636363;
-}
-
-.QBTN-button-container.QBTN-TYPE-B .QBTN-selector p:hover {
-  background-color: #f0f0f0; /* A subtle hover effect for language options */
-}
-
 
 /* balloon */
 .QBTN-balloon-container.QBTN-TYPE-B {
