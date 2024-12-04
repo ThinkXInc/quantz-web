@@ -48,11 +48,11 @@
         spectrumFrequencyMs: 50,
         languages: [
             new ns.Language("English", ns.LanguageCode.en, true),
-            new ns.Language("日本語", ns.LanguageCode.ja, false),
-            new ns.Language("Français", ns.LanguageCode.fr, false),
+            new ns.Language("日本語", ns.LanguageCode.ja, true),
+            new ns.Language("Español", ns.LanguageCode.es, true),
+            new ns.Language("Français", ns.LanguageCode.fr, true),
+            new ns.Language("中文", ns.LanguageCode.zh, true),
             new ns.Language("Русский", ns.LanguageCode.ru, false),
-            new ns.Language("Español", ns.LanguageCode.es, false),
-            new ns.Language("中文", ns.LanguageCode.zh, false),
             new ns.Language("العربية", ns.LanguageCode.ar, false)
         ],
         tokenIssuedEventName: 'quantz-tokenIssued',
@@ -161,6 +161,7 @@
         ns.configs[buttonId].balloonRectWidth = config.balloonRectWidth;
         ns.configs[buttonId].balloonRectHeight = config.balloonRectHeight;
         ns.configs[buttonId].defaultLang = config.defaultLang;
+        ns.configs[buttonId].lang = config.defaultLang;
         ns.configs[buttonId].responseMode = config.responseMode;
         ns.configs[buttonId].buttonElementId = `${ns.configs[buttonId].prefix}button-${buttonId}`;
         ns.configs[buttonId].buttonContainerId = `${ns.configs[buttonId].prefix}button-container-${buttonId}`;
@@ -243,6 +244,19 @@
             ns.insertSpacer({container: buttonControl, buttonId: buttonId});
             buttonContainer.appendChild(buttonControl);
         }
+
+        // Initialize components after ensuring CSS is loaded
+        ns.locales[buttonId] = new ns.Locale({
+            buttonId: buttonId,
+            containerId: ns.configs[buttonId].buttonControlId,
+            closeAreaId: loaderDiv.id,
+            languages: ns.configs[buttonId].languages,
+            defaultLang: ns.configs[buttonId].defaultLang})
+        ns.balloons[buttonId] = new ns.Balloon({
+            buttonId: buttonId,
+            containerId: loaderDiv.id,
+            defaultLang: ns.configs[buttonId].defaultLang,
+            buttonType: config.buttonType});
 
         // Apply dynamic styles after creating the button
         ns.applyDynamicStyles({buttonId: buttonId, config: config});
@@ -446,46 +460,50 @@
 
         // Load CSS dynamically based on the button type
         ns.setupConfig({buttonId: buttonId, config: config});
-        const cssPath = `https://${ns.configs[buttonId].host}/css/quantz-${config.buttonType}-medium.css`;
-        console.log(`[Quantz Button ${buttonId}] try loading css for button ${buttonId} from the path: ${cssPath}`)
-        ns.loadCSS({cssPath: cssPath, callback: () => {
-            console.log(`[Quantz Button ${buttonId}] CSS loaded for button ${buttonId} type ${ns.configs[buttonId].buttonType} from path ${cssPath}`);
-            ns.createDOMElements({buttonId: buttonId, config: config, loaderDiv: $buttonLoader});
+        const cssPathCommon = `https://${ns.configs[buttonId].host}/css/quantz-common.css`;
+        ns.loadCSS({cssPath: cssPathCommon, callback: ()=> {
+            const cssPath = `https://${ns.configs[buttonId].host}/css/quantz-${config.buttonType}-medium.css`;
+            console.log(`[Quantz Button ${buttonId}] try loading css for button ${buttonId} from the path: ${cssPath}`)
+            ns.loadCSS({cssPath: cssPath, callback: () => {
+                console.log(`[Quantz Button ${buttonId}] CSS loaded for button ${buttonId} type ${ns.configs[buttonId].buttonType} from path ${cssPath}`);
+                ns.createDOMElements({buttonId: buttonId, config: config, loaderDiv: $buttonLoader});
 
-            // Initialize components after ensuring CSS is loaded
-            ns.locales[buttonId] = new ns.Locale({
-                buttonId: buttonId,
-                containerId: ns.configs[buttonId].buttonControlId,
-                closeAreaId: $buttonLoader.id,
-                languages: ns.configs[buttonId].languages,
-                defaultLang: ns.configs[buttonId].defaultLang})
-            ns.balloons[buttonId] = new ns.Balloon({
-                buttonId: buttonId,
-                containerId: $buttonLoader.id,
-                defaultLang: ns.configs[buttonId].defaultLang,
-                buttonType: config.buttonType});
+                //// Initialize components after ensuring CSS is loaded
+                //ns.locales[buttonId] = new ns.Locale({
+                //    buttonId: buttonId,
+                //    containerId: ns.configs[buttonId].buttonControlId,
+                //    closeAreaId: $buttonLoader.id,
+                //    languages: ns.configs[buttonId].languages,
+                //    defaultLang: ns.configs[buttonId].defaultLang})
+                //ns.balloons[buttonId] = new ns.Balloon({
+                //    buttonId: buttonId,
+                //    containerId: $buttonLoader.id,
+                //    defaultLang: ns.configs[buttonId].defaultLang,
+                //    buttonType: config.buttonType});
+                //console.warn('Balloon generated', ns.balloons[buttonId])
 
-            // Setup interactions for this button instance
-            const buttonController = new ns.ButtonController({
-                buttonId: buttonId,
-                buttonType: ns.configs[buttonId].buttonType,
-                animationController: new ns.AnimationController(),
-                indicatorController: ns.indicatorController,
-                lang: ns.locales[buttonId].lang});
-            const $btn = $buttonLoader.querySelector(`#${ns.configs[buttonId].buttonElementId}`);
-            if (ns.configs[buttonId].autoInteraction) {
-                buttonController.switchToStart();
-            } else {
-                buttonController.switchToStandby();
-            }
-            ns.buttonControllers[buttonId] = buttonController;
-            ns.setupInteractions({buttonId: buttonId, $buttonLoader: $buttonLoader, $btn: $btn});
+                // Setup interactions for this button instance
+                const buttonController = new ns.ButtonController({
+                    buttonId: buttonId,
+                    buttonType: ns.configs[buttonId].buttonType,
+                    animationController: new ns.AnimationController(),
+                    indicatorController: ns.indicatorController,
+                    lang: ns.locales[buttonId].lang});
+                const $btn = $buttonLoader.querySelector(`#${ns.configs[buttonId].buttonElementId}`);
+                if (ns.configs[buttonId].autoInteraction) {
+                    buttonController.switchToStart();
+                } else {
+                    buttonController.switchToStandby();
+                }
+                ns.buttonControllers[buttonId] = buttonController;
+                ns.setupInteractions({buttonId: buttonId, $buttonLoader: $buttonLoader, $btn: $btn});
 
-            // Setup core engine
-            ns.cores[buttonId] = new ns.Core({buttonId: buttonId, defaultLang: config.defaultLang});
-            if (ns.configs[buttonId].autoInteraction) {
-                ns.setupAutoInteraction(buttonId, config)
-            }
+                // Setup core engine
+                ns.cores[buttonId] = new ns.Core({buttonId: buttonId, defaultLang: config.defaultLang});
+                if (ns.configs[buttonId].autoInteraction) {
+                    ns.setupAutoInteraction(buttonId, config)
+                }
+            }})
         }});
     }
 
@@ -946,6 +964,8 @@
         $buttonLoader.addEventListener(ns.configs[buttonId].languageChangeEventName, function(event) {
             const { buttonId, lang } = event.detail;
             console.log(`[Quantz Button ${buttonId}] language change event received:`, lang);
+            ns.configs[buttonId].lang = lang;
+            ns.cores[buttonId].lang = lang;
             ns.buttonControllers[buttonId].changeLanguage(lang);
             ns.balloons[buttonId].changeLanguage(lang);
         });

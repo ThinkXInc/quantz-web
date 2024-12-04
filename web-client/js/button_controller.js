@@ -309,12 +309,8 @@
 
         changeLanguage(lang) {
             this.lang = lang;
-            if (Object.values(ButtonState).includes(this.buttonState)) {
-                console.log(`Button text change lang:`, lang);
-                this.updateButtonText(this.buttonState);
-            } else {
-                console.error(`Invalid button state: "${buttonState}".`);
-            }
+            console.log(`Button text change lang:`, lang, ' with state:', this.buttonState);
+            this.updateButtonText(this.buttonState);
         }
 
         lightDownIndicator() {

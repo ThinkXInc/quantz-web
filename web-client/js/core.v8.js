@@ -221,7 +221,7 @@
         }
 
         sendStartMessage(data) {
-            console.log(`[Core] Prepare start message with data: ${data}`);
+            console.log(`[Core] Prepare start message with data: ${data}`)
             if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
                 console.error("Cannot send start message: WebSocket is not connected.");
                 return;
@@ -239,29 +239,18 @@
             } else {
                 console.warn("Data is not a valid object, sending START_MESSAGE without data.");
             }
-        
+            
             const messageType = new Uint8Array([ns.MessageType.WAV_STREAM]); // Adjust messageType if necessary
             const langBytes = new TextEncoder().encode(this.lang);
             const startMessageBytes = new TextEncoder().encode(startMessage);
             const endOfMessageBytes = new TextEncoder().encode(ns.END_OF_MESSAGE);
-        
+            
             // Combine all parts into a single Blob
             const messageBlob = new Blob([messageType, langBytes, startMessageBytes, endOfMessageBytes], { type: 'application/octet-stream' });
-        
-            // Log messageBlob content as text
-            const reader = new FileReader();
-            reader.onload = function () {
-                console.log(`[Core] messageBlob content (as text): ${reader.result}`);
-            };
-            reader.onerror = function () {
-                console.error(`[Core] Failed to read messageBlob content: ${reader.error}`);
-            };
-            reader.readAsText(messageBlob);
-        
+            
             this.socket.send(messageBlob);
-            console.log("Start message sent to server.");
+            console.log("Start message sent to server:", startMessage);
         }
-        
 
         startRecording() {
             if (!this.mediaRecorder) {
@@ -352,7 +341,7 @@
 
             // Combine all buffered audio into a single buffer
             let totalLength = this.audioBufferQueue.reduce((acc, buffer) => acc + buffer.length, 0);
-            let combinedBuffer = this.audioCtx.createBuffer(1, totalLength, 44100);//ns.configs[this.buttonId].sampleRate); // Assuming mono audio
+            let combinedBuffer = this.audioCtx.createBuffer(1, totalLength, ns.configs[this.buttonId].sampleRate); // Assuming mono audio
             let offset = 0;
             this.audioBufferQueue.forEach(buffer => {
                 combinedBuffer.getChannelData(0).set(buffer, offset);
@@ -418,10 +407,7 @@
 
         bufferAudioChunk(audioData) {
             console.log('[Core] Buffer audio chunk of size:', audioData.byteLength);
-            // Convert ArrayBuffer to Float32Array
-            let float32Data = new Float32Array(audioData);
-            this.audioBufferQueue.push(float32Data);
-            //this.audioBufferQueue.push(audioData)
+            this.audioBufferQueue.push(audioData);
         }
 
         enforceStopAssistantSpeech() {
@@ -451,8 +437,7 @@
         }
 
         handleWebSocketMessage(e) {
-            console.log(`Data received from server:`, e.data);
-
+            //console.log(`Data received from server:`, e.data);
             if (e.data instanceof Blob) {
                 e.data.arrayBuffer().then(arrayBuffer => {
                     // Convert ArrayBuffer to Uint8Array
@@ -475,14 +460,12 @@
                     } else if (messageString === '\\END' || messageString === '\\NEXT') {
                         console.log(`[Core] Marker received: ${messageString}, current audioBufferQueue length: ${this.audioBufferQueue.length}`);
                         if (this.audioBufferQueue.length > 0) {
-                            //DEBUG:
-                            console.log("Adding current audioBufferQueue to playbackQueue");
+                            //DEBUG: console.log("Adding current audioBufferQueue to playbackQueue");
                             this.playbackQueue.push([...this.audioBufferQueue]);
                             this.audioBufferQueue = [];
                         }
                         if (!this.isAudioPlaying) {
-                            //DEBUG:
-                            console.log("Triggering playback from marker");
+                            //DEBUG: console.log("Triggering playback from marker");
                             this.playBufferedAudio();
                         }
                         if (messageString === '\\END') {
@@ -506,10 +489,6 @@
                         this.bufferAudioChunk(arrayBuffer);
                     }
                 });
-            } else if (typeof e.data === 'string') {
-                console.error('data type string received. byte is expected.:', e.data);
-            } else {
-                console.error('Unknown data type received:', e.data);
             }
         }
 

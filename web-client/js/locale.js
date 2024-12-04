@@ -21,6 +21,7 @@
         constructor({buttonId, containerId, closeAreaId, languages, defaultLang}) {
             this.buttonId = buttonId;
             this.container = document.getElementById(containerId);
+            this.$buttonLoader = document.getElementById(`${ns.configs[buttonId].prefix}button-loader-${buttonId}`)
             if (!this.container) {
                 console.error(`Container with ID ${containerId} does not exist.`);
                 return;
@@ -40,6 +41,7 @@
             // Create locale root element
             const locale = document.createElement('div');
             locale.className = ns.configs[buttonId].prefix + 'locale';
+            this.locale = locale;
 
             // Create localeButton
             const localeButton = document.createElement('div');
@@ -60,7 +62,6 @@
             // Create selector
             const selector = document.createElement('div');
             selector.className = ns.configs[buttonId].prefix + 'selector';
-            selector.style.display = 'none';  // Initially hidden
 
             this.languages.forEach(language => {
                 const langElement = document.createElement('p');
@@ -84,7 +85,8 @@
             // Toggle selector on button click
             localeButton.onclick = (e) => {
                 e.stopPropagation();
-                selector.style.display = selector.style.display === 'none' ? 'block' : 'none';
+                // Toggle 'QBTN-locale-show' class on the 'locale' element
+                this.toggleSelectorVisible();
             };
 
             this.closeArea.addEventListener('mousedown', (e) => {
@@ -99,14 +101,23 @@
             this.selector = selector;
         }
 
+        toggleSelectorVisible() {
+            if (this.locale.classList.contains(ns.configs[this.buttonId].prefix + 'locale-show')) {
+                this.locale.classList.remove(ns.configs[this.buttonId].prefix + 'locale-show');
+            } else {
+                this.locale.classList.add(ns.configs[this.buttonId].prefix + 'locale-show');
+            }
+        }
+
         setLanguage(langCode) {
             this.lang = langCode;
             this.close();
             console.log(`Language set to: ${this.lang}`);  // For demonstration
-            this.dispatchLanguageChangeEvent({buttonId: this.buttonId, lang: lang});
+            this.dispatchLanguageChangeEvent({buttonId: this.buttonId, lang: this.lang});
         }
 
         dispatchLanguageChangeEvent({buttonId, lang}) {
+            console.log('[Locale] dispath languageChangeEvent')
             const event = new CustomEvent(ns.configs[buttonId].languageChangeEventName, {
                 detail: {
                     buttonId: buttonId,
@@ -114,11 +125,12 @@
                 }
             });
             document.dispatchEvent(event);
+            this.$buttonLoader.dispatchEvent(event);
         }
     
         close() {
             console.log('locale close');
-            this.selector.style.display = 'none';  // Hide selector after selection
+            this.toggleSelectorVisible();
         }
     }
 })(Quantz); 
