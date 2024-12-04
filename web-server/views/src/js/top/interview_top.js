@@ -48,14 +48,15 @@ class InterviewTop {
             "title": "Recruiting Interview",
             "introduction": "Hello, {name}. Are you ready?",
             //"end": "Thank you {name}. This is the end. If you have any question, feel free to contact us. Goodbye.",
-            "end": "Thank you {name}. This is the end. If you have any questions, feel free to reach out to our sales support team for assistance. Goodbye.",
+            "end": "Thank you {name}. Quantz Interview conducts interviews on your behalf, just like this. If you're interested in using this service, try the free trial available on our homepage. See you soon!",
             "steps": [
                 {
-                    "question": "Could you briefly introduce yourself?",
-                    "finish_condition": "Interviewee answered that they've finished.",
+                    "question": "Thank you for trying out the Quantz Interview Demo. Have you ever had to take time out of your day for things like job interviews, staff meetings, or answering inquiries?",
+                    "finish_condition": "When you've received a detailed answer.",
                     "instructions": [
                         "First, read the question.",
-                        "Ask if it's okay to stop at this good point."
+                        "Next, respond positively to the interviewee and ask for more details.",
+                        "Your final goal is to determine if the interviewee is spending time on clerical meetings."
                     ],
                     "max_turns": 3,
                 },
@@ -69,6 +70,27 @@ class InterviewTop {
                 //    "max_turns": 3,
                 //}
             ]
+            //"end": "Thank you {name}. This is the end. If you have any questions, feel free to reach out to our sales support team for assistance. Goodbye.",
+            //"steps": [
+            //    {
+            //        "question": "Could you briefly introduce yourself?",
+            //        "finish_condition": "Interviewee answered that they've finished.",
+            //        "instructions": [
+            //            "First, read the question.",
+            //            "Ask if it's okay to stop at this good point."
+            //        ],
+            //        "max_turns": 3,
+            //    },
+            //    //{
+            //    //    "question": "Why are you interested in this position, and how do you think your skills align with the role?",
+            //    //    "finish_condition": "Interviewee answered that they've finished.",
+            //    //    "instructions": [
+            //    //        "First, read the question.",
+            //    //        "Ask if it's okay to stop at this good point."
+            //    //    ],
+            //    //    "max_turns": 3,
+            //    //}
+            //]
         }
 
         this.$createInterviewDemo = document.getElementById('CreateInterviewDemo')
@@ -141,7 +163,7 @@ class InterviewTop {
         }
 
         const interviewJSON = this.interviewCreateView.interviewObjectFromFormData();
-        if (interviewJSON.steps.length < 2) {
+        if (interviewJSON.steps.length < 1) {
             interviewJSON.steps.push(
                 {
                     "question": "Why are you interested in this position, and how do you think your skills align with the role?",
@@ -154,7 +176,7 @@ class InterviewTop {
                 }
             )
         }
-        if (!interviewJSON || interviewJSON.steps.length < 2) {
+        if (!interviewJSON || interviewJSON.steps.length < 1) {
             console.warn('No interviewJSON');
             const message = this.locale.get("interview_top_create_demo_please_input", this.lang);
             this.$createInterviewDemoMessage.textContent = message;
@@ -258,15 +280,15 @@ class InterviewTop {
             $centerContainer.style.height = `${interpolate(100, 42, progress)}px`;
             $centerContainer.style.width = `${interpolate(80, 100, progress)}%`; // Assuming original width is 80%
     
-            $logo.style.position = 'absolute';
-            $logo.style.height = `${interpolate(71, 29, progress)}px`;
-            $logo.style.top = `${interpolate(20, 8, progress)}px`; // Assuming original top is 20px
-            $logo.style.left = `${interpolate(34, 84, progress)}vw`; // Assuming original left is 70vw
-    
             $topCopy.style.position = 'absolute';
             $topCopy.style.fontSize = `${interpolate(15, 12, progress)}px`;
             $topCopy.style.left = `${interpolate(39, 64, progress)}vw`; // Assuming original left is 5px
             $topCopy.style.top = `${interpolate(20, 15, progress)}px`; // Assuming original top is 20px
+
+            $logo.style.position = 'absolute';
+            $logo.style.height = `${interpolate(71, 29, progress)}px`;
+            $logo.style.top = `${interpolate(20, 8, progress)}px`; // Assuming original top is 20px
+            $logo.style.left = `${interpolate(34, 84, progress)}vw`; // Assuming original left is 70vw
         } else {
             // Remove the alternative header if it exists
             const $headerWithLogoAlternative = document.getElementById('header-with-logo-alternative');

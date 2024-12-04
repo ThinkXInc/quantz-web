@@ -189,14 +189,14 @@
         "ru": "Консультации по продажам"
     },
     "interview_top_needs_sales_text": {
-    "en": "I’m interested in certain products or services, but <span class='highlight'>time for meetings is limited</span>. A system for quick, simple inquiries would <span class='highlight'>allow us to assess if they suit us, without the need for time-consuming meetings</span>.",
-    "ja": "特定の製品やサービスに興味がありますが、<span class='highlight'>会議の時間が限られています</span>。迅速で簡単な問い合わせができるシステムがあれば、<span class='highlight'>面倒な会議をせずに要件だけチェックできます</span>。",
-    "zh": "我对某些产品或服务感兴趣，但<span class='highlight'>会议时间有限</span>。一个快速、简单的查询系统可以让我<span class='highlight'>在无需耗时会议的情况下评估它们是否适合我们</span>。",
-    "fr": "Je suis intéressé par certains produits ou services, mais <span class='highlight'>le temps pour les réunions est limité</span>. Un système de demandes rapides et simples nous permettrait de <span class='highlight'>évaluer si ces produits nous conviennent, sans avoir besoin de réunions chronophages</span>.",
-    "es": "Estoy interesado en ciertos productos o servicios, pero <span class='highlight'>el tiempo para reuniones es limitado</span>. Un sistema de consultas rápidas y simples nos permitiría <span class='highlight'>evaluar si nos convienen sin necesidad de reuniones largas</span>.",
-    "ar": "أنا مهتم بمنتجات أو خدمات معينة، لكن <span class='highlight'>الوقت المخصص للاجتماعات محدود</span>. يمكن أن يساعدني نظام للاستفسارات السريعة والبسيطة على <span class='highlight'>تقييم مدى ملاءمتها دون الحاجة إلى اجتماعات مطولة</span>.",
-    "ru": "Меня интересуют определённые продукты или услуги, но <span class='highlight'>времени на встречи не хватает</span>. Система для быстрых и простых запросов позволила бы <span class='highlight'>оценить их соответствие без необходимости проводить длительные встречи</span>."
-    },
+        "en": "I’m interested in certain products or services, but <span class='highlight'>time for meetings is limited</span>. A system for quick, simple inquiries would <span class='highlight'>allow us to assess if they suit us, without the need for time-consuming meetings</span>.",
+        "ja": "特定の製品やサービスに興味はありますが、<span class='highlight'>すべての提案に対応する時間はありません</span>。基本的なチェックのための話し合いを代替できるシステムがあれば、<span class='highlight'>面倒な会議を行わずに適合性を判断できます</span>。",
+        "zh": "我对某些产品或服务感兴趣，但<span class='highlight'>会议时间有限</span>。一个快速、简单的查询系统可以帮助我们<span class='highlight'>无需耗时的会议即可评估它们是否适合我们</span>。",
+        "fr": "Je suis intéressé par certains produits ou services, mais <span class='highlight'>le temps disponible pour les réunions est limité</span>. Un système de demandes rapides et simples nous permettrait de <span class='highlight'>évaluer leur adéquation sans avoir à organiser des réunions longues</span>.",
+        "es": "Estoy interesado en ciertos productos o servicios, pero <span class='highlight'>el tiempo para reuniones es limitado</span>. Un sistema de consultas rápidas y simples nos permitiría <span class='highlight'>evaluar si son adecuados para nosotros sin necesidad de reuniones largas</span>.",
+        "ar": "أنا مهتم بمنتجات أو خدمات معينة، لكن <span class='highlight'>الوقت المخصص للاجتماعات محدود</span>. يمكن لنظام للاستفسارات السريعة والبسيطة أن يساعدنا في <span class='highlight'>تقييم مدى ملاءمتها دون الحاجة إلى اجتماعات طويلة</span>.",
+        "ru": "Меня интересуют определённые продукты или услуги, но <span class='highlight'>времени на встречи не хватает</span>. Система для быстрых и простых запросов позволила бы <span class='highlight'>оценить их соответствие без необходимости проводить длительные встречи</span>."
+   },
     "interview_top_steps_step1": {
         "en": "Step 1",
         "ja": "ステップ 1",
