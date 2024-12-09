@@ -1000,6 +1000,31 @@
             }));
         });
 
+        $buttonLoader.addEventListener(ns.configs[buttonId].failedToGetBasicConfigEventName, function(event) {
+            const { buttonId, error, status } = event.detail;
+            console.log(`[Quantz Button ${buttonId}] failed to get basicConfig event received:`, error);
+            ns.buttonControllers[buttonId].switchToBusy();
+        });
+
+        $buttonLoader.addEventListener(ns.configs[buttonId].basicConfigFetchedEventName, function(event) {
+            const { buttonId, basicConfig } = event.detail;
+            console.log(`[Quantz Button ${buttonId}] basicConfig fetched event received.`);
+            const { hostId, languages, speakerForLangs, interactionModelId, responseMode, maxTurnsDefault } = basicConfig;
+            console.log(`[Quantz Button ${buttonId}] Host ID: ${hostId}`);
+            console.log(`[Quantz Button ${buttonId}] Languages: ${languages.join(", ")}`);
+            console.log(`[Quantz Button ${buttonId}] Speaker for Languages: ${JSON.stringify(speakerForLangs)}`);
+            console.log(`[Quantz Button ${buttonId}] Interaction Model ID: ${interactionModelId}`);
+            console.log(`[Quantz Button ${buttonId}] Response Mode: ${responseMode}`);
+            console.log(`[Quantz Button ${buttonId}] Max Turns Default: ${maxTurnsDefault}`);
+            // NOTE: no need to tell?
+            //document.dispatchEvent(new CustomEvent(ns.configs[buttonId].basicConfigFetchedEventName, {
+            //    detail: {
+            //        buttonId: buttonId,
+            //        basicConfig: basicConfig
+            //    }
+            //}));
+        });
+
         $buttonLoader.addEventListener(ns.configs[buttonId].failedToGetTokenEventName, function(event) {
             const { buttonId, error, status } = event.detail;
             console.log(`[Quantz Button ${buttonId}] failed to get token event received:`, error);

@@ -157,23 +157,62 @@
             }
         }
 
+        async getBasicConfig() {
+            try {
+                let url = `https://${ns.configs[this.buttonId].host}/stream/api/request-basic-config?token=${encodeURIComponent(this.token)}`;
+                let response = await fetch(url, {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+        
+                if (!response.ok) {
+                    console.error('Failed to get BasicConfig. Status:', response.status);
+                    return null;
+                }
+        
+                const data = await response.json();
+                console.log("BasicConfig retrieved:", data);
+                return data;
+            } catch (error) {
+                console.error("Error getting BasicConfig:", error);
+                return null;
+            }
+        }
+
         async connect(onConnected) {
             this.rateLimitExceeded = false;
             if(!this.token) {
                 console.log("[Core] No existing token, requesting new token...");
                 const result = await this.getToken();
-
                 if (result.error) {
                     console.error('[Core] Error obtaining token:', result.error);
                     this.dispatchFailedToGetTokenEvent(result.error, result.status);
                     return;
                 }
-
                 // Update the token on successful acquisition
                 this.token = result.token;
                 this.clientId = result.clientId;
                 console.log("[Core] Token obtained:", this.token);
                 this.dispatchTokenIssuedEvent(result.token, result.clientId);
+
+                // Get BasicConfig with token
+                if (result.token) {
+                    this.token = result.token;
+                    this.clientId = result.clientId;
+                    const basicConfig = await this.getBasicConfig();
+                    if (basicConfig.error) {
+                        console.error('[Core] Error obtaining basicConfig:', basicConfig.error);
+                        this.dispatchFailedToGetBasicConfigEvent(basicConfig.error, basicConfig.status);
+                        return
+                    }
+                    if (basicConfig) {
+                        console.log("[Core] BasicConfig obtained:", this.basicConfig);
+                        this.dispatchBasicConfigFetchedEvent(basicConfig)
+                    }
+                }
             } else {
                 console.log("[Core] Use token :", this.token);
             }
@@ -799,6 +838,27 @@
                     buttonId: this.buttonId,
                     error: error,
                     status: status
+                }
+            });
+            this.$buttonLoader.dispatchEvent(event);
+        }
+
+        dispatchFailedToGetBasicConfigEvent(error, status) {
+            const event = new CustomEvent(ns.configs[this.buttonId].failedToGetBasicConfigEventName, {
+                detail: {
+                    buttonId: this.buttonId,
+                    error: error,
+                    status: status
+                }
+            });
+            this.$buttonLoader.dispatchEvent(event);
+        }
+
+        dispatchBasicConfigFetchedEvent(basicConfig) {
+            const event = new CustomEvent(ns.configs[this.buttonId].basicConfigFetchedEventName, {
+                detail: {
+                    buttonId: this.buttonId,
+                    basicConfig: basicConfig,
                 }
             });
             this.$buttonLoader.dispatchEvent(event);
