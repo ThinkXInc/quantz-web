@@ -65,6 +65,7 @@
         assistantAudioSignalEventName: 'quantz-assistantAudioSignal',
         assistantEndAudioSignalEventName: 'quantz-assistantEndAudioSignal',
         assistantEndTurnEventName: 'quantz-assistantEndTurn',
+        assistantSkipTurnEventName: 'quantz-assistantSkipTurn',
         assistantSpeechEnforcedStopEventName: 'quantz-assistantSpeechEnforcedStop',
         humanAudioSignalEventName: 'quantz-humanAudioSignal',
         humanStartSpeakingEventName: 'quantz-humanStartSpeaking',
@@ -781,6 +782,23 @@
                 ns.indicatorControllers[buttonId].resetToConnectedAnimation();
             }
         })
+
+        $buttonLoader.addEventListener(ns.configs[buttonId].assistantSkipTurnEventName, function(event) {
+            console.log(`[Quantz Button ${buttonId}] assistant skip turn event received`);
+            if (ns.configs[buttonId].autoInteraction) {
+                // Immediately switch turn to human
+                if (!ns.isConversationEnd) {
+                    ns.buttonControllers[buttonId].switchToRecording(); // Switch to the recording state
+                    ns.cores[buttonId].startRecording();
+                }
+                ns.interactionControllers[buttonId].didAssistantEndTurn();
+            } else {
+                ns.buttonControllers[buttonId].switchToPushSpeak();
+                if (ns.configs[buttonId].buttonType === ns.ButtonType.A) {
+                    ns.indicatorControllers[buttonId].endTurnAnimation();
+                }
+            }
+        });
 
         $buttonLoader.addEventListener(ns.configs[buttonId].assistantEndTurnEventName, function(event) {
             console.log(`[Quantz Button ${buttonId}] assistant end turn event received`);

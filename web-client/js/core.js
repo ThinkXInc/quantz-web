@@ -14,7 +14,8 @@
     ns.SMOOTHING_TIME = 0.1;
     ns.MIN_DECIBELS = -70;
     ns.MAX_DECIBELS = -10;
-    ns.SILENT_DECIBEL = -60;
+    ns.SILENT_DECIBEL = -65;
+    ns.F0_THRESHOLD = 50;
 
     ns.Core = class {
 
@@ -489,6 +490,9 @@
                             this.dispatchAssistantEndTurnEvent();
                         }
                         // No immediate call to playBufferedAudio()
+                    } else if (messageString.startsWith('\\SKIP')) {
+                        console.log(`[Core] Skip message received: ${messageString}`);
+                        this.dispatchAssistantSkipTurnEvent();
                     } else if (messageString == '\\CLOSE') {
                         console.log(`[Core] Special message received: ${messageString}`);
                         this.dispatchCloseMessageReceivedEvent();
@@ -614,6 +618,16 @@
             this.$buttonLoader.dispatchEvent(event);
         }
 
+        dispatchAssistantSkipTurnEvent() {
+            console.log(`[Core] Dispatching assistantSkipTurnEvent - buttonId: ${this.buttonId}`);
+            const event = new CustomEvent(ns.configs[this.buttonId].assistantSkipTurnEventName, {
+                detail: {
+                    buttonId: this.buttonId
+                }
+            });
+            this.$buttonLoader.dispatchEvent(event);
+        }
+
         dispatchAssistantSpeechEnforcedStopEvent() {
             console.log(`[Core] Dispatching assistantSpeechEnforcedStopEvent - buttonId: ${this.buttonId}`);
             const event = new CustomEvent(ns.configs[this.buttonId].assistantSpeechEnforcedStopEventName, {
@@ -653,7 +667,7 @@
                 const fftSize = this.humanAudioAnalyzer.fftSize;
                 const fundamentalFreq = this.estimateFundamentalFrequency(frequencyDataArray, sampleRate, fftSize);
 
-                const hasSignificantData = frequencyDataArray.some(value => value > 0);
+                const hasSignificantData = frequencyDataArray.some(value => value > ns.F0_THRESHOLD) && decibels > ns.SILENT_DECIBEL;
                 if (hasSignificantData) {
                     this.hasSignificantSpeech = true;
                     const event = new CustomEvent(ns.configs[this.buttonId].humanAudioSignalEventName, {
@@ -666,6 +680,8 @@
                     });
                     this.$buttonLoader.dispatchEvent(event);
                     //console.log(`[Core] Dispatched humanAudioSignalEvent with spectrum and volume - buttonId: ${this.buttonId}, volume: ${decibels.toFixed(2)} dB`);
+                } else {
+                    console.warn('No significant data')
                 }
 
             }, ns.configs[this.buttonId].spectrumFrequencyMs);
