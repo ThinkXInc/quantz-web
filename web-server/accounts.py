@@ -231,7 +231,85 @@ def check_signup_restriction(lang: str, user: User):
     else:
         return None
 
-# User create
+def create_user_and_finalize(
+    lang, 
+    user_create_func, 
+    locale, 
+    email=None, 
+    password=None, 
+    google_id=None, 
+    is_debug=False
+):
+    # DEBUG
+    if ENABLE_INITIALIZE_ALL_USERS:
+        from manage_mongodb import delete_all_users
+        delete_all_users()
+    # DEBUG
+
+    try:
+        # Get billing dates
+        start_billing, next_billing = User.get_billing_dates(is_debug=is_debug)
+
+        # Create the user using the passed function
+        # user_create_func should be something like:
+        # lambda: User.create_new(...args...) or lambda: User.create_new_google_oauth(...args...)
+        user = user_create_func(
+            email=email,
+            password=password,
+            google_id=google_id,
+            lang=lang,
+            start_billing=start_billing,
+            next_billing=next_billing
+        )
+
+        if not user:
+            return UserSaveError("Failed to create user").http_response()
+
+        # Schedule payment
+        task_id = user.schedule_payment(lang)
+        if not task_id:
+            return UnexpectedAPIErrorFormat(lang=lang, message="task schedule failed").http_response()
+
+        # Create MaterialVectorDB collection
+        MaterialVectorDB.create_collection(user)
+
+    except UserAlreadyExistsError:
+        return UserAlreadyExistsErrorFormat(lang=lang).http_response()
+    except (UserSaveError, MaterialVectorDBCreateCollectionError) as e:
+        message = locale.get('user_save_error', lang)
+        logger.error(red({message}))
+        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+    except CeleryError as e:
+        logger.error(red({str(e)}))
+        message = locale.get('user_save_error', lang)
+        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+
+    # Check signup restriction
+    result_restriction = check_signup_restriction(lang, user)
+    if result_restriction:
+        return result_restriction
+
+    # Send verification mail
+    try:
+        verification_code = user.update_verification_code()
+        send_welcome_email(lang, user, verification_code)
+    except UserUpdateError:
+        message = locale.get('verification_code_generate_error', lang)
+        logger.error(red({message}))
+        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+    except MailSendError:
+        message = locale.get('mail_send_error', lang)
+        logger.error(red({message}))
+        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+
+    # Start session and return success
+    Session.start(str(user.id))
+    return AcceptedAPISuccessFormat(
+        message=locale.get('verification_code_send_success', lang),
+        data=user.response_json()
+    ).http_response()
+
+
 @blueprint_accounts.route('/v1/users/create', methods=['POST'])
 @blueprint_accounts.route('/v1/<lang>/users/create', methods=['POST'])
 @language_wrapper
@@ -240,13 +318,6 @@ def check_signup_restriction(lang: str, user: User):
 @regex_check('email', EMAIL_REGEX, 'email_format')
 @regex_check('password', PASSWORD_AT_LEAST_ONE_UPPER_AND_NUMERIC_REGEX, 'invalid_password_format')
 def users_create(lang, lang_name):
-    # DEBUG
-    if ENABLE_INITIALIZE_ALL_USERS:
-        from manage_mongodb import delete_all_users
-        delete_all_users()
-    # DEBUG
-
-    # Validate request
     logger.info(cyan(f'request: {request.url} => {request.json["email"]}'))
     validation_error = validate_request(lang, locale)
     if validation_error:
@@ -255,132 +326,210 @@ def users_create(lang, lang_name):
     email = request.json.get('email')
     password = request.json.get('password')
 
-    logger.info(magenta(f'[POST] users/create => \n'+'-'*100+f'\nemal: {email} password: **** '+'-'*100))
+    # Log sensitive info with password masked
+    logger.info(magenta(f'[POST] users/create => \n'+'-'*100+f'\nemail: {email} password: **** '+'-'*100))
 
-    # Save results in the database using the create_new method
-    try:
-        if email in ["dev1@thinkxinc.com", "dev2@thinkxinc.com", "dev3@thinkxinc.com", "dev4@thinkxinc.com"]:
-            is_debug = True
-        else:
-            is_debug = False
-        start_billing, next_billing = User.get_billing_dates(is_debug=is_debug)
-        user = User.create_new(
-            suspended_email=email, password=password,
+    # Determine if debug user
+    is_debug = email in ["dev1@thinkxinc.com", "dev2@thinkxinc.com", "dev3@thinkxinc.com", "dev4@thinkxinc.com"]
+
+    # Use the helper function
+    return create_user_and_finalize(
+        lang=lang,
+        user_create_func=lambda email, password, google_id, lang, start_billing, next_billing: User.create_new(
+            suspended_email=email,
+            password=password,
             free_call=FIRST_MONTH_FREE_CREDIT,
             lang=lang,
-            start_billing=start_billing, next_billing=next_billing)
-        if not user:
-            return UserSaveError("Failed to create user").http_response()
-        task_id = user.schedule_payment(lang)
-        if not task_id:
-            return UnexpectedAPIErrorFormat(lang=lang, message="task schedule faild").http_response()
-        MaterialVectorDB.create_collection(user)
-    except UserAlreadyExistsError:
-        return UserAlreadyExistsErrorFormat(lang=lang).http_response()
-    except (UserSaveError, MaterialVectorDBCreateCollectionError):
-        message = locale.get('user_save_error', lang)
-        logger.error(red({message}))
-        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+            start_billing=start_billing,
+            next_billing=next_billing
+        ),
+        locale=locale,
+        email=email,
+        password=password,
+        is_debug=is_debug
+    )
 
-    # Check signup restriction
-    result_restriction = check_signup_restriction(lang, user)
-    if result_restriction:
-        return result_restriction
 
-    # Send verification mail
-    try:
-        verification_code = user.update_verification_code()
-        send_welcome_email(
-            lang, user, verification_code
-        )
-    except UserUpdateError as ue:
-        message = locale.get('verification_code_generate_error', lang)
-        logger.error(red({message}))
-        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
-    except MailSendError as e:
-        message = locale.get('mail_send_error', lang)
-        logger.error(red({message}))
-        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
-
-    # Return Response
-    Session.start(str(user.id))
-    return AcceptedAPISuccessFormat(
-        message=locale.get('verification_code_send_success', lang),
-        data=user.response_json()).http_response()
-
-# User create (Google OAuth)
-@blueprint_accounts.route('/v1/users/create/googleoauth', methods=['POST'])
-@blueprint_accounts.route('/v1/<lang>/users/create/googleoauth', methods=['POST'])
-@language_wrapper
-@content_type_check_json
-@required_fields_check(['token'])
-@google_oauth_token_check(field_name='token')
-def users_create_googleoauth(email, google_id, lang, lang_name):
-    # Validate request
-    logger.info(cyan(f'request: {request.url} => {request.json}'))
-    validation_error = validate_request(lang, locale)
-    if validation_error:
-        return validation_error.http_response()
-
-    logger.info(magenta(f'[POST] users/create/googleoauth => \n'+'-'*100+f'\n{email}\n{google_id}'+'-'*100))
-
-    # DEBUG
-    if ENABLE_INITIALIZE_ALL_USERS:
-        from manage_mongodb import delete_all_users
-        delete_all_users()
-    # DEBUG
-
-    # Save results in the database using the create_new method
-    try:
-        start_billing, next_billing = User.get_billing_dates()
-        user = User.create_new_google_oauth(
-            email=email, google_id=google_id,
-            free_call=FIRST_MONTH_FREE_CREDIT,
-            lang=lang,
-            start_billing=start_billing, next_billing=next_billing)
-        if not user:
-            return UserSaveError("Failed to create user").http_response()
-        task_id = user.schedule_payment(lang)
-        if not task_id:
-            return UnexpectedAPIErrorFormat(lang=lang, message="task schedule faild").http_response()
-        MaterialVectorDB.create_collection(user)
-    except UserAlreadyExistsError:
-        logger.error(red(f'user with {email} already exists.'))
-        return UserAlreadyExistsErrorFormat(lang=lang).http_response()
-    except CeleryError as e:
-        logger.error(red({str(e)}))
-        message = locale.get('user_save_error', lang)
-        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
-    except (UserSaveError, MaterialVectorDBCreateCollectionError):
-        message = locale.get('user_save_error', lang)
-        logger.error(red({message}))
-        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
-
-    # Check signup restriction
-    result_restriction = check_signup_restriction(lang, user)
-    if result_restriction:
-        return result_restriction
-
-    # Send verification mail
-    try:
-        verification_code = user.update_verification_code()
-        send_welcome_email(
-            lang, user, verification_code
-        )
-    except UserUpdateError as ue:
-        message = locale.get('verification_code_generate_error', lang)
-        logger.error(red({message}))
-        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
-    except MailSendError as e:
-        message = locale.get('mail_send_error', lang)
-        logger.error(red({message}))
-        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
-
-    # Return Response
-    Session.start(str(user.id))
-    return AcceptedAPISuccessFormat(
-        message=locale.get('verification_code_send_success', lang),
-        data=user.response_json()).http_response()
+# NOTE: backup old version
+#@blueprint_accounts.route('/v1/users/create/googleoauth', methods=['POST'])
+#@blueprint_accounts.route('/v1/<lang>/users/create/googleoauth', methods=['POST'])
+#@language_wrapper
+#@content_type_check_json
+#@required_fields_check(['token'])
+#@google_oauth_token_check(field_name='token')
+#def users_create_googleoauth(email, google_id, lang, lang_name):
+#    logger.info(cyan(f'request: {request.url} => {request.json}'))
+#    validation_error = validate_request(lang, locale)
+#    if validation_error:
+#        return validation_error.http_response()
+#
+#    logger.info(magenta(f'[POST] users/create/googleoauth => \n'+'-'*100+f'\n{email}\n{google_id}'+'-'*100))
+#
+#    return create_user_and_finalize(
+#        lang=lang,
+#        user_create_func=lambda email, password, google_id, lang, start_billing, next_billing: User.create_new_google_oauth(
+#            email=email,
+#            google_id=google_id,
+#            free_call=FIRST_MONTH_FREE_CREDIT,
+#            lang=lang,
+#            start_billing=start_billing,
+#            next_billing=next_billing
+#        ),
+#        locale=locale,
+#        email=email,
+#        google_id=google_id
+#    )
+#
+## User create
+#@blueprint_accounts.route('/v1/users/create', methods=['POST'])
+#@blueprint_accounts.route('/v1/<lang>/users/create', methods=['POST'])
+#@language_wrapper
+#@content_type_check_json
+#@required_fields_check(['email', 'password'])
+#@regex_check('email', EMAIL_REGEX, 'email_format')
+#@regex_check('password', PASSWORD_AT_LEAST_ONE_UPPER_AND_NUMERIC_REGEX, 'invalid_password_format')
+#def users_create(lang, lang_name):
+#    # DEBUG
+#    if ENABLE_INITIALIZE_ALL_USERS:
+#        from manage_mongodb import delete_all_users
+#        delete_all_users()
+#    # DEBUG
+#
+#    # Validate request
+#    logger.info(cyan(f'request: {request.url} => {request.json["email"]}'))
+#    validation_error = validate_request(lang, locale)
+#    if validation_error:
+#        return validation_error.http_response()
+#
+#    email = request.json.get('email')
+#    password = request.json.get('password')
+#
+#    logger.info(magenta(f'[POST] users/create => \n'+'-'*100+f'\nemal: {email} password: **** '+'-'*100))
+#
+#    # Save results in the database using the create_new method
+#    try:
+#        if email in ["dev1@thinkxinc.com", "dev2@thinkxinc.com", "dev3@thinkxinc.com", "dev4@thinkxinc.com"]:
+#            is_debug = True
+#        else:
+#            is_debug = False
+#        start_billing, next_billing = User.get_billing_dates(is_debug=is_debug)
+#        user = User.create_new(
+#            suspended_email=email, password=password,
+#            free_call=FIRST_MONTH_FREE_CREDIT,
+#            lang=lang,
+#            start_billing=start_billing, next_billing=next_billing)
+#        if not user:
+#            return UserSaveError("Failed to create user").http_response()
+#        task_id = user.schedule_payment(lang)
+#        if not task_id:
+#            return UnexpectedAPIErrorFormat(lang=lang, message="task schedule faild").http_response()
+#        MaterialVectorDB.create_collection(user)
+#    except UserAlreadyExistsError:
+#        return UserAlreadyExistsErrorFormat(lang=lang).http_response()
+#    except (UserSaveError, MaterialVectorDBCreateCollectionError):
+#        message = locale.get('user_save_error', lang)
+#        logger.error(red({message}))
+#        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+#
+#    # Check signup restriction
+#    result_restriction = check_signup_restriction(lang, user)
+#    if result_restriction:
+#        return result_restriction
+#
+#    # Send verification mail
+#    try:
+#        verification_code = user.update_verification_code()
+#        send_welcome_email(
+#            lang, user, verification_code
+#        )
+#    except UserUpdateError as ue:
+#        message = locale.get('verification_code_generate_error', lang)
+#        logger.error(red({message}))
+#        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+#    except MailSendError as e:
+#        message = locale.get('mail_send_error', lang)
+#        logger.error(red({message}))
+#        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+#
+#    # Return Response
+#    Session.start(str(user.id))
+#    return AcceptedAPISuccessFormat(
+#        message=locale.get('verification_code_send_success', lang),
+#        data=user.response_json()).http_response()
+#
+## User create (Google OAuth)
+#@blueprint_accounts.route('/v1/users/create/googleoauth', methods=['POST'])
+#@blueprint_accounts.route('/v1/<lang>/users/create/googleoauth', methods=['POST'])
+#@language_wrapper
+#@content_type_check_json
+#@required_fields_check(['token'])
+#@google_oauth_token_check(field_name='token')
+#def users_create_googleoauth(email, google_id, lang, lang_name):
+#    # Validate request
+#    logger.info(cyan(f'request: {request.url} => {request.json}'))
+#    validation_error = validate_request(lang, locale)
+#    if validation_error:
+#        return validation_error.http_response()
+#
+#    logger.info(magenta(f'[POST] users/create/googleoauth => \n'+'-'*100+f'\n{email}\n{google_id}'+'-'*100))
+#
+#    # DEBUG
+#    if ENABLE_INITIALIZE_ALL_USERS:
+#        from manage_mongodb import delete_all_users
+#        delete_all_users()
+#    # DEBUG
+#
+#    # Save results in the database using the create_new method
+#    try:
+#        start_billing, next_billing = User.get_billing_dates()
+#        user = User.create_new_google_oauth(
+#            email=email, google_id=google_id,
+#            free_call=FIRST_MONTH_FREE_CREDIT,
+#            lang=lang,
+#            start_billing=start_billing, next_billing=next_billing)
+#        if not user:
+#            return UserSaveError("Failed to create user").http_response()
+#        task_id = user.schedule_payment(lang)
+#        if not task_id:
+#            return UnexpectedAPIErrorFormat(lang=lang, message="task schedule faild").http_response()
+#        MaterialVectorDB.create_collection(user)
+#    except UserAlreadyExistsError:
+#        logger.error(red(f'user with {email} already exists.'))
+#        return UserAlreadyExistsErrorFormat(lang=lang).http_response()
+#    except CeleryError as e:
+#        logger.error(red({str(e)}))
+#        message = locale.get('user_save_error', lang)
+#        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+#    except (UserSaveError, MaterialVectorDBCreateCollectionError):
+#        message = locale.get('user_save_error', lang)
+#        logger.error(red({message}))
+#        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+#
+#    # Check signup restriction
+#    result_restriction = check_signup_restriction(lang, user)
+#    if result_restriction:
+#        return result_restriction
+#
+#    # Send verification mail
+#    try:
+#        verification_code = user.update_verification_code()
+#        send_welcome_email(
+#            lang, user, verification_code
+#        )
+#    except UserUpdateError as ue:
+#        message = locale.get('verification_code_generate_error', lang)
+#        logger.error(red({message}))
+#        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+#    except MailSendError as e:
+#        message = locale.get('mail_send_error', lang)
+#        logger.error(red({message}))
+#        return UnexpectedAPIErrorFormat(lang=lang, message=message).http_response()
+#
+#    # Return Response
+#    Session.start(str(user.id))
+#    return AcceptedAPISuccessFormat(
+#        message=locale.get('verification_code_send_success', lang),
+#        data=user.response_json()).http_response()
 
 # Verify code
 @blueprint_accounts.route('/v1/users/verify_code', methods=['POST'])
