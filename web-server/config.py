@@ -101,6 +101,11 @@ class Config:
         "REDIS_INTERACTION_MODEL_DB_NUMBER",
         "REDIS_INTERACTION_MODEL_LOGLEVEL",
         "REDIS_INTERACTION_MODEL_EXPIRATION_TIME_SEC",
+        "REDIS_BASIC_CONFIG_HOST",
+        "REDIS_BASIC_CONFIG_PORT",
+        "REDIS_BASIC_CONFIG_DB_NUMBER",
+        "REDIS_BASIC_CONFIG_LOGLEVEL",
+        "REDIS_BASIC_CONFIG_EXPIRATION_TIME_SEC",
         "VECTORDB_ENCODER_CHECKPOINT",
         "VECTORDB_EMBEDDING_DIM",
         "VECTORDB_HOST",
@@ -146,6 +151,22 @@ class Config:
 
     ENV = env
 
+    SUPPORTED_LANGS = ["en", "ja", "fr", "es", "zh"]
+    ASSISTANT_NAME = {
+        "en": "Rela",
+        "ja": "レラ",
+        "zh": "瑞拉",
+        "es": "Rela",
+        "fr": "Rela",
+    }
+    DEFAULT_SPEAKER_FOR_LANGS = {
+        "ja": "JP-moraspeech",
+        "en": "EN-US",
+        "fr": "FR-FR",
+        "es": "ES-ES",
+        "zh": "ZH-CN"
+    }
+
     DEFAULT_LANG = 'en'
     BASIC_AUTH_USERNAME = 'think'
     BASIC_AUTH_PASSWORD = 'x'
@@ -183,6 +204,13 @@ class Config:
     REDIS_INTERACTION_MODEL_DB_NUMBER = os.environ.get('REDIS_INTERACTION_MODEL_DB_NUMBER')
     REDIS_INTERACTION_MODEL_LOGLEVEL = os.environ.get('REDIS_INTERACTION_MODEL_LOGLEVEL')
     REDIS_INTERACTION_MODEL_EXPIRATION_TIME_SEC = os.environ.get('REDIS_INTERACTION_MODEL_EXPIRATION_TIME_SEC')
+
+    # Basic Configuration
+    REDIS_BASIC_CONFIG_HOST = os.environ.get('REDIS_BASIC_CONFIG_HOST')
+    REDIS_BASIC_CONFIG_PORT = int(os.environ.get('REDIS_BASIC_CONFIG_PORT'))
+    REDIS_BASIC_CONFIG_DB_NUMBER = int(os.environ.get('REDIS_BASIC_CONFIG_DB_NUMBER'))
+    REDIS_BASIC_CONFIG_LOGLEVEL = os.environ.get('REDIS_BASIC_CONFIG_LOGLEVEL')
+    REDIS_BASIC_CONFIG_EXPIRATION_TIME_SEC = int(os.environ.get('REDIS_BASIC_CONFIG_EXPIRATION_TIME_SEC'))
 
     # Access DB
     REDIS_ACCESS_HOST = os.environ.get("REDIS_ACCESS_HOST")

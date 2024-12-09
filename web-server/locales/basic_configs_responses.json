@@ -1,0 +1,29 @@
+{
+    "": {
+        "ja": "",
+        "en": "",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "basic_configs_update_success": {
+        "ja": "基本設定が正常に更新されました。",
+        "en": "Basic configurations have been successfully updated.",
+        "zh": "基本配置已成功更新。",
+        "es": "Las configuraciones básicas se han actualizado correctamente.",
+        "fr": "Les configurations de base ont été mises à jour avec succès.",
+        "ru": "Базовые настройки успешно обновлены.",
+        "ar": "تم تحديث الإعدادات الأساسية بنجاح."
+    },
+    "basic_configs_update_fail": {
+        "ja": "基本設定の更新に失敗しました。",
+        "en": "Failed to update BasicConfig.",
+        "zh": "更新基本配置失败。",
+        "es": "No se pudo actualizar la configuración básica.",
+        "fr": "Échec de la mise à jour des configurations de base.",
+        "ru": "Не удалось обновить базовые настройки.",
+        "ar": "فشل في تحديث الإعدادات الأساسية."
+    }
+}

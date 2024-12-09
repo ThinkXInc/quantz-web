@@ -77,10 +77,11 @@ from accounts import blueprint_accounts
 from materials import blueprint_materials
 from payments import blueprint_payments
 from interviews import blueprint_interviews
+from basic_configs import blueprint_basic_configs
 from sample_sites import blueprint_sample_sites  # NOTE: needs consideration to be in this app
 for blueprint in [
         blueprint_accounts, blueprint_materials, blueprint_payments, blueprint_interviews, \
-        blueprint_sample_sites]:
+        blueprint_basic_configs, blueprint_sample_sites]:
     app.register_blueprint(blueprint)
 
 # Check initialization
