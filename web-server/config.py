@@ -159,13 +159,6 @@ class Config:
         "es": "Rela",
         "fr": "Rela",
     }
-    DEFAULT_SPEAKER_FOR_LANGS = {
-        "ja": "JP-moraspeech",
-        "en": "EN-US",
-        "fr": "FR-FR",
-        "es": "ES-ES",
-        "zh": "ZH-CN"
-    }
 
     DEFAULT_LANG = 'en'
     BASIC_AUTH_USERNAME = 'think'
