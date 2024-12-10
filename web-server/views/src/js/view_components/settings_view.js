@@ -120,7 +120,7 @@ class SettingsView {
         this.handleEventBillingPage();
 
         // Page 3: Customize
-        this.customizePageView = new CustomizePageView({
+        this.customizeView = new CustomizeView({
             user: this.user,
             lang: this.lang,
             locale: this.locale
@@ -129,8 +129,15 @@ class SettingsView {
         $customizePageTitle.classList.add('title', 'customize');
         $customizePageTitle.textContent = this.locale.get('settings_customize_page_title', this.lang);
         this.pageView.pages[SettingsPageIndex.customize].container.classList.add('CustomizePage');
-        this.pageView.appendChild($customizePageTitle, SettingsPageIndex.customize)
-        this.pageView.appendChild(this.customizePageView.$view, SettingsPageIndex.customize)
+        this.pageView.appendChild($customizePageTitle, SettingsPageIndex.customize);
+
+        this.customizeView.viewReady.then(() => {
+            this.pageView.appendChild(this.customizeView.$view, SettingsPageIndex.customize);
+        }).catch((error) => {
+            console.error("CustomizePageView failed to load:", error);
+            this.pageView.appendChild(this.customizeView.$view, SettingsPageIndex.customize);
+
+        });
         //this.createCustomizePage();
         //this.handleEventCustomizePage();
 

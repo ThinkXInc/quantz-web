@@ -548,5 +548,23 @@
         "es": "Copiado al portapapeles.",
         "ar": "تم النسخ إلى الحافظة.",
         "ru": "Скопировано в буфер обмена."
+    },
+    "settings_default_model_title": {
+        "ja": "デフォルト",
+        "en": "Default",
+        "zh": "默认",
+        "fr": "Par défaut",
+        "es": "Predeterminado",
+        "ar": "افتراضي",
+        "ru": "По умолчанию"
+    },
+    "settings_model_select_title": {
+        "ja": "対話モデルの選択",
+        "en": "Select Conversation Model",
+        "zh": "选择对话模型",
+        "fr": "Sélectionner le modèle de conversation",
+        "es": "Seleccionar modelo de conversación",
+        "ar": "اختيار نموذج المحادثة",
+        "ru": "Выбор модели диалога"
     }
 }

@@ -8,6 +8,24 @@
         "ru": "",
         "ar": ""
     },
+    "basic_configs_get_success": {
+        "ja": "基本設定が正常に取得されました。",
+        "en": "Basic configurations have been successfully retrieved.",
+        "zh": "基本配置已成功获取。",
+        "es": "Las configuraciones básicas se han obtenido correctamente.",
+        "fr": "Les configurations de base ont été récupérées avec succès.",
+        "ru": "Базовые настройки успешно получены.",
+        "ar": "تم استرداد الإعدادات الأساسية بنجاح."
+    },
+    "basic_configs_get_fail": {
+        "ja": "基本設定の取得に失敗しました。",
+        "en": "Failed to retrieve BasicConfig.",
+        "zh": "获取基本配置失败。",
+        "es": "No se pudieron obtener las configuraciones básicas.",
+        "fr": "Échec de la récupération des configurations de base.",
+        "ru": "Не удалось получить базовые настройки.",
+        "ar": "فشل في استرداد الإعدادات الأساسية."
+    },
     "basic_configs_update_success": {
         "ja": "基本設定が正常に更新されました。",
         "en": "Basic configurations have been successfully updated.",
@@ -26,4 +44,5 @@
         "ru": "Не удалось обновить базовые настройки.",
         "ar": "فشل في تحديث الإعدادات الأساسية."
     }
+
 }

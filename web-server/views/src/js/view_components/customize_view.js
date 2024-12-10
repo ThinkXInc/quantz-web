@@ -1,11 +1,78 @@
-class CustomizePageView {
+class CustomizeView {
     constructor({ user, lang, locale }) {
         this.user = user;
         this.lang = lang;
         this.locale = locale;
 
-        this.createCustomizePage();
-        this.handleEventCustomizePage();
+        this.$customizeContainer = document.createElement('div');
+        this.$customizeContainer.classList.add('CustomizeContainer', 'container');
+
+        this.showLoader();
+
+        this.viewReady = new Promise((resolve, reject) => {
+            this._viewReadyResolver = resolve;
+            this._viewReadyRejecter = reject;
+        });
+
+        this.getBasicConfig();
+
+        //this.createCustomizePage();
+        //this.handleEventCustomizePage();
+    }
+
+    getBasicConfig() {
+        Http.get(`/v1/${this.lang}/basic_config`,
+            (res) => {
+                const { basic_config, interaction_models } = res;
+                this.basicConfig = basic_config;
+                this.interactionModels = interaction_models;
+
+                this.hideLoader();
+
+                this.createCustomizePage();
+                this.handleEventCustomizePage();
+
+                this._viewReadyResolver();
+            },
+            (error) => {
+                console.error("Failed to get basic config data:", error);
+                // Optionally handle error (display a message, retry, etc.)
+                // For now, we'll hide the loader and maybe show an error.
+                this.hideLoader();
+                //const $errorAlert = document.createElement('p');
+                //$errorAlert.classList.add('alertMessage');
+                //$errorAlert.textContent = this.locale.get('basic_configs_get_fail', this.lang);
+                //this.$customizeContainer.appendChild($errorAlert);
+
+                // Reject the promise if needed
+                this._viewReadyRejecter(error);
+            }
+        );
+    }
+
+    showLoader() {
+        const loader = new GradientViewLoader({
+            id: 'CustomizeViewGradientLoader',
+            numIndicator: 3,
+            individualHeight: 7,
+            spaceBetween: 10,
+            animationDelay: 10,
+            defaultShift: 10,
+            shiftAmount: -20,
+            rx: 2,
+            ry: 2,
+        });
+
+        this.loader = loader;
+        this.$customizeContainer.appendChild(this.loader.$view);
+        this.loader.$view.style.display = 'flex';
+    }
+
+    hideLoader() {
+        if (this.loader && this.loader.$view) {
+            this.loader.$view.style.display = 'none';
+        } else {
+        }
     }
 
     mount($parent) {
@@ -13,14 +80,6 @@ class CustomizePageView {
     }
 
     createCustomizePage() {
-        const $customizePageTitle = document.createElement('h3');
-        $customizePageTitle.classList.add('title', 'customize');
-        $customizePageTitle.textContent = this.locale.get('settings_customize_page_title', this.lang);
-        this.$customizePageTitle = $customizePageTitle;
-
-        const $customizeContainer = document.createElement('div');
-        $customizeContainer.classList.add('CustomizeContainer', 'container');
-
         const $customizeAlert = document.createElement('p');
         $customizeAlert.classList.add('alertMessage');
 
@@ -38,30 +97,126 @@ class CustomizePageView {
         this.createButtonColorView($items);
         this.createButtonFontSizeView($items);
         this.createButtonBalloonSizeView($items);
+        this.createModelSelectView($items);
 
         $items.appendChild($customizeAlert);
-        $customizeContainer.appendChild($items);
+        this.$customizeContainer.appendChild($items);
 
         this.createPreviewView($preview);
         this.createCodeView($preview);
 
-        $customizeContainer.appendChild($preview);
-        this.$view = $customizeContainer;
+        this.$customizeContainer.appendChild($preview);
+        this.$view = this.$customizeContainer;
 
         this.updateQuantzButton();
         this.updateCodeView();
     }
 
     handleEventCustomizePage() {
-        // Attach event handlers for customize page elements
-        // For example:
+        const _this = this;
+
+        // Button Type
         this.buttonTypeSelector.$view.addEventListener('valuechanged', (e) => {
             e.preventDefault();
-            const { newValue } = e.detail;
-            this.submitCustomize({ 'button_type': newValue });
-        });
+            const {newValue} = e.detail;
+            console.warn(`button type: ${newValue}`)
+            this.submitCustomize({'button_type': newValue})
+        })
+        // Button Size
+        this.buttonWidthForm.$view.addEventListener('textchanged', (e)=> {
+            e.preventDefault();
+            const {newValue} = e.detail;
+            console.warn(`button width: ${newValue}`)
+            if(!this.buttonWidthForm.validate()) {
+                this.submitCustomize({'button_width': Number(newValue)})
+            }
 
-        // Similar event attachments for other fields...
+        })
+        this.buttonHeightForm.$view.addEventListener('textchanged', (e)=> {
+            e.preventDefault();
+            const {newValue} = e.detail;
+            console.warn(`button height: ${newValue}`)
+            if(!this.buttonHeightForm.validate()) {
+                this.submitCustomize({'button_height': Number(newValue)})
+            }
+        })
+        // Button Color
+        this.buttonColorPicker.$view.addEventListener('valuechanged', (e)=> {
+            e.preventDefault();
+            const {newValue} = e.detail;
+            console.warn(`button color: ${newValue}`)
+            this.submitCustomize({'button_color': newValue})
+
+        })
+        // Font Size
+        this.fontSizeForm.$view.addEventListener('textchanged', (e)=> {
+            e.preventDefault();
+            const {newValue} = e.detail;
+            const parsedFontSize = parseFloat(newValue);
+            console.warn(`font size: ${parsedFontSize}`)
+            if(!this.fontSizeForm.validate()) {
+                this.submitCustomize({'font_size': parsedFontSize.toFixed(2)}) // NOTE: string (javascript convert float 11.0 to int 11 automatically) 
+            }
+        })
+        // Balloon Size
+        this.balloonWidthForm.$view.addEventListener('textchanged', (e)=> {
+            e.preventDefault();
+            const {newValue} = e.detail;
+            console.warn(`balloon width: ${newValue}`)
+            if(!this.balloonWidthForm.validate()) {
+                this.submitCustomize({'balloon_width': Number(newValue)})
+            }
+        })
+        this.balloonHeightForm.$view.addEventListener('textchanged', (e)=> {
+            e.preventDefault();
+            const {newValue} = e.detail;
+            console.warn(`balloon height: ${newValue}`)
+            if(!this.balloonHeightForm.validate()) {
+                this.submitCustomize({'balloon_height': newValue})
+            }
+        })
+
+        // Handler for interaction model selection
+        this.selectInteractionModel.$view.addEventListener('selected', (e) => {
+            e.preventDefault();
+            const { value: selectedValue } = e.detail;
+            console.log(`Selected interaction model value: ${selectedValue}`);
+        
+            // Clear any existing alerts first
+            this.selectInteractionModel.alert(false);
+        
+            // Call API to update basic config
+            Http.post(`/v1/${this.lang}/basic_config/update`, 
+                { 'interaction_model_id': selectedValue },
+                (res) => {
+                    const { code, message } = res;
+                    console.log(`[${code} success] ${message}`);
+                    // Optionally update something in the UI if needed
+                },
+                (error) => {
+                    // If error has a known format:
+                    if (error && error.code) {
+                        const { errors, message } = error;
+                        if (errors && errors.length > 0) {
+                            // If there are field-specific errors:
+                            errors.forEach(errorObj => {
+                                const { field_name, message } = errorObj;
+                                if (field_name === 'interaction_model_id') {
+                                    this.selectInteractionModel.alert(message);
+                                }
+                            });
+                        } else if (message) {
+                            // General error message
+                            this.selectInteractionModel.alert(message);
+                        }
+                    } else {
+                        console.error(error);
+                        // Show a generic error alert if no structured error
+                        this.selectInteractionModel.alert("An unexpected error occurred.");
+                    }
+                }
+            );
+        });
     }
 
     // === The following methods are extracted from the original code ===
@@ -612,6 +767,90 @@ class CustomizePageView {
         this.balloonWidthForm.alert(false);
         this.balloonHeightForm.alert(false);
         this.$customizeAlert.textContent = "";
+    }
+
+    createModelSelectView($items) {
+        const $wrapper = document.createElement('div');
+        $wrapper.classList.add('ModelSelectWrapper');
+        $wrapper.classList.add('CustomizeItemWrapper');
+
+        const $title = document.createElement('h4');
+        $title.classList.add('subtitle');
+        $title.textContent = locale.get('settings_model_select_title', lang)
+        $wrapper.appendChild($title)
+
+        let listMenuItems = [
+            new ListItem({title: this.locale.get('settings_default_model_title', this.lang), value: 'default'})
+        ]
+        console.error(this.interactionModels)
+        this.interactionModels.forEach((d)=> {
+            listMenuItems.push(new ListItem({title: d.title, value: d.id}))
+        })
+       
+        this.selectInteractionModel = new DropdownButton({
+            id: 'ModelSelectDropdown',
+            fieldName: 'model',
+            title: '',  // Initially blank, will be set after
+            description: this.locale.get('settings_model_select_title', this.lang),
+            type: DropdownMenuType.list,
+            position: DropdownMenuDisplayPositionType.bottomover,
+            items: listMenuItems,
+            htmlTag: 'div',
+            validators: [new Validator({
+                errorType: ValidationErrorType.required,
+                errorMessage: this.locale.get(ValidationErrorType.required, lang)
+            })]
+        });
+        this.selectInteractionModel.$view.addEventListener('selected', (e)=> {
+            e.preventDefault();
+            const { value: selectedValue } = e.detail;
+            console.log(`Selected interaction model value: ${selectedValue}`);
+    
+            // Clear any existing alerts first
+            this.selectInteractionModel.alert(false);
+    
+            // Call API to update basic config with the selected interaction_model_id
+            Http.post(`/v1/${this.lang}/basic_config/update`, 
+                { 'interaction_model_id': selectedValue },
+                //{ 'interaction_model_id': selectedValue === "default" ? null : selectedValue },
+                (res) => {
+                    const { code, message } = res;
+                    console.log(`[${code} success] ${message}`);
+                    // Optionally update something in the UI if needed
+                },
+                (error) => {
+                    // If error has a known format:
+                    if (error && error.code) {
+                        const { errors, message } = error;
+                        if (errors && errors.length > 0) {
+                            // Field-specific errors
+                            errors.forEach(errorObj => {
+                                const { field_name, message } = errorObj;
+                                if (field_name === 'interaction_model_id') {
+                                    this.selectInteractionModel.alert(message);
+                                }
+                            });
+                        } else if (message) {
+                            // General error message
+                            this.selectInteractionModel.alert(message);
+                        }
+                    } else {
+                        console.error(error);
+                        // Show a generic error alert if no structured error
+                        this.selectInteractionModel.alert("An unexpected error occurred.");
+                    }
+                }
+            );
+
+        })
+        const defaultSelectedValue = this.basicConfig.interaction_model_id ? this.basicConfig.interaction_model_id : 'default';
+        const defaultItem = listMenuItems.find(item => item.value === defaultSelectedValue);
+        if (defaultItem) {
+            this.selectInteractionModel._selectedValue = defaultSelectedValue;
+            this.selectInteractionModel._setTitle(defaultItem.title);
+        }
+        $wrapper.appendChild(this.selectInteractionModel.$view);
+        $items.appendChild($wrapper)
     }
 
 }
