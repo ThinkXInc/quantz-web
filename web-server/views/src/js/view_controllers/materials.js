@@ -73,7 +73,7 @@ class MaterialsView {
         this.createDeleteModalView(lang, locale);
         this.handleDeleteModalViewEvents();
         this.createSettingsView(lang, locale);
-        this.handleSettinsViewEvents();
+        this.handleSettingsViewEvents();
     }
 
     createCreateView(lang, locale) {
@@ -293,14 +293,14 @@ class MaterialsView {
                     shouldCloseOnTapBG: true,
                 });
                 this.settingsModalView.mount('#MainContent');
-                document.getElementById('SettingsModalView').style.display = 'block'; // DEBUG SettingsModal open
+                //document.getElementById('SettingsModalView').style.display = 'block'; // DEBUG SettingsModal open
             })
             .catch(error => {
                 console.error('Unexpected error occurred when init:', error);
             });
     }
 
-    handleSettinsViewEvents() {
+    handleSettingsViewEvents() {
         // settingsIcon click
         let settingsIcon = document.getElementById('settingsIcon');
         settingsIcon.addEventListener('mouseup', (event) =>{

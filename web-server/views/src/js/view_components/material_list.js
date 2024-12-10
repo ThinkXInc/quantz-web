@@ -273,8 +273,8 @@ class MaterialList extends TableView {
 
         this.$plusIcon = document.createElement('img');
         this.$plusIcon.classList.add('plusIcon');
-        this.$plusIcon.src = '/img/plus-icon.png';
-        this.$plusIcon.srcset = '/img/plus-icon@2x.png';
+        this.$plusIcon.src = '/img/materials/edit-icon.svg';//document-icon-v2.svg';
+        //this.$plusIcon.srcset = '/img/plus-icon@2x.png';
         this.$createNew.appendChild(this.$plusIcon);
 
         this.$title = document.createElement('h4');

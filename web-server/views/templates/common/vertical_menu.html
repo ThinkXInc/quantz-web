@@ -1,0 +1,48 @@
+<header id="VerticalMenu">
+    <div class="upper">
+      <ul class="menu">
+      
+        <button class="createNew">
+          <h4 class="title">{{ header_create_button_title }}</h4>
+        </button>
+
+
+        <li class="interaction item">
+          <a href="/v1/{{ lang }}/interviews">
+            <img id="interviewIcon" class="interviewIcon icon" src="/img/vertical_menu/conversation-flow-icon.svg" alt="Interview">
+            {# NOTE: locale_dictをここに渡すのが難しいので変数を直接使う #}
+            <span class="menuTitle">{{ header_interaction_menu_title }}</span>
+          </a>
+        </li>
+
+        <img class="stepArrow" src="/img/vertical_menu/step-arrow-down.svg"/>
+
+        <li class="materials item highlight">
+          <a href="/v1/{{ lang }}/home">
+            <img id="knowledgeIcon" class="knowledgeIcon icon" src="/img/vertical_menu/knowledge-icon.svg" alt="Knowledges">
+            <span class="menuTitle">{{ header_knowledge_menu_title }}</span>
+          </a>
+        </li>
+
+        <img class="stepArrow" src="/img/vertical_menu/step-arrow-down.svg"/>
+
+        <li class="customize item">
+          <a href="/v1/{{ lang }}/interviews">
+            <img id="customizeIcon" class="customizeIcon icon" src="/img/vertical_menu/customize-icon.svg" alt="Interview">
+            <span class="menuTitle">{{ header_customize_menu_title }}</span>
+          </a>
+        </li>
+
+        <img class="stepArrow" src="/img/vertical_menu/step-arrow-down.svg"/>
+
+        <li class="meetings item">
+          <a href="/v1/{{ lang }}/interviews">
+            <img id="interviewIcon" class="meetingsIcon icon" src="/img/vertical_menu/interview-icon.svg" alt="Interview">
+            <span class="menuTitle">{{ header_meetings_menu_title }}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="bottom">
+    </div>
+  </header>

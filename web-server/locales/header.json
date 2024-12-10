@@ -44,13 +44,49 @@
         "ar": "تسجيل الخروج",
         "ru": "Выйти"
     },
-    "header_interview_menu_title": {
-        "en": "Interview",
-        "ja": "インタビュー",
-        "zh": "访谈",
-        "fr": "Entrevue",
-        "es": "Entrevista",
-        "ar": "مقابلة",
-        "ru": "Интервью"
+    "header_create_button_title": {
+        "en": "Create",
+        "ja": "作成",
+        "zh": "创建",
+        "fr": "Créer",
+        "es": "Crear",
+        "ar": "إنشاء",
+        "ru": "Создать"
+    },
+    "header_knowledge_menu_title": {
+        "en": "Register Knowledge Base",
+        "ja": "知識ベースを登録",
+        "zh": "注册知识库",
+        "fr": "Enregistrer la base de connaissances",
+        "es": "Registrar la base de conocimientos",
+        "ar": "تسجيل قاعدة المعرفة",
+        "ru": "Зарегистрировать базу знаний"
+    },
+    "header_interaction_menu_title": {
+        "en": "Create Conversation Plan",
+        "ja": "対話プランを作成",
+        "zh": "创建会话流程",
+        "fr": "Créer un flux de conversation",
+        "es": "Crear flujo de conversación",
+        "ar": "إنشاء تدفق محادثة",
+        "ru": "Создать поток разговора"
+    },
+    "header_customize_menu_title": {
+        "en": "Customize Interaction Button",
+        "ja": "設置するボタンをカスタマイズ",
+        "zh": "自定义交互按钮",
+        "fr": "Personnaliser le bouton d'interaction",
+        "es": "Personalizar el botón de interacción",
+        "ar": "تخصيص زر التفاعل",
+        "ru": "Настроить кнопку взаимодействия"
+    },
+    "header_meetings_menu_title": {
+        "en": "Your Meetings",
+        "ja": "ミーティング結果",
+        "zh": "您的会议",
+        "fr": "Vos réunions",
+        "es": "Tus reuniones",
+        "ar": "اجتماعاتك",
+        "ru": "Ваши встречи"
     }
 }

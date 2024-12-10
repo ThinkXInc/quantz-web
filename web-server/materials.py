@@ -104,8 +104,12 @@ def home(user, lang, lang_name):
         unit_price=UNIT_PRICE_USD,
         general_credit_per_response=GENERAL_CREDIT_PER_RESPONSE,
         interview_credit_per_response=INTERVIEW_CREDIT_PER_RESPONSE,
-        header_interview_menu_title=locale.get('header_interview_menu_title', lang),
+        header_create_button_title=locale.get('header_create_button_title', lang),
+        header_meetings_menu_title=locale.get('header_meetings_menu_title', lang),
+        header_interaction_menu_title=locale.get('header_interaction_menu_title', lang),
+        header_knowledge_menu_title=locale.get('header_knowledge_menu_title', lang),
         header_settings_menu_title=locale.get('header_settings_menu_title', lang),
+        header_customize_menu_title=locale.get('header_customize_menu_title', lang),
         header_logout_menu_title=locale.get('header_logout_menu_title', lang),
         metadata=locale.dict()["metadata_home"][lang])
 

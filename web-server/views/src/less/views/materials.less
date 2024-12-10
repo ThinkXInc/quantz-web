@@ -13,6 +13,8 @@
 //@material-text-highlight: #fff;
 //@material-create-view-bg: #26333d;
 
+@cubic-bezier1: cubic-bezier(.65,0,.34,1);
+
 @material-create-view-bg: #2e2e2e;
 
 @tablet-width: 768px;
@@ -27,8 +29,8 @@
     @material-list-header-bg: #282828;
     @material-list-header-title: #596772;
     @material-list-count: #fcfdfd;
-    @create-new-bg: #50636a;//#055c6b;  // #65056b
-    @create-new-title: #fff;
+    //@create-new-bg: #fff; //#50636a;//#055c6b;  // #65056b
+    //@create-new-title: #000;
     @material-list-bg: #444444;
     @material-bg: #444444;
     @material-bg-selected: #5b5b5b;//#535353;//#32383b;//#535353;
@@ -69,6 +71,7 @@
         flex-direction: column;
         //height: max-content;
         height: 100%;
+        background-color: #292929;
 
         div.materialListHeader {
             display: flex;
@@ -106,22 +109,39 @@
             display: flex;
             align-items: center;
             padding: 20px;
-            height: 65px;
-            background-color: @create-new-bg;
+            height: 46px;
+            margin: 6px auto;
+            width: 95%;
+            //box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.06);
+            //box-shadow: 0 9px 4px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.6);
+            //background-color: @create-new-bg;
+            border: 1px solid #888888;
+            border-radius: 27px;
+
+            transition: 
+                border 0.2s @cubic-bezier1,
+                background-color 0.2s @cubic-bezier1; /* Smooth transition */
 
             img.plusIcon {
-                width: 24px;
-                height: 24px;
+                width: 16px;
                 margin-right: 10px; // Added for some space between the icon and label
             }
 
             h4.title {
-                font-size: 16px;
-                color: @create-new-title;
+                font-size: 14px;
+                //color: @create-new-title;
+                color: #e3e3e3;
+                transition: 
+                    color 0.2s @cubic-bezier1; /* Smooth transition */
             }
+
         }
         div.createNew:hover {
-
+            border: 1px solid #c4c4c4;
+            background-color: #555555;
+            h4.title {
+                color: #fff;
+            }
         }
 
         div.tableView {
