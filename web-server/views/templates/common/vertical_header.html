@@ -1,8 +1,24 @@
 <header id="VerticalHeader">
   <div class="upper">
     <div class="logo-wrapper">
-      <img class="logo" src="/img/logo.png" srcset="/img/logo/white@2x.png" alt="Quantz Logo">
+      <a href="/v1/{{ lang }}/home">
+        <img class="logo" src="/img/logo.png" srcset="/img/logo/white@2x.png" alt="Quantz Logo">
+      </a>
     </div>
+    <ul class="menu">
+      <li class="meetings item">
+        <a href="/v1/{{ lang }}/interviews">
+          <img id="interviewIcon" class="meetingsIcon icon" src="/img/vertical_menu/interview-icon.svg" alt="Interview">
+          <span class="tooltip">{{ header_interviews_menu_title }}</span>
+        </a>
+      </li>
+      <li class="materials item highlight">
+        <a href="/v1/{{ lang }}/home">
+          <img id="knowledgeIcon" class="knowledgeIcon icon" src="/img/vertical_menu/knowledge-icon.svg" alt="Knowledges">
+          <span class="tooltip">{{ header_knowledge_menu_title }}</span>
+        </a>
+      </li>
+    </ul>
   </div>
   <div class="bottom">
     <ul class="menu">

@@ -1,4 +1,5 @@
 @tablet-width: 768px;
+@cubic-bezier1: cubic-bezier(.65,0,.34,1);
 @smartphone-width: 480px;
 
 #SettingsModalView {
@@ -7,10 +8,13 @@
         //background-color: rgba(255, 255, 255, 0.65) !important;
     }
     div.window {
-        width: 75%;
-        max-width: 800px;
+        width: 83%;
+        max-width: 934px;
+        //max-width: 800px;
+        border-radius: 18px;
+        border: 1px solid #494949;
         div.contentWrapper {
-            height: 80vh;
+            height: 87vh;
             background-color: #2e2e2e;
             border-bottom: 1px solid #4f4f4f;
             overflow-y: scroll;
@@ -24,12 +28,21 @@
         div.footer {
             background-color: #2e2e2e;
             button.cancelButton {
+                background-color: #2a2a2a;
+                color: #c3c3c3;
                 border: 1px solid #656565;
                 font-size: 0.9em;
-                padding: 8px 10px;
+                padding: 8px 21px;
+                border-radius: 26px;
             }
             button.doneButton {
                 display: none;
+                transition: all 0.3s @cubic-bezier1;
+            }
+            button:hover {
+                background-color: #2a2a2a;
+                color: #fff;
+
             }
         }
     }

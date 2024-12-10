@@ -245,6 +245,7 @@ def interview_home(user, lang, lang_name):
         header_knowledge_menu_title=locale.get('header_knowledge_menu_title', lang),
         header_settings_menu_title=locale.get('header_settings_menu_title', lang),
         header_customize_menu_title=locale.get('header_customize_menu_title', lang),
+        header_interviews_menu_title=locale.get('header_interviews_menu_title', lang),
         header_logout_menu_title=locale.get('header_logout_menu_title', lang),
         metadata=locale.dict()["metadata_home"][lang])
 

@@ -45,31 +45,31 @@
         "ru": "Выйти"
     },
     "header_create_button_title": {
-        "en": "Create",
-        "ja": "作成",
-        "zh": "创建",
-        "fr": "Créer",
-        "es": "Crear",
-        "ar": "إنشاء",
-        "ru": "Создать"
+        "en": "Start Creating",
+        "ja": "作成を始める",
+        "zh": "开始创建",
+        "fr": "Commencer la création",
+        "es": "Comenzar a crear",
+        "ar": "ابدأ الإنشاء",
+        "ru": "Начать создание"
     },
     "header_knowledge_menu_title": {
-        "en": "Register Knowledge Base",
-        "ja": "知識ベースを登録",
-        "zh": "注册知识库",
-        "fr": "Enregistrer la base de connaissances",
-        "es": "Registrar la base de conocimientos",
-        "ar": "تسجيل قاعدة المعرفة",
-        "ru": "Зарегистрировать базу знаний"
+        "en": "Knowledge Base",
+        "ja": "知識ベース",
+        "zh": "知识库",
+        "fr": "Base de connaissances",
+        "es": "Base de conocimientos",
+        "ar": "قاعدة المعرفة",
+        "ru": "База знаний"
     },
     "header_interaction_menu_title": {
-        "en": "Create Conversation Plan",
-        "ja": "対話プランを作成",
-        "zh": "创建会话流程",
-        "fr": "Créer un flux de conversation",
-        "es": "Crear flujo de conversación",
-        "ar": "إنشاء تدفق محادثة",
-        "ru": "Создать поток разговора"
+        "en": "Conversation Plan",
+        "ja": "対話プラン",
+        "zh": "会话计划",
+        "fr": "Plan de conversation",
+        "es": "Plan de conversación",
+        "ar": "خطة المحادثة",
+        "ru": "План разговора"
     },
     "header_customize_menu_title": {
         "en": "Customize Interaction Button",
@@ -88,5 +88,14 @@
         "es": "Tus reuniones",
         "ar": "اجتماعاتك",
         "ru": "Ваши встречи"
+    },
+    "header_interviews_menu_title": {
+        "en": "Interview",
+        "ja": "インタビュー",
+        "zh": "访谈",
+        "fr": "Entrevue",
+        "es": "Entrevista",
+        "ar": "مقابلة",
+        "ru": "Интервью"
     }
 }

@@ -11,7 +11,9 @@ class SettingsModalView extends ModalView {
         shouldCloseOnTapBG = true,
         htmlTag = 'div',
         protocols = [],
-        validators = []
+        validators = [],
+        showAnimation = AnimationType.EXPAND,
+        closeAnimation = AnimationType.SHRINK
     }) {
         super({
             id,
@@ -22,7 +24,9 @@ class SettingsModalView extends ModalView {
             shouldCloseOnTapBG,
             htmlTag,
             protocols,
-            validators
+            validators,
+            showAnimation,
+            closeAnimation
         });
 
         this.user = user;
@@ -65,7 +69,7 @@ class SettingsModalView extends ModalView {
 }
 
 const SettingsPageIndex = Object.freeze({
-    basic: 0, billing: 1, customize: 2
+    basic: 0, billing: 1, customize: 2//, config: 3
 })
 
 class Customize {
@@ -116,8 +120,24 @@ class SettingsView {
         this.handleEventBillingPage();
 
         // Page 3: Customize
-        this.createCustomizePage();
-        this.handleEventCustomizePage();
+        this.customizePageView = new CustomizePageView({
+            user: this.user,
+            lang: this.lang,
+            locale: this.locale
+        });
+        const $customizePageTitle = document.createElement('h3');
+        $customizePageTitle.classList.add('title', 'customize');
+        $customizePageTitle.textContent = this.locale.get('settings_customize_page_title', this.lang);
+        this.pageView.pages[SettingsPageIndex.customize].container.classList.add('CustomizePage');
+        this.pageView.appendChild($customizePageTitle, SettingsPageIndex.customize)
+        this.pageView.appendChild(this.customizePageView.$view, SettingsPageIndex.customize)
+        //this.createCustomizePage();
+        //this.handleEventCustomizePage();
+
+        // Page 4: Conversation
+        //this.createConfigPage();
+        //this.handleEventConfigPage();
+
 
         this.pageView.showAll();
     }
@@ -842,6 +862,7 @@ class SettingsView {
     }
 
 
+    /*
     createCustomizePage() {
         const pageIndex = SettingsPageIndex.customize;
         this.pageView.pages[pageIndex].container.classList.add('CustomizePage');
@@ -1491,4 +1512,24 @@ class SettingsView {
         this.balloonHeightForm.alert(false);
         this.$customizeAlert.textContent = "";
     }
+        */
+
+    /*
+    createConfigPage() {
+        const pageIndex = SettingsPageIndex.config;
+        this.pageView.pages[pageIndex].container.classList.add('ConfigPage');
+
+        const $customizePageTitle = document.createElement('h3');
+        $customizePageTitle.classList.add('title');
+        $customizePageTitle.classList.add('config');
+        $customizePageTitle.textContent = locale.get('settings_config_page_title', lang);
+
+
+    }
+    handleEventConfigPage() {
+
+    }
+    */
+
+
 }
