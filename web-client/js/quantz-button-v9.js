@@ -57,6 +57,8 @@
         ],
         tokenIssuedEventName: 'quantz-tokenIssued',
         failedToGetTokenEventName: 'quantz-failedToGetToken',
+        basicConfigFetchedEventName: 'quantz-basicConfigFetched',
+        failedToGetBasicConfigEventName: 'quantz-failedToGetBasicConfig',
         didClickStartEventName: 'quantz-didClickStart',
         didClickRestartEventName: 'quantz-didClickRestart',
         messageReceiveEventName: 'quantz-messageReceived',
@@ -1009,13 +1011,20 @@
         $buttonLoader.addEventListener(ns.configs[buttonId].basicConfigFetchedEventName, function(event) {
             const { buttonId, basicConfig } = event.detail;
             console.log(`[Quantz Button ${buttonId}] basicConfig fetched event received.`);
-            const { hostId, languages, speakerForLangs, interactionModelId, responseMode, maxTurnsDefault } = basicConfig;
-            console.log(`[Quantz Button ${buttonId}] Host ID: ${hostId}`);
+            console.error(event.detail)
+            console.error(basicConfig)
+            const { host_id, languages, speaker_for_langs, interaction_model_id, response_mode, max_turns_default } = basicConfig;
+            console.log(`[Quantz Button ${buttonId}] Host ID: ${host_id}`);
             console.log(`[Quantz Button ${buttonId}] Languages: ${languages.join(", ")}`);
-            console.log(`[Quantz Button ${buttonId}] Speaker for Languages: ${JSON.stringify(speakerForLangs)}`);
-            console.log(`[Quantz Button ${buttonId}] Interaction Model ID: ${interactionModelId}`);
-            console.log(`[Quantz Button ${buttonId}] Response Mode: ${responseMode}`);
-            console.log(`[Quantz Button ${buttonId}] Max Turns Default: ${maxTurnsDefault}`);
+            console.log(`[Quantz Button ${buttonId}] Speaker for Languages: ${JSON.stringify(speaker_for_langs)}`);
+            console.log(`[Quantz Button ${buttonId}] Interaction Model ID: ${interaction_model_id}`);
+            console.log(`[Quantz Button ${buttonId}] Response Mode: ${response_mode}`);
+            console.log(`[Quantz Button ${buttonId}] Max Turns Default: ${max_turns_default}`);
+            if (ns.configs[buttonId].autoInteraction) {
+                ns.interactionControllers[buttonId].basicConfig = basicConfig;
+                ns.interactionControllers[buttonId].setResponseMode(response_mode);
+            }
+ 
             // NOTE: no need to tell?
             //document.dispatchEvent(new CustomEvent(ns.configs[buttonId].basicConfigFetchedEventName, {
             //    detail: {

@@ -169,15 +169,15 @@
                 });
         
                 if (!response.ok) {
-                    console.error('Failed to get BasicConfig. Status:', response.status);
+                    console.error('[Core] Failed to get BasicConfig. Status:', response.status);
                     return null;
                 }
         
                 const data = await response.json();
-                console.log("BasicConfig retrieved:", data);
+                console.log("[Core] BasicConfig retrieved:", data);
                 return data;
             } catch (error) {
-                console.error("Error getting BasicConfig:", error);
+                console.error("[Core] Error getting BasicConfig:", error);
                 return null;
             }
         }
@@ -203,14 +203,14 @@
                     this.token = result.token;
                     this.clientId = result.clientId;
                     const basicConfig = await this.getBasicConfig();
-                    if (basicConfig.error) {
-                        console.error('[Core] Error obtaining basicConfig:', basicConfig.error);
+                    if (basicConfig.host_id) {
+                        this.basicConfig = basicConfig; 
+                        console.log("[Core] set BasicConfig:", this.basicConfig);
+                        this.dispatchBasicConfigFetchedEvent(this.basicConfig)
+                    } else {
+                        console.error('[Core] Wrong format basicConfig:', basicConfig);
                         this.dispatchFailedToGetBasicConfigEvent(basicConfig.error, basicConfig.status);
                         return
-                    }
-                    if (basicConfig) {
-                        console.log("[Core] BasicConfig obtained:", this.basicConfig);
-                        this.dispatchBasicConfigFetchedEvent(basicConfig)
                     }
                 }
             } else {

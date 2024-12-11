@@ -293,11 +293,15 @@
 }
 
 // ModelSelect
-div.CustomizeItems div.ModelSelectWrapper {
+div.CustomizeItems div.ModelSelectWrapper, div.CustomizeItems div.ResponseModeWrapper {
+    &.ModelSelectWrapper {
+        margin-bottom: 12px;
+    }
+
     h4.subtitle {
 
     }
-    div#ModelSelectDropdown.DropdownButton {
+    div#ModelSelectDropdown.DropdownButton, div#ResponseModeDropdown.DropdownButton {
         &.alert {
             div.DropdownButtonClickable {
                 border: 1px solid @alert-red;

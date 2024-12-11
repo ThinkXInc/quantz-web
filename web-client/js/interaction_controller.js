@@ -30,42 +30,10 @@
             this.SILENT_DECIBEL = -60;
             this.SILENT_FREQUENCY = 0; // Define a silent frequency value
 
+            this.basicConfig = null;
             this.responseMode = responseMode;
 
-            switch (this.responseMode) {
-                case ns.ResponseMode.TEMPO_ORIENTED:
-                    console.log(`[InteractionController] InteractionController setup with responseMode: TEMPO_ORIENTED`)
-                    this.SHORT_HUMAN_SILENCE_THRESHOLD_MS = 1000;
-                    this.DEFAULT_HUMAN_SILENCE_THRESHOLD_MS = 1000;
-                    this.LONG_HUMAN_SILENCE_THRESHOLD_MS = 2000;
-                    this.SPEECH_DURATION_THRESHOLD_MS = 4000;
-                    this.ADJUSTED_DURATION_THRESHOLD_MS = 3000;
-                    break;
-                case ns.ResponseMode.NORMAL:
-                    console.log(`[InteractionController] InteractionController setup with responseMode: NORMAL`)
-                    this.SHORT_HUMAN_SILENCE_THRESHOLD_MS = 2000;
-                    this.DEFAULT_HUMAN_SILENCE_THRESHOLD_MS = 3000;
-                    this.LONG_HUMAN_SILENCE_THRESHOLD_MS = 4000;
-                    this.SPEECH_DURATION_THRESHOLD_MS = 3000;
-                    this.ADJUSTED_DURATION_THRESHOLD_MS = 7000;
-                    break;
-                 case ns.ResponseMode.CAREFUL_LISTENING:
-                    console.log(`[InteractionController] InteractionController setup with responseMode: CAREFUL_LISTENING`)
-                    this.SHORT_HUMAN_SILENCE_THRESHOLD_MS = 5000;
-                    this.DEFAULT_HUMAN_SILENCE_THRESHOLD_MS = 5000;
-                    this.LONG_HUMAN_SILENCE_THRESHOLD_MS = 7000;
-                    this.SPEECH_DURATION_THRESHOLD_MS = 3000;
-                    this.ADJUSTED_DURATION_THRESHOLD_MS = 7000;
-                    break;
-                default:
-                    console.warning(`[InteractionController] Unknown responseMode: ${this.responseMode}`)
-                    this.SHORT_HUMAN_SILENCE_THRESHOLD_MS = 2000;
-                    this.DEFAULT_HUMAN_SILENCE_THRESHOLD_MS = 3000;
-                    this.LONG_HUMAN_SILENCE_THRESHOLD_MS = 4000;
-                    this.SPEECH_DURATION_THRESHOLD_MS = 3000;
-                    this.ADJUSTED_DURATION_THRESHOLD_MS = 7000;
-                    break;
-            }
+            this._initializeThresholdsForMode(this.responseMode);
 
             this.HUMAN_SILENCE_THRESHOLD_MS = this.DEFAULT_HUMAN_SILENCE_THRESHOLD_MS; // Initialize with default value
 
@@ -104,6 +72,51 @@
 
             // Start appending data at specified intervals
             this.start();
+        }
+
+        _initializeThresholdsForMode(responseMode) {
+            switch (responseMode) {
+                case ns.ResponseMode.TEMPO_ORIENTED:
+                    console.log(`[InteractionController] Setup with responseMode: TEMPO_ORIENTED`)
+                    this.SHORT_HUMAN_SILENCE_THRESHOLD_MS = 300;
+                    this.DEFAULT_HUMAN_SILENCE_THRESHOLD_MS = 400;
+                    this.LONG_HUMAN_SILENCE_THRESHOLD_MS = 600;
+                    this.SPEECH_DURATION_THRESHOLD_MS = 4000; // NOTE: この値より長い発話なら動的に待ち時間を長くすることで短い発話はクイックに応答し長い発話は傾聴する
+                    this.ADJUSTED_DURATION_THRESHOLD_MS = 3000;
+                    break;
+                case ns.ResponseMode.NORMAL:
+                    console.log(`[InteractionController] Setup with responseMode: NORMAL`)
+                    this.SHORT_HUMAN_SILENCE_THRESHOLD_MS = 2000;
+                    this.DEFAULT_HUMAN_SILENCE_THRESHOLD_MS = 3000;
+                    this.LONG_HUMAN_SILENCE_THRESHOLD_MS = 4000;
+                    this.SPEECH_DURATION_THRESHOLD_MS = 3000;
+                    this.ADJUSTED_DURATION_THRESHOLD_MS = 7000;
+                    break;
+                case ns.ResponseMode.CAREFUL_LISTENING:
+                    console.log(`[InteractionController] Setup with responseMode: CAREFUL_LISTENING`)
+                    this.SHORT_HUMAN_SILENCE_THRESHOLD_MS = 5000;
+                    this.DEFAULT_HUMAN_SILENCE_THRESHOLD_MS = 5000;
+                    this.LONG_HUMAN_SILENCE_THRESHOLD_MS = 7000;
+                    this.SPEECH_DURATION_THRESHOLD_MS = 3000;
+                    this.ADJUSTED_DURATION_THRESHOLD_MS = 7000;
+                    break;
+                default:
+                    console.warn(`[InteractionController] Unknown responseMode: ${responseMode}`)
+                    this.SHORT_HUMAN_SILENCE_THRESHOLD_MS = 2000;
+                    this.DEFAULT_HUMAN_SILENCE_THRESHOLD_MS = 3000;
+                    this.LONG_HUMAN_SILENCE_THRESHOLD_MS = 4000;
+                    this.SPEECH_DURATION_THRESHOLD_MS = 3000;
+                    this.ADJUSTED_DURATION_THRESHOLD_MS = 7000;
+                    break;
+            }
+        }
+
+        setResponseMode(newMode) {
+            this.responseMode = newMode;
+            this._initializeThresholdsForMode(this.responseMode);
+            // Reset HUMAN_SILENCE_THRESHOLD_MS to default after changing mode
+            this.HUMAN_SILENCE_THRESHOLD_MS = this.DEFAULT_HUMAN_SILENCE_THRESHOLD_MS;
+            console.log(`[InteractionController] responseMode changed to ${newMode}`);
         }
 
         start() {

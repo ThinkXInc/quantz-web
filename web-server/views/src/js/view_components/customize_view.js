@@ -98,6 +98,8 @@ class CustomizeView {
         this.createButtonFontSizeView($items);
         this.createButtonBalloonSizeView($items);
         this.createModelSelectView($items);
+        this.createResponseModeView($items);
+
 
         $items.appendChild($customizeAlert);
         this.$customizeContainer.appendChild($items);
@@ -851,6 +853,108 @@ class CustomizeView {
         }
         $wrapper.appendChild(this.selectInteractionModel.$view);
         $items.appendChild($wrapper)
+    }
+
+    /*
+    Response Mode
+    */
+
+    createResponseModeView($items) {
+        const $wrapper = document.createElement('div');
+        $wrapper.classList.add('ResponseModeWrapper');
+        $wrapper.classList.add('CustomizeItemWrapper');
+    
+        const $title = document.createElement('h4');
+        $title.classList.add('subtitle');
+        $title.textContent = this.locale.get('customize_select_response_mode_title', this.lang);
+        $wrapper.appendChild($title);
+    
+        const responseModeItems = [
+            new ListItem({
+                title: this.locale.get('customize_response_mode_tempo_oriented', this.lang),
+                value: 0
+            }),
+            new ListItem({
+                title: this.locale.get('customize_response_mode_normal', this.lang),
+                value: 1
+            }),
+            new ListItem({
+                title: this.locale.get('customize_response_mode_careful_listening', this.lang),
+                value: 2
+            })
+        ];
+    
+        this.selectResponseMode = new DropdownButton({
+            id: 'ResponseModeDropdown',
+            fieldName: 'response_mode',
+            title: '', // Will be set after we determine the default
+            description: this.locale.get('customize_select_response_mode_title', this.lang),
+            type: DropdownMenuType.list,
+            position: DropdownMenuDisplayPositionType.bottomover,
+            items: responseModeItems,
+            htmlTag: 'div',
+            validators: [new Validator({
+                errorType: ValidationErrorType.required,
+                errorMessage: this.locale.get(ValidationErrorType.required, this.lang)
+            })]
+        });
+    
+        // Set the default selected value based on basicConfig.response_mode
+        const defaultMode = typeof this.basicConfig.response_mode === 'number' 
+                            ? this.basicConfig.response_mode 
+                            : 0; // fallback to 0 if not set
+    
+        const defaultItem = responseModeItems.find(item => item.value === defaultMode);
+        if (defaultItem) {
+            this.selectResponseMode._selectedValue = defaultMode;
+            this.selectResponseMode._setTitle(defaultItem.title);
+        }
+    
+        $wrapper.appendChild(this.selectResponseMode.$view);
+        $items.appendChild($wrapper);
+
+        // Handler for response mode selection
+        this.selectResponseMode.$view.addEventListener('selected', (e) => {
+            e.preventDefault();
+            const { value: selectedValue } = e.detail;
+            console.log(`Selected response mode: ${selectedValue}`);
+        
+            // Clear any existing alerts first
+            this.selectResponseMode.alert(false);
+        
+            // Call API to update basic config with the selected response_mode
+            Http.post(`/v1/${this.lang}/basic_config/update`, 
+                { 'response_mode': selectedValue },
+                (res) => {
+                    const { code, message } = res;
+                    console.log(`[${code} success] ${message}`);
+                    // Optionally update something in the UI if needed
+                },
+                (error) => {
+                    // If error has a known format:
+                    if (error && error.code) {
+                        const { errors, message } = error;
+                        if (errors && errors.length > 0) {
+                            // Field-specific errors
+                            errors.forEach(errorObj => {
+                                const { field_name, message } = errorObj;
+                                if (field_name === 'response_mode') {
+                                    this.selectResponseMode.alert(message);
+                                }
+                            });
+                        } else if (message) {
+                            // General error message
+                            this.selectResponseMode.alert(message);
+                        }
+                    } else {
+                        console.error(error);
+                        // Show a generic error alert if no structured error
+                        this.selectResponseMode.alert("An unexpected error occurred.");
+                    }
+                }
+            );
+        });
+
     }
 
 }
