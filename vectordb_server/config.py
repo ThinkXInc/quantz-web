@@ -54,6 +54,9 @@ class Config:
 
     REQUIRED_KEYS_IN_DOTENV = [
         'ENV',
+        "LLM_CHECKPOINT",
+        "LLM_MAX_TOKENS",
+        "LLM_MAX_CONTEXT",
         "VECTORDB_ENCODER_CHECKPOINT",
         "VECTORDB_EMBEDDING_DIM",
         "VECTORDB_HOST",
@@ -85,6 +88,10 @@ class Config:
     print(f"environment detected in .env => "+bold(f"{env}"))
 
     ENV = env
+
+    LLM_CHECKPOINT = os.environ.get("LLM_CHECKPOINT")
+    LLM_MAX_TOKENS = int(os.environ.get("LLM_MAX_TOKENS"))
+    LLM_MAX_CONTEXT = int(os.environ.get("LLM_MAX_CONTEXT"))
 
     VECTORDB_ENCODER_CHECKPOINT = os.environ.get("VECTORDB_ENCODER_CHECKPOINT")
     VECTORDB_EMBEDDING_DIM = int(os.environ.get("VECTORDB_EMBEDDING_DIM"))

@@ -76,6 +76,9 @@ class Config:
 
     REQUIRED_KEYS_IN_DOTENV = [
         'ENV',
+        "LLM_CHECKPOINT",
+        "LLM_MAX_TOKENS",
+        "LLM_MAX_CONTEXT",
         'FLASK_APP_SECRET_KEY',
         'PASSWORD_ENCRYPT_KEY',
         'MONGO_DB_HOST',
@@ -168,6 +171,11 @@ class Config:
     SESSION_COOKIE_NAME = 'session'
 
     PASSWORD_ENCRYPT_KEY = os.environ.get("PASSWORD_ENCRYPT_KEY")
+
+    # LLM
+    LLM_CHECKPOINT = os.environ.get("LLM_CHECKPOINT")
+    LLM_MAX_TOKENS = int(os.environ.get("LLM_MAX_TOKENS"))
+    LLM_MAX_CONTEXT = int(os.environ.get("LLM_MAX_CONTEXT"))
 
     # MongoDB
     MONGO_DB_HOST = os.environ.get("MONGO_DB_HOST")
