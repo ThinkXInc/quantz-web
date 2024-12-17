@@ -203,7 +203,7 @@
                     this.token = result.token;
                     this.clientId = result.clientId;
                     const basicConfig = await this.getBasicConfig();
-                    if (basicConfig.host_id) {
+                    if (basicConfig.hostId) {
                         this.basicConfig = basicConfig; 
                         console.log("[Core] set BasicConfig:", this.basicConfig);
                         this.dispatchBasicConfigFetchedEvent(this.basicConfig)

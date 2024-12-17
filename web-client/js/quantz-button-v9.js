@@ -1011,18 +1011,18 @@
         $buttonLoader.addEventListener(ns.configs[buttonId].basicConfigFetchedEventName, function(event) {
             const { buttonId, basicConfig } = event.detail;
             console.log(`[Quantz Button ${buttonId}] basicConfig fetched event received.`);
-            console.error(event.detail)
-            console.error(basicConfig)
-            const { host_id, languages, speaker_for_langs, interaction_model_id, response_mode, max_turns_default } = basicConfig;
-            console.log(`[Quantz Button ${buttonId}] Host ID: ${host_id}`);
+            const { hostId, languages, speakerForLangs, interactionModelId, responseMode, maxTurnsDefault } = basicConfig;
+            console.log(`[Quantz Button ${buttonId}] Host ID: ${hostId}`);
             console.log(`[Quantz Button ${buttonId}] Languages: ${languages.join(", ")}`);
-            console.log(`[Quantz Button ${buttonId}] Speaker for Languages: ${JSON.stringify(speaker_for_langs)}`);
-            console.log(`[Quantz Button ${buttonId}] Interaction Model ID: ${interaction_model_id}`);
-            console.log(`[Quantz Button ${buttonId}] Response Mode: ${response_mode}`);
-            console.log(`[Quantz Button ${buttonId}] Max Turns Default: ${max_turns_default}`);
+            console.log(`[Quantz Button ${buttonId}] Speaker for Languages: ${JSON.stringify(speakerForLangs)}`);
+            console.log(`[Quantz Button ${buttonId}] Interaction Model ID: ${interactionModelId}`);
+            console.log(`[Quantz Button ${buttonId}] Response Mode: ${responseMode}`);
+            console.log(`[Quantz Button ${buttonId}] Max Turns Default: ${maxTurnsDefault}`);
+    
+            // Check if autoInteraction is enabled and apply the basicConfig
             if (ns.configs[buttonId].autoInteraction) {
                 ns.interactionControllers[buttonId].basicConfig = basicConfig;
-                ns.interactionControllers[buttonId].setResponseMode(response_mode);
+                ns.interactionControllers[buttonId].setResponseMode(responseMode);
             }
  
             // NOTE: no need to tell?
