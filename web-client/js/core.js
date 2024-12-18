@@ -15,7 +15,7 @@
     ns.MIN_DECIBELS = -70;
     ns.MAX_DECIBELS = -10;
     ns.SILENT_DECIBEL = -65;
-    ns.F0_THRESHOLD = 50;
+    ns.F0_THRESHOLD = 40; // 50 is too high and strict
 
     ns.Core = class {
 
@@ -706,7 +706,18 @@
                 const fftSize = this.humanAudioAnalyzer.fftSize;
                 const fundamentalFreq = this.estimateFundamentalFrequency(frequencyDataArray, sampleRate, fftSize);
 
-                const hasSignificantData = frequencyDataArray.some(value => value > ns.F0_THRESHOLD) && decibels > ns.SILENT_DECIBEL;
+                const isFrequencySignificant = frequencyDataArray.some(value => value > ns.F0_THRESHOLD);
+                const isDecibelSignificant = decibels > ns.SILENT_DECIBEL;
+                let reason = '';
+                if (!isFrequencySignificant) {
+                    reason = `No frequency above threshold (${ns.F0_THRESHOLD})`;
+                } else if (!isDecibelSignificant) {
+                    reason = `Decibel level (${decibels.toFixed(2)} dB) is below silent threshold (${ns.SILENT_DECIBEL})`;
+                } else {
+                    reason = ''
+                }
+                //const hasSignificantData = frequencyDataArray.some(value => value > ns.F0_THRESHOLD) && decibels > ns.SILENT_DECIBEL;
+                const hasSignificantData = isFrequencySignificant && isDecibelSignificant;
                 if (hasSignificantData) {
                     this.hasSignificantSpeech = true;
                     const event = new CustomEvent(ns.configs[this.buttonId].humanAudioSignalEventName, {
@@ -720,7 +731,7 @@
                     this.$buttonLoader.dispatchEvent(event);
                     //console.log(`[Core] Dispatched humanAudioSignalEvent with spectrum and volume - buttonId: ${this.buttonId}, volume: ${decibels.toFixed(2)} dB`);
                 } else {
-                    console.warn('No significant data')
+                    console.warn('No significant data:', reason)
                 }
 
             }, ns.configs[this.buttonId].spectrumFrequencyMs);
