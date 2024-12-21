@@ -146,11 +146,11 @@ def interview_demo(lang, lang_name):
     try:
         logger.info(cyan("Attempting to retrieve parameters from the request"))
         title = request.args.get('title', '').strip()
-        introduction = request.args.get('introduction', '').strip()
+        opening_remark = request.args.get('opening_remark', '').strip()
         end = request.args.get('end', '').strip()
         steps = request.args.get('steps', '[]')  # Default to empty list if not provided
         steps = json.loads(steps)  # Parse the steps JSON string into a Python list
-        logger.info(yellow(f"Parameters received - Title: {title}, Introduction: {introduction}, End: {end}, Steps: {steps}"))
+        logger.info(yellow(f"Parameters received - Title: {title}, Introduction: {opening_remark}, End: {end}, Steps: {steps}"))
     except Exception as e:
         logger.error(red(f"Failed to parse parameters: {e}"))
         message = f"{locale.get('interview_demo_create_error', lang)}: {e}"
@@ -163,8 +163,8 @@ def interview_demo(lang, lang_name):
         logger.error(red(f"Validation error: Title is empty"))
         return UnexpectedAPIErrorFormat(lang=lang, field_name=key, message=message).http_response()
 
-    if not introduction:
-        key = 'introduction'
+    if not opening_remark:
+        key = 'opening_remark'
         message = locale.get('interview_demo_input_error', lang, [key])
         logger.error(red(f"Validation error: Introduction is empty"))
         return UnexpectedAPIErrorFormat(lang=lang, field_name=key, message=message).http_response()
@@ -176,11 +176,11 @@ def interview_demo(lang, lang_name):
         return UnexpectedAPIErrorFormat(lang=lang, field_name=key, message=message).http_response()
 
     for i, step in enumerate(steps):
-        question = step.get('question', '').strip()
-        if not question:
-            key = f'step.question[{i}]'  # Indicate which step caused the issue
+        remark = step.get('remark', '').strip()
+        if not remark:
+            key = f'step.remark[{i}]'  # Indicate which step caused the issue
             message = locale.get('interview_demo_input_error', lang, [key])
-            logger.error(red(f"Validation error: Step question at index {i} is empty"))
+            logger.error(red(f"Validation error: Step remark at index {i} is empty"))
             return UnexpectedAPIErrorFormat(lang=lang, field_name=key, message=message).http_response()
 
     # 1. Create interview
@@ -189,10 +189,10 @@ def interview_demo(lang, lang_name):
         logger.info(cyan(f"Creating interview for user_id: {user_id}"))
         interview = InteractionModel(
             title=title,
-            introduction=introduction,
+            opening_remark=opening_remark,
             end=end,
             user_id=user_id,
-            steps=[InteractionModelStep(**step) for step in steps if step['question'].strip() != '']
+            steps=[InteractionModelStep(**step) for step in steps if step['remark'].strip() != '']
         )
         interview = interaction_model_db.create(interview)
         if not interview:
@@ -360,7 +360,7 @@ def interview_results_list(user, lang, interview_id, lang_name):
 @blueprint_interviews.route('/v1/<lang>/interviews/create', methods=['POST'])
 @language_wrapper
 @content_type_check_json
-@required_fields_check(['title', 'introduction', 'steps', 'end'])
+@required_fields_check(['title', 'steps'])
 @session_helper
 def interviews_create(user, lang, lang_name):
     
@@ -371,8 +371,6 @@ def interviews_create(user, lang, lang_name):
         return validation_error.http_response()
 
     title = request.json.get('title')
-    introduction = request.json.get('introduction')
-    end = request.json.get('end')
     steps = request.json.get('steps')
     logger.info(magenta(f'[POST] interviews/create => \n'+'-'*100+f'\n{title}'+'-'*100))
 
@@ -380,10 +378,8 @@ def interviews_create(user, lang, lang_name):
     try:
         interview = InteractionModel(
             title=title,
-            introduction=introduction,
-            end=end,
             user_id=str(user.id),
-            steps=[InteractionModelStep(**step) for step in steps if step['question'].strip() != '']
+            steps=[InteractionModelStep(**step) for step in steps if step['topic'].strip() != '']
         )
         interview = interaction_model_db.create(interview)
         if not interview:
@@ -422,7 +418,7 @@ def interviews_update(user, lang, lang_name, interview_id):
         return validation_error.http_response()
 
     # Gather updates from the request, including handling steps if they are part of the update
-    updates = {key: request.json[key] for key in ['title', 'introduction', 'end', 'steps'] if key in request.json}
+    updates = {key: request.json[key] for key in ['title', 'opening_remark', 'end', 'steps'] if key in request.json}
     if not updates:
         return BadRequestAPIErrorFormat(lang).http_response()
 

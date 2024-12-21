@@ -15,7 +15,7 @@
     ns.MIN_DECIBELS = -70;
     ns.MAX_DECIBELS = -10;
     ns.SILENT_DECIBEL = -65;
-    ns.F0_THRESHOLD = 40; // 50 is too high and strict
+    ns.F0_THRESHOLD = 30; // 50 is too high and strict
 
     ns.Core = class {
 

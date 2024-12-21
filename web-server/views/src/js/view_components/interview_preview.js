@@ -52,23 +52,23 @@ class InterviewPreviewView {
         $interviewSummaryView.appendChild($title);
 
         // **Introduction Container**
-        const $introductionContainer = document.createElement('div');
-        $introductionContainer.classList.add('introductionContainer');
+        //const $introductionContainer = document.createElement('div');
+        //$introductionContainer.classList.add('introductionContainer');
 
-        // **Introduction Label**
-        const $introductionLabel = document.createElement('span');
-        $introductionLabel.classList.add('introductionLabel');
-        $introductionLabel.textContent = this.locale.get('interview_summary_introduction_label', this.lang) || 'Introduction:';
-        $introductionContainer.appendChild($introductionLabel);
+        //// **Introduction Label**
+        //const $introductionLabel = document.createElement('span');
+        //$introductionLabel.classList.add('introductionLabel');
+        //$introductionLabel.textContent = this.locale.get('interview_summary_introduction_label', this.lang) || 'Introduction:';
+        //$introductionContainer.appendChild($introductionLabel);
 
-        // **Introduction Text**
-        const $introduction = document.createElement('p');
-        $introduction.classList.add('introduction');
-        $introduction.textContent = this.interview.introduction;
-        $introductionContainer.appendChild($introduction);
+        //// **Introduction Text**
+        //const $introduction = document.createElement('p');
+        //$introduction.classList.add('introduction');
+        //$introduction.textContent = this.interview.introduction;
+        //$introductionContainer.appendChild($introduction);
 
-        // Append introductionContainer to $interviewSummaryView
-        $interviewSummaryView.appendChild($introductionContainer);
+        //// Append introductionContainer to $interviewSummaryView
+        //$interviewSummaryView.appendChild($introductionContainer);
 
         // **Steps**
         this.interview.steps.forEach((step, index) => {
@@ -101,38 +101,38 @@ class InterviewPreviewView {
             $stepContent.classList.add('stepContent');
 
             // **Question Wrapper**
-            const $questionWrapper = document.createElement('div');
-            $questionWrapper.classList.add('questionWrapper');
+            const $remarkWrapper = document.createElement('div');
+            $remarkWrapper.classList.add('remarkWrapper');
 
             // **Question Label and Text**
-            const $questionLabel = document.createElement('span');
-            $questionLabel.classList.add('questionLabel');
-            $questionLabel.textContent = this.locale.get('interview_summary_step_question_label', this.lang) || 'Question:';
-            $questionWrapper.appendChild($questionLabel);
+            const $remarkLabel = document.createElement('span');
+            $remarkLabel.classList.add('remarkLabel');
+            $remarkLabel.textContent = this.locale.get('interview_summary_step_remark_label', this.lang) || 'Question:';
+            $remarkWrapper.appendChild($remarkLabel);
 
-            const $question = document.createElement('p');
-            $question.classList.add('question');
-            $question.textContent = step.question;
-            $questionWrapper.appendChild($question);
+            const $remark = document.createElement('p');
+            $remark.classList.add('remark');
+            $remark.textContent = step.remark;
+            $remarkWrapper.appendChild($remark);
 
-            // Append questionWrapper to stepContent
-            $stepContent.appendChild($questionWrapper);
+            // Append remarkWrapper to stepContent
+            $stepContent.appendChild($remarkWrapper);
 
             // **Instructions Wrapper**
-            const $instructionsWrapper = document.createElement('div');
-            $instructionsWrapper.classList.add('instructionsWrapper');
+            const $guidelinesWrapper = document.createElement('div');
+            $guidelinesWrapper.classList.add('guidelinesWrapper');
 
             // **Instructions Label**
-            const $instructionsLabel = document.createElement('span');
-            $instructionsLabel.classList.add('instructionsLabel');
-            $instructionsLabel.textContent = this.locale.get('interview_summary_step_instructions_label', this.lang) || 'Instructions:';
-            $instructionsWrapper.appendChild($instructionsLabel);
+            const $guidelinesLabel = document.createElement('span');
+            $guidelinesLabel.classList.add('guidelinesLabel');
+            $guidelinesLabel.textContent = this.locale.get('interview_summary_step_guidelines_label', this.lang) || 'Instructions:';
+            $guidelinesWrapper.appendChild($guidelinesLabel);
 
             // **Instructions List**
-            const $instructionsList = document.createElement('ul');
-            $instructionsList.classList.add('instructions');
+            const $guidelinesList = document.createElement('ul');
+            $guidelinesList.classList.add('guidelines');
 
-            step.instructions.forEach((instruction, idx) => {
+            step.guidelines.forEach((instruction, idx) => {
                 const $li = document.createElement('li');
                 $li.style.listStyle = 'none';
 
@@ -145,10 +145,10 @@ class InterviewPreviewView {
                 $li.appendChild($indexSpan);
                 $li.append(' ' + instruction);
 
-                $instructionsList.appendChild($li);
+                $guidelinesList.appendChild($li);
             });
 
-            $instructionsWrapper.appendChild($instructionsList);
+            $guidelinesWrapper.appendChild($guidelinesList);
 
             // **More Detail**
             const $moreDetail = document.createElement('span');
@@ -166,8 +166,8 @@ class InterviewPreviewView {
             $moreDetail.appendChild($arrowIcon);
             $moreDetail.appendChild($moreDetailLabel);
 
-            // Append $moreDetailLabel to $instructionsWrapper
-            $instructionsWrapper.appendChild($moreDetail);
+            // Append $moreDetailLabel to $guidelinesWrapper
+            $guidelinesWrapper.appendChild($moreDetail);
 
             // **Hidden Content**
             const $hiddenContent = document.createElement('div');
@@ -175,19 +175,19 @@ class InterviewPreviewView {
             // Hide by default using CSS classes
 
             // **Finish Condition Wrapper**
-            const $finishConditionWrapper = document.createElement('div');
-            $finishConditionWrapper.classList.add('finishConditionWrapper');
+            const $goalWrapper = document.createElement('div');
+            $goalWrapper.classList.add('goalWrapper');
 
             // **Finish Condition Label and Text**
-            const $finishConditionLabel = document.createElement('span');
-            $finishConditionLabel.classList.add('finishConditionLabel');
-            $finishConditionLabel.textContent = this.locale.get('interview_summary_step_finish_condition_label', this.lang) || 'Finish Condition:';
-            $finishConditionWrapper.appendChild($finishConditionLabel);
+            const $goalLabel = document.createElement('span');
+            $goalLabel.classList.add('goalLabel');
+            $goalLabel.textContent = this.locale.get('interview_summary_step_goal_label', this.lang) || 'Finish Condition:';
+            $goalWrapper.appendChild($goalLabel);
 
-            const $finishCondition = document.createElement('p');
-            $finishCondition.classList.add('finishCondition');
-            $finishCondition.textContent = step.finish_condition;
-            $finishConditionWrapper.appendChild($finishCondition);
+            const $goal = document.createElement('p');
+            $goal.classList.add('goal');
+            $goal.textContent = step.goal;
+            $goalWrapper.appendChild($goal);
 
             // **Max Turns Wrapper**
             const $maxTurnsWrapper = document.createElement('div');
@@ -204,12 +204,12 @@ class InterviewPreviewView {
             $maxTurns.textContent = step.max_turns;
             $maxTurnsWrapper.appendChild($maxTurns);
 
-            // Append finishConditionWrapper and maxTurnsWrapper to hiddenContent
-            $hiddenContent.appendChild($finishConditionWrapper);
+            // Append goalWrapper and maxTurnsWrapper to hiddenContent
+            $hiddenContent.appendChild($goalWrapper);
             $hiddenContent.appendChild($maxTurnsWrapper);
 
-            // Append hiddenContent to instructionsWrapper
-            $instructionsWrapper.appendChild($hiddenContent);
+            // Append hiddenContent to guidelinesWrapper
+            $guidelinesWrapper.appendChild($hiddenContent);
 
             // **More Detail Label Event Listener**
             $moreDetail.addEventListener('click', () => {
@@ -217,8 +217,8 @@ class InterviewPreviewView {
                 $moreDetail.classList.toggle('rotated');
             });
 
-            // Append instructionsWrapper to stepContent
-            $stepContent.appendChild($instructionsWrapper);
+            // Append guidelinesWrapper to stepContent
+            $stepContent.appendChild($guidelinesWrapper);
 
             // Append the step content to the step container
             $stepContainer.appendChild($stepTitle);

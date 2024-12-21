@@ -1,17 +1,19 @@
 const defaultStep = () => ({
-    "question": "",
-    "finish_condition": "Interviewee answered it's done.",
+    "topic": "Recruiting Interview",
+    "remark": "",
+    "goal": "Interviewee answered it's done.",
     "max_turns": 3,
-    "instructions": [
-        "First, read the question.",
+    "response_mode": 1,
+    "guidelines": [
+        "First, read the remark.",
         "When the answer looks done, ask 'Are you sure that\'s it?'"
     ]
 });
 
 const defaults = {
     "title": "",
-    "introduction": "Hello, {name}. Are you ready?",
-    "end": "Thank you {name}. This is the end. Goodbye.",
+    //"introduction": "Hello, {name}. Are you ready?",
+    //"end": "Thank you {name}. This is the end. Goodbye.",
     "steps": [
         defaultStep()
     ]
@@ -37,15 +39,16 @@ class InterviewCreateView {
         this.interview = interview || defaults;
         this.$message = $message;
 
-        this.maxInstructions = 3;
+        this.maxGuidelines = 3;
 
         this.maxSteps = maxSteps;
         this.onInterviewCreated = onInterviewCreated;
 
         // Arrays to store DOM elements and forms for each step
         this.stepContainers = [];
-        this.questionForms = [];
-        this.finishConditionForms = [];
+        this.topicForms = [];
+        this.remarkForms = [];
+        this.goalForms = [];
         this.maxTurnsForms = [];
         this.instructionForms = [];
 
@@ -91,39 +94,6 @@ class InterviewCreateView {
         $titleContainer.appendChild(titleForm.$view);
         $interviewCreateViewContainer.appendChild($titleContainer);
 
-        // **Introduction Container**
-        const $introductionContainer = document.createElement('div');
-        $introductionContainer.classList.add('introductionContainer');
-
-        const $introductionLabel = document.createElement('span');
-        $introductionLabel.classList.add('introductionLabel');
-        $introductionLabel.textContent = this.locale.get('interview_create_introduction_label', this.lang) || 'Introduction:';
-        $introductionContainer.appendChild($introductionLabel);
-
-        const introductionForm = new TextField({
-            id: 'introductionForm',
-            fieldName: 'introduction',
-            validators: [
-                new Validator({
-                    errorType: ValidationErrorType.required,
-                    errorMessage: this.locale.get(ValidationErrorType.required, this.lang)
-                }),
-                new Validator({
-                    errorType: ValidationErrorType.maxLength,
-                    errorMessage: this.locale.get(ValidationErrorType.maxLength, this.lang),
-                    maxLength: 300 
-                }),
-            ],
-            defaultValue: this.interview.introduction,
-            hasTitle: false,
-            placeholder: this.locale.get('interview_create_input_introduction_placeholder', this.lang),
-            isCounter: false,
-        });
-        this.introductionForm = introductionForm;
-        $introductionContainer.appendChild(introductionForm.$view);
-
-        $interviewCreateViewContainer.appendChild($introductionContainer);
-
         // **Steps**
         this.interview.steps.forEach((step, index) => {
             console.warn(`Creating step container for step ${index + 1}`, step);
@@ -133,44 +103,44 @@ class InterviewCreateView {
             this.stepContainers[index] = $stepContainer;
         });
 
-        // **End Container**
-        const $endContainer = document.createElement('div');
-        $endContainer.classList.add('endContainer');
+        //// **End Container**
+        //const $endContainer = document.createElement('div');
+        //$endContainer.classList.add('endContainer');
 
-        const $endLabel = document.createElement('span');
-        $endLabel.classList.add('endLabel');
-        $endLabel.textContent = this.locale.get('interview_create_end_label', this.lang) || 'Closing Remarks:';
-        $endContainer.appendChild($endLabel);
+        //const $endLabel = document.createElement('span');
+        //$endLabel.classList.add('endLabel');
+        //$endLabel.textContent = this.locale.get('interview_create_end_label', this.lang) || 'Closing Remarks:';
+        //$endContainer.appendChild($endLabel);
 
-        const endForm = new TextField({
-            id: 'endForm',
-            fieldName: 'end',
-            validators: [
-                new Validator({
-                    errorType: ValidationErrorType.required,
-                    errorMessage: this.locale.get(ValidationErrorType.required, this.lang)
-                }),
-                new Validator({
-                    errorType: ValidationErrorType.maxLength,
-                    errorMessage: this.locale.get(ValidationErrorType.maxLength, this.lang),
-                    maxLength: 300 
-                }),
-            ],
-            defaultValue: this.interview.end,
-            hasTitle: false,
-            placeholder: "Enter the closing remarks.",
-            isCounter: false,
-        });
-        this.endForm = endForm;
-        $endContainer.appendChild(endForm.$view);
+        //const endForm = new TextField({
+        //    id: 'endForm',
+        //    fieldName: 'end',
+        //    validators: [
+        //        new Validator({
+        //            errorType: ValidationErrorType.required,
+        //            errorMessage: this.locale.get(ValidationErrorType.required, this.lang)
+        //        }),
+        //        new Validator({
+        //            errorType: ValidationErrorType.maxLength,
+        //            errorMessage: this.locale.get(ValidationErrorType.maxLength, this.lang),
+        //            maxLength: 300 
+        //        }),
+        //    ],
+        //    defaultValue: this.interview.end,
+        //    hasTitle: false,
+        //    placeholder: "Enter the closing remarks.",
+        //    isCounter: false,
+        //});
+        //this.endForm = endForm;
+        //$endContainer.appendChild(endForm.$view);
 
-        $interviewCreateViewContainer.appendChild($endContainer);
+        //$interviewCreateViewContainer.appendChild($endContainer);
 
         // Assign the container before calling methods that use it
         this.$interviewCreateViewContainer = $interviewCreateViewContainer;
 
         // Ensure an empty step at the end if necessary
-        this.ensureEmptyStepAtEnd();
+        //this.ensureEmptyStepAtEnd();
 
         // append the container to main view
         this.$view.appendChild($interviewCreateViewContainer);
@@ -196,22 +166,24 @@ class InterviewCreateView {
         const $stepContent = document.createElement('div');
         $stepContent.classList.add('stepContent');
 
-        // **Question and Remove Wrapper**
-        const $questionAndRemoveWrapper = document.createElement('div');
-        $questionAndRemoveWrapper.classList.add('questionAndRemoveWrapper');
+        // ----------------------------------------------------------------------
+        // 1) TOPIC
+        // ----------------------------------------------------------------------
+        const $topicWrapper = document.createElement('div');
+        $topicWrapper.classList.add('topicWrapper');
 
-        // **Question Wrapper**
-        const $questionWrapper = document.createElement('div');
-        $questionWrapper.classList.add('questionWrapper');
- 
-        const $questionLabel = document.createElement('span');
-        $questionLabel.classList.add('questionLabel');
-        $questionLabel.textContent = this.locale.get('interview_create_step_question_label', this.lang) || 'Question:';
-        $questionWrapper.appendChild($questionLabel);
- 
-        const questionForm = new TextField({
-            id: `questionForm_${index}`,
-            fieldName: `question_${index}`,
+        const $topicLabel = document.createElement('span');
+        $topicLabel.classList.add('topicLabel');
+        // "Topic/Content for this step"
+        $topicLabel.textContent = this.locale.get(
+          'interview_create_step_topic_label', 
+          this.lang
+        ) || 'Topic/Content:';
+        $topicWrapper.appendChild($topicLabel);
+
+        const topicForm = new TextField({
+            id: `topicForm_${index}`,
+            fieldName: `topic_${index}`,
             validators: [
                 new Validator({
                     errorType: ValidationErrorType.maxLength,
@@ -219,22 +191,67 @@ class InterviewCreateView {
                     maxLength: 300 
                 }),
             ],
-            defaultValue: step.question,
+            defaultValue: step.topic,
             hasTitle: false,
-            placeholder: this.locale.get("interview_create_input_question_placeholder", this.lang),
+            placeholder: this.locale.get("interview_create_input_topic_placeholder", this.lang),
             isCounter: false,
         });
-        questionForm.$view.classList.add('questionForm');
-        this.questionForms[index] = questionForm;
-        $questionWrapper.appendChild(questionForm.$view);
+        topicForm.$view.classList.add('topicForm');
+        this.topicForms[index] = topicForm;
+        $topicWrapper.appendChild(topicForm.$view);
 
-        // **Event Listener for Question Field**
-        questionForm.$textField.addEventListener('textchanged', (e) => {
-            const isLastStep = questionForm === this.questionForms[this.questionForms.length -1];
-            if (isLastStep) {
-                this.ensureEmptyStepAtEnd();
-            }
+        //// Trigger add empty step if topic is filled
+        //topicForm.$textField.addEventListener('textchanged', (e) => {
+        //    const isLastStep = topicForm === this.topicForms[this.topicForms.length -1];
+        //    if (isLastStep) {
+        //        this.ensureEmptyStepAtEnd();
+        //    }
+        //});
+
+        $stepContent.appendChild($topicWrapper);
+
+        // ----------------------------------------------------------------------
+        // 2) REMARK (Question)
+        // ----------------------------------------------------------------------
+        // **Remark and Remove Wrapper**
+        const $remarkAndRemoveWrapper = document.createElement('div');
+        $remarkAndRemoveWrapper.classList.add('remarkAndRemoveWrapper');
+
+        // **Remark Wrapper**
+        const $remarkWrapper = document.createElement('div');
+        $remarkWrapper.classList.add('remarkWrapper');
+ 
+        const $remarkLabel = document.createElement('span');
+        $remarkLabel.classList.add('remarkLabel');
+        $remarkLabel.textContent = this.locale.get('interview_create_step_remark_label', this.lang) || 'Question:';
+        $remarkWrapper.appendChild($remarkLabel);
+ 
+        const remarkForm = new TextField({
+            id: `remarkForm_${index}`,
+            fieldName: `remark_${index}`,
+            validators: [
+                new Validator({
+                    errorType: ValidationErrorType.maxLength,
+                    errorMessage: this.locale.get(ValidationErrorType.maxLength, this.lang),
+                    maxLength: 300 
+                }),
+            ],
+            defaultValue: step.remark,
+            hasTitle: false,
+            placeholder: this.locale.get("interview_create_input_remark_placeholder", this.lang),
+            isCounter: false,
         });
+        remarkForm.$view.classList.add('remarkForm');
+        this.remarkForms[index] = remarkForm;
+        $remarkWrapper.appendChild(remarkForm.$view);
+
+        // **Event Listener for remark field**  
+        //remarkForm.$textField.addEventListener('textchanged', (e) => {
+        //    const isLastStep = remarkForm === this.remarkForms[this.remarkForms.length -1];
+        //    if (isLastStep) {
+        //        this.ensureEmptyStepAtEnd();
+        //    }
+        //});
  
         // **Remove Step Button**
         const $removeStepButton = document.createElement('img');
@@ -247,15 +264,57 @@ class InterviewCreateView {
             this.removeStep(idx);
         });
  
-        // Append question wrapper and remove button to the new wrapper
-        $questionAndRemoveWrapper.appendChild($questionWrapper);
-        $questionAndRemoveWrapper.appendChild($removeStepButton);
- 
-        $stepContent.appendChild($questionAndRemoveWrapper);
+        $remarkAndRemoveWrapper.appendChild($remarkWrapper);
+        $remarkAndRemoveWrapper.appendChild($removeStepButton);
 
-        // **Instructions Wrapper**
-        const $instructionsWrapper = document.createElement('div');
-        $instructionsWrapper.classList.add('instructionsWrapper');
+        $stepContent.appendChild($remarkAndRemoveWrapper);
+
+        // ----------------------------------------------------------------------
+        // 3) GOAL (Finish Condition)
+        // ----------------------------------------------------------------------
+        const $goalWrapper = document.createElement('div');
+        $goalWrapper.classList.add('goalWrapper');
+
+        const $goalLabel = document.createElement('span');
+        $goalLabel.classList.add('goalLabel');
+        // "Goal/Completion criteria for this step"
+        $goalLabel.textContent = this.locale.get(
+          'interview_create_step_goal_label', 
+          this.lang
+        ) || 'Finish Condition:';
+        $goalWrapper.appendChild($goalLabel);
+
+        const goalForm = new TextField({
+            id: `goalForm_${index}`,
+            fieldName: `goal_${index}`,
+            validators: [
+                new Validator({
+                    errorType: ValidationErrorType.required,
+                    errorMessage: this.locale.get(ValidationErrorType.required, this.lang)
+                }),
+                new Validator({
+                    errorType: ValidationErrorType.maxLength,
+                    errorMessage: this.locale.get(ValidationErrorType.maxLength, this.lang),
+                    maxLength: 100 
+                }),
+            ],
+            defaultValue: step.goal,
+            hasTitle: false,
+            placeholder: this.locale.get("interview_create_input_goal_placeholder", this.lang) 
+              || "Enter the finish condition.",
+            isCounter: false,
+        });
+        goalForm.$view.classList.add('goalForm');
+        this.goalForms[index] = goalForm;
+        $goalWrapper.appendChild(goalForm.$view);
+
+        $stepContent.appendChild($goalWrapper);
+
+        // ----------------------------------------------------------------------
+        // GUIDELINES (Hidden area)
+        // ----------------------------------------------------------------------
+        const $guidelinesWrapper = document.createElement('div');
+        $guidelinesWrapper.classList.add('guidelinesWrapper');
 
         // **More Detail**
         const $moreDetail = document.createElement('span');
@@ -271,29 +330,35 @@ class InterviewCreateView {
 
         $moreDetail.appendChild($arrowIcon);
         $moreDetail.appendChild($moreDetailLabel);
-
-        $instructionsWrapper.appendChild($moreDetail);
+        $guidelinesWrapper.appendChild($moreDetail);
 
         // **Hidden Content**
         const $hiddenContent = document.createElement('div');
         $hiddenContent.classList.add('hiddenContent');
 
-        // **Instructions Label**
-        const $instructionsLabel = document.createElement('span');
-        $instructionsLabel.classList.add('instructionsLabel');
-        $instructionsLabel.textContent = this.locale.get('interview_create_step_instructions_label', this.lang) || 'Instructions:';
-        $hiddenContent.appendChild($instructionsLabel);
+        // **Guidelines Label**
+        const $guidelinesLabel = document.createElement('span');
+        $guidelinesLabel.classList.add('guidelinesLabel');
+        $guidelinesLabel.textContent = this.locale.get('interview_create_step_guidelines_label', this.lang) || 'Guidelines:';
+        $hiddenContent.appendChild($guidelinesLabel);
 
-        // **Instructions List**
-        const $instructionsList = document.createElement('div');
-        $instructionsList.classList.add('instructions');
+        // **Guidelines List**
+        const $guidelinesList = document.createElement('div');
+        $guidelinesList.classList.add('guidelines');
 
-        this.instructionForms[index] = [];
+        // Make sure we have a sub-array for guidelineForms
+        if (!this.guidelineForms) {
+            this.guidelineForms = [];
+        }
+        if (!this.guidelineForms[index]) {
+            this.guidelineForms[index] = [];
+        }
+        this.guidelineForms[index] = [];
 
-        step.instructions.forEach((instruction, idx) => {
-            const instructionForm = new TextField({
-                id: `instructionForm_${index}_${idx}`,
-                fieldName: `instruction_${index}_${idx}`,
+        step.guidelines.forEach((guideline, idx) => {
+            const guidelineForm = new TextField({
+                id: `guidelineForm_${index}_${idx}`,
+                fieldName: `guideline_${index}_${idx}`,
                 validators: [
                     new Validator({
                         errorType: ValidationErrorType.required,
@@ -305,83 +370,49 @@ class InterviewCreateView {
                         maxLength: 300 
                     }),
                 ],
-                defaultValue: instruction,
+                defaultValue: guideline,
                 hasTitle: false,
-                placeholder: `Enter instruction ${idx + 1}.`,
+                placeholder: `Enter guideline ${idx + 1}.`,
                 isCounter: false,
             });
-            instructionForm.$view.classList.add('instructionForm')
-            this.instructionForms[index][idx] = instructionForm;
-            console.warn(`Instruction ${idx + 1} form created for step ${index + 1}`);
+            guidelineForm.$view.classList.add('guidelineForm');
+            this.guidelineForms[index][idx] = guidelineForm;
 
-            const $instructionWrapper = document.createElement('div');
-            $instructionWrapper.classList.add('instructionWrapper');
+            const $guidelineWrapper = document.createElement('div');
+            $guidelineWrapper.classList.add('guidelineWrapper');
 
             const $indexSpan = document.createElement('span');
             $indexSpan.classList.add('index');
             $indexSpan.textContent = idx + 1;
 
-            $instructionWrapper.appendChild($indexSpan);
-            $instructionWrapper.appendChild(instructionForm.$view);
+            $guidelineWrapper.appendChild($indexSpan);
+            $guidelineWrapper.appendChild(guidelineForm.$view);
 
-            $instructionsList.appendChild($instructionWrapper);
-            console.warn(`Instruction ${idx + 1} added to step ${index + 1} container`);
+            $guidelinesList.appendChild($guidelineWrapper);
         });
 
-        $hiddenContent.appendChild($instructionsList);
+        $hiddenContent.appendChild($guidelinesList);
 
-        // **Add Instruction Button Container**
-        const $addInstructionButtonContainer = document.createElement('div');
-        $addInstructionButtonContainer.classList.add('addInstructionButtonContainer');
-        $addInstructionButtonContainer.style.display = 'flex';
-        $addInstructionButtonContainer.style.justifyContent = 'center';
+        // **Add Guideline Button Container**
+        const $addGuidelineButtonContainer = document.createElement('div');
+        $addGuidelineButtonContainer.classList.add('addGuidelineButtonContainer');
+        $addGuidelineButtonContainer.style.display = 'flex';
+        $addGuidelineButtonContainer.style.justifyContent = 'center';
 
-        // **Add Instruction Button**
-        const $addInstructionButton = document.createElement('img');
-        $addInstructionButton.src = '/img/interviews/plus-icon.svg';
-        $addInstructionButton.classList.add('addInstructionButton');
-        $addInstructionButton.style.cursor = 'pointer';
+        // **Add Guideline Button**
+        const $addGuidelineButton = document.createElement('img');
+        $addGuidelineButton.src = '/img/interviews/plus-icon.svg';
+        $addGuidelineButton.classList.add('addGuidelineButton');
+        $addGuidelineButton.style.cursor = 'pointer';
 
-        $addInstructionButtonContainer.appendChild($addInstructionButton);
+        $addGuidelineButtonContainer.appendChild($addGuidelineButton);
 
-        // Hide the button if the number of instructions is >= 3
-        if (this.instructionForms[index].length >= 3) {
-            $addInstructionButtonContainer.style.display = 'none';
+        // Hide the button if the number of guidelines is >= 3
+        if (this.guidelineForms[index].length >= 3) {
+            $addGuidelineButtonContainer.style.display = 'none';
         }
 
-        $hiddenContent.appendChild($addInstructionButtonContainer);
-
-        // **Finish Condition Wrapper**
-        const $finishConditionWrapper = document.createElement('div');
-        $finishConditionWrapper.classList.add('finishConditionWrapper');
-
-        const $finishConditionLabel = document.createElement('span');
-        $finishConditionLabel.classList.add('finishConditionLabel');
-        $finishConditionLabel.textContent = this.locale.get('interview_create_step_finish_condition_label', this.lang) || 'Finish Condition:';
-        $finishConditionWrapper.appendChild($finishConditionLabel);
-
-        const finishConditionForm = new TextField({
-            id: `finishConditionForm_${index}`,
-            fieldName: `finishCondition_${index}`,
-            validators: [
-                new Validator({
-                    errorType: ValidationErrorType.required,
-                    errorMessage: this.locale.get(ValidationErrorType.required, this.lang)
-                }),
-                new Validator({
-                    errorType: ValidationErrorType.maxLength,
-                    errorMessage: this.locale.get(ValidationErrorType.maxLength, this.lang),
-                    maxLength: 100 
-                }),
-            ],
-            defaultValue: step.finish_condition,
-            hasTitle: false,
-            placeholder: "Enter the finish condition.",
-            isCounter: false,
-        });
-        finishConditionForm.$view.classList.add('finishConditionForm')
-        this.finishConditionForms[index] = finishConditionForm;
-        $finishConditionWrapper.appendChild(finishConditionForm.$view);
+        $hiddenContent.appendChild($addGuidelineButtonContainer);
 
         // **Max Turns Wrapper**
         const $maxTurnsWrapper = document.createElement('div');
@@ -414,10 +445,8 @@ class InterviewCreateView {
         this.maxTurnsForms[index] = maxTurnsForm;
         $maxTurnsWrapper.appendChild(maxTurnsForm.$view);
 
-        $hiddenContent.appendChild($finishConditionWrapper);
         $hiddenContent.appendChild($maxTurnsWrapper);
-
-        $instructionsWrapper.appendChild($hiddenContent);
+        $guidelinesWrapper.appendChild($hiddenContent);
 
         // **More Detail Event Listener**
         $moreDetail.addEventListener('click', () => {
@@ -425,15 +454,15 @@ class InterviewCreateView {
             $moreDetail.classList.toggle('rotated');
         });
 
-        // **Add Instruction Button Event Listener**
-        $addInstructionButton.addEventListener('click', () => {
-            const idx = this.instructionForms[index].length;
+        // **Add Guideline Button Event Listener**
+        $addGuidelineButton.addEventListener('click', () => {
+            const idx = this.guidelineForms[index].length;
             if (idx >= 3) {
                 return;
             }
-            const instructionForm = new TextField({
-                id: `instructionForm_${index}_${idx}`,
-                fieldName: `instruction_${index}_${idx}`,
+            const guidelineForm = new TextField({
+                id: `guidelineForm_${index}_${idx}`,
+                fieldName: `guideline_${index}_${idx}`,
                 validators: [
                     new Validator({
                         errorType: ValidationErrorType.required,
@@ -447,43 +476,40 @@ class InterviewCreateView {
                 ],
                 defaultValue: '',
                 hasTitle: false,
-                placeholder: `Enter instruction ${idx + 1}.`,
+                placeholder: `Enter guideline ${idx + 1}.`,
                 isCounter: false,
             });
-            instructionForm.$view.classList.add('instructionForm')
-            this.instructionForms[index][idx] = instructionForm;
+            guidelineForm.$view.classList.add('guidelineForm');
+            this.guidelineForms[index][idx] = guidelineForm;
 
-            const $instructionWrapper = document.createElement('div');
-            $instructionWrapper.classList.add('instructionWrapper');
+            const $guidelineWrapper = document.createElement('div');
+            $guidelineWrapper.classList.add('guidelineWrapper');
 
             const $indexSpan = document.createElement('span');
             $indexSpan.classList.add('index');
             $indexSpan.textContent = idx + 1;
 
-            $instructionWrapper.appendChild($indexSpan);
-            $instructionWrapper.appendChild(instructionForm.$view);
+            $guidelineWrapper.appendChild($indexSpan);
+            $guidelineWrapper.appendChild(guidelineForm.$view);
 
-            $instructionsList.appendChild($instructionWrapper);
+            $guidelinesList.appendChild($guidelineWrapper);
 
-            if (this.instructionForms[index].length >= 3) {
-                $addInstructionButtonContainer.style.display = 'none';
+            if (this.guidelineForms[index].length >= 3) {
+                $addGuidelineButtonContainer.style.display = 'none';
             }
+            this.guidelineForms[index].push(guidelineForm); // add to guidelineForms
         });
 
-        $stepContent.appendChild($instructionsWrapper);
+        $stepContent.appendChild($guidelinesWrapper);
         $stepContainer.appendChild($stepContent);
 
         // Store references
-        this.questionForms[index] = questionForm;
-        this.finishConditionForms[index] = finishConditionForm;
+        this.remarkForms[index] = remarkForm;
+        this.goalForms[index] = goalForm;
+        this.topicForms[index] = topicForm;
         this.maxTurnsForms[index] = maxTurnsForm;
-        //this.instructionForms[index] = []; // Initialize instructions array
 
         console.warn(`Step container created for step ${index + 1}`);
-        console.warn($stepContainer)
-
-        // Return the step container
-        console.warn(`Finished creation of step container for step ${index + 1}`);
         return $stepContainer;
     }
 
@@ -503,14 +529,14 @@ class InterviewCreateView {
     
         // Find the position for the new step
         const $lastStepContainer = this.stepContainers[this.stepContainers.length - 1];
-        const $endContainer = this.$interviewCreateViewContainer.querySelector('.endContainer');
+        //const $endContainer = this.$interviewCreateViewContainer.querySelector('.endContainer');
     
         // Insert the new step container after the last step container, before the endContainer
-        if ($lastStepContainer) {
-            this.$interviewCreateViewContainer.insertBefore($newStepContainer, $endContainer);
-        } else {
+        //if ($lastStepContainer) {
+        //    this.$interviewCreateViewContainer.insertBefore($newStepContainer, $endContainer);
+        //} else {
             this.$interviewCreateViewContainer.appendChild($newStepContainer);
-        }
+        //}
     
         this.stepContainers.push($newStepContainer);
         this.updateRemoveButtonVisibility();
@@ -531,10 +557,14 @@ class InterviewCreateView {
     
         // Remove the step from arrays
         this.stepContainers.splice(index, 1);
-        this.questionForms.splice(index, 1);
-        this.finishConditionForms.splice(index, 1);
+        this.topicForms.splice(index, 1);
+        this.remarkForms.splice(index, 1);
+        this.goalForms.splice(index, 1);
         this.maxTurnsForms.splice(index, 1);
         this.instructionForms.splice(index, 1);
+        if (this.guidelineForms && this.guidelineForms[index]) {
+            this.guidelineForms.splice(index, 1);
+        }
     
         // Update indices for the remaining steps
         this.updateStepIndices();
@@ -550,14 +580,12 @@ class InterviewCreateView {
     
     updateStepIndices() {
         console.warn('Updating step indices');
-    
         this.stepContainers.forEach(($stepContainer, index) => {
-            $stepContainer.dataset.index = index;  // Update dataset index
+            $stepContainer.dataset.index = index;
             const $stepTitle = $stepContainer.querySelector('.stepTitle');
             const stepLabelTemplate = this.locale.get('interview_create_steps_label', this.lang) || 'Step $0';
-            $stepTitle.textContent = stepLabelTemplate.replace('$0', index + 1); // Update step label
+            $stepTitle.textContent = stepLabelTemplate.replace('$0', index + 1); 
         });
-    
         console.warn('Step indices updated');
     }
 
@@ -565,25 +593,34 @@ class InterviewCreateView {
         const visible = this.interview.steps.length > 1;
         console.warn(`Setting remove button visibility to ${visible ? 'visible' : 'hidden'}`);
 
-        if (this.interview.steps.length <= 1) {
+        // If there's only one step, hide the remove button on that step
+        if (this.interview.steps.length <= 1 && this.stepContainers.length > 0) {
             const $removeStepButton = this.stepContainers[0].querySelector('.removeStepButton');
-            $removeStepButton.style.display = 'none';
+            if ($removeStepButton) {
+                $removeStepButton.style.display = 'none';
+            }
         } else {
             this.stepContainers.forEach($stepContainer => {
                 const $removeStepButton = $stepContainer.querySelector('.removeStepButton');
-                $removeStepButton.style.display = 'block';
+                if ($removeStepButton) {
+                    $removeStepButton.style.display = 'block';
+                }
             });
         }
     }
 
     ensureEmptyStepAtEnd() {
-        // Ensure that if the last questionForm is filled, and steps are less than maxSteps, we add a new empty step
+        // Ensure that if the last topic/remark is filled and steps are < maxSteps, we add a new empty step
         if (this.interview.steps.length < this.maxSteps) {
-            const lastQuestionForm = this.questionForms[this.questionForms.length -1];
-            if (lastQuestionForm && lastQuestionForm.value && lastQuestionForm.value.trim() !== '') {
+            const lastTopicForm = this.topicForms[this.topicForms.length -1];
+            const lastRemarkForm = this.remarkForms[this.remarkForms.length -1];
+            if (
+                (lastTopicForm && lastTopicForm.value && lastTopicForm.value.trim() !== '') ||
+                (lastRemarkForm && lastRemarkForm.value && lastRemarkForm.value.trim() !== '')
+            ) {
                 this.addStep();
-            } else if (!lastQuestionForm) {
-                // If there are no question forms yet, add an initial step
+            } else if (!lastTopicForm && !lastRemarkForm) {
+                // If there are no topic/remark forms yet, add an initial step
                 this.addStep();
             }
         }
@@ -595,46 +632,57 @@ class InterviewCreateView {
 
     interviewObjectFromFormData() {
         const title = this.titleForm.value;
-        const introduction = this.introductionForm.value;
-        const end = this.endForm.value;
+        //const end = this.endForm.value;
     
         const steps = [];
         let hasQuestionValue = false;
-    
-        this.questionForms.forEach((questionForm, index) => {
-            if (questionForm?.value?.trim()) {
+
+        // Build each step from forms
+        this.topicForms.forEach((topicForm, index) => {
+            const remarkForm = this.remarkForms[index];
+            const goalForm = this.goalForms[index];
+            const maxTurnsForm = this.maxTurnsForms[index];
+            // Gather guidelines from guidelineForms
+            const guidelinesArray = this.guidelineForms[index] || [];
+
+            const topicVal = topicForm?.value?.trim() || '';
+            const remarkVal = remarkForm?.value?.trim() || '';
+
+            // If user typed something in remark or topic, it's a valid step
+            if (topicVal || remarkVal) {
                 hasQuestionValue = true;
+
                 const step = {
-                    question: questionForm.value,
-                    finish_condition: this.finishConditionForms[index]?.value || '',
-                    max_turns: parseInt(this.maxTurnsForms[index]?.value || '0', 10),
-                    instructions: (this.instructionForms[index] || []).map(instructionForm => instructionForm?.value || '')
+                    topic: topicVal,
+                    remark: remarkVal,
+                    goal: goalForm?.value || '',
+                    max_turns: parseInt(maxTurnsForm?.value || '0', 10),
+                    guidelines: guidelinesArray.map(gForm => gForm?.value || '')
                 };
                 steps.push(step);
             }
         });
     
-        // If no question form has value, show an alert on the first question form
-        if (!hasQuestionValue && this.questionForms.length > 0) {
-            this.questionForms[0].alert(this.locale.get("interview_create_no_question_error", this.lang));
-            console.log('No question. return.')
+        // If no topic/remark form has value, show an alert on the first step’s remark
+        if (!hasQuestionValue && this.remarkForms.length > 0) {
+            this.remarkForms[0].alert(
+              this.locale.get("interview_create_no_remark_error", this.lang)
+            );
+            console.log('No topic or remark. return.');
             return null;
         }
     
         return {
             title: title,
-            introduction: introduction,
-            end: end,
+            //end: end,
             steps: steps
         };
     }
-    
-    
 
     submitCreateInterview() {
         const interviewJSON = this.interviewObjectFromFormData();
         if (!interviewJSON) {
-            return
+            return;
         }
 
         if (this.$message) {
@@ -665,6 +713,9 @@ class InterviewCreateView {
 
     submitUpdateInterview(interviewId) {
         const interviewJSON = this.interviewObjectFromFormData();
+        if (!interviewJSON) {
+            return;
+        }
 
         this.$message.textContent = '';
 
@@ -690,23 +741,36 @@ class InterviewCreateView {
                 errors.forEach(errorObj => {
                     const { field_name, message } = errorObj;
     
-                    // Find the relevant TextField based on the field_name and call the error method
                     switch (field_name) {
                         case 'title':
                             this.titleForm?.alert(message);
                             break;
-                        case 'introduction':
-                            this.introductionForm?.alert(message);
-                            break;
-                        case 'end':
-                            this.endForm?.alert(message);
-                            break;
+                        //case 'end':
+                        //    this.endForm?.alert(message);
+                        //    break;
                         default:
                             // Check if the field belongs to a specific step
-                            const stepMatch = field_name.match(/^question_(\d+)$/);
-                            if (stepMatch) {
-                                const stepIndex = parseInt(stepMatch[1], 10);
-                                this.questionForms[stepIndex]?.alert(message);
+                            const stepMatchTopic = field_name.match(/^topic_(\d+)$/);
+                            const stepMatchRemark = field_name.match(/^remark_(\d+)$/);
+                            const stepMatchGoal  = field_name.match(/^goal_(\d+)$/);
+                            const stepMatchGuide = field_name.match(/^guideline_(\d+)_(\d+)$/);
+
+                            if (stepMatchTopic) {
+                                const stepIndex = parseInt(stepMatchTopic[1], 10);
+                                this.topicForms[stepIndex]?.alert(message);
+                            } else if (stepMatchRemark) {
+                                const stepIndex = parseInt(stepMatchRemark[1], 10);
+                                this.remarkForms[stepIndex]?.alert(message);
+                            } else if (stepMatchGoal) {
+                                const stepIndex = parseInt(stepMatchGoal[1], 10);
+                                this.goalForms[stepIndex]?.alert(message);
+                            } else if (stepMatchGuide) {
+                                const stepIndex    = parseInt(stepMatchGuide[1], 10);
+                                const guideSubIndex = parseInt(stepMatchGuide[2], 10);
+                                this.guidelineForms[stepIndex][guideSubIndex]?.alert(message);
+                            } else if (message) {
+                                $message.classList.add('alert');
+                                $message.textContent = message;
                             }
                             break;
                     }

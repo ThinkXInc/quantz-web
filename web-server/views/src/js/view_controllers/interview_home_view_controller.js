@@ -11,7 +11,7 @@ class InterviewHomeViewController {
         this.setupView();
         this.setupEventListeners();
         this.loadInterviews();
-        console.log(`Initialize ${this.id}: with material ${material}`);
+        console.log(`[InterviewHomeViewController] Initialize ${this.id}`);
     }
 
     setupView() {

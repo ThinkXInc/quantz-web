@@ -60,10 +60,10 @@ div#InterviewCreateView {
         }
 
         // Adjust font size in certain containers
-        div.introductionContainer,
-        div.questionWrapper,
-        div.instructionsWrapper,
-        div.finishConditionWrapper,
+        div.topicWrapper,
+        div.remarkWrapper,
+        div.guidelinesWrapper,
+        div.goalWrapper,
         div.maxTurnsWrapper,
         div.endContainer {
             div.TextField {
@@ -78,7 +78,7 @@ div#InterviewCreateView {
         }
 
         // Style for introduction and end containers
-        div.introductionContainer,
+        //div.introductionContainer,
         div.endContainer {
             div.TextField {
                 div.inputOuter {
@@ -93,11 +93,11 @@ div#InterviewCreateView {
         }
 
         // Labels styling
-        span.introductionLabel,
-        span.questionLabel,
-        span.finishConditionLabel,
+        span.topicLabel,
+        span.remarkLabel,
+        span.goalLabel,
         span.maxTurnsLabel,
-        span.instructionsLabel,
+        span.guidelinesLabel,
         span.endLabel {
             display: block;
             margin-bottom: 4px;
@@ -125,23 +125,23 @@ div#InterviewCreateView {
         }
 
         // Introduction container styling
-        div.introductionContainer {
-            margin-bottom: 29px;
+        //div.introductionContainer {
+        //    margin-bottom: 29px;
 
-            div.TextField {
-                .inputWrapper input {
-                    margin: 0;
-                    padding: 8px 5px;
-                    border-radius: 7px;
-                    font-weight: 600;
-                    width: 100%;
-                    box-sizing: border-box;
-                }
-                .footer {
-                    padding: 0;
-                }
-            }
-        }
+        //    div.TextField {
+        //        .inputWrapper input {
+        //            margin: 0;
+        //            padding: 8px 5px;
+        //            border-radius: 7px;
+        //            font-weight: 600;
+        //            width: 100%;
+        //            box-sizing: border-box;
+        //        }
+        //        .footer {
+        //            padding: 0;
+        //        }
+        //    }
+        //}
 
         // Step container styling
         div.stepContainer {
@@ -177,12 +177,12 @@ div#InterviewCreateView {
                 padding: 8px 20px;
                 margin-top: 20px;
 
-                div.questionAndRemoveWrapper {
+                div.remarkAndRemoveWrapper {
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
 
-                    div.questionWrapper {
+                    div.remarkWrapper {
                         flex: 1;
                     }
 
@@ -195,13 +195,14 @@ div#InterviewCreateView {
                     }
                 }
 
-                div.questionWrapper,
-                div.finishConditionWrapper,
+                div.topicWrapper,
+                div.remarkWrapper,
+                div.goalWrapper,
                 div.maxTurnsWrapper {
                     margin-top: 10px;
                 }
 
-                div.questionWrapper {
+                div.remarkWrapper {
                     div.TextField {
                         .inputWrapper input {
                             border-radius: 5px;
@@ -212,17 +213,17 @@ div#InterviewCreateView {
                     }
                 }
 
-                div.instructionsWrapper {
+                div.guidelinesWrapper {
                     margin-top: 10px;
 
-                    span.instructionsLabel {
+                    span.guidelinesLabel {
                         font-weight: bold;
                         display: block;
                         margin-bottom: 6px;
                         font-size: 11px;
                     }
 
-                    div.instructions {
+                    div.guidelines {
                         div.instructionWrapper {
                             display: flex;
                             align-items: center;
@@ -249,14 +250,14 @@ div#InterviewCreateView {
                         }
                     }
 
-                    div.addInstructionButtonContainer {
+                    div.addGuidelineButtonContainer {
                         display: flex;
                         justify-content: center;
                         //justify-content: left;
                         //margin-left: 1px;
                         margin-top: 5px;
 
-                        img.addInstructionButton {
+                        img.addGuidelineButton {
                             cursor: pointer;
                             width: 20px;
                             height: 20px;
@@ -299,13 +300,14 @@ div#InterviewCreateView {
                         padding: 10px 0;
                     }
 
-                    div.finishConditionWrapper,
+                    div.topicWrapper,
+                    div.goalWrapper,
                     div.maxTurnsWrapper {
                         margin-top: 10px;
                     }
 
-                    div.finishConditionWrapper {
-                        span.finishConditionLabel {
+                    div.goalWrapper {
+                        span.goalLabel {
                             font-weight: bold;
                             display: block;
                             margin-bottom: 6px;
@@ -456,10 +458,10 @@ div#InterviewCreateView {
                     }
                 }
             }
-            div.introductionContainer,
-            div.questionWrapper,
-            div.instructionsWrapper,
-            div.finishConditionWrapper,
+            //div.introductionContainer,
+            div.remarkWrapper,
+            div.guidelinesWrapper,
+            div.goalWrapper,
             div.maxTurnsWrapper,
             div.endContainer {
                 div.TextField {
@@ -474,11 +476,11 @@ div#InterviewCreateView {
             div.stepArrowContainer,
             div.endArrowContainer {
             }
-            span.introductionLabel,
-            span.questionLabel,
-            span.finishConditionLabel,
+            //span.introductionLabel,
+            span.remarkLabel,
+            span.goalLabel,
             span.maxTurnsLabel,
-            span.instructionsLabel,
+            span.guidelinesLabel,
             span.endLabel {
             }
             div.titleContainer {
@@ -493,33 +495,34 @@ div#InterviewCreateView {
                     }
                 }
             }
-            div.introductionContainer {
-                div.TextField {
-                    .inputWrapper {
-                        input {
-                        }
-                    }
-                    .footer {
-                    }
-                }
-            }
+            //div.introductionContainer {
+            //    div.TextField {
+            //        .inputWrapper {
+            //            input {
+            //            }
+            //        }
+            //        .footer {
+            //        }
+            //    }
+            //}
             div.stepContainer {
                 h3.stepTitle {
                     &::before {
                     }
                 }
                 div.stepContent {
-                    div.questionAndRemoveWrapper {
-                        div.questionWrapper {
+                    div.remarkAndRemoveWrapper {
+                        div.remarkWrapper {
                         }
                         img.removeStepButton {
                         }
                     }
-                    div.questionWrapper,
-                    div.finishConditionWrapper,
+                    div.topicWrapper,
+                    div.remarkWrapper,
+                    div.goalWrapper,
                     div.maxTurnsWrapper {
                     }
-                    div.questionWrapper {
+                    div.remarkWrapper {
                         div.TextField {
                             .inputWrapper {
                                 input {
@@ -527,10 +530,10 @@ div#InterviewCreateView {
                             }
                         }
                     }
-                    div.instructionsWrapper {
-                        span.instructionsLabel {
+                    div.guidelinesWrapper {
+                        span.guidelinesLabel {
                         }
-                        div.instructions {
+                        div.guidelines {
                             div.instructionWrapper {
                                 span.index {
                                 }
@@ -542,8 +545,8 @@ div#InterviewCreateView {
                                 }
                             }
                         }
-                        div.addInstructionButtonContainer {
-                            img.addInstructionButton {
+                        div.addGuidelineButtonContainer {
+                            img.addGuidelineButton {
                             }
                         }
                     }
@@ -554,11 +557,12 @@ div#InterviewCreateView {
                         }
                     }
                     div.hiddenContent {
-                        div.finishConditionWrapper,
+                        div.topicWrapper,
+                        div.goalWrapper,
                         div.maxTurnsWrapper {
                         }
-                        div.finishConditionWrapper {
-                            span.finishConditionLabel {
+                        div.goalWrapper {
+                            span.goalLabel {
                             }
                             div.TextField {
                                 .inputWrapper {

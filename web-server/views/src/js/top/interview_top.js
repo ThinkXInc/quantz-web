@@ -46,46 +46,47 @@ class InterviewTop {
         // Create meeting demo
         const defaultInterviewRecruiting = {
             "title": "Recruiting Interview",
-            "introduction": "Hello, {name}. Are you ready?",
+            "openingRemark": "Hello, {name}. Are you ready?",
             //"end": "Thank you {name}. This is the end. If you have any question, feel free to contact us. Goodbye.",
             "end": "Thank you {name}. Quantz Interview conducts interviews on your behalf, just like this. If you're interested in using this service, try the free trial available on our homepage. See you soon!",
             "steps": [
                 {
-                    "question": "Thank you for trying out the Quantz Interview Demo. Have you ever had to take time out of your day for things like job interviews, staff meetings, or answering inquiries?",
-                    "finish_condition": "When you've received a detailed answer.",
-                    "instructions": [
-                        "First, read the question.",
+                    "remark": "Thank you for trying out the Quantz Interview Demo. Have you ever had to take time out of your day for things like job interviews, staff meetings, or answering inquiries?",
+                    "goal": "When you've received a detailed answer.",
+                    "guidelines": [
+                        "First, read the remark.",
                         "Next, respond positively to the interviewee and ask for more details.",
                         "Your final goal is to determine if the interviewee is spending time on clerical meetings."
                     ],
+                    "response_mode": 0,
                     "max_turns": 3,
                 },
                 //{
-                //    "question": "Why are you interested in this position, and how do you think your skills align with the role?",
-                //    "finish_condition": "Interviewee answered that they've finished.",
-                //    "instructions": [
-                //        "First, read the question.",
+                //    "remark": "Why are you interested in this position, and how do you think your skills align with the role?",
+                //    "goal": "Interviewee answered that they've finished.",
+                //    "guidelines": [
+                //        "First, read the remark.",
                 //        "Ask if it's okay to stop at this good point."
                 //    ],
                 //    "max_turns": 3,
                 //}
             ]
-            //"end": "Thank you {name}. This is the end. If you have any questions, feel free to reach out to our sales support team for assistance. Goodbye.",
+            //"end": "Thank you {name}. This is the end. If you have any remarks, feel free to reach out to our sales support team for assistance. Goodbye.",
             //"steps": [
             //    {
-            //        "question": "Could you briefly introduce yourself?",
-            //        "finish_condition": "Interviewee answered that they've finished.",
-            //        "instructions": [
-            //            "First, read the question.",
+            //        "remark": "Could you briefly introduce yourself?",
+            //        "goal": "Interviewee answered that they've finished.",
+            //        "guidelines": [
+            //            "First, read the remark.",
             //            "Ask if it's okay to stop at this good point."
             //        ],
             //        "max_turns": 3,
             //    },
             //    //{
-            //    //    "question": "Why are you interested in this position, and how do you think your skills align with the role?",
-            //    //    "finish_condition": "Interviewee answered that they've finished.",
-            //    //    "instructions": [
-            //    //        "First, read the question.",
+            //    //    "remark": "Why are you interested in this position, and how do you think your skills align with the role?",
+            //    //    "goal": "Interviewee answered that they've finished.",
+            //    //    "guidelines": [
+            //    //        "First, read the remark.",
             //    //        "Ask if it's okay to stop at this good point."
             //    //    ],
             //    //    "max_turns": 3,
@@ -166,9 +167,9 @@ class InterviewTop {
         if (interviewJSON.steps.length < 1) {
             interviewJSON.steps.push(
                 {
-                    "question": "Why are you interested in this position, and how do you think your skills align with the role?",
-                    "finish_condition": "Interviewee answered that they've finished.",
-                    "instructions": [
+                    "remark": "Why are you interested in this position, and how do you think your skills align with the role?",
+                    "goal": "Interviewee answered that they've finished.",
+                    "guidelines": [
                         "First, read the question.",
                         "Ask if it's okay to stop at this good point."
                     ],
@@ -184,8 +185,8 @@ class InterviewTop {
             this.scrollToCreateInterview();
             setTimeout(()=>{
                 const $stepCreate = document.getElementById('step-create');
-                const question0Input = $stepCreate.querySelector('input.question_0form');
-                question0Input.focus()
+                const remark0Input = $stepCreate.querySelector('input.remark_0form');
+                remark0Input.focus()
             }, 1000)
             return;
         }
@@ -193,7 +194,7 @@ class InterviewTop {
         // Convert interviewJSON into URL query parameters
         const queryParams = new URLSearchParams({
             title: interviewJSON.title,
-            introduction: interviewJSON.introduction,
+            //openingRemark: interviewJSON.introduction,
             end: interviewJSON.end,
             steps: JSON.stringify(interviewJSON.steps) // Serialize the steps array
         }).toString();
@@ -505,31 +506,41 @@ class InterviewTop {
         switch (newStepKey) {
             case 'create':
                 // Get input elements
-                const introductionInput = $stepCreate.querySelector('input.introductionform');
-                const question0Input = $stepCreate.querySelector('input.question_0form');
-                const question1Input = $stepCreate.querySelector('input.question_1form');
+                //const introductionInput = $stepCreate.querySelector('input.introductionform');
+                const remark0Input = $stepCreate.querySelector('input.remark_0form');
+                const remark1Input = $stepCreate.querySelector('input.remark_1form');
                 const endInput = $stepCreate.querySelector('input.endform');
     
                 // Decide which input to focus on
                 if (progressCreate > 0.1 && progressCreate <= 0.3) {
-                    if (document.activeElement !== introductionInput) {
-                        introductionInput.focus();
+                    //if (document.activeElement !== introductionInput) {
+                    //    introductionInput.focus();
+                    //}
+                    if (document.activeElement !== remark0Input) {
+                        remark0Input.focus();
                     }
                 } else if (progressCreate > 0.3 && progressCreate <= 0.5) {
-                    if (document.activeElement !== question0Input) {
-                        question0Input.focus();
+                    //if (document.activeElement !== remark0Input) {
+                    //    remark0Input.focus();
+                    //}
+                    if (document.activeElement !== remark1Input) {
+                        remark1Input.focus();
                     }
                 } else if (progressCreate > 0.5 && progressCreate <= 0.8) {
-                    if (document.activeElement !== question1Input) {
-                        question1Input.focus();
-                    }
-                } else if (progressCreate > 0.8 && progressCreate <= 1.0) {
+                    //if (document.activeElement !== remark1Input) {
+                    //    remark1Input.focus();
+                    //}
                     if (document.activeElement !== endInput) {
                         endInput.focus();
                     }
+                } else if (progressCreate > 0.8 && progressCreate <= 1.0) {
+                    //if (document.activeElement !== endInput) {
+                    //    endInput.focus();
+                    //}
                 } else {
                     // Remove focus from any of them
-                    if (document.activeElement === introductionInput || document.activeElement === question0Input || document.activeElement === question1Input || document.activeElement === endInput) {
+                    //if (document.activeElement === introductionInput || document.activeElement === remark0Input || document.activeElement === remark1Input || document.activeElement === endInput) {
+                    if (document.activeElement === remark0Input || document.activeElement === remark1Input || document.activeElement === endInput) {
                         document.activeElement.blur();
                     }
                 }

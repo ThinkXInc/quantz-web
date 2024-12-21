@@ -182,7 +182,7 @@ class InterviewList extends TableView {
             const contentData = {
                 interviewId: d.id,
                 title: d.title,
-                text: d.introduction,
+                //text: d.introduction,
                 label: this.locale.get('interview_list_cell_label', this.lang, [new Set(d.client_ids).size]),
                 isChecked: d.is_result_checked,
             };

@@ -134,8 +134,26 @@
         "ru": "Готово",
         "ar": "تم"
     },
-    "interview_create_input_introduction_placeholder": {
-        "en": "Enter the introduction.",
+    "interview_create_input_topic_placeholder": {
+        "en": "(e.g.) Initial greeting / Explaining the basics of the service / Asking for a self-introduction / Free talking",
+        "ja": "(例) 最初の挨拶 / サービスの基本事項を説明する / 自己紹介をしてもらう / 自由に話す",
+        "zh": "（例如）初次问候 / 解释服务的基本内容 / 请求自我介绍 / 自由交谈",
+        "es": "(por ejemplo) Saludo inicial / Explicación de los conceptos básicos del servicio / Solicitar una presentación personal / Conversación libre",
+        "fr": "(par exemple) Salutation initiale / Expliquer les bases du service / Demander une présentation personnelle / Discussion libre",
+        "ru": "(например) Приветствие / Объяснение основ услуги / Просьба о самопрезентации / Свободное общение",
+        "ar": "(على سبيل المثال) التحية الأولية / شرح أساسيات الخدمة / طلب تقديم الذات / محادثة حرة"
+    },
+    "interview_create_input_goal_placeholder": {
+        "en": "(e.g.) Wrapping up the introduction / Helping the user understand the service overview / Receiving the user’s self-introduction / Having a pleasant conversation",
+        "ja": "(例) 自然な会話の導入を終える / サービスの概要を理解してもらう / ユーザーの自己紹介を得る / 楽しく会話する",
+        "zh": "（例如）结束介绍 / 帮助用户了解服务概述 / 接收用户的自我介绍 / 进行愉快的交谈",
+        "es": "(por ejemplo) Finalizar la introducción / Ayudar al usuario a entender la descripción general del servicio / Recibir la presentación personal del usuario / Tener una conversación agradable",
+        "fr": "(par exemple) Terminer l'introduction / Aider l'utilisateur à comprendre un aperçu du service / Recevoir la présentation personnelle de l'utilisateur / Avoir une conversation agréable",
+        "ru": "(например) Завершение введения / Помощь пользователю в понимании обзора услуги / Получение самопрезентации пользователя / Приятная беседа",
+        "ar": "(على سبيل المثال) إنهاء المقدمة / مساعدة المستخدم على فهم نظرة عامة على الخدمة / تلقي تقديم المستخدم لنفسه / إجراء محادثة ممتعة"
+    },
+    "interview_create_input_opening_remark_placeholder": {
+        "en": "Enter the opening remark.",
         "ja": "紹介を入力してください。",
         "zh": "输入介绍。",
         "es": "Ingrese la introducción.",
@@ -143,12 +161,12 @@
         "ru": "Введите введение.",
         "ar": "أدخل المقدمة."
     },
-    "interview_create_input_question_placeholder": {
-        "en": "Enter the question.",
+    "interview_create_input_remark_placeholder": {
+        "en": "Enter the remark.",
         "ja": "質問を入力してください。",
         "zh": "输入问题。",
         "es": "Ingrese la pregunta.",
-        "fr": "Entrez la question.",
+        "fr": "Entrez la remark.",
         "ru": "Введите вопрос.",
         "ar": "أدخل السؤال."
     },
@@ -161,12 +179,12 @@
         "ru": "Введите заключительные замечания.",
         "ar": "أدخل التعليقات الختامية."
     },
-    "interview_create_no_question_error": {
-        "en": "At least one question input is required.",
+    "interview_create_no_remark_error": {
+        "en": "At least one remark input is required.",
         "ja": "少なくとも1つの質問が必要です。",
         "zh": "至少需要输入一个问题。",
         "es": "Se requiere al menos una pregunta.",
-        "fr": "Au moins une question est requise.",
+        "fr": "Au moins une remark est requise.",
         "ru": "Требуется как минимум один вопрос.",
         "ar": "يتطلب إدخال سؤال واحد على الأقل."
     },
@@ -215,7 +233,7 @@
         "ru": "Вступительное слово на собеседовании",
         "ar": "كلمة الافتتاح في المقابلة"
     },
-    "create_interview_introduction_form_title": {
+    "create_interview_opening_remark_form_title": {
         "ja": "開始時の喋り出し",
         "en": "Opening Remarks",
         "zh": "面试开始时的开场白",
@@ -224,7 +242,7 @@
         "ru": "Вступительное слово на собеседовании",
         "ar": "كلمة الافتتاح في المقابلة"
     },
-    "create_interview_introduction_page_description": {
+    "create_interview_opening_remark_page_description": {
         "ja": "ミーティング開始時に最初にこれを話します。",
         "en": "This is what you will say at the beginning of the meeting.",
         "zh": "这是您在面试开始时将说的话。",
@@ -233,7 +251,7 @@
         "ru": "Это то, что вы скажете в начале встречи.",
         "ar": "هذا ما ستقوله في بداية اللقاء."
     },
-    "create_interview_introduction_form_placeholder": {
+    "create_interview_opening_remark_form_placeholder": {
         "ja": "ミーティング開始時に最初にこれを話します。",
         "en": "Opening Remarks",
         "zh": "面试开始时的开场白",
@@ -333,7 +351,7 @@
         "ru": "Название шаблона (используется только для административных целей, в диалогах не используется).",
         "ar": "اسم القالب (للاستخدام الإداري فقط، ولا يُستخدم في الحوارات)."
     },
-    "interview_create_introduction_label": {
+    "interview_create_opening_remark_label": {
         "ja": "開始時の喋り出し",
         "en": "Opening Remarks",
         "zh": "面试开始时的开场白",
@@ -351,8 +369,8 @@
         "ar": "الخطوة $0",
         "ru": "Шаг $0"
     },
-    "interview_create_step_question_label": {
-        "ja": "質問",
+    "interview_create_step_remark_label": {
+        "ja": "質問内容",
         "en": "Question",
         "zh": "问题",
         "fr": "Question",
@@ -378,23 +396,41 @@
         "ar": "أقصى عدد من الأدوار",
         "ru": "Максимальное число ходов"
     },
-    "interview_create_step_instructions_label": {
-        "ja": "指示",
-        "en": "Instructions",
-        "zh": "说明",
-        "fr": "Instructions",
-        "es": "Instrucciones",
-        "ar": "التعليمات",
-        "ru": "Инструкции"
+    "interview_create_step_topic_label": {
+        "ja": "このステップでの話題・内容",
+        "en": "Topic/Content for this step",
+        "zh": "此步骤的主题/内容",
+        "fr": "Sujet/Contenu pour cette étape",
+        "es": "Tema/Contenido para este paso",
+        "ar": "الموضوع/المحتوى لهذه الخطوة",
+        "ru": "Тема/содержание для этого этапа"
+    },
+    "interview_create_step_goal_label": {
+        "ja": "このステップのゴール・終了条件",
+        "en": "Goal/Completion criteria for this step",
+        "zh": "此步骤的目标/完成条件",
+        "fr": "Objectif/Critères de fin pour cette étape",
+        "es": "Meta/Criterios de finalización para este paso",
+        "ar": "الهدف/معايير الإنهاء لهذه الخطوة",
+        "ru": "Цель/Критерии завершения для этого этапа"
+    },
+    "interview_create_step_guidelines_label": {
+        "ja": "ガイドライン",
+        "en": "Guidelines",
+        "zh": "指南",
+        "es": "Directrices",
+        "fr": "Directives",
+        "ru": "Руководства",
+        "ar": "إرشادات"
     },
     "interview_create_step_more_detail_label": {
         "ja": "詳細",
         "en": "More details",
-        "zh": "",
-        "es": "",
-        "fr": "",
-        "ru": "",
-        "ar": ""
+        "zh": "更多细节",
+        "es": "Más detalles",
+        "fr": "Plus de détails",
+        "ru": "Более подробная информация",
+        "ar": "تفاصيل أكثر"
     },
     "interview_create_end_label": {
         "ja": "終了時のメッセージ",

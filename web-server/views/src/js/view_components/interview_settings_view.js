@@ -60,7 +60,7 @@ class InterviewSettingsModalView extends ModalView {
         const $message = document.createElement('p');
         $message.id = 'InterviewSettingsModalViewMessage';
         $message.classList.add('message');
-        this.$view.querySelector('.footer').prepend($message);
+        this.$view.querySelector('.modalViewFooter').prepend($message);
         this.$message = $message;
         
         console.warn(this.interviewId)
