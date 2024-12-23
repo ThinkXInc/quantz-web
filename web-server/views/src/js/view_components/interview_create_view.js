@@ -52,7 +52,32 @@ class InterviewCreateView {
         this.maxTurnsForms = [];
         this.instructionForms = [];
 
+        this.fetchMaterials();
+        this.materialsReady = new Promise((resolve, reject) => {
+            this._materialsReadyResolver = resolve;
+            this._materialsReadyRejecter = reject;
+        });
+
         this.createView();
+    }
+
+    fetchMaterials() {
+        Http.get(`/v1/${this.lang}/materials/list`,
+            (res) => {
+                const { code, materials, count, message } = res;  // array of {id, title, text, ...}
+                console.log(`${code}: ${message} [count ${count}]`);
+                this.materialItems = materials.map(m => new ListItem({
+                    title: m.title,
+                    description: m.text,
+                    value: String(m._id)
+                }));
+                this._materialsReadyResolver();
+            },
+            (err) => {
+                console.error("Failed to fetch materials: ", err);
+                this._materialsReadyRejecter(err);
+            }
+        );
     }
 
     createView() {
@@ -171,9 +196,11 @@ class InterviewCreateView {
         // ----------------------------------------------------------------------
         const $topicWrapper = document.createElement('div');
         $topicWrapper.classList.add('topicWrapper');
+        $topicWrapper.classList.add('configItemWrapper');
 
         const $topicLabel = document.createElement('span');
         $topicLabel.classList.add('topicLabel');
+        $topicLabel.classList.add('configItemLabel');
         // "Topic/Content for this step"
         $topicLabel.textContent = this.locale.get(
           'interview_create_step_topic_label', 
@@ -216,13 +243,16 @@ class InterviewCreateView {
         // **Remark and Remove Wrapper**
         const $remarkAndRemoveWrapper = document.createElement('div');
         $remarkAndRemoveWrapper.classList.add('remarkAndRemoveWrapper');
+        $remarkAndRemoveWrapper.classList.add('configItemWrapper');
 
         // **Remark Wrapper**
         const $remarkWrapper = document.createElement('div');
         $remarkWrapper.classList.add('remarkWrapper');
+        $remarkWrapper.classList.add('configItemWrapper');
  
         const $remarkLabel = document.createElement('span');
         $remarkLabel.classList.add('remarkLabel');
+        $remarkLabel.classList.add('configItemLabel');
         $remarkLabel.textContent = this.locale.get('interview_create_step_remark_label', this.lang) || 'Question:';
         $remarkWrapper.appendChild($remarkLabel);
  
@@ -274,8 +304,10 @@ class InterviewCreateView {
         // ----------------------------------------------------------------------
         const $goalWrapper = document.createElement('div');
         $goalWrapper.classList.add('goalWrapper');
+        $goalWrapper.classList.add('configItemWrapper');
 
         const $goalLabel = document.createElement('span');
+        $goalLabel.classList.add('configItemLabel');
         $goalLabel.classList.add('goalLabel');
         // "Goal/Completion criteria for this step"
         $goalLabel.textContent = this.locale.get(
@@ -310,11 +342,8 @@ class InterviewCreateView {
 
         $stepContent.appendChild($goalWrapper);
 
-        // ----------------------------------------------------------------------
-        // GUIDELINES (Hidden area)
-        // ----------------------------------------------------------------------
-        const $guidelinesWrapper = document.createElement('div');
-        $guidelinesWrapper.classList.add('guidelinesWrapper');
+        const $detailsWrapper = document.createElement('div');
+        $detailsWrapper.classList.add('detailsWrapper');
 
         // **More Detail**
         const $moreDetail = document.createElement('span');
@@ -330,21 +359,26 @@ class InterviewCreateView {
 
         $moreDetail.appendChild($arrowIcon);
         $moreDetail.appendChild($moreDetailLabel);
-        $guidelinesWrapper.appendChild($moreDetail);
+        $detailsWrapper.appendChild($moreDetail);
 
         // **Hidden Content**
         const $hiddenContent = document.createElement('div');
         $hiddenContent.classList.add('hiddenContent');
 
+        // ----------------------------------------------------------------------
+        // GUIDELINES (Hidden area)
+        // ----------------------------------------------------------------------
+        // **Guidelines List**
+        const $guidelinesWrapper = document.createElement('div');
+        $guidelinesWrapper.classList.add('guidelinesWrapper');
+        $guidelinesWrapper.classList.add('configItemWrapper');
+
         // **Guidelines Label**
         const $guidelinesLabel = document.createElement('span');
         $guidelinesLabel.classList.add('guidelinesLabel');
+        $guidelinesLabel.classList.add('configItemLabel');
         $guidelinesLabel.textContent = this.locale.get('interview_create_step_guidelines_label', this.lang) || 'Guidelines:';
-        $hiddenContent.appendChild($guidelinesLabel);
-
-        // **Guidelines List**
-        const $guidelinesList = document.createElement('div');
-        $guidelinesList.classList.add('guidelines');
+        $guidelinesWrapper.appendChild($guidelinesLabel);
 
         // Make sure we have a sub-array for guidelineForms
         if (!this.guidelineForms) {
@@ -388,10 +422,10 @@ class InterviewCreateView {
             $guidelineWrapper.appendChild($indexSpan);
             $guidelineWrapper.appendChild(guidelineForm.$view);
 
-            $guidelinesList.appendChild($guidelineWrapper);
+            $guidelinesWrapper.appendChild($guidelineWrapper);
         });
 
-        $hiddenContent.appendChild($guidelinesList);
+        $hiddenContent.appendChild($guidelinesWrapper);
 
         // **Add Guideline Button Container**
         const $addGuidelineButtonContainer = document.createElement('div');
@@ -412,14 +446,19 @@ class InterviewCreateView {
             $addGuidelineButtonContainer.style.display = 'none';
         }
 
-        $hiddenContent.appendChild($addGuidelineButtonContainer);
+        $guidelinesWrapper.appendChild($addGuidelineButtonContainer);
 
-        // **Max Turns Wrapper**
+
+        // ----------------------------------------------------------------------
+        // Detail 3) MAX TURNS
+        // ----------------------------------------------------------------------
         const $maxTurnsWrapper = document.createElement('div');
         $maxTurnsWrapper.classList.add('maxTurnsWrapper');
+        $maxTurnsWrapper.classList.add('configItemWrapper');
 
         const $maxTurnsLabel = document.createElement('span');
         $maxTurnsLabel.classList.add('maxTurnsLabel');
+        $maxTurnsLabel.classList.add('configItemLabel');
         $maxTurnsLabel.textContent = this.locale.get('interview_create_step_max_turns_label', this.lang) || 'Max Turns:';
         $maxTurnsWrapper.appendChild($maxTurnsLabel);
 
@@ -446,7 +485,63 @@ class InterviewCreateView {
         $maxTurnsWrapper.appendChild(maxTurnsForm.$view);
 
         $hiddenContent.appendChild($maxTurnsWrapper);
-        $guidelinesWrapper.appendChild($hiddenContent);
+
+        // ----------------------------------------------------------------------
+        // Detail 2) REFERENCES (Multi-select)
+        // ----------------------------------------------------------------------
+        const $referencesWrapper = document.createElement('div');
+        $referencesWrapper.classList.add('referencesWrapper');
+        $referencesWrapper.classList.add('configItemWrapper');
+
+        const $referencesLabel = document.createElement('span');
+        $referencesLabel.classList.add('referencesLabel');
+        $referencesLabel.classList.add('configItemLabel');
+        $referencesLabel.textContent = this.locale.get(
+          'view_create_reference_selector_label', 
+          this.lang
+        ) || 'Reference Materials:';
+        $referencesWrapper.appendChild($referencesLabel);
+
+
+        this.materialsReady.then(() => {
+            // Create the multi-select dropdown
+            const referencesDropdown = new DropdownButton({
+                id: `referencesDropdown_${index}`,
+                fieldName: `references_${index}`,
+                title: '',
+                description: this.locale.get('view_create_reference_selector_label', this.lang),
+                type: DropdownMenuType.list,
+                position: DropdownMenuDisplayPositionType.bottomover,
+                hasSelectedIcon: true,
+                items: this.materialItems || [],
+                isMultiSelect: true,  // <-- the key part
+                multiSelectDisplayTitle: this.locale.get('view_create_reference_selector_display_title', this.lang),
+            });
+
+            // If step already has references, pre-populate
+            if (step.references && Array.isArray(step.references)) {
+                referencesDropdown.value = step.references;  // sets the selected array
+            }
+
+            // Store a reference to the dropdown in an array so we can gather values in `interviewObjectFromFormData`
+            if (!this.referencesDropdowns) {
+                this.referencesDropdowns = [];
+            }
+            this.referencesDropdowns[index] = referencesDropdown;
+
+            $referencesWrapper.appendChild(referencesDropdown.$view);
+            //const $maxTurnsWrapper = document.querySelector('.maxTurnsWrapper');
+            //if ($maxTurnsWrapper) {
+            //    $hiddenContent.insertBefore($referencesWrapper, $maxTurnsWrapper);
+            //} else {
+            //    $hiddenContent.appendChild($referencesWrapper); // Fallback if maxTurnsWrapper doesn't exist
+            //}
+            $hiddenContent.appendChild($referencesWrapper);
+        }).catch((error) => {
+            console.error("Materials failed to fetch:", error);
+        });
+
+        $detailsWrapper.appendChild($hiddenContent);
 
         // **More Detail Event Listener**
         $moreDetail.addEventListener('click', () => {
@@ -492,7 +587,7 @@ class InterviewCreateView {
             $guidelineWrapper.appendChild($indexSpan);
             $guidelineWrapper.appendChild(guidelineForm.$view);
 
-            $guidelinesList.appendChild($guidelineWrapper);
+            $guidelinesWrapper.appendChild($guidelineWrapper);
 
             if (this.guidelineForms[index].length >= 3) {
                 $addGuidelineButtonContainer.style.display = 'none';
@@ -500,7 +595,7 @@ class InterviewCreateView {
             this.guidelineForms[index].push(guidelineForm); // add to guidelineForms
         });
 
-        $stepContent.appendChild($guidelinesWrapper);
+        $stepContent.appendChild($detailsWrapper);
         $stepContainer.appendChild($stepContent);
 
         // Store references
@@ -632,8 +727,6 @@ class InterviewCreateView {
 
     interviewObjectFromFormData() {
         const title = this.titleForm.value;
-        //const end = this.endForm.value;
-    
         const steps = [];
         let hasQuestionValue = false;
 
@@ -642,8 +735,8 @@ class InterviewCreateView {
             const remarkForm = this.remarkForms[index];
             const goalForm = this.goalForms[index];
             const maxTurnsForm = this.maxTurnsForms[index];
-            // Gather guidelines from guidelineForms
             const guidelinesArray = this.guidelineForms[index] || [];
+            const referencesDropdown = this.referencesDropdowns ? this.referencesDropdowns[index] : null;
 
             const topicVal = topicForm?.value?.trim() || '';
             const remarkVal = remarkForm?.value?.trim() || '';
@@ -651,13 +744,15 @@ class InterviewCreateView {
             // If user typed something in remark or topic, it's a valid step
             if (topicVal || remarkVal) {
                 hasQuestionValue = true;
+                const referencesVal = referencesDropdown?.value || []; 
 
                 const step = {
                     topic: topicVal,
                     remark: remarkVal,
                     goal: goalForm?.value || '',
                     max_turns: parseInt(maxTurnsForm?.value || '0', 10),
-                    guidelines: guidelinesArray.map(gForm => gForm?.value || '')
+                    guidelines: guidelinesArray.map(gForm => gForm?.value || ''),
+                    references: referencesVal
                 };
                 steps.push(step);
             }
@@ -674,7 +769,6 @@ class InterviewCreateView {
     
         return {
             title: title,
-            //end: end,
             steps: steps
         };
     }

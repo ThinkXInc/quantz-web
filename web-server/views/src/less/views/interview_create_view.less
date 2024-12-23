@@ -59,52 +59,6 @@ div#InterviewCreateView {
             }
         }
 
-        // Adjust font size in certain containers
-        div.topicWrapper,
-        div.remarkWrapper,
-        div.guidelinesWrapper,
-        div.goalWrapper,
-        div.maxTurnsWrapper,
-        div.endContainer {
-            div.TextField {
-                div.inputOuter {
-                    div.inputWrapper {
-                        input {
-                            font-size: 14px;
-                        }
-                    }
-                }
-            }
-        }
-
-        // Style for introduction and end containers
-        //div.introductionContainer,
-        div.endContainer {
-            div.TextField {
-                div.inputOuter {
-                }
-            }
-        }
-
-        // Hide arrow containers if not needed
-        div.stepArrowContainer,
-        div.endArrowContainer {
-            display: none;
-        }
-
-        // Labels styling
-        span.topicLabel,
-        span.remarkLabel,
-        span.goalLabel,
-        span.maxTurnsLabel,
-        span.guidelinesLabel,
-        span.endLabel {
-            display: block;
-            margin-bottom: 4px;
-            font-size: 11px;
-        }
-
-        // Title container styling
         div.titleContainer {
             margin-bottom: 34px;
 
@@ -124,24 +78,11 @@ div#InterviewCreateView {
             }
         }
 
-        // Introduction container styling
-        //div.introductionContainer {
-        //    margin-bottom: 29px;
-
-        //    div.TextField {
-        //        .inputWrapper input {
-        //            margin: 0;
-        //            padding: 8px 5px;
-        //            border-radius: 7px;
-        //            font-weight: 600;
-        //            width: 100%;
-        //            box-sizing: border-box;
-        //        }
-        //        .footer {
-        //            padding: 0;
-        //        }
-        //    }
-        //}
+        // Hide arrow containers if not needed
+        div.stepArrowContainer,
+        div.endArrowContainer {
+            display: none;
+        }
 
         // Step container styling
         div.stepContainer {
@@ -177,6 +118,25 @@ div#InterviewCreateView {
                 padding: 8px 20px;
                 margin-top: 20px;
 
+                div.configItemWrapper {
+                    margin-top: 10px;
+                    span.configItemLabel {
+                        font-weight: bold;
+                        display: block;
+                        font-size: 11px;
+                        margin-bottom: 6px;
+                    }
+                    div.TextField {
+                        div.inputOuter {
+                            div.inputWrapper {
+                                input {
+                                    font-size: 14px;
+                                }
+                            }
+                        }
+                    }
+                }
+
                 div.remarkAndRemoveWrapper {
                     display: flex;
                     align-items: center;
@@ -195,13 +155,6 @@ div#InterviewCreateView {
                     }
                 }
 
-                div.topicWrapper,
-                div.remarkWrapper,
-                div.goalWrapper,
-                div.maxTurnsWrapper {
-                    margin-top: 10px;
-                }
-
                 div.remarkWrapper {
                     div.TextField {
                         .inputWrapper input {
@@ -213,119 +166,101 @@ div#InterviewCreateView {
                     }
                 }
 
-                div.guidelinesWrapper {
-                    margin-top: 10px;
-
-                    span.guidelinesLabel {
-                        font-weight: bold;
-                        display: block;
-                        margin-bottom: 6px;
-                        font-size: 11px;
+                div.goalWrapper {
+                    span.goalLabel {
                     }
 
-                    div.guidelines {
-                        div.instructionWrapper {
-                            display: flex;
-                            align-items: center;
-                            margin-bottom: 2px;
+                    div.TextField {
+                        .inputWrapper input {
+                            width: 100%;
+                            box-sizing: border-box;
+                        }
+                    }
+                }
 
-                            span.index {
-                                display: inline-block;
-                                background-color: #e2e2e2;
-                                color: #fff;
-                                border-radius: 5px;
-                                padding: 2px 8px;
-                                margin-right: 9px;
-                                font-size: 13px;
+                div.detailsWrapper {
+                    span.moreDetail {
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        margin-top: 13px;
+
+                        img.moreDetailArrow {
+                            transition: transform 0.3s;
+                            margin-right: 5px;
+                            width: 13px;
+                        }
+
+                        p.moreDetailLabel {
+                            color: #525252 !important;
+                            font-size: 11px;
+                        }
+
+                        &.rotated img.moreDetailArrow {
+                            transform: rotate(180deg);
+                            transition: transform 0.7s cubic-bezier(0.4, 0.0, 0.2, 1);
+                        }
+                    }
+
+                    div.hiddenContent {
+                        overflow: hidden;
+                        max-height: 0;
+                        transition: 
+                            padding 0.5s cubic-bezier(0.4, 0.0, 0.2, 1),
+                            max-height 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+
+                        &.expanded {
+                            max-height: 1000px; // Adjust as needed
+                            padding: 10px 0;
+                        }
+
+
+                        div.guidelinesWrapper {
+                            span.guidelinesLabel {
                             }
 
-                            div.TextField {
-                                flex: 1;
+                            div.instructionWrapper {
+                                display: flex;
+                                align-items: center;
+                                margin-bottom: 2px;
 
-                                .inputWrapper input {
-                                    width: 100%;
-                                    box-sizing: border-box;
+                                span.index {
+                                    display: inline-block;
+                                    background-color: #e2e2e2;
+                                    color: #fff;
+                                    border-radius: 5px;
+                                    padding: 2px 8px;
+                                    margin-right: 9px;
+                                    font-size: 13px;
+                                }
+
+                                div.TextField {
+                                    flex: 1;
+
+                                    .inputWrapper input {
+                                        width: 100%;
+                                        box-sizing: border-box;
+                                    }
                                 }
                             }
-                        }
-                    }
+                            div.addGuidelineButtonContainer {
+                                display: flex;
+                                justify-content: center;
+                                //justify-content: left;
+                                //margin-left: 1px;
+                                margin-top: 5px;
 
-                    div.addGuidelineButtonContainer {
-                        display: flex;
-                        justify-content: center;
-                        //justify-content: left;
-                        //margin-left: 1px;
-                        margin-top: 5px;
-
-                        img.addGuidelineButton {
-                            cursor: pointer;
-                            width: 20px;
-                            height: 20px;
-                        }
-                    }
-                }
-
-                span.moreDetail {
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    margin-top: 13px;
-
-                    img.moreDetailArrow {
-                        transition: transform 0.3s;
-                        margin-right: 5px;
-                        width: 13px;
-                    }
-
-                    p.moreDetailLabel {
-                        color: #525252 !important;
-                        font-size: 11px;
-                    }
-
-                    &.rotated img.moreDetailArrow {
-                        transform: rotate(180deg);
-                        transition: transform 0.7s cubic-bezier(0.4, 0.0, 0.2, 1);
-                    }
-                }
-
-                div.hiddenContent {
-                    overflow: hidden;
-                    max-height: 0;
-                    transition: 
-                        padding 0.5s cubic-bezier(0.4, 0.0, 0.2, 1),
-                        max-height 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
-
-                    &.expanded {
-                        max-height: 1000px; // Adjust as needed
-                        padding: 10px 0;
-                    }
-
-                    div.topicWrapper,
-                    div.goalWrapper,
-                    div.maxTurnsWrapper {
-                        margin-top: 10px;
-                    }
-
-                    div.goalWrapper {
-                        span.goalLabel {
-                            font-weight: bold;
-                            display: block;
-                            margin-bottom: 6px;
-                        }
-
-                        div.TextField {
-                            .inputWrapper input {
-                                width: 100%;
-                                box-sizing: border-box;
+                                img.addGuidelineButton {
+                                    cursor: pointer;
+                                    width: 20px;
+                                    height: 20px;
+                                }
                             }
                         }
                     }
 
                     div.maxTurnsWrapper {
                         span.maxTurnsLabel {
-                            font-weight: bold;
-                            display: block;
-                            margin-bottom: 6px;
                         }
 
                         div.TextField {
@@ -382,6 +317,22 @@ div#InterviewCreateView {
                                             }
                                         }
                                     }
+                                }
+                            }
+                        }
+                    }
+
+                    div.referencesWrapper {
+                        span.referencesLabel {
+
+                        }
+                        div.DropdownButton {
+                            div.DropdownButtonClickable {
+                                h6.description {
+
+                                }
+                                span.title {
+
                                 }
                             }
                         }
@@ -460,7 +411,7 @@ div#InterviewCreateView {
             }
             //div.introductionContainer,
             div.remarkWrapper,
-            div.guidelinesWrapper,
+            div.detailsWrapper,
             div.goalWrapper,
             div.maxTurnsWrapper,
             div.endContainer {
@@ -530,7 +481,7 @@ div#InterviewCreateView {
                             }
                         }
                     }
-                    div.guidelinesWrapper {
+                    div.detailsWrapper {
                         span.guidelinesLabel {
                         }
                         div.guidelines {

@@ -387,6 +387,24 @@
         "ar": "شرط الانتهاء",
         "ru": "Условие окончания"
     },
+    "view_create_reference_selector_label": {
+        "ja": "参照ドキュメント",
+        "en": "Reference Materials",
+        "zh": "参考材料",
+        "fr": "Documents de référence",
+        "es": "Materiales de referencia",
+        "ar": "مواد مرجعية",
+        "ru": "Справочные материалы"
+    },
+    "view_create_reference_selector_display_title": {
+        "ja": "$0個のドキュメントを選択中",
+        "en": "$0 documents selected",
+        "zh": "已选择 $0 个文档",
+        "fr": "$0 documents sélectionnés",
+        "es": "$0 documentos seleccionados",
+        "ar": "تم اختيار $0 مستندات",
+        "ru": "$0 документов выбрано"
+    },
     "interview_create_step_max_turns_label": {
         "ja": "最大ターン数",
         "en": "Max turns",
