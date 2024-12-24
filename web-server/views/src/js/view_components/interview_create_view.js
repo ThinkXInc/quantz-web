@@ -1,13 +1,75 @@
+const TaskType = {
+    FREE_CONVERSATION: "free_conversation",
+    GREETING: "greeting",
+    QUESTION: "question",
+    EXPLANATION: "explanation",
+    TEST: "test",
+    CONSULTING: "consulting"
+};
+
+const ResponseMode = {
+    TEMPO_ORIENTED: 0,
+    NORMAL: 1,
+    CAREFUL_LISTENING: 2,
+    WAIT_MANUAL_SUBMIT: 3
+};
+
+const ReferenceType = {
+    ALL: "all",
+    NONE: "none",
+    SELECT: "select"
+};
+
+const taskTypeConfigs = {
+    [TaskType.GREETING]: {
+        maxTurns: 2,
+        responseMode: ResponseMode.TEMPO_ORIENTED,  // 0
+        referenceType: ReferenceType.NONE,          // 'none'
+        showRemark: true
+    },
+    [TaskType.FREE_CONVERSATION]: {
+        maxTurns: 20,
+        responseMode: ResponseMode.TEMPO_ORIENTED,  // 0
+        referenceType: ReferenceType.ALL,           // 'all'
+        showRemark: true//false
+    },
+    [TaskType.QUESTION]: {
+        maxTurns: 3,
+        responseMode: ResponseMode.CAREFUL_LISTENING, // 2
+        referenceType: ReferenceType.NONE,            // 'none'
+        showRemark: true
+    },
+    [TaskType.EXPLANATION]: {
+        maxTurns: 3,
+        responseMode: ResponseMode.NORMAL, // 1
+        referenceType: ReferenceType.ALL,  // 'all'
+        showRemark: true
+    },
+    [TaskType.TEST]: {
+        maxTurns: 3,
+        responseMode: ResponseMode.WAIT_MANUAL_SUBMIT, // 3
+        referenceType: ReferenceType.ALL,              // 'all'
+        showRemark: true
+    },
+    [TaskType.CONSULTING]: {
+        maxTurns: 5,
+        responseMode: ResponseMode.NORMAL, // 1
+        referenceType: ReferenceType.ALL,  // 'all'
+        showRemark: true
+    }
+};
+
 const defaultStep = () => ({
-    "topic": "Recruiting Interview",
-    "remark": "",
-    "goal": "Interviewee answered it's done.",
-    "max_turns": 3,
-    "response_mode": 1,
-    "reference_type": "all",
-    "guidelines": [
+    task_type: TaskType.CONSULTING,
+    topic: "Recruiting Interview",
+    remark: "",
+    goal: "Interviewee answered it's done.",
+    max_turns: 3,
+    response_mode: 1,
+    reference_type: "all",
+    guidelines: [
         "First, read the remark.",
-        "When the answer looks done, ask 'Are you sure that\'s it?'"
+        "When the answer looks done, ask 'Are you sure that's it?'"
     ]
 });
 
@@ -47,6 +109,7 @@ class InterviewCreateView {
 
         // Arrays to store DOM elements and forms for each step
         this.stepContainers = [];
+        this.taskTypeSelectors = [];
         this.topicForms = [];
         this.remarkForms = [];
         this.goalForms = [];
@@ -196,6 +259,72 @@ class InterviewCreateView {
         $stepContent.classList.add('stepContent');
 
         // ----------------------------------------------------------------------
+        // 0) TASK TYPE
+        // ----------------------------------------------------------------------
+        const $taskTypeWrapper = document.createElement('div');
+        $taskTypeWrapper.classList.add('taskTypeWrapper', 'configItemWrapper');
+    
+        //const $taskTypeLabel = document.createElement('span');
+        //$taskTypeLabel.classList.add('taskTypeLabel', 'configItemLabel');
+        //$taskTypeLabel.textContent = this.locale.get('interview_create_task_type_selector_title', this.lang) || 'Task Type';
+        //$taskTypeWrapper.appendChild($taskTypeLabel);
+    
+        const taskTypeItems = [
+            new ListItem({
+                title: this.locale.get('basic_configs_task_type_greeting', this.lang) || 'Greeting',
+                value: TaskType.GREETING
+            }),
+            new ListItem({
+                title: this.locale.get('basic_configs_task_type_free_conversation', this.lang) || 'Free Conversation',
+                value: TaskType.FREE_CONVERSATION
+            }),
+            new ListItem({
+                title: this.locale.get('basic_configs_task_type_question', this.lang) || 'Question',
+                value: TaskType.QUESTION
+            }),
+            new ListItem({
+                title: this.locale.get('basic_configs_task_type_explanation', this.lang) || 'Explanation',
+                value: TaskType.EXPLANATION
+            }),
+            new ListItem({
+                title: this.locale.get('basic_configs_task_type_test', this.lang) || 'Test',
+                value: TaskType.TEST
+            }),
+            new ListItem({
+                title: this.locale.get('basic_configs_task_type_consulting', this.lang) || 'Consulting',
+                value: TaskType.CONSULTING
+            })
+        ];
+    
+        const taskTypeSelector = new DropdownButton({
+            id: `taskTypeSelector_${index}`,
+            fieldName: `task_type_${index}`,
+            title: '',
+            description: this.locale.get('interview_create_task_type_selector_title', this.lang), 
+            type: DropdownMenuType.list,
+            position: DropdownMenuDisplayPositionType.bottomover,
+            hasSelectedIcon: true,
+            isMultiSelect: false,
+            items: taskTypeItems,
+            validators: [
+                new Validator({
+                    errorType: ValidationErrorType.required,
+                    errorMessage: this.locale.get(ValidationErrorType.required, this.lang)
+                })
+            ],
+        });
+        taskTypeSelector.value = step.task_type || TaskType.CONSULTING;
+        this.taskTypeSelectors[index] = taskTypeSelector;
+    
+        taskTypeSelector.$view.addEventListener('selected', (e) => {
+            const selectedValue = e.detail.value;  // greeting, free_conversation, ...
+            this.onTaskTypeChanged(index, selectedValue);
+        });
+    
+        $taskTypeWrapper.appendChild(taskTypeSelector.$view);
+        $stepContent.appendChild($taskTypeWrapper);
+
+        // ----------------------------------------------------------------------
         // 1) TOPIC
         // ----------------------------------------------------------------------
         const $topicWrapper = document.createElement('div');
@@ -246,32 +375,49 @@ class InterviewCreateView {
         // ----------------------------------------------------------------------
         // **Remark Wrapper**
         const $remarkWrapper = document.createElement('div');
-        $remarkWrapper.classList.add('remarkWrapper');
-        $remarkWrapper.classList.add('configItemWrapper');
- 
+        $remarkWrapper.classList.add('remarkWrapper', 'configItemWrapper');
+
         const $remarkLabel = document.createElement('span');
-        $remarkLabel.classList.add('remarkLabel');
-        $remarkLabel.classList.add('configItemLabel');
-        $remarkLabel.textContent = this.locale.get('interview_create_step_remark_label', this.lang) || 'Question:';
+        $remarkLabel.classList.add('remarkLabel', 'configItemLabel');
+
+        // We look up the label/placeholder according to step.task_type
+        const remarkLabelKey       = `interview_create_remark_label_${step.task_type}`;
+        const defaultLabelKey       = 'interview_create_step_remark_label'; // fallback
+        const remarkPlaceholderKey = `interview_create_input_remark_placeholder_${step.task_type}`;
+        const defaultPlaceholderKey = 'interview_create_input_remark_placeholder'; // fallback
+
+        // Retrieve text from locale:
+        const labelText = this.locale.get(remarkLabelKey, this.lang)
+          || this.locale.get(defaultLabelKey, this.lang)
+          || 'Question:';
+
+        const placeholderText = this.locale.get(remarkPlaceholderKey, this.lang)
+          || this.locale.get(defaultPlaceholderKey, this.lang)
+          || 'Enter your remark.';
+
+        // Apply the label text
+        $remarkLabel.textContent = labelText;
         $remarkWrapper.appendChild($remarkLabel);
- 
+
+        // Create the remark form
         const remarkForm = new TextField({
-            id: `remarkForm_${index}`,
-            fieldName: `remark_${index}`,
-            validators: [
-                new Validator({
-                    errorType: ValidationErrorType.maxLength,
-                    errorMessage: this.locale.get(ValidationErrorType.maxLength, this.lang),
-                    maxLength: 300 
-                }),
-            ],
-            defaultValue: step.remark,
-            hasTitle: false,
-            placeholder: this.locale.get("interview_create_input_remark_placeholder", this.lang),
-            isCounter: false,
+          id: `remarkForm_${index}`,
+          fieldName: `remark_${index}`,
+          validators: [
+            new Validator({
+              errorType: ValidationErrorType.maxLength,
+              errorMessage: this.locale.get(ValidationErrorType.maxLength, this.lang),
+              maxLength: 300 
+            }),
+          ],
+          defaultValue: step.remark,
+          hasTitle: false,
+          placeholder: placeholderText, // set the placeholder here
+          isCounter: false,
         });
         remarkForm.$view.classList.add('remarkForm');
         this.remarkForms[index] = remarkForm;
+
         $remarkWrapper.appendChild(remarkForm.$view);
 
         // **Event Listener for remark field**  
@@ -418,11 +564,6 @@ class InterviewCreateView {
             const $guidelineWrapper = document.createElement('div');
             $guidelineWrapper.classList.add('guidelineWrapper');
 
-            const $indexSpan = document.createElement('span');
-            $indexSpan.classList.add('index');
-            $indexSpan.textContent = idx + 1;
-
-            $guidelineWrapper.appendChild($indexSpan);
             $guidelineWrapper.appendChild(guidelineForm.$view);
 
             $guidelinesWrapper.appendChild($guidelineWrapper);
@@ -473,7 +614,7 @@ class InterviewCreateView {
                     errorType: ValidationErrorType.positiveIntegerFormat,
                     errorMessage: this.locale.get(ValidationErrorType.positiveIntegerFormat, this.lang),
                     min: 1,
-                    max: 5
+                    max: 100
                 })
             ],
             defaultValue: String(step.max_turns),
@@ -714,6 +855,59 @@ class InterviewCreateView {
         return $stepContainer;
     }
 
+    onTaskTypeChanged(stepIndex, newTaskType) {
+        this.interview.steps[stepIndex].task_type = newTaskType;
+    
+        // 1) Apply config (maxTurns, responseMode, etc.)
+        const config = taskTypeConfigs[newTaskType];
+        if (!config) return;
+        // set default values
+        this.interview.steps[stepIndex].max_turns = config.maxTurns;
+        if (this.maxTurnsForms[stepIndex]) {
+            this.maxTurnsForms[stepIndex].value = String(config.maxTurns);
+        }
+        this.interview.steps[stepIndex].response_mode = config.responseMode;
+        if (this.responseModeSelectors[stepIndex]) {
+            this.responseModeSelectors[stepIndex].value = config.responseMode;
+        }
+        this.interview.steps[stepIndex].reference_type = config.referenceType;
+        if (this.referenceTypeSelectors[stepIndex]) {
+            this.referenceTypeSelectors[stepIndex].value = config.referenceType;
+        }
+
+        // 2) Update the label/placeholder for the remark text
+        const remarkForm = this.remarkForms[stepIndex];
+        if (remarkForm) {
+          const labelKey = `interview_create_remark_label_${newTaskType}`;
+          const placeholderKey = `interview_create_input_remark_placeholder_${newTaskType}`;
+
+          const newLabel = this.locale.get(labelKey, this.lang) 
+            || this.locale.get('interview_create_step_remark_label', this.lang) 
+            || 'Remark:';
+          const newPlaceholder = this.locale.get(placeholderKey, this.lang) 
+            || this.locale.get('interview_create_input_remark_placeholder', this.lang) 
+            || 'Enter the remark.';
+
+          // If you have a separate DOM label, update its textContent:
+          const $remarkLabel = this.stepContainers[stepIndex].querySelector('.remarkLabel');
+          if ($remarkLabel) {
+            $remarkLabel.textContent = newLabel;
+          }
+
+          // And for the remark form placeholder:
+          remarkForm.placeholder = newPlaceholder;
+        }
+
+        // 3) Toggle visibility if needed
+        const $stepContainer = this.stepContainers[stepIndex];
+        const $remarkWrapper = $stepContainer?.querySelector('.remarkWrapper');
+        if ($remarkWrapper) {
+          $remarkWrapper.style.display = config.showRemark ? 'block' : 'none';
+        }
+    
+        console.log(`Task type for step ${stepIndex} changed to ${newTaskType}`);
+    }
+    
     addStep() {
         if (this.interview.steps.length >= this.maxSteps) {
             console.warn('Max steps reached. Cannot add more steps.');
@@ -838,30 +1032,41 @@ class InterviewCreateView {
 
         // Build each step from forms
         this.topicForms.forEach((topicForm, index) => {
+            const taskTypeSelector = this.taskTypeSelectors[index];
             const remarkForm = this.remarkForms[index];
             const goalForm = this.goalForms[index];
             const maxTurnsForm = this.maxTurnsForms[index];
             const guidelinesArray = this.guidelineForms[index] || [];
 
             const responseModeSelector = this.responseModeSelectors[index];
-
-            const referencesDropdown = this.referencesDropdowns ? this.referencesDropdowns[index] : null;
+            const referencesSelector = this.referencesSelectors
+                ? this.referencesSelectors[index]
+                : null;
             const referenceTypeSelector = this.referenceTypeSelectors[index];
 
             const topicVal = topicForm?.value?.trim() || '';
             const remarkVal = remarkForm?.value?.trim() || '';
 
-            // If user typed something in remark or topic, it's a valid step
+            // If user typed something in remark or topic, it’s a valid step
             if (topicVal || remarkVal) {
                 hasQuestionValue = true;
-                const referencesVal = referencesDropdown?.value || []; 
-                const referenceTypeVal = referenceTypeDropdown?.value;  // default
+
+                const referencesVal = referencesSelector?.value || [];
+                const referenceTypeVal = referenceTypeSelector?.value || ReferenceType.ALL;
 
                 const step = {
+                    // 1) Task Type
+                    task_type: taskTypeSelector.value,
+
+                    // 2) Basic fields
                     topic: topicVal,
                     remark: remarkVal,
                     goal: goalForm?.value || '',
+
+                    // 3) Guidelines
                     guidelines: guidelinesArray.map(gForm => gForm?.value || ''),
+
+                    // 4) Config fields
                     max_turns: parseInt(maxTurnsForm?.value, 10),
                     response_mode: parseInt(responseModeSelector?.value, 10),
                     reference_type: referenceTypeVal,

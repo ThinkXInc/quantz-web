@@ -8,6 +8,15 @@
         "ru": "",
         "ar": ""
     },
+    "basic_configs_response_mode_title": {
+        "ja": "レスポンスモードの選択",
+        "en": "Select Response Mode",
+        "zh": "选择回应模式",
+        "fr": "Sélectionner le mode de réponse",
+        "es": "Seleccionar modo de respuesta",
+        "ar": "اختر وضع الاستجابة",
+        "ru": "Выберите режим ответа"
+    },
     "basic_configs_response_mode_tempo_oriented": {
         "ja": "テンポ重視",
         "en": "Tempo-Oriented",
@@ -36,12 +45,66 @@
         "ru": "Внимательное слушание"
     },
     "basic_configs_response_mode_wait_manual_submit": {
-        "ja": "手動サブミット",
-        "en": "Manual Submit",
-        "zh": "手动提交",
-        "fr": "Soumission manuelle",
-        "es": "Envío manual",
-        "ar": "تقديم يدوي",
-        "ru": "Ручная отправка"
+        "ja": "エンターキーで終了するのを待つ",
+        "en": "Wait for Enter Key to Submit",
+        "zh": "等待按回车键提交",
+        "fr": "Attendre la touche Entrée pour soumettre",
+        "es": "Esperar a la tecla Enter para enviar",
+        "ar": "انتظر الضغط على مفتاح الإدخال للتقديم",
+        "ru": "Ожидание нажатия клавиши Enter для отправки"
+    },
+    "basic_configs_task_type_greeting": {
+        "ja": "挨拶",
+        "en": "Greeting",
+        "zh": "问候",
+        "fr": "Salutation",
+        "es": "Saludo",
+        "ar": "تحية",
+        "ru": "Приветствие"
+    },
+    "basic_configs_task_type_free_conversation": {
+        "ja": "自由会話",
+        "en": "Free Conversation",
+        "zh": "自由交谈",
+        "fr": "Conversation libre",
+        "es": "Conversación libre",
+        "ar": "محادثة حرة",
+        "ru": "Свободная беседа"
+    },
+    "basic_configs_task_type_question": {
+        "ja": "質問・インタビュー",
+        "en": "Question / Interview",
+        "zh": "问题/访谈",
+        "fr": "Question / Entretien",
+        "es": "Pregunta / Entrevista",
+        "ar": "سؤال / مقابلة",
+        "ru": "Вопрос / Интервью"
+    },
+    "basic_configs_task_type_explanation": {
+        "ja": "説明",
+        "en": "Explanation",
+        "zh": "说明",
+        "fr": "Explication",
+        "es": "Explicación",
+        "ar": "توضيح",
+        "ru": "Объяснение"
+    },
+    "basic_configs_task_type_test": {
+        "ja": "テスト（知識理解の判定）",
+        "en": "Test (Knowledge Assessment)",
+        "zh": "测试（知识理解评估）",
+        "fr": "Test (Évaluation des connaissances)",
+        "es": "Prueba (Evaluación del conocimiento)",
+        "ar": "اختبار (تقييم المعرفة)",
+        "ru": "Тест (Оценка знаний)"
+    },
+    "basic_configs_task_type_consulting": {
+        "ja": "コンサルティング（相談）",
+        "en": "Consulting (Advisory)",
+        "zh": "咨询（建议）",
+        "fr": "Consultation (Conseil)",
+        "es": "Consultoría (Asesoría)",
+        "ar": "استشارة (تقديم المشورة)",
+        "ru": "Консультирование (Советы)"
     }
 }

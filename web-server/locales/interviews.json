@@ -305,6 +305,15 @@
         "ru": "Шаг",
         "ar": "خطوة"
     },
+    "interview_create_task_type_selector_title": {
+        "ja": "タスク種類の選択",
+        "en": "Select Task Type",
+        "zh": "选择任务类型",
+        "fr": "Sélectionner le type de tâche",
+        "es": "Seleccionar tipo de tarea",
+        "ar": "اختر نوع المهمة",
+        "ru": "Выберите тип задачи"
+    },
     "create_interview_max_turns_title": {
         "ja": "最大ターン数",
         "en": "Max turns",
@@ -377,15 +386,114 @@
         "ar": "الخطوة $0",
         "ru": "Шаг $0"
     },
-    "interview_create_step_remark_label": {
+    "interview_create_remark_label_question": {
+        "en": "Question:",
         "ja": "質問内容",
-        "en": "Question",
-        "zh": "问题",
-        "fr": "Question",
-        "es": "Pregunta",
-        "ar": "السؤال",
-        "ru": "Вопрос"
-    },
+        "zh": "问题内容",
+        "es": "Contenido de la pregunta",
+        "fr": "Contenu de la question",
+        "ru": "Содержание вопроса",
+        "ar": "محتوى السؤال"
+      },
+      "interview_create_input_remark_placeholder_question": {
+        "en": "Example: What's your occupation? (If left blank, it will be decided automatically.)",
+        "ja": "例) あなたのご職業は何ですか？（未記入の場合は自動的に決定されます。）",
+        "zh": "示例：你的职业是什么？（如果未填写，将自动决定。）",
+        "es": "Ejemplo: ¿Cuál es su ocupación? (Si se deja en blanco, se determinará automáticamente.)",
+        "fr": "Exemple : Quelle est votre profession ? (Si vous laissez ce champ vide, il sera décidé automatiquement.)",
+        "ru": "Например: Какая у вас профессия? (Если оставить поле пустым, вопрос будет выбран автоматически.)",
+        "ar": "مثال: ما مهنتك؟ (إذا ترك فارغًا، سيتم تحديده تلقائيًا.)"
+      },
+      "interview_create_remark_label_greeting": {
+        "en": "Greeting Phrase:",
+        "ja": "挨拶の言葉",
+        "zh": "问候语",
+        "es": "Frase de saludo",
+        "fr": "Phrase de salutation",
+        "ru": "Приветственная фраза",
+        "ar": "عبارة الترحيب"
+      },
+      "interview_create_input_remark_placeholder_greeting": {
+        "en": "Example: Good morning! (If left blank, a default greeting will be used.)",
+        "ja": "例) おはようございます！（未記入の場合は自動的に決定されます。）",
+        "zh": "示例：早上好！（如果未填写，将自动使用默认问候语。）",
+        "es": "Ejemplo: ¡Buenos días! (Si se deja en blanco, se utilizará un saludo predeterminado.)",
+        "fr": "Exemple : Bonjour ! (Si vous laissez ce champ vide, un message par défaut sera utilisé.)",
+        "ru": "Например: Доброе утро! (Если оставить поле пустым, будет использовано приветствие по умолчанию.)",
+        "ar": "مثال: صباح الخير! (إذا ترك فارغًا، سيتم استخدام التحية الافتراضية.)"
+      },
+      "interview_create_remark_label_free_conversation": {
+        "en": "Free Conversation:",
+        "ja": "フリー会話",
+        "zh": "自由对话",
+        "es": "Conversación libre",
+        "fr": "Conversation libre",
+        "ru": "Свободная беседа",
+        "ar": "محادثة حرة"
+      },
+      "interview_create_input_remark_placeholder_free_conversation": {
+        "en": "Example: How are you feeling today? (If left blank, it will be decided automatically.)",
+        "ja": "例) 今日の気分は？（未記入の場合は自動的に決定されます。）",
+        "zh": "示例：你今天感觉怎么样？（如果未填写，将自动决定。）",
+        "es": "Ejemplo: ¿Cómo te sientes hoy? (Si se deja en blanco, se determinará automáticamente.)",
+        "fr": "Exemple : Comment vous sentez-vous aujourd'hui ? (Si vous laissez ce champ vide, il sera décidé automatiquement.)",
+        "ru": "Например: Как вы себя чувствуете сегодня? (Если оставить поле пустым, решение будет принято автоматически.)",
+        "ar": "مثال: كيف تشعر اليوم؟ (إذا ترك فارغًا، سيتم تحديده تلقائيًا.)"
+      },
+      "interview_create_remark_label_explanation": {
+        "en": "Explanation:",
+        "ja": "説明時の喋りだし",
+        "zh": "说明内容",
+        "es": "Contenido de la explicación",
+        "fr": "Contenu de l'explication",
+        "ru": "Содержание объяснения",
+        "ar": "محتوى التوضيح"
+      },
+      "interview_create_input_remark_placeholder_explanation": {
+        "en": "Example: I will now explain our XX service. (If left blank, it will be decided automatically.)",
+        "ja": "例) これから〇〇サービスについてご説明します。（未記入の場合は自動的に決定されます。）",
+        "zh": "示例：现在我将为您说明我们的XX服务。（如果未填写，将自动决定。）",
+        "es": "Ejemplo: Ahora le explicaré nuestro servicio XX. (Si se deja en blanco, se determinará automáticamente.)",
+        "fr": "Exemple : Je vais maintenant vous expliquer notre service XX. (Si vous laissez ce champ vide, il sera décidé automatiquement.)",
+        "ru": "Например: Сейчас я расскажу о нашем сервисе XX. (Если оставить поле пустым, это будет определено автоматически.)",
+        "ar": "مثال: سأشرح الآن خدمتنا XX. (إذا ترك فارغًا، سيتم تحديده تلقائيًا.)"
+      },
+      "interview_create_remark_label_test": {
+        "en": "Test Content:",
+        "ja": "テスト時の喋りだし",
+        "zh": "测试内容",
+        "es": "Contenido de la prueba",
+        "fr": "Contenu du test",
+        "ru": "Содержание теста",
+        "ar": "محتوى الاختبار"
+      },
+      "interview_create_input_remark_placeholder_test": {
+        "en": "Example: If a customer wants to reserve an item, what do you do first? (If left blank, it will be decided automatically.)",
+        "ja": "例) お客さまが商品を取り置きしたいと仰った場合にまず何をするべきですか？（未記入の場合は自動的に決定されます。）",
+        "zh": "示例：如果顾客想预留商品，你首先应该做什么？（如果未填写，将自动决定。）",
+        "es": "Ejemplo: Si un cliente quiere reservar un artículo, ¿qué hace primero? (Si se deja en blanco, se determinará automáticamente.)",
+        "fr": "Exemple : Si un client souhaite réserver un article, que devez-vous faire en premier ? (Si vous laissez ce champ vide, il sera décidé automatiquement.)",
+        "ru": "Например: Если клиент хочет отложить товар, что вы делаете в первую очередь? (Если оставить поле пустым, это будет определено автоматически.)",
+        "ar": "مثال: إذا أراد العميل حجز منتج، ما الذي تفعله أولاً؟ (إذا ترك فارغًا، سيتم تحديده تلقائيًا.)"
+      },
+      "interview_create_remark_label_consulting": {
+        "en": "Consultation Content:",
+        "ja": "コンサルティング・提案での喋りだし",
+        "zh": "咨询内容",
+        "es": "Contenido de la consulta",
+        "fr": "Contenu de la consultation",
+        "ru": "Содержание консультации",
+        "ar": "محتوى الاستشارة"
+      },
+      "interview_create_input_remark_placeholder_consulting": {
+        "en": "Example: In your situation, I think the best way to use our service is as follows. (If left blank, it will be decided automatically.)",
+        "ja": "例) お客様のケースでは私たちのサービスのベストな使い方は次のようになると思います。（未記入の場合は自動的に決定されます。）",
+        "zh": "示例：在您的情况下，我认为使用我们服务的最佳方式如下。（如果未填写，将自动决定。）",
+        "es": "Ejemplo: En su caso, creo que la mejor manera de usar nuestro servicio es la siguiente. (Si se deja en blanco, se determinará automáticamente.)",
+        "fr": "Exemple : Dans votre cas, je pense que la meilleure façon d'utiliser notre service est la suivante. (Si vous laissez ce champ vide, il sera décidé automatiquement.)",
+        "ru": "Например: В вашем случае, лучший способ использовать наш сервис выглядит следующим образом. (Если оставить поле пустым, это будет определено автоматически.)",
+        "ar": "مثال: في حالتك، أعتقد أن أفضل طريقة لاستخدام خدمتنا هي على النحو التالي. (إذا ترك فارغًا، سيتم تحديده تلقائيًا.)"
+      },
     "interview_create_step_finish_condition_label": {
         "ja": "終了条件",
         "en": "Finish Condition",
