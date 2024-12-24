@@ -387,7 +387,43 @@
         "ar": "شرط الانتهاء",
         "ru": "Условие окончания"
     },
-    "view_create_reference_selector_label": {
+    "interview_create_reference_type_selector_label": {
+        "ja": "参照ドキュメント",
+        "en": "Referenced Document",
+        "zh": "引用文档",
+        "fr": "Document référencé",
+        "es": "Documento referenciado",
+        "ar": "المستند المرجعي",
+        "ru": "Ссылка на документ"
+    },
+    "interview_create_reference_type_all": {
+        "ja": "全て",
+        "en": "All documents",
+        "zh": "所有文件",
+        "es": "Todos los documentos",
+        "fr": "Tous les documents",
+        "ru": "Все документы",
+        "ar": "كل المستندات"
+    },
+    "interview_create_reference_type_none": {
+        "ja": "参照しない",
+        "en": "No documents",
+        "zh": "不引用文件",
+        "es": "Ningún documento",
+        "fr": "Aucun document",
+        "ru": "Без документов",
+        "ar": "لا مستندات"
+    },
+    "interview_create_reference_type_select": {
+        "ja": "特定のドキュメントを指定する",
+        "en": "Specify specific documents",
+        "zh": "指定特定文件",
+        "es": "Especificar documentos específicos",
+        "fr": "Spécifier des documents spécifiques",
+        "ru": "Указать конкретные документы",
+        "ar": "تحديد مستندات معينة"
+    },
+    "interview_create_reference_selector_label": {
         "ja": "参照ドキュメント",
         "en": "Reference Materials",
         "zh": "参考材料",
@@ -396,7 +432,7 @@
         "ar": "مواد مرجعية",
         "ru": "Справочные материалы"
     },
-    "view_create_reference_selector_display_title": {
+    "interview_create_reference_selector_display_title": {
         "ja": "$0個のドキュメントを選択中",
         "en": "$0 documents selected",
         "zh": "已选择 $0 个文档",

@@ -4,6 +4,7 @@ const defaultStep = () => ({
     "goal": "Interviewee answered it's done.",
     "max_turns": 3,
     "response_mode": 1,
+    "reference_type": "all",
     "guidelines": [
         "First, read the remark.",
         "When the answer looks done, ask 'Are you sure that\'s it?'"
@@ -51,6 +52,8 @@ class InterviewCreateView {
         this.goalForms = [];
         this.maxTurnsForms = [];
         this.instructionForms = [];
+        this.referenceTypeSelectors = [];
+        this.referencesSelectors = [];
 
         this.fetchMaterials();
         this.materialsReady = new Promise((resolve, reject) => {
@@ -240,11 +243,6 @@ class InterviewCreateView {
         // ----------------------------------------------------------------------
         // 2) REMARK (Question)
         // ----------------------------------------------------------------------
-        // **Remark and Remove Wrapper**
-        const $remarkAndRemoveWrapper = document.createElement('div');
-        $remarkAndRemoveWrapper.classList.add('remarkAndRemoveWrapper');
-        $remarkAndRemoveWrapper.classList.add('configItemWrapper');
-
         // **Remark Wrapper**
         const $remarkWrapper = document.createElement('div');
         $remarkWrapper.classList.add('remarkWrapper');
@@ -283,21 +281,20 @@ class InterviewCreateView {
         //    }
         //});
  
-        // **Remove Step Button**
-        const $removeStepButton = document.createElement('img');
-        $removeStepButton.src = '/img/interviews/minus-icon.svg';
-        $removeStepButton.classList.add('removeStepButton');
-        $removeStepButton.style.cursor = 'pointer';
+        // // **Remove Step Button**
+        // const $removeStepButton = document.createElement('img');
+        // $removeStepButton.src = '/img/interviews/minus-icon.svg';
+        // $removeStepButton.classList.add('removeStepButton');
+        // $removeStepButton.style.cursor = 'pointer';
  
-        $removeStepButton.addEventListener('click', () => {
-            const idx = this.stepContainers.indexOf($stepContainer);
-            this.removeStep(idx);
-        });
+        // $removeStepButton.addEventListener('click', () => {
+        //     const idx = this.stepContainers.indexOf($stepContainer);
+        //     this.removeStep(idx);
+        // });
  
-        $remarkAndRemoveWrapper.appendChild($remarkWrapper);
-        $remarkAndRemoveWrapper.appendChild($removeStepButton);
+        //$remarkAndRemoveWrapper.appendChild($removeStepButton);
 
-        $stepContent.appendChild($remarkAndRemoveWrapper);
+        $stepContent.appendChild($remarkWrapper);
 
         // ----------------------------------------------------------------------
         // 3) GOAL (Finish Condition)
@@ -366,8 +363,13 @@ class InterviewCreateView {
         $hiddenContent.classList.add('hiddenContent');
 
         // ----------------------------------------------------------------------
-        // GUIDELINES (Hidden area)
+        // Details (Hidden area)
         // ----------------------------------------------------------------------
+
+        // ----------------------------------------------------------------------
+        // Detail 1) GUIDELINES
+        // ----------------------------------------------------------------------
+
         // **Guidelines List**
         const $guidelinesWrapper = document.createElement('div');
         $guidelinesWrapper.classList.add('guidelinesWrapper');
@@ -487,59 +489,103 @@ class InterviewCreateView {
         $hiddenContent.appendChild($maxTurnsWrapper);
 
         // ----------------------------------------------------------------------
-        // Detail 2) REFERENCES (Multi-select)
+        // Detail 4) REFERENCES
         // ----------------------------------------------------------------------
-        const $referencesWrapper = document.createElement('div');
-        $referencesWrapper.classList.add('referencesWrapper');
-        $referencesWrapper.classList.add('configItemWrapper');
 
-        const $referencesLabel = document.createElement('span');
-        $referencesLabel.classList.add('referencesLabel');
-        $referencesLabel.classList.add('configItemLabel');
-        $referencesLabel.textContent = this.locale.get(
-          'view_create_reference_selector_label', 
-          this.lang
-        ) || 'Reference Materials:';
-        $referencesWrapper.appendChild($referencesLabel);
+        const $referenceWrapper = document.createElement('div');
+        $referenceWrapper.classList.add('referenceWrapper');
+        $referenceWrapper.classList.add('configItemWrapper');
 
-
+        const $referenceTypeContainer = document.createElement('div');
+        $referenceTypeContainer.classList.add('referenceTypeContainer');
+    
+        const $referenceTypeLabel = document.createElement('span');
+        $referenceTypeLabel.classList.add('referenceTypeLabel');
+        $referenceTypeLabel.classList.add('configItemLabel');
+        $referenceTypeLabel.textContent = this.locale.get('interview_create_reference_type_selector_label', this.lang);
+        $referenceTypeContainer.appendChild($referenceTypeLabel);
+    
+        const referenceTypeSelector = new DropdownButton({
+            id: `referenceTypeSelector_${index}`,
+            fieldName: `reference_type_${index}`,
+            title: '', // We'll use the label above, so title can remain empty or be used differently.
+            description: this.locale.get('interview_create_reference_type_selector_label', this.lang),
+            type: DropdownMenuType.list,
+            position: DropdownMenuDisplayPositionType.bottomover,
+            hasSelectedIcon: true,
+            isMultiSelect: false,
+            items: [
+                {
+                    title: this.locale.get('interview_create_reference_type_all', this.lang),
+                    value: 'all',
+                },
+                {
+                    title: this.locale.get('interview_create_reference_type_none', this.lang),
+                    value: 'none',
+                },
+                {
+                    title: this.locale.get('interview_create_reference_type_select', this.lang),
+                    value: 'select',
+                },
+            ],
+            defaultValue: step.reference_type || 'all',
+            validators: [new Validator({
+                errorType: ValidationErrorType.required,
+                errorMessage: this.locale.get(ValidationErrorType.required, lang)
+            })]
+        });
+        this.referenceTypeSelectors[index] = referenceTypeSelector;
+    
+        $referenceTypeContainer.appendChild(referenceTypeSelector.$view);
+        $referenceWrapper.appendChild($referenceTypeContainer);
+    
+        /**
+         *  References Multi-select
+         */
+        const $referencesContainer = document.createElement('div');
+        $referencesContainer.classList.add('referencesContainer');
+    
         this.materialsReady.then(() => {
-            // Create the multi-select dropdown
-            const referencesDropdown = new DropdownButton({
+            const referencesSelector = new DropdownButton({
                 id: `referencesDropdown_${index}`,
                 fieldName: `references_${index}`,
-                title: '',
-                description: this.locale.get('view_create_reference_selector_label', this.lang),
+                title: '', 
+                description: this.locale.get('interview_create_reference_selector_label', this.lang),
                 type: DropdownMenuType.list,
                 position: DropdownMenuDisplayPositionType.bottomover,
                 hasSelectedIcon: true,
                 items: this.materialItems || [],
-                isMultiSelect: true,  // <-- the key part
-                multiSelectDisplayTitle: this.locale.get('view_create_reference_selector_display_title', this.lang),
+                isMultiSelect: true,
+                multiSelectDisplayTitle: this.locale.get('interview_create_reference_selector_display_title', this.lang),
             });
-
+    
             // If step already has references, pre-populate
             if (step.references && Array.isArray(step.references)) {
-                referencesDropdown.value = step.references;  // sets the selected array
+                referencesSelector.value = step.references;  
             }
-
-            // Store a reference to the dropdown in an array so we can gather values in `interviewObjectFromFormData`
-            if (!this.referencesDropdowns) {
-                this.referencesDropdowns = [];
-            }
-            this.referencesDropdowns[index] = referencesDropdown;
-
-            $referencesWrapper.appendChild(referencesDropdown.$view);
-            //const $maxTurnsWrapper = document.querySelector('.maxTurnsWrapper');
-            //if ($maxTurnsWrapper) {
-            //    $hiddenContent.insertBefore($referencesWrapper, $maxTurnsWrapper);
-            //} else {
-            //    $hiddenContent.appendChild($referencesWrapper); // Fallback if maxTurnsWrapper doesn't exist
-            //}
-            $hiddenContent.appendChild($referencesWrapper);
+    
+            this.referencesSelectors[index] = referencesSelector;
+    
+            $referencesContainer.appendChild(referencesSelector.$view);
+            $referenceWrapper.appendChild($referencesContainer);
         }).catch((error) => {
             console.error("Materials failed to fetch:", error);
         });
+    
+        // Show/hide referencesContainer when referenceType changes
+        referenceTypeSelector.$view.addEventListener('selected', (e) => {
+            const val = e.detail.value;   // The selected item’s value
+            if (val === 'select') {
+                $referencesContainer.style.display = 'block';
+            } else {
+                $referencesContainer.style.display = 'none';
+            }
+        });
+    
+        // Set initial value
+        referenceTypeSelector.value = step.reference_type || defaultStep.reference_type
+
+        $hiddenContent.appendChild($referenceWrapper);
 
         $detailsWrapper.appendChild($hiddenContent);
 
@@ -745,6 +791,7 @@ class InterviewCreateView {
             if (topicVal || remarkVal) {
                 hasQuestionValue = true;
                 const referencesVal = referencesDropdown?.value || []; 
+                const referenceTypeVal = referenceTypeDropdown?.value;  // default
 
                 const step = {
                     topic: topicVal,
@@ -752,7 +799,9 @@ class InterviewCreateView {
                     goal: goalForm?.value || '',
                     max_turns: parseInt(maxTurnsForm?.value || '0', 10),
                     guidelines: guidelinesArray.map(gForm => gForm?.value || ''),
-                    references: referencesVal
+                    references: referencesVal,
+                    reference_type: referenceTypeVal,
+                    references: referenceTypeVal === 'select' ? referencesVal : []
                 };
                 steps.push(step);
             }
