@@ -52,6 +52,7 @@ class InterviewCreateView {
         this.goalForms = [];
         this.maxTurnsForms = [];
         this.instructionForms = [];
+        this.responseModeSelectors = []; 
         this.referenceTypeSelectors = [];
         this.referencesSelectors = [];
 
@@ -489,6 +490,65 @@ class InterviewCreateView {
         $hiddenContent.appendChild($maxTurnsWrapper);
 
         // ----------------------------------------------------------------------
+        // Detail 3.1) RESPONSE MODE
+        // ----------------------------------------------------------------------
+        const $responseModeWrapper = document.createElement('div');
+        $responseModeWrapper.classList.add('responseModeWrapper');
+        $responseModeWrapper.classList.add('configItemWrapper');
+
+        //const $responseModeLabel = document.createElement('span');
+        //$responseModeLabel.classList.add('responseModeLabel');
+        //$responseModeLabel.classList.add('configItemLabel');
+        //// "Response Mode:"
+        //$responseModeLabel.textContent = this.locale.get('interview_create_response_mode_title', this.lang);
+        //$responseModeWrapper.appendChild($responseModeLabel);
+
+        const responseModeItems = [
+            new ListItem({
+                title: this.locale.get('basic_configs_response_mode_tempo_oriented', this.lang),
+                value: 0
+            }),
+            new ListItem({
+                title: this.locale.get('basic_configs_response_mode_normal', this.lang),
+                value: 1
+            }),
+            new ListItem({
+                title: this.locale.get('basic_configs_response_mode_careful_listening', this.lang),
+                value: 2
+            }),
+            new ListItem({
+                title: this.locale.get('basic_configs_response_mode_wait_manual_submit', this.lang),
+                value: 3
+            })
+        ];
+
+        /** Create the actual dropdown */
+        const responseModeSelector = new DropdownButton({
+            id: `responseModeSelector_${index}`,
+            fieldName: `response_mode_${index}`,
+            title: '', // We can dynamically set this after picking an item
+            description: this.locale.get('interview_create_response_mode_title', this.lang),
+            type: DropdownMenuType.list,
+            position: DropdownMenuDisplayPositionType.bottomover,
+            hasSelectedIcon: true,    // to show the checkmark
+            isMultiSelect: false,     
+            items: responseModeItems,
+            // defaultValue is from the step or fallback to 1
+            validators: [
+              new Validator({
+                errorType: ValidationErrorType.required,
+                errorMessage: this.locale.get(ValidationErrorType.required, this.lang),
+              }),
+            ],
+        });
+        responseModeSelector.value = step.response_mode || defaultStep.response_mode;
+        this.responseModeSelectors[index] = responseModeSelector;
+        $responseModeWrapper.appendChild(responseModeSelector.$view);
+
+        // Finally, append it to the hidden content
+        $hiddenContent.appendChild($responseModeWrapper);
+
+        // ----------------------------------------------------------------------
         // Detail 4) REFERENCES
         // ----------------------------------------------------------------------
 
@@ -499,11 +559,11 @@ class InterviewCreateView {
         const $referenceTypeContainer = document.createElement('div');
         $referenceTypeContainer.classList.add('referenceTypeContainer');
     
-        const $referenceTypeLabel = document.createElement('span');
-        $referenceTypeLabel.classList.add('referenceTypeLabel');
-        $referenceTypeLabel.classList.add('configItemLabel');
-        $referenceTypeLabel.textContent = this.locale.get('interview_create_reference_type_selector_label', this.lang);
-        $referenceTypeContainer.appendChild($referenceTypeLabel);
+        //const $referenceTypeLabel = document.createElement('span');
+        //$referenceTypeLabel.classList.add('referenceTypeLabel');
+        //$referenceTypeLabel.classList.add('configItemLabel');
+        //$referenceTypeLabel.textContent = this.locale.get('interview_create_reference_type_selector_label', this.lang);
+        //$referenceTypeContainer.appendChild($referenceTypeLabel);
     
         const referenceTypeSelector = new DropdownButton({
             id: `referenceTypeSelector_${index}`,
@@ -782,7 +842,11 @@ class InterviewCreateView {
             const goalForm = this.goalForms[index];
             const maxTurnsForm = this.maxTurnsForms[index];
             const guidelinesArray = this.guidelineForms[index] || [];
+
+            const responseModeSelector = this.responseModeSelectors[index];
+
             const referencesDropdown = this.referencesDropdowns ? this.referencesDropdowns[index] : null;
+            const referenceTypeSelector = this.referenceTypeSelectors[index];
 
             const topicVal = topicForm?.value?.trim() || '';
             const remarkVal = remarkForm?.value?.trim() || '';
@@ -797,9 +861,9 @@ class InterviewCreateView {
                     topic: topicVal,
                     remark: remarkVal,
                     goal: goalForm?.value || '',
-                    max_turns: parseInt(maxTurnsForm?.value || '0', 10),
                     guidelines: guidelinesArray.map(gForm => gForm?.value || ''),
-                    references: referencesVal,
+                    max_turns: parseInt(maxTurnsForm?.value, 10),
+                    response_mode: parseInt(responseModeSelector?.value, 10),
                     reference_type: referenceTypeVal,
                     references: referenceTypeVal === 'select' ? referencesVal : []
                 };

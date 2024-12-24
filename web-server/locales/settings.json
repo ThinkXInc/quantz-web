@@ -575,32 +575,5 @@
         "es": "Seleccionar modo de respuesta",
         "ar": "اختر وضع الاستجابة",
         "ru": "Выберите режим ответа"
-    },
-    "customize_response_mode_tempo_oriented": {
-        "ja": "テンポ重視",
-        "en": "Tempo-Oriented",
-        "zh": "节奏导向",
-        "fr": "Orienté Tempo",
-        "es": "Orientado al Tempo",
-        "ar": "موجه بوتيرة",
-        "ru": "Темпо-ориентированный"
-    },
-    "customize_response_mode_normal": {
-        "ja": "ノーマル",
-        "en": "Normal",
-        "zh": "普通",
-        "fr": "Normal",
-        "es": "Normal",
-        "ar": "عادي",
-        "ru": "Нормальный"
-    },
-    "customize_response_mode_careful_listening": {
-        "ja": "傾聴",
-        "en": "Attentive Listening",
-        "zh": "倾听",
-        "fr": "Écoute Attentive",
-        "es": "Escucha Atenta",
-        "ar": "الاستماع بانتباه",
-        "ru": "Внимательное слушание"
     }
 }

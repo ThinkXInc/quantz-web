@@ -299,21 +299,29 @@
     "create_interview_step_page_title": {
         "ja": "ステップ",
         "en": "Step",
-        "zh": "",
-        "es": "",
-        "fr": "",
-        "ru": "",
-        "ar": ""
+        "zh": "步骤",
+        "es": "Paso",
+        "fr": "Étape",
+        "ru": "Шаг",
+        "ar": "خطوة"
     },
     "create_interview_max_turns_title": {
         "ja": "最大ターン数",
         "en": "Max turns",
-        "zh": "",
-        "es": "",
-        "fr": "",
-        "ru": "",
-        "ar": ""
- 
+        "zh": "最大回合数",
+        "es": "Máximo de turnos",
+        "fr": "Nombre maximal de tours",
+        "ru": "Максимальное количество ходов",
+        "ar": "أقصى عدد من الأدوار"
+    },
+    "interview_create_response_mode_title": {
+        "ja": "レスポンスモードの選択",
+        "en": "Select Response Mode",
+        "zh": "选择回应模式",
+        "fr": "Sélectionner le mode de réponse",
+        "es": "Seleccionar modo de respuesta",
+        "ar": "اختر وضع الاستجابة",
+        "ru": "Выберите режим ответа"
     },
     "interview_create_url_copy_tooltip": {
         "ja": "ミーティングリンクをコピー",

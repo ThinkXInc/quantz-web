@@ -866,20 +866,20 @@ class CustomizeView {
     
         const $title = document.createElement('h4');
         $title.classList.add('subtitle');
-        $title.textContent = this.locale.get('customize_select_response_mode_title', this.lang);
+        $title.textContent = this.locale.get('basic_configs_response_mode_title', this.lang);
         $wrapper.appendChild($title);
     
         const responseModeItems = [
             new ListItem({
-                title: this.locale.get('customize_response_mode_tempo_oriented', this.lang),
+                title: this.locale.get('basic_configs_response_mode_tempo_oriented', this.lang),
                 value: 0
             }),
             new ListItem({
-                title: this.locale.get('customize_response_mode_normal', this.lang),
+                title: this.locale.get('basic_configs_response_mode_normal', this.lang),
                 value: 1
             }),
             new ListItem({
-                title: this.locale.get('customize_response_mode_careful_listening', this.lang),
+                title: this.locale.get('basic_configs_response_mode_careful_listening', this.lang),
                 value: 2
             })
         ];
