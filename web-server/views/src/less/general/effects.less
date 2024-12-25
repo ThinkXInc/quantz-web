@@ -3,6 +3,7 @@
 // *This file corresponds to effects.js.
 
 @cubic-bezier1: cubic-bezier(.65,0,.34,1);
+@cubic-bezier2: cubic-bezier(.4, 0, .2, 1);
 
 // ripple button effect
 
@@ -38,6 +39,72 @@
         background: #47a7f5 radial-gradient(circle, transparent 1%, #47a7f5 1%) center/15000%;
     }
   }
+}
+
+
+.button-border-pulse {
+  @keyframes borderPulse {
+      0% {
+        border-color: #888888;
+      }
+      100% {
+        border-color: #d0d0d0;
+      }
+  }
+  animation: borderPulse 2s infinite alternate @cubic-bezier1;
+}
+
+.fadeScaleDown {
+  @keyframes fadeScaleDown {
+    0% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0.5;
+      transform: scale(0.7); // or 0 for fully collapsed
+    }
+  }
+  animation-name: fadeScaleDown;
+  animation-duration: 0.5s;        // total animation time
+  animation-timing-function: @cubic-bezier2; 
+  animation-iteration-count: 1;  // plays once
+  animation-fill-mode: forwards; // remain in the end state (fully faded/shrunk)
+}
+
+.fadeScaleDown2 {
+  @keyframes fadeScaleDown2 {
+    0% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0.5;
+      transform: scale(1.1, 0.1); // Expand horizontally, shrink vertically
+    }
+  }
+  animation-name: fadeScaleDown2;
+  animation-duration: 0.3s;               // total animation time
+  animation-timing-function: @cubic-bezier2; 
+  animation-iteration-count: 1;           // plays once
+  animation-fill-mode: forwards;          // remain in end state
+}
+
+
+
+@keyframes flicker {
+  0%, 100% {
+    background: #4a4a4a;
+    border-color: #373737;
+  }
+  10%, 50% {
+    background: #888888;
+    border-color: #e2e2e2;
+  }
+}
+
+.flicker-effect {
+  animation: flicker 0.2s linear infinite;
 }
 
 // ripple circle effect

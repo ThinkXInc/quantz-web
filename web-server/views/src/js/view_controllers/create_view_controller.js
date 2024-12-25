@@ -85,13 +85,19 @@ class CreateViewController {
         $button.classList.add('StartPageButton');
 
         // Example usage of locale JSON to get the button label
-        $button.innerText = this.locale.get("create_start_button", this.lang) 
+        const $startButtonText = document.createElement('span');
+        $startButtonText.textContent = this.locale.get("create_start_button", this.lang) 
             || "Start Creating your Conversation System";
+        $button.appendChild($startButtonText);
 
         // When clicked, go to the Voice page (index=1)
         $button.addEventListener('click', () => {
             console.log('[CreateViewController] Start page button clicked. Moving to Voice page.');
-            this.pageView.show(1);
+            $button.classList.add('action');
+            setTimeout(() => {
+                $button.classList.remove('action');
+                this.pageView.show(1);
+            }, 300);
         });
 
         $container.appendChild($button);
