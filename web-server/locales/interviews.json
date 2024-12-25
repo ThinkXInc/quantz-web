@@ -576,13 +576,13 @@
         "ru": "Тема/содержание для этого этапа"
     },
     "interview_create_step_goal_label": {
-        "ja": "このステップのゴール・終了条件",
-        "en": "Goal/Completion criteria for this step",
-        "zh": "此步骤的目标/完成条件",
-        "fr": "Objectif/Critères de fin pour cette étape",
-        "es": "Meta/Criterios de finalización para este paso",
-        "ar": "الهدف/معايير الإنهاء لهذه الخطوة",
-        "ru": "Цель/Критерии завершения для этого этапа"
+        "ja": "このステップのゴール",
+        "en": "Goal for this step",
+        "zh": "此步骤的目标",
+        "fr": "Objectif pour cette étape",
+        "es": "Meta para este paso",
+        "ar": "الهدف لهذه الخطوة",
+        "ru": "Цель для этого этапа"
     },
     "interview_create_step_guidelines_label": {
         "ja": "ガイドライン",

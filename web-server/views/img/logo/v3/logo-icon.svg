@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 28.7.1, SVG Export Plug-In . SVG Version: 9.03 Build 54978)  -->
+<svg version="1.1" id="logo-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 207.6 214.4" style="enable-background:new 0 0 207.6 214.4;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#FFFFFF;stroke-width:5;stroke-linecap:round;stroke-miterlimit:10;}
+	.st1{fill:none;stroke:#FFFFFF;stroke-linecap:round;stroke-miterlimit:10;}
+	.st2{fill:#FFFFFF;}
+</style>
+<path id="Bpart" class="st0" d="M194.1,109.8c0-0.5,0-1,0-1.5c0-50-40.6-90.6-90.6-90.6c-50,0-90.6,40.6-90.6,90.6
+	c0,50,40.6,90.6,90.6,90.6"/>
+<g id="APart">
+	<circle class="st1" cx="103.7" cy="107.1" r="92.4"/>
+	<circle class="st1" cx="103.6" cy="106.3" r="78.4"/>
+	<path class="st2" d="M104,14.5c-20.5,0-39.4,6.7-54.7,18L57,43.9c13.1-9.9,29.3-15.8,47-15.8c43.2,0,78.3,35,78.3,78.3
+		c0,28.2-14.9,52.8-37.3,66.6l8.2,12.1c25.9-16.4,43.1-45.2,43.1-78.1C196.4,55.9,155,14.5,104,14.5z"/>
+</g>
+</svg>

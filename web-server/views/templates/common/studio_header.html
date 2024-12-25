@@ -1,0 +1,41 @@
+<header id="StudioHeader">
+    <div class="container">
+        <div class="left">
+            {# menu #}
+            <div class="menu-wrapper header-menu-wrapper close">
+                <img class="menu" src="/img/studio_header/menu-icon.svg">
+                <span class="tooltip open">{{ studio_header_menu_open }}</span>
+                <span class="tooltip close">{{ studio_header_menu_close }}</span>
+            </div>
+            {# logo #}
+            <div class="logo-wrapper header-menu-wrapper">
+                {#
+                <img class="logo" src="/img/logo/v3/logo-studio.svg">
+                #}
+                <img class="logo" src="/img/logo/v3/logo-icon.svg">
+                <h1 style="display: inline-block; margin-left: 10px; color:#fff;">Studio</h1>
+                {#<img class="logo" src="/img/logo.png" srcset="/img/logo/white@2x.png">#}
+                <span class="tooltip">{{ studio_header_tooltip_logo }}</span>
+            </div>
+        </div>
+        <div class="right">
+            {# create new #}
+            <div class="create-new-wrapper header-menu-wrapper">
+                <button class="create-new-button header-menu-button">
+                    <img class="crate-new-icon icon" src="/img/studio_header/create-new-icon.svg">
+                    <span class="crate-new-label label">{{ studio_header_create_new_label }}</span>
+                </button>
+                <span class="tooltip">{{ studio_header_tooltip_create_new }}</span>
+            </div>
+            {# deploy #}
+            <div class="deploy-wrapper header-menu-wrapper">
+                <button class="deploy-button header-menu-button">
+                    <img class="deploy-icon icon" src="/img/studio_header/ship-icon.svg">
+                    <span class="crate-new-label label">{{ studio_header_deploy_label }}</span>
+                </button>
+                <span class="tooltip">{{ studio_header_tooltip_deploy }}</span>
+            </div>
+            {# account TODO: #}
+        </div>
+    </div>
+</header>

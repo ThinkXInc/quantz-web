@@ -380,6 +380,10 @@ class InterviewCreateView {
         const $remarkLabel = document.createElement('span');
         $remarkLabel.classList.add('remarkLabel', 'configItemLabel');
 
+        if (!step.task_type) {
+            step.task_type = TaskType.CONSULTING
+        }
+
         // We look up the label/placeholder according to step.task_type
         const remarkLabelKey       = `interview_create_remark_label_${step.task_type}`;
         const defaultLabelKey       = 'interview_create_step_remark_label'; // fallback

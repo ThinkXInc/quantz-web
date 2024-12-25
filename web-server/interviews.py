@@ -243,7 +243,7 @@ def interview_home(user, lang, lang_name):
         locale_json=locale.to_json_string(),
         header_create_button_title=locale.get('header_create_button_title', lang),
         header_meetings_menu_title=locale.get('header_meetings_menu_title', lang),
-        header_interaction_menu_title=locale.get('header_interaction_menu_title', lang),
+        header_create_menu_title=locale.get('header_create_menu_title', lang),
         header_knowledge_menu_title=locale.get('header_knowledge_menu_title', lang),
         header_settings_menu_title=locale.get('header_settings_menu_title', lang),
         header_customize_menu_title=locale.get('header_customize_menu_title', lang),

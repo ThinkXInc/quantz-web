@@ -6,10 +6,12 @@
       </a>
     </div>
     <ul class="menu">
-      <li class="meetings item">
+      <li class="create item">
         <a href="/v1/{{ lang }}/interviews">
-          <img id="interviewIcon" class="meetingsIcon icon" src="/img/vertical_menu/interview-icon.svg" alt="Interview">
-          <span class="tooltip">{{ header_interviews_menu_title }}</span>
+          <img id="interviewIcon" class="interviewIcon icon" src="/img/vertical_menu/conversation-flow-icon.svg" alt="Interview">
+          {# NOTE: locale_dictをここに渡すのが難しいので変数を直接使う #}
+          <span class="menuTitle">{{ header_create_menu_title }}</span>
+          <span class="tooltip">{{ header_create_menu_title }}</span> {#折り畳んだらアイコンだけにしてツールチップを出す#}
         </a>
       </li>
       <li class="materials item highlight">
@@ -18,6 +20,13 @@
           <span class="tooltip">{{ header_knowledge_menu_title }}</span>
         </a>
       </li>
+      <li class="meetings item">
+        <a href="/v1/{{ lang }}/interviews">
+          <img id="interviewIcon" class="meetingsIcon icon" src="/img/vertical_menu/interview-icon.svg" alt="Interview">
+          <span class="tooltip">{{ header_interviews_menu_title }}</span>
+        </a>
+      </li>
+
     </ul>
   </div>
   <div class="bottom">

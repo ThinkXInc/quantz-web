@@ -1,0 +1,133 @@
+{% extends "general/common.html" %}
+{% block content %}
+{% include 'common/studio_header.html' %}
+<section id="MainContent" class="materials">
+    {% include 'common/vertical_header.html' %}
+    {#{% include 'common/vertical_menu.html' %}#}
+    <div id="MaterialListContainer" class="MaterialListContainer"></div>
+    <div id="MaterialCreateView" class="materialCreateView"></div>
+</section>
+{#
+<script src="https://quantz.thinkxinc.com/js/dist/quantz-button.min.js"></script>
+#}
+<script src="https://quantz.thinkxinc.com/js/dist/quantz-button-v9-dev.js"></script>
+<script src="https://js.stripe.com/v3/"></script>
+<script src=/js/view_controllers/material_create_view_controller.js></script>
+<script src=/js/view_components/material_list.js></script>
+<script src=/js/view_components/material_delete_modal_view.js></script>
+<script src=/js/view_components/origin_form.js></script>
+<script src=/js/view_components/email_form.js></script>
+<script src=/js/view_components/card_input.js></script>
+<script src=/js/view_components/settings_view.js></script>
+<script src=/js/view_components/customize_view.js></script>
+<script src=/js/view_components/material_text_field.js></script>
+<script src=/js/view_components/material_title_field.js></script>
+<script src=/js/view_components/material_keywords_field.js></script>
+<script src=/js/view_components/material_keywords_field.js></script>
+<script src=/js/view_components/material_sample_question_field.js></script>
+<script src=/js/view_components/material_sample_answer_view.js></script>
+<script src=/js/pages/material_create_page.js></script>
+<script src="/js/libs/highlight.min.js"></script>
+{#<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/base16/darkmoss.min.css">#}
+<link rel="stylesheet" href="/css/darkmoss.min.css">
+<!--<script src="/js/dist/quantz-button.min.js"></script>-->
+<script>
+{
+    const lang = "{{ lang }}"
+    const langName = "{{ lang_name }}"
+
+    const freeCall = "{{ free_call }}"
+    const unitPrice = "{{ unit_price }}"
+    const generalCreditPerResponse = "{{ general_credit_per_response }}"
+    const interviewCreditPerResponse = "{{ interview_credit_per_response }}"
+
+    const localeDict = {{ locale_json | safe }};
+    if (!localeDict) {
+        console.error('locale_json not received.');
+    }
+    const locale = new Locale(localeDict);
+
+    console.log(locale);
+
+    // country data (names, numerics, dials, codes) 
+    // const countries = new Country().countriesFormData(lang);
+    // console.log(countries);
+
+    window.locale = locale;
+    window.lang = lang;
+    window.langName = langName;
+
+    window.freeCall = parseInt(freeCall);
+    window.unitPrice = parseFloat(unitPrice);
+    window.generalCreditPerResponse = parseInt(generalCreditPerResponse);
+    window.interviewCreditPerResponse = parseInt(interviewCreditPerResponse);
+}
+</script>
+<script src=/js/view_controllers/materials.js></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const SMARTPHONE_WIDTH = 480;
+
+        if (window.innerWidth <= SMARTPHONE_WIDTH) { // Check if the screen size is within the mobile range
+            const $createNewButton = document.getElementById('CreateNew');
+            const $listViewContainer = document.getElementById('MaterialListContainer')
+            const $listView = document.getElementById('MaterialList')
+            const $createView = document.getElementById('MaterialCreateView')
+
+            // append header with back button to CreateView
+            const $createViewHeader = document.createElement('div');
+            $createViewHeader.classList.add('CreateViewHeader');
+
+            const $back = document.createElement('img');
+            $back.src = '/img/back-arrow.svg';
+            $back.classList.add('back');
+            $createViewHeader.appendChild($back);
+
+            $createView.insertBefore($createViewHeader, $createView.firstChild);
+
+            function isCreateViewShown() {
+                return $createView.classList.contains('showCreateViewToLeft')
+            }
+            function showCreateView() {
+                $listViewContainer.classList.remove('showListViewToRight');
+                $createView.classList.remove('hideCreateViewToRight');
+ 
+                $listViewContainer.classList.add('hideListViewToLeft');
+                $createView.classList.add('showCreateViewToLeft');
+            }
+            function showListView() {
+                $listViewContainer.classList.remove('hideListViewToLeft');
+                $createView.classList.remove('showCreateViewToLeft');
+ 
+                $listViewContainer.classList.add('showListViewToRight');
+                $createView.classList.add('hideCreateViewToRight');
+
+            }
+    
+            $createNewButton.addEventListener('click', function() {
+                toCreateView();
+            });
+
+            $back.addEventListener('click', function() {
+                toListView();
+            })
+
+            $listView.addEventListener(MaterialsEventKeys.CLICKED_MATERIAL_TABLE_VIEW_CELL, function(e) {
+                toCreateView();
+            });
+
+            function toCreateView() {
+                if (!isCreateViewShown()) {
+                    showCreateView()
+                }
+            }
+            function toListView() {
+                if (isCreateViewShown()) {
+                    showListView()
+                }
+
+            }
+        }
+    });
+</script>
+{% endblock %}
