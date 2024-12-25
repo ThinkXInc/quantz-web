@@ -90,20 +90,17 @@
   animation-fill-mode: forwards;          // remain in end state
 }
 
-
-
-@keyframes flicker {
-  0%, 100% {
-    background: #4a4a4a;
-    border-color: #373737;
+.flicker {
+  @keyframes flicker {
+    0%, 100% {
+      background: #4a4a4a;
+      border-color: #373737;
+    }
+    10%, 50% {
+      background: #888888;
+      border-color: #e2e2e2;
+    }
   }
-  10%, 50% {
-    background: #888888;
-    border-color: #e2e2e2;
-  }
-}
-
-.flicker-effect {
   animation: flicker 0.2s linear infinite;
 }
 
