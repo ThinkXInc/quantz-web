@@ -358,6 +358,7 @@ def interview_results_list(user, lang, interview_id, lang_name):
         data=response_data).http_response()
 
 
+# WILL DEPRECATE
 # New interview create
 @blueprint_interviews.route('/v1/<lang>/interviews/create', methods=['POST'])
 @language_wrapper
@@ -407,6 +408,7 @@ def interviews_create(user, lang, lang_name):
         data=interview.response_json()).http_response()
 
 
+# WILL DEPRECATE
 # Interview update
 @blueprint_interviews.route('/v1/<lang>/interviews/<interview_id>/update', methods=['POST'])
 @language_wrapper
@@ -420,7 +422,7 @@ def interviews_update(user, lang, lang_name, interview_id):
         return validation_error.http_response()
 
     # Gather updates from the request, including handling steps if they are part of the update
-    updates = {key: request.json[key] for key in ['title', 'opening_remark', 'end', 'steps'] if key in request.json}
+    updates = {key: request.json[key] for key in ['title', 'steps'] if key in request.json}
     if not updates:
         return BadRequestAPIErrorFormat(lang).http_response()
 
@@ -442,6 +444,7 @@ def interviews_update(user, lang, lang_name, interview_id):
         data=interview.response_json()
     ).http_response()
 
+# WILL DEPRECATE
 @blueprint_interviews.route('/v1/<lang>/interviews/<interview_id>/delete', methods=['GET'])
 @language_wrapper
 @session_helper
@@ -478,6 +481,7 @@ def delete_interview(user, lang, interview_id, lang_name):
         return UnexpectedAPIErrorFormat(lang=lang, message=locale.get('interviews_delete_failed', lang)).http_response()
 
 
+# WILL DEPRECATE
 @blueprint_interviews.route('/v1/<lang>/interviews/deleteall', methods=['GET'])
 @language_wrapper
 @session_helper

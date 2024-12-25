@@ -1,0 +1,515 @@
+{
+    "": {
+        "ja": "",
+        "en": "",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "create_start_button" : {
+        "ja": "対話モデルの作成をはじめる",
+        "en": "Start Creating Interaction Model",
+        "zh": "开始创建交互模型",
+        "es": "Comenzar a crear el modelo de interacción",
+        "fr": "Commencer à créer le modèle d'interaction",
+        "ru": "Начать создание модели взаимодействия",
+        "ar": "بدء إنشاء نموذج التفاعل"
+    },
+    "create_title_page_title": {
+        "ja": "インタビュータイトル",
+        "en": "Interview Title",
+        "zh": "采访标题",
+        "es": "Título de la Entrevista",
+        "fr": "Titre de l'Entretien",
+        "ru": "Название интервью",
+        "ar": "عنوان المقابلة"
+    },
+    "create_submit_button_title": {
+        "ja": "決定",
+        "en": "Done",
+        "zh": "完成",
+        "es": "Hecho",
+        "fr": "Terminé",
+        "ru": "Готово",
+        "ar": "تم"
+    },
+    "create_voice_group_select_button": {
+        "ja": "この音声グループを使う",
+        "en": "",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "create_voice_category_japanese": {
+        "ja": "日本語",
+        "en": "Japanese",
+        "zh": "日语",
+        "es": "Japonés",
+        "fr": "Japonais",
+        "ru": "Японский",
+        "ar": "ياباني"
+    },
+    "create_voice_category_female": {
+      "ja": "女性",
+      "en": "Female",
+      "zh": "女性",
+      "es": "Femenino",
+      "fr": "Femme",
+      "ru": "Женский",
+      "ar": "أنثى"
+    },
+    "create_voice_category_male": {
+      "ja": "男性",
+      "en": "Male",
+      "zh": "男性",
+      "es": "Masculino",
+      "fr": "Homme",
+      "ru": "Мужской",
+      "ar": "ذكر"
+    },
+    "create_voice_category_conversational": {
+      "ja": "会話調",
+      "en": "Conversational",
+      "zh": "对话式",
+      "es": "Conversacional",
+      "fr": "Conversationnel",
+      "ru": "Разговорный",
+      "ar": "محادثي"
+    },
+    "create_input_topic_placeholder": {
+        "en": "(e.g.) Initial greeting / Explaining the basics of the service / Asking for a self-introduction / Free talking",
+        "ja": "(例) 最初の挨拶 / サービスの基本事項を説明する / 自己紹介をしてもらう / 自由に話す",
+        "zh": "（例如）初次问候 / 解释服务的基本内容 / 请求自我介绍 / 自由交谈",
+        "es": "(por ejemplo) Saludo inicial / Explicación de los conceptos básicos del servicio / Solicitar una presentación personal / Conversación libre",
+        "fr": "(par exemple) Salutation initiale / Expliquer les bases du service / Demander une présentation personnelle / Discussion libre",
+        "ru": "(например) Приветствие / Объяснение основ услуги / Просьба о самопрезентации / Свободное общение",
+        "ar": "(على سبيل المثال) التحية الأولية / شرح أساسيات الخدمة / طلب تقديم الذات / محادثة حرة"
+    },
+    "create_input_goal_placeholder": {
+        "en": "(e.g.) Wrapping up the introduction / Helping the user understand the service overview / Receiving the user’s self-introduction / Having a pleasant conversation",
+        "ja": "(例) 自然な会話の導入を終える / サービスの概要を理解してもらう / ユーザーの自己紹介を得る / 楽しく会話する",
+        "zh": "（例如）结束介绍 / 帮助用户了解服务概述 / 接收用户的自我介绍 / 进行愉快的交谈",
+        "es": "(por ejemplo) Finalizar la introducción / Ayudar al usuario a entender la descripción general del servicio / Recibir la presentación personal del usuario / Tener una conversación agradable",
+        "fr": "(par exemple) Terminer l'introduction / Aider l'utilisateur à comprendre un aperçu du service / Recevoir la présentation personnelle de l'utilisateur / Avoir une conversation agréable",
+        "ru": "(например) Завершение введения / Помощь пользователю в понимании обзора услуги / Получение самопрезентации пользователя / Приятная беседа",
+        "ar": "(على سبيل المثال) إنهاء المقدمة / مساعدة المستخدم على فهم نظرة عامة على الخدمة / تلقي تقديم المستخدم لنفسه / إجراء محادثة ممتعة"
+    },
+    "create_input_opening_remark_placeholder": {
+        "en": "Enter the opening remark.",
+        "ja": "紹介を入力してください。",
+        "zh": "输入介绍。",
+        "es": "Ingrese la introducción.",
+        "fr": "Entrez l'introduction.",
+        "ru": "Введите введение.",
+        "ar": "أدخل المقدمة."
+    },
+    "create_input_remark_placeholder": {
+        "en": "Enter the remark.",
+        "ja": "質問を入力してください。",
+        "zh": "输入问题。",
+        "es": "Ingrese la pregunta.",
+        "fr": "Entrez la remark.",
+        "ru": "Введите вопрос.",
+        "ar": "أدخل السؤال."
+    },
+    "create_input_closing_placeholder": {
+        "en": "Enter the closing remarks.",
+        "ja": "終了の言葉を入力してください。",
+        "zh": "输入结束语。",
+        "es": "Ingrese los comentarios finales.",
+        "fr": "Entrez les remarques de clôture.",
+        "ru": "Введите заключительные замечания.",
+        "ar": "أدخل التعليقات الختامية."
+    },
+    "create_no_remark_error": {
+        "en": "At least one remark input is required.",
+        "ja": "少なくとも1つの質問が必要です。",
+        "zh": "至少需要输入一个问题。",
+        "es": "Se requiere al menos una pregunta.",
+        "fr": "Au moins une remark est requise.",
+        "ru": "Требуется как минимум один вопрос.",
+        "ar": "يتطلب إدخال سؤال واحد على الأقل."
+    },
+    "create_introduction_page_title": {
+        "ja": "開始時の喋り出し",
+        "en": "Opening Remarks",
+        "zh": "面试开始时的开场白",
+        "es": "Palabras de apertura de la entrevista",
+        "fr": "Propos d'ouverture de l'entretien",
+        "ru": "Вступительное слово на собеседовании",
+        "ar": "كلمة الافتتاح في المقابلة"
+    },
+    "create_opening_remark_form_title": {
+        "ja": "開始時の喋り出し",
+        "en": "Opening Remarks",
+        "zh": "面试开始时的开场白",
+        "es": "Palabras de apertura de la entrevista",
+        "fr": "Propos d'ouverture de l'entretien",
+        "ru": "Вступительное слово на собеседовании",
+        "ar": "كلمة الافتتاح في المقابلة"
+    },
+    "create_opening_remark_page_description": {
+        "ja": "ミーティング開始時に最初にこれを話します。",
+        "en": "This is what you will say at the beginning of the meeting.",
+        "zh": "这是您在面试开始时将说的话。",
+        "es": "Esto es lo que dirá al inicio de la entrevista.",
+        "fr": "Ceci est ce que vous direz au début de l'entretien.",
+        "ru": "Это то, что вы скажете в начале встречи.",
+        "ar": "هذا ما ستقوله في بداية اللقاء."
+    },
+    "create_opening_remark_form_placeholder": {
+        "ja": "ミーティング開始時に最初にこれを話します。",
+        "en": "Opening Remarks",
+        "zh": "面试开始时的开场白",
+        "es": "Palabras de apertura de la entrevista",
+        "fr": "Propos d'ouverture de l'entretien",
+        "ru": "Вступительное слово на собеседовании",
+        "ar": "كلمة الافتتاح في المقابلة"
+    },
+    "create_end_page_title": {
+        "ja": "終了時のメッセージ",
+        "en": "Closing Remarks",
+        "zh": "面试结束时的总结",
+        "es": "Palabras de cierre de la entrevista",
+        "fr": "Remarques de clôture de l'entretien",
+        "ru": "Заключительное слово на собеседовании",
+        "ar": "كلمة الختام في المقابلة"
+    },
+    "create_end_form_title": {
+        "ja": "終了時のメッセージ",
+        "en": "Closing Remarks",
+        "zh": "面试结束时的总结",
+        "es": "Palabras de cierre de la entrevista",
+        "fr": "Remarques de clôture de l'entretien",
+        "ru": "Заключительное слово на собеседовании",
+        "ar": "كلمة الختام في المقابلة"
+    },
+    "create_end_page_description": {
+        "ja": "全てのステップ終了時にこれを話して終了します。",
+        "en": "This is what you will say at the end of all steps to conclude the meeting.",
+        "zh": "这是您在面试所有步骤结束时将说的总结话语。",
+        "es": "Esto es lo que dirá al final de todos los pasos para concluir la entrevista.",
+        "fr": "Ceci est ce que vous direz à la fin de tous les étapes pour conclure l'entretien.",
+        "ru": "Это то, что вы скажете в конце всех этапов для завершения встречи.",
+        "ar": "هذا ما ستقوله في نهاية جميع الخطوات لختام اللقاء."
+    },
+    "create_end_form_placeholder": {
+        "ja": "全てのステップ終了時にこれを話して終了します。",
+        "en": "This is what you will say at the end of all steps to conclude the meeting.",
+        "zh": "这是您在面试所有步骤结束时将说的总结话语。",
+        "es": "Esto es lo que dirá al final de todos los pasos para concluir la entrevista.",
+        "fr": "Ceci est ce que vous direz à la fin de tous les étapes pour conclure l'entretien.",
+        "ru": "Это то, что вы скажете в конце всех этапов для завершения встречи.",
+        "ar": "هذا ما ستقوله في نهاية جميع الخطوات لختام اللقاء."
+    },
+    "create_step_page_title": {
+        "ja": "ステップ",
+        "en": "Step",
+        "zh": "步骤",
+        "es": "Paso",
+        "fr": "Étape",
+        "ru": "Шаг",
+        "ar": "خطوة"
+    },
+    "create_task_type_selector_title": {
+        "ja": "タスク種類の選択",
+        "en": "Select Task Type",
+        "zh": "选择任务类型",
+        "fr": "Sélectionner le type de tâche",
+        "es": "Seleccionar tipo de tarea",
+        "ar": "اختر نوع المهمة",
+        "ru": "Выберите тип задачи"
+    },
+    "create_max_turns_title": {
+        "ja": "最大ターン数",
+        "en": "Max turns",
+        "zh": "最大回合数",
+        "es": "Máximo de turnos",
+        "fr": "Nombre maximal de tours",
+        "ru": "Максимальное количество ходов",
+        "ar": "أقصى عدد من الأدوار"
+    },
+    "create_response_mode_title": {
+        "ja": "レスポンスモードの選択",
+        "en": "Select Response Mode",
+        "zh": "选择回应模式",
+        "fr": "Sélectionner le mode de réponse",
+        "es": "Seleccionar modo de respuesta",
+        "ar": "اختر وضع الاستجابة",
+        "ru": "Выберите режим ответа"
+    },
+    "create_url_copy_tooltip": {
+        "ja": "ミーティングリンクをコピー",
+        "en": "Copy meeting link",
+        "zh": "复制会议链接",
+        "fr": "Copier le lien de la réunion",
+        "es": "Copiar enlace de reunión",
+        "ar": "نسخ رابط الاجتماع",
+        "ru": "Скопировать ссылку на встречу"
+    },
+    "create_url_copy_done_tooltip": {
+        "ja": "クリップボードにコピーしました。",
+        "en": "Copied to clipboard.",
+        "zh": "已复制到剪贴板。",
+        "fr": "Copié dans le presse-papiers.",
+        "es": "Copiado al portapapeles.",
+        "ar": "تم النسخ إلى الحافظة.",
+        "ru": "Скопировано в буфер обмена."
+    },
+    "create_title_label": {
+        "ja": "テンプレート名 (管理用の名前です。対話では使用されません。)",
+        "en": "Template Name (for administrative use only, not used in dialogues).",
+        "zh": "模板名称（仅供管理使用，对话中不使用）。",
+        "es": "Nombre de la plantilla (solo para uso administrativo, no se utiliza en diálogos).",
+        "fr": "Nom du modèle (à usage administratif uniquement, non utilisé dans les dialogues).",
+        "ru": "Название шаблона (используется только для административных целей, в диалогах не используется).",
+        "ar": "اسم القالب (للاستخدام الإداري فقط، ولا يُستخدم في الحوارات)."
+    },
+    "create_opening_remark_label": {
+        "ja": "開始時の喋り出し",
+        "en": "Opening Remarks",
+        "zh": "面试开始时的开场白",
+        "es": "Palabras de apertura de la entrevista",
+        "fr": "Propos d'ouverture de l'entretien",
+        "ru": "Вступительное слово на собеседовании",
+        "ar": "كلمة الافتتاح في المقابلة"
+    },
+    "create_steps_label": {
+        "ja": "ステップ$0",
+        "en": "Step $0",
+        "zh": "步骤$0",
+        "fr": "Étape $0",
+        "es": "Paso $0",
+        "ar": "الخطوة $0",
+        "ru": "Шаг $0"
+    },
+    "create_remark_label_question": {
+        "en": "Question:",
+        "ja": "質問内容",
+        "zh": "问题内容",
+        "es": "Contenido de la pregunta",
+        "fr": "Contenu de la question",
+        "ru": "Содержание вопроса",
+        "ar": "محتوى السؤال"
+      },
+      "create_input_remark_placeholder_question": {
+        "en": "Example: What's your occupation? (If left blank, it will be decided automatically.)",
+        "ja": "例) あなたのご職業は何ですか？（未記入の場合は自動的に決定されます。）",
+        "zh": "示例：你的职业是什么？（如果未填写，将自动决定。）",
+        "es": "Ejemplo: ¿Cuál es su ocupación? (Si se deja en blanco, se determinará automáticamente.)",
+        "fr": "Exemple : Quelle est votre profession ? (Si vous laissez ce champ vide, il sera décidé automatiquement.)",
+        "ru": "Например: Какая у вас профессия? (Если оставить поле пустым, вопрос будет выбран автоматически.)",
+        "ar": "مثال: ما مهنتك؟ (إذا ترك فارغًا، سيتم تحديده تلقائيًا.)"
+      },
+      "create_remark_label_greeting": {
+        "en": "Greeting Phrase:",
+        "ja": "挨拶の言葉",
+        "zh": "问候语",
+        "es": "Frase de saludo",
+        "fr": "Phrase de salutation",
+        "ru": "Приветственная фраза",
+        "ar": "عبارة الترحيب"
+      },
+      "create_input_remark_placeholder_greeting": {
+        "en": "Example: Good morning! (If left blank, a default greeting will be used.)",
+        "ja": "例) おはようございます！（未記入の場合は自動的に決定されます。）",
+        "zh": "示例：早上好！（如果未填写，将自动使用默认问候语。）",
+        "es": "Ejemplo: ¡Buenos días! (Si se deja en blanco, se utilizará un saludo predeterminado.)",
+        "fr": "Exemple : Bonjour ! (Si vous laissez ce champ vide, un message par défaut sera utilisé.)",
+        "ru": "Например: Доброе утро! (Если оставить поле пустым, будет использовано приветствие по умолчанию.)",
+        "ar": "مثال: صباح الخير! (إذا ترك فارغًا، سيتم استخدام التحية الافتراضية.)"
+      },
+      "create_remark_label_free_conversation": {
+        "en": "Free Conversation:",
+        "ja": "フリー会話",
+        "zh": "自由对话",
+        "es": "Conversación libre",
+        "fr": "Conversation libre",
+        "ru": "Свободная беседа",
+        "ar": "محادثة حرة"
+      },
+      "create_input_remark_placeholder_free_conversation": {
+        "en": "Example: How are you feeling today? (If left blank, it will be decided automatically.)",
+        "ja": "例) 今日の気分は？（未記入の場合は自動的に決定されます。）",
+        "zh": "示例：你今天感觉怎么样？（如果未填写，将自动决定。）",
+        "es": "Ejemplo: ¿Cómo te sientes hoy? (Si se deja en blanco, se determinará automáticamente.)",
+        "fr": "Exemple : Comment vous sentez-vous aujourd'hui ? (Si vous laissez ce champ vide, il sera décidé automatiquement.)",
+        "ru": "Например: Как вы себя чувствуете сегодня? (Если оставить поле пустым, решение будет принято автоматически.)",
+        "ar": "مثال: كيف تشعر اليوم؟ (إذا ترك فارغًا، سيتم تحديده تلقائيًا.)"
+      },
+      "create_remark_label_explanation": {
+        "en": "Explanation:",
+        "ja": "説明時の喋りだし",
+        "zh": "说明内容",
+        "es": "Contenido de la explicación",
+        "fr": "Contenu de l'explication",
+        "ru": "Содержание объяснения",
+        "ar": "محتوى التوضيح"
+      },
+      "create_input_remark_placeholder_explanation": {
+        "en": "Example: I will now explain our XX service. (If left blank, it will be decided automatically.)",
+        "ja": "例) これから〇〇サービスについてご説明します。（未記入の場合は自動的に決定されます。）",
+        "zh": "示例：现在我将为您说明我们的XX服务。（如果未填写，将自动决定。）",
+        "es": "Ejemplo: Ahora le explicaré nuestro servicio XX. (Si se deja en blanco, se determinará automáticamente.)",
+        "fr": "Exemple : Je vais maintenant vous expliquer notre service XX. (Si vous laissez ce champ vide, il sera décidé automatiquement.)",
+        "ru": "Например: Сейчас я расскажу о нашем сервисе XX. (Если оставить поле пустым, это будет определено автоматически.)",
+        "ar": "مثال: سأشرح الآن خدمتنا XX. (إذا ترك فارغًا، سيتم تحديده تلقائيًا.)"
+      },
+      "create_remark_label_test": {
+        "en": "Test Content:",
+        "ja": "テスト時の喋りだし",
+        "zh": "测试内容",
+        "es": "Contenido de la prueba",
+        "fr": "Contenu du test",
+        "ru": "Содержание теста",
+        "ar": "محتوى الاختبار"
+      },
+      "create_input_remark_placeholder_test": {
+        "en": "Example: If a customer wants to reserve an item, what do you do first? (If left blank, it will be decided automatically.)",
+        "ja": "例) お客さまが商品を取り置きしたいと仰った場合にまず何をするべきですか？（未記入の場合は自動的に決定されます。）",
+        "zh": "示例：如果顾客想预留商品，你首先应该做什么？（如果未填写，将自动决定。）",
+        "es": "Ejemplo: Si un cliente quiere reservar un artículo, ¿qué hace primero? (Si se deja en blanco, se determinará automáticamente.)",
+        "fr": "Exemple : Si un client souhaite réserver un article, que devez-vous faire en premier ? (Si vous laissez ce champ vide, il sera décidé automatiquement.)",
+        "ru": "Например: Если клиент хочет отложить товар, что вы делаете в первую очередь? (Если оставить поле пустым, это будет определено автоматически.)",
+        "ar": "مثال: إذا أراد العميل حجز منتج، ما الذي تفعله أولاً؟ (إذا ترك فارغًا، سيتم تحديده تلقائيًا.)"
+      },
+      "create_remark_label_consulting": {
+        "en": "Consultation Content:",
+        "ja": "コンサルティング・提案での喋りだし",
+        "zh": "咨询内容",
+        "es": "Contenido de la consulta",
+        "fr": "Contenu de la consultation",
+        "ru": "Содержание консультации",
+        "ar": "محتوى الاستشارة"
+      },
+      "create_input_remark_placeholder_consulting": {
+        "en": "Example: In your situation, I think the best way to use our service is as follows. (If left blank, it will be decided automatically.)",
+        "ja": "例) お客様のケースでは私たちのサービスのベストな使い方は次のようになると思います。（未記入の場合は自動的に決定されます。）",
+        "zh": "示例：在您的情况下，我认为使用我们服务的最佳方式如下。（如果未填写，将自动决定。）",
+        "es": "Ejemplo: En su caso, creo que la mejor manera de usar nuestro servicio es la siguiente. (Si se deja en blanco, se determinará automáticamente.)",
+        "fr": "Exemple : Dans votre cas, je pense que la meilleure façon d'utiliser notre service est la suivante. (Si vous laissez ce champ vide, il sera décidé automatiquement.)",
+        "ru": "Например: В вашем случае, лучший способ использовать наш сервис выглядит следующим образом. (Если оставить поле пустым, это будет определено автоматически.)",
+        "ar": "مثال: في حالتك، أعتقد أن أفضل طريقة لاستخدام خدمتنا هي على النحو التالي. (إذا ترك فارغًا، سيتم تحديده تلقائيًا.)"
+      },
+    "create_step_finish_condition_label": {
+        "ja": "終了条件",
+        "en": "Finish Condition",
+        "zh": "结束条件",
+        "fr": "Condition de fin",
+        "es": "Condición de finalización",
+        "ar": "شرط الانتهاء",
+        "ru": "Условие окончания"
+    },
+    "create_reference_type_selector_label": {
+        "ja": "参照ドキュメント",
+        "en": "Referenced Document",
+        "zh": "引用文档",
+        "fr": "Document référencé",
+        "es": "Documento referenciado",
+        "ar": "المستند المرجعي",
+        "ru": "Ссылка на документ"
+    },
+    "create_reference_type_all": {
+        "ja": "全て",
+        "en": "All documents",
+        "zh": "所有文件",
+        "es": "Todos los documentos",
+        "fr": "Tous les documents",
+        "ru": "Все документы",
+        "ar": "كل المستندات"
+    },
+    "create_reference_type_none": {
+        "ja": "参照しない",
+        "en": "No documents",
+        "zh": "不引用文件",
+        "es": "Ningún documento",
+        "fr": "Aucun document",
+        "ru": "Без документов",
+        "ar": "لا مستندات"
+    },
+    "create_reference_type_select": {
+        "ja": "特定のドキュメントを指定する",
+        "en": "Specify specific documents",
+        "zh": "指定特定文件",
+        "es": "Especificar documentos específicos",
+        "fr": "Spécifier des documents spécifiques",
+        "ru": "Указать конкретные документы",
+        "ar": "تحديد مستندات معينة"
+    },
+    "create_reference_selector_label": {
+        "ja": "参照ドキュメント",
+        "en": "Reference Materials",
+        "zh": "参考材料",
+        "fr": "Documents de référence",
+        "es": "Materiales de referencia",
+        "ar": "مواد مرجعية",
+        "ru": "Справочные материалы"
+    },
+    "create_reference_selector_display_title": {
+        "ja": "$0個のドキュメントを選択中",
+        "en": "$0 documents selected",
+        "zh": "已选择 $0 个文档",
+        "fr": "$0 documents sélectionnés",
+        "es": "$0 documentos seleccionados",
+        "ar": "تم اختيار $0 مستندات",
+        "ru": "$0 документов выбрано"
+    },
+    "create_step_max_turns_label": {
+        "ja": "最大ターン数",
+        "en": "Max turns",
+        "zh": "最大回合数",
+        "fr": "Tours maximum",
+        "es": "Máximo de turnos",
+        "ar": "أقصى عدد من الأدوار",
+        "ru": "Максимальное число ходов"
+    },
+    "create_step_topic_label": {
+        "ja": "このステップでの話題・内容",
+        "en": "Topic/Content for this step",
+        "zh": "此步骤的主题/内容",
+        "fr": "Sujet/Contenu pour cette étape",
+        "es": "Tema/Contenido para este paso",
+        "ar": "الموضوع/المحتوى لهذه الخطوة",
+        "ru": "Тема/содержание для этого этапа"
+    },
+    "create_step_goal_label": {
+        "ja": "このステップのゴール",
+        "en": "Goal for this step",
+        "zh": "此步骤的目标",
+        "fr": "Objectif pour cette étape",
+        "es": "Meta para este paso",
+        "ar": "الهدف لهذه الخطوة",
+        "ru": "Цель для этого этапа"
+    },
+    "create_step_guidelines_label": {
+        "ja": "ガイドライン",
+        "en": "Guidelines",
+        "zh": "指南",
+        "es": "Directrices",
+        "fr": "Directives",
+        "ru": "Руководства",
+        "ar": "إرشادات"
+    },
+    "create_step_more_detail_label": {
+        "ja": "詳細",
+        "en": "More details",
+        "zh": "更多细节",
+        "es": "Más detalles",
+        "fr": "Plus de détails",
+        "ru": "Более подробная информация",
+        "ar": "تفاصيل أكثر"
+    },
+    "create_end_label": {
+        "ja": "終了時のメッセージ",
+        "en": "Closing Remarks",
+        "zh": "面试结束时的总结",
+        "es": "Palabras de cierre de la entrevista",
+        "fr": "Remarques de clôture de l'entretien",
+        "ru": "Заключительное слово на собеседовании",
+        "ar": "كلمة الختام في المقابلة"
+    }
+}

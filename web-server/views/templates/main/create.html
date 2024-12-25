@@ -1,0 +1,69 @@
+{% extends "general/common.html" %}
+{% block content %}
+{% include 'common/studio_header.html' %}
+<div id="MainContainer">
+    {% include 'common/vertical_header.html' %}
+    {#{% include 'common/vertical_menu.html' %}#}
+    <section id="MainContent" class="CreateViewMainContent">
+    </section>
+</div>
+<script src=/js/view_controllers/create_view_controller.js></script>
+<script src=/js/view_components/program_view.js></script>
+{#
+<script src=/js/view_controllers/interview_home_view_controller.js></script>
+<script src=/js/view_components/interview_list.js></script>
+<script src=/js/view_components/interview_settings_view.js></script>
+<script src=/js/view_components/interview_link_view.js></script>
+<script src=/js/view_components/interview_results_view.js></script>
+<script src=/js/view_components/interview_result_preview.js></script>
+#}
+{#<script src=/js/view_components/conversation_model_create_view.js></script>#}
+<script src="/js/libs/highlight.min.js"></script>
+<script>
+{
+    const lang = "{{ lang }}"
+    const langName = "{{ lang_name }}"
+
+    const freeCall = "{{ free_call }}"
+    const unitPrice = "{{ unit_price }}"
+
+    const localeDict = {{ locale_json | safe }};
+    if (!localeDict) {
+        console.error('locale_json not received.');
+    }
+    const locale = new Locale(localeDict);
+
+    console.log(locale);
+
+    // country data (names, numerics, dials, codes) 
+    // const countries = new Country().countriesFormData(lang);
+    // console.log(countries);
+
+    window.locale = locale;
+    window.lang = lang;
+    window.langName = langName;
+
+    window.freeCall = freeCall;
+    window.unitPrice = unitPrice;
+}
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const lang = window.lang;
+        const locale = window.locale;
+
+        console.log(`set up create view.\nlang:${lang}`);
+
+        let createViewController = new CreateViewController({
+            id: 'CreateViewController',
+            locale: locale,
+            lang: lang
+        });
+
+        const SMARTPHONE_WIDTH = 480;
+
+        if (window.innerWidth <= SMARTPHONE_WIDTH) { // Check if the screen size is within the mobile range
+        }
+    });
+</script>
+{% endblock %}

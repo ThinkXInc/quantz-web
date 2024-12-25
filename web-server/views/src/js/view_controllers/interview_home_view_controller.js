@@ -91,7 +91,7 @@ class InterviewHomeViewController {
             debuglog(interviews);
             if (this.interviews.length == 0) {
                 this.fetchUser(user => {
-                    //this.openInterviewCreateModalView(user, null, this.locale, this.lang);
+                    //this.openProgramModalView(user, null, this.locale, this.lang);
                     this.openInterviewSettingsModalView(user, null, this.locale, this.lang);
                 });
             }
@@ -101,7 +101,7 @@ class InterviewHomeViewController {
             //// DEBUG 
             //else {
             //    this.fetchUser(user => {
-            //        this.openInterviewCreateModalView(user, interviews[0].id, this.locale, this.lang);
+            //        this.openProgramModalView(user, interviews[0].id, this.locale, this.lang);
             //    });
             //}
             //// DEBUG
@@ -123,7 +123,7 @@ class InterviewHomeViewController {
         });
         this.interviewList.$view.addEventListener("clickedInterviewCell", (event)=> {
             const { index, interviewId, cell } = event.detail;
-            //this.openInterviewCreateModalView(this.user, interviewId, this.locale, this.lang);
+            //this.openProgramModalView(this.user, interviewId, this.locale, this.lang);
             //this.openInterviewPreviewView(interviewId);
             this.openInterviewSettingsModalView(this.user, interviewId, this.locale, this.lang);
             this.openInterviewResults(interviewId)
@@ -169,7 +169,7 @@ class InterviewHomeViewController {
             // **Event Listener for Edit Button Click**
             this.interviewPreviewView.$view.addEventListener('editInterview', (event) => {
                 const { interviewId } = event.detail;
-                this.openInterviewCreateModalView(this.user, interviewId, this.locale, this.lang);
+                this.openProgramModalView(this.user, interviewId, this.locale, this.lang);
             });
     
         } else {

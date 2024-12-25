@@ -50,6 +50,7 @@ BASIC_CONFIGS_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/basic_configs.json'
 METADATA_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/metadata.json'
 SETTINGS_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/settings.json'
 HEADER_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/header.json'
+CREATE_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/create.json'
 MATERIALS_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/materials.json'
 MATERIALS_RESPONSES_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/materials_responses.json'
 BASIC_CONFIGS_RESPONSES_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/basic_configs_responses.json'
@@ -60,6 +61,7 @@ locale = Locale([
     HEADER_LOCALE_FILE_PATH,
     BASIC_CONFIGS_LOCALE_FILE_PATH,
     BASIC_CONFIGS_RESPONSES_LOCALE_FILE_PATH,
+    CREATE_LOCALE_FILE_PATH,
     MATERIALS_RESPONSES_LOCALE_FILE_PATH] + COMMON_LOCALES_FILE_PATHS
 )
 
@@ -90,7 +92,7 @@ from models.data.user import (
 #)
 
 # main page
-@blueprint_studio.route('/v1/<lang>/studio', methods=['GET'])
+@blueprint_studio.route('/<lang>/studio', methods=['GET'])
 @session_helper
 @language_wrapper
 def studio_home(user, lang, lang_name):
@@ -129,8 +131,9 @@ def studio_home(user, lang, lang_name):
 
 
 
-# main page
-@blueprint_studio.route('/v1/<lang>/create', methods=['GET'])
+# TODO: remove this. single page
+# create page
+@blueprint_studio.route('/<lang>/create', methods=['GET'])
 @session_helper
 @language_wrapper
 def studio_create(user, lang, lang_name):
@@ -141,7 +144,7 @@ def studio_create(user, lang, lang_name):
     #Session.start('660fb470cdab5917fb9023e6')
 
     return render_template(
-        'main/studio.html',
+        'main/create.html',
         lang=lang,
         lang_name=lang_name,
         locale_json=locale.to_json_string(),

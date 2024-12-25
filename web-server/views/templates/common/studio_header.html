@@ -2,13 +2,13 @@
     <div class="container">
         <div class="left">
             {# menu #}
-            <div class="menu-wrapper header-menu-wrapper close">
+            <div id="StudioHeaderToggleMenu" class="menu-wrapper header-menu-wrapper close">
                 <img class="menu" src="/img/studio_header/menu-icon.svg">
                 <span class="tooltip open">{{ studio_header_menu_open }}</span>
                 <span class="tooltip close">{{ studio_header_menu_close }}</span>
             </div>
             {# logo #}
-            <div class="logo-wrapper header-menu-wrapper">
+            <div id="StudioHeaderLogo" class="logo-wrapper header-menu-wrapper">
                 {#
                 <img class="logo" src="/img/logo/v3/logo-studio.svg">
                 #}
@@ -20,7 +20,7 @@
         </div>
         <div class="right">
             {# create new #}
-            <div class="create-new-wrapper header-menu-wrapper">
+            <div id="StudioHeaderCreateNew" class="create-new-wrapper header-menu-wrapper">
                 <button class="create-new-button header-menu-button">
                     <img class="crate-new-icon icon" src="/img/studio_header/create-new-icon.svg">
                     <span class="crate-new-label label">{{ studio_header_create_new_label }}</span>
@@ -28,7 +28,7 @@
                 <span class="tooltip">{{ studio_header_tooltip_create_new }}</span>
             </div>
             {# deploy #}
-            <div class="deploy-wrapper header-menu-wrapper">
+            <div id="StudioHeaderDeploy" class="deploy-wrapper header-menu-wrapper">
                 <button class="deploy-button header-menu-button">
                     <img class="deploy-icon icon" src="/img/studio_header/ship-icon.svg">
                     <span class="crate-new-label label">{{ studio_header_deploy_label }}</span>

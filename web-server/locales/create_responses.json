@@ -1,0 +1,105 @@
+{
+    "interaction_model_invalid_voiceset": {
+        "ja": "voicesetは辞書型でなければいけません。",
+        "en": "voiceset must be a dictionary.",
+        "zh": "voiceset必须是字典类型。",
+        "es": "voiceset debe ser un diccionario.",
+        "fr": "voiceset doit être un dictionnaire.",
+        "ru": "voiceset должен быть словарём.",
+        "ar": "يجب أن يكون voiceset عبارة عن قاموس."
+    },
+
+    "interaction_model_list_success": {
+        "ja": "インタラクションモデルの取得に成功しました。",
+        "en": "Successfully retrieved the interaction model list.",
+        "zh": "成功获取交互模型列表。",
+        "es": "Lista de modelos de interacción recuperada con éxito.",
+        "fr": "Liste des modèles d'interaction récupérée avec succès.",
+        "ru": "Список моделей взаимодействия успешно получен.",
+        "ar": "تم استرجاع قائمة نماذج التفاعل بنجاح."
+    },
+    "interaction_model_list_failed": {
+        "ja": "インタラクションモデルの取得に失敗しました。",
+        "en": "Failed to retrieve the interaction model list.",
+        "zh": "获取交互模型列表失败。",
+        "es": "Error al obtener la lista de modelos de interacción.",
+        "fr": "Échec de la récupération de la liste des modèles d'interaction.",
+        "ru": "Не удалось получить список моделей взаимодействия.",
+        "ar": "فشل في استرجاع قائمة نماذج التفاعل."
+    },
+
+    "interaction_model_not_found": {
+        "ja": "インタラクションモデルがデータベースに見つかりませんでした。",
+        "en": "Interaction model not found.",
+        "zh": "未找到交互模型。",
+        "es": "Modelo de interacción no encontrado.",
+        "fr": "Modèle d'interaction introuvable.",
+        "ru": "Модель взаимодействия не найдена.",
+        "ar": "لم يتم العثور على نموذج التفاعل."
+    },
+    "interaction_model_update_error": {
+        "ja": "インタラクションモデルの更新に失敗しました。",
+        "en": "Interaction model update failed.",
+        "zh": "更新交互模型失败。",
+        "es": "Error al actualizar el modelo de interacción.",
+        "fr": "Échec de la mise à jour du modèle d'interaction.",
+        "ru": "Не удалось обновить модель взаимодействия.",
+        "ar": "فشل تحديث نموذج التفاعل."
+    },
+    "interaction_model_updated": {
+        "ja": "インタラクションモデル \"$0\" が正常に更新されました。",
+        "en": "Interaction model \"$0\" updated successfully.",
+        "zh": "交互模型 \"$0\" 更新成功。",
+        "es": "Modelo de interacción \"$0\" actualizado con éxito.",
+        "fr": "Modèle d'interaction \"$0\" mis à jour avec succès.",
+        "ru": "Модель взаимодействия \"$0\" успешно обновлена.",
+        "ar": "تم تحديث نموذج التفاعل \"$0\" بنجاح."
+    },
+
+    "interaction_model_save_error": {
+        "ja": "インタラクションモデルの作成に失敗しました。",
+        "en": "Interaction model create failed.",
+        "zh": "创建交互模型失败。",
+        "es": "Error al crear el modelo de interacción.",
+        "fr": "Échec de la création du modèle d'interaction.",
+        "ru": "Не удалось создать модель взаимодействия.",
+        "ar": "فشل إنشاء نموذج التفاعل."
+    },
+    "interaction_model_created": {
+        "ja": "インタラクションモデル \"$0\" が正常に作成されました。",
+        "en": "Interaction model \"$0\" created successfully.",
+        "zh": "交互模型 \"$0\" 已成功创建。",
+        "es": "Modelo de interacción \"$0\" creado con éxito.",
+        "fr": "Modèle d'interaction \"$0\" créé avec succès.",
+        "ru": "Модель взаимодействия \"$0\" успешно создана.",
+        "ar": "تم إنشاء نموذج التفاعل \"$0\" بنجاح."
+    },
+
+    "interaction_model_delete_success": {
+        "ja": "インタラクションモデル \"$0\" が正常に削除されました。",
+        "en": "Interaction model \"$0\" deleted successfully.",
+        "zh": "交互模型 \"$0\" 已成功删除。",
+        "es": "Modelo de interacción \"$0\" eliminado con éxito.",
+        "fr": "Modèle d'interaction \"$0\" supprimé avec succès.",
+        "ru": "Модель взаимодействия \"$0\" успешно удалена.",
+        "ar": "تم حذف نموذج التفاعل \"$0\" بنجاح."
+    },
+    "interaction_model_delete_not_allowed": {
+        "ja": "このインタラクションモデルを削除する権限がありません。",
+        "en": "You are not allowed to delete this interaction model.",
+        "zh": "您无权删除此交互模型。",
+        "es": "No tienes permiso para eliminar este modelo de interacción.",
+        "fr": "Vous n'êtes pas autorisé à supprimer ce modèle d'interaction.",
+        "ru": "У вас нет прав на удаление этой модели взаимодействия.",
+        "ar": "ليس لديك إذن لحذف نموذج التفاعل هذا."
+    },
+    "interaction_model_delete_failed": {
+        "ja": "インタラクションモデルの削除に失敗しました。",
+        "en": "Failed to delete the interaction model.",
+        "zh": "删除交互模型失败。",
+        "es": "Error al eliminar el modelo de interacción.",
+        "fr": "Échec de la suppression du modèle d'interaction.",
+        "ru": "Не удалось удалить модель взаимодействия.",
+        "ar": "فشل في حذف نموذج التفاعل."
+    }
+}
