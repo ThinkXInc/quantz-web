@@ -1282,7 +1282,7 @@ class Signup {
             }
         });
         this.termsPageNextButton.$view.addEventListener('click', (e)=> {
-            if (_this.termsPageNextButton.isDisable) { return }
+            if (_this.termsPageNextButton.isDisabled) { return }
             _this.pageView.show(SignupPageIndex.complete);
             _this.updateQueryString({key: 'page', value: 'complete'});
         })

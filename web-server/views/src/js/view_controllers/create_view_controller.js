@@ -123,6 +123,28 @@ class CreateViewController {
             $voicePageTitle.style.opacity = '1.0';
         }, 0)
 
+        // --- ADD THE LOADING MESSAGE UNDER THE TITLE ---
+        const $loadingMessageWrapper = document.createElement('div');
+        $loadingMessageWrapper.classList.add('LoadingMessageWrapper');
+        $container.appendChild($loadingMessageWrapper);
+
+        // Instantiate our LoadingMessage
+        this.loadingMessage = new LoadingMessage({
+            id: 'VoiceLoadingMessage',
+            classList: 'hover-grad-txt',
+            gradientStart: '#00ff00',
+            gradientEnd: '#0000ff',
+            alertColor: '#ff3333',
+            pattern: LoadingMessagePattern.B
+        });
+
+     
+        this.loadingMessage.setText('Loading...', true, false);//, '#fafafa', '#aaa');
+        this.loadingMessage.setText('Data loaded successfully! All good.', true, false);
+
+        $loadingMessageWrapper.appendChild(this.loadingMessage.$view);
+        // -----------------------------------------------
+
         const $voiceGroupListScrollWrapper = document.createElement('div');
         $voiceGroupListScrollWrapper.classList.add('VoiceGroupListScrollWrapper');
 
@@ -416,9 +438,32 @@ class CreateViewController {
                 });
           
                 if (isPlaying) {
-                    // Start audio
-                    this.playVoice(data.url, () => {
-                        // When the audio ends, revert the path?
+                    // 1) Create or reuse the Audio if you want to keep it around
+                    const audio = new Audio(data.url);
+                    const circleEl = $playButton.querySelector('circle');
+                    // 2) Create a VolumeMeter (or reuse a stored instance).
+                    this.volumeMeter = new VolumeMeter(audio, {
+                        minScale: 1.0,
+                        maxScale: 1.3,
+                        smoothing: 0.8,
+                        onVolumeChange: (scale) => {
+                            // Use transform to scale the circle in real time
+                            circleEl.style.transformOrigin = 'center center';
+                            circleEl.style.transform = `scale(${scale})`;
+                        },
+                    });
+                    // 3) Start playback, then start measuring volume
+                    audio.play()
+                    .then(() => {
+                        console.log('[CreateViewController] Audio started. Starting volume meter...');
+                        this.volumeMeter.start();
+                    })
+                    .catch(err => {
+                        console.error('[CreateViewController] Audio play failed:', err);
+                    });
+                    // 4) Stop the volume meter if the audio ends
+                    audio.addEventListener('ended', () => {
+                        console.log('[CreateViewController] Audio ended.');
                         isPlaying = false;
                         $playButtonTooltip.textContent = this.locale.get('create_voice_playbutton_tooltip_pause', this.lang);
                         anime({
@@ -427,8 +472,28 @@ class CreateViewController {
                             duration: 400,
                             easing: 'cubicBezier(0.645, 0.045, 0.355, 1.000)'
                         });
+
+                        // Stop the volume meter
+                        this.volumeMeter.stop();
+
+                        // Optionally reset circle scale
+                        circleEl.style.transform = `scale(1.0)`;
                     });
+                    //this.playVoice(data.url, () => {
+                    //    // When the audio ends, revert the path?
+                    //    isPlaying = false;
+                    //    $playButtonTooltip.textContent = this.locale.get('create_voice_playbutton_tooltip_pause', this.lang);
+                    //    anime({
+                    //        targets: pathEl,
+                    //        d: [{ value: playPath }],
+                    //        duration: 400,
+                    //        easing: 'cubicBezier(0.645, 0.045, 0.355, 1.000)'
+                    //    });
+                    //});
                 } else {
+                    if (this.volumeMeter) {
+                        this.volumeMeter.stop();
+                    }
                 }
             });
             //// Toggle the audio and image upon click
@@ -501,20 +566,19 @@ class CreateViewController {
         const $buttonWrapper = document.createElement('div');
         $buttonWrapper.classList.add('buttonWrapper');
 
-        const $selectButton = document.createElement('button');
-        $selectButton.classList.add('SelectButton');
-        $selectButton.classList.add('commonV1Small');
-
-        const $selectButtonLabel = document.createElement('span');
-        $selectButtonLabel.textContent = this.locale.get("create_voice_group_select_button", this.lang);
-        $selectButton.appendChild($selectButtonLabel)
-
-        $selectButton.addEventListener('click', () => {
-            console.log(`[CreateViewController] SelectButton clicked for voiceGroup "${voiceGroup.id}".`);
-            this.submitVoiceSet(voiceGroup);
+        const selectButton = new LoadButton({
+            id: `SelectButton-${voiceGroup.id}`,
+            labelText: this.locale.get("create_voice_group_select_button", this.lang),
+            loaderSrc: '/img/common/button-loader.svg',
+            onClick: (btn, id) => {
+                console.log(`[CreateViewController] SelectButton clicked for voiceGroup "${voiceGroup.id}".`);
+                this.onSelectButtonClicked(voiceGroup, btn);
+            },
         });
+        selectButton.$view.classList.add('SelectButton')
+        selectButton.$view.classList.add('commonV1Small')
 
-        $buttonWrapper.appendChild($selectButton);
+        $buttonWrapper.appendChild(selectButton.$view);
         $voiceGroupWrapper.appendChild($buttonWrapper);
 
         $voiceGroup.appendChild($voiceGroupWrapper);
@@ -557,47 +621,149 @@ class CreateViewController {
         });
     }
 
+    onSelectButtonClicked(voiceGroup, loadButton) {
+        // 1. Lock the screen (add your CSS class)
+        document.body.classList.add('screen-locked');
+
+        // 2. Start button loading
+        loadButton.load(true);
+
+        // 3. Also start the loading message
+        this.loadingMessage.setText('Processing...', true);
+
+        // For convenience, store the selected voiceGroup in this.voiceset
+        this.voiceset = voiceGroup;
+
+        // 4. Check if we already have an ID:
+        if (this.interactionModelId) {
+            // --- CASE: Interaction Model already exists => just do an update. ---
+            console.log('[CreateViewController] Updating existing interaction model:', this.interactionModelId);
+            this.updateInteractionModel()
+                .then(() => {
+                    // After update, we can optionally call submitVoiceSet (which is also an update)
+                    return this.submitVoiceSet();
+                })
+                .then(() => {
+                    // Done => stop loading & go next
+                    loadButton.load(false);
+                    this.loadingMessage.load(false);
+                    // Move to next page
+                    this.pageView.show(2);
+                })
+                .catch((err) => {
+                    console.error('[CreateViewController] Error in update:', err);
+                    this.loadingMessage.text = `Update error: ${err.message || err}`;
+                    this.loadingMessage.setError(true);
+                    this.loadingMessage.load(false);
+                    loadButton.load(false);
+                });
+
+        } else {
+            // --- CASE: No interactionModelId => we must create first, then update. ---
+            console.log('[CreateViewController] Creating new interaction model...');
+            setTimeout(() => {
+                this.createInteractionModel()
+                    .then((newId) => {
+                        // We have a newly created ID
+                        this.interactionModelId = newId;
+                        // Show success
+                        this.loadingMessage.setText('Model created! Now submitting voice set...', true);
+                        // Then do the standard update flow:
+                        return this.submitVoiceSet(); 
+                    })
+                    .then(() => {
+                        // (Per instructions, possibly call submitVoiceSet again)
+                        return this.submitVoiceSet();
+                    })
+                    .then(() => {
+                        // Finally, stop loading, go next
+                        loadButton.load(false);
+                        this.loadingMessage.load(false);
+                        this.pageView.show(2);
+                    })
+                    .catch((err) => {
+                        console.error('[CreateViewController] Error in create+submit:', err);
+                        this.loadingMessage.setText(`Create error: ${err.message || err}`, true, false);
+                        loadButton.load(false);
+                    });
+            }, 2000);
+        }
+    }
+
+    async createInteractionModel() {
+        const endpoint = `/v1/${this.lang}/interaction_model/create`;
+        const body = { title: "", voiceset: this.voiceset };
+        console.log('[CreateViewController] POST =>', endpoint, body);
+
+        const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        });
+        const result = await res.json();
+        if (!res.ok) {
+            this.loadingMessage.text = result.message || 'Create failed.';
+            this.loadingMessage.setError(true);
+            throw new Error(result.message || 'Create failed.');
+        }
+        // Show success
+        this.loadingMessage.text = result.message || 'Create succeeded!';
+        this.loadingMessage.setError(false);
+
+        // Suppose the backend returns { id: 'xxx', message: '...' }
+        return result.id; 
+    }
+
+    async updateInteractionModel() {
+        const endpoint = `/v1/${this.lang}/interaction_model/${this.interactionModelId}/update`;
+        const body = { voiceset: this.voiceset };
+        console.log('[CreateViewController] PATCH =>', endpoint, body);
+
+        const res = await fetch(endpoint, {
+            method: 'PATCH',  // or POST if your update is a POST
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        });
+        const result = await res.json();
+        if (!res.ok) {
+            this.loadingMessage.text = result.message || 'Update failed.';
+            this.loadingMessage.setError(true);
+            throw new Error(result.message || 'Update failed.');
+        }
+        // Show success
+        this.loadingMessage.text = result.message || 'Update succeeded!';
+        this.loadingMessage.setError(false);
+    }
+
     /**
      * Submits the entire voiceset for the currently selected languages
      */
     submitVoiceSet() {
         console.log('[CreateViewController] submitVoiceSet called with voiceset:', this.voiceset);
         const endpoint = `/v1/${this.lang}/interaction_model/${this.interactionModelId}/update`;
-
-        // Clear old message
-        if (this.$message) {
-            this.$message.textContent = '';
-            this.$message.classList.remove('success', 'error');
-        }
-
-        const requestBody = {
-            voiceset: this.voiceset
-            // Add any other fields you'd like to update (title, steps, etc.)
-        };
-
-        fetch(endpoint, {
-            method: 'POST',
+        // We can re-use the same logic as updateInteractionModel or do it inline:
+        return fetch(endpoint, {
+            method: 'POST', 
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(requestBody),
+            body: JSON.stringify({ voiceset: this.voiceset }),
         })
         .then(async (res) => {
             const result = await res.json();
             if (!res.ok) {
-                // For 4xx or 5xx errors
                 console.error('[CreateViewController] voiceset update error:', result);
-                this.displayMessage(result.message || 'Update failed.', true);
-                return;
+                this.loadingMessage.setText(result.message || 'Voiceset update failed.', true, true);
+                throw new Error(result.message || 'Update failed.');
             }
-            // Success
             console.log('[CreateViewController] Voice set updated:', result);
-            this.displayMessage(result.message || 'Voiceset update succeeded!', false);
+            this.loadingMessage.setText(result.message || 'Voiceset update succeeded!', true, false);
 
-            // Optionally move to the next page
-            this.pageView.show(2);
+            // Possibly go to next page automatically, or not:
+            // this.pageView.show(2);
         })
         .catch((err) => {
-            console.error('[CreateViewController] fetch error:', err);
-            this.displayMessage('Update failed. Network or server error.', true);
+            console.error('[CreateViewController] submitVoiceSet error:', err);
+            this.loadingMessage.setText(`Update failed. ${err.message || ''}`, true, true);
+            throw err;
         });
     }
 

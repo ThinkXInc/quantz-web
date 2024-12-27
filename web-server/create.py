@@ -155,6 +155,14 @@ def studio_create(user, lang, lang_name):
         metadata=locale.dict()["metadata_home"][lang])
 
 
+# create page
+@blueprint_create.route('/test/load_message', methods=['GET'])
+def test_load_message():
+    logger.info(magenta(f'[GET] /test/load_message'))
+
+    return render_template(
+        'main/test_load_message.html')
+ 
 
 # --------------------------------------------------------------------
 #  Interaction Model CRUD endpoints
@@ -166,7 +174,7 @@ def studio_create(user, lang, lang_name):
 @blueprint_create.route('/v1/<lang>/interaction_model/create', methods=['POST'])
 @language_wrapper
 @content_type_check_json
-@required_fields_check(['title', 'steps'])
+@required_fields_check([])
 @session_helper
 def interaction_model_create(user, lang, lang_name):
     """
@@ -177,17 +185,16 @@ def interaction_model_create(user, lang, lang_name):
     if validation_error:
         return validation_error.http_response()
 
-    title = request.json.get('title')
-    steps = request.json.get('steps')
-    logger.info(magenta(f'[POST] interaction_model/create => \n{"-"*100}\n{title}\n{"-"*100}'))
-
-    # voiceset is optional
+    title = request.json.get('title', "")
+    steps = request.json.get('steps', [])
     voiceset = request.json.get('voiceset', None)
     if voiceset is not None and not isinstance(voiceset, dict):
         # If voiceset is provided but not a dict, return a 400-type error
         message = locale.get('interaction_model_invalid_voiceset', lang, ["voiceset"])
         logger.error(red(f"voiceset must be a dictionary, got {type(voiceset)}"))
         return BadRequestAPIErrorFormat(lang=lang, message=message).http_response()
+
+    logger.info(magenta(f'[POST] interaction_model/create => \n{"-"*100}\n{title}\n{steps}\n{voiceset}\n{"-"*100}'))
 
     # Attempt to save into DB
     try:

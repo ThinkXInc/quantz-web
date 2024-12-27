@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Test LoadingMessage</title>
+  <link rel=stylesheet href=/js/simplicity/dist/simplicity_default.css>
+  <script src="/js/simplicity/dist/simplicity.js"></script>
+ 
+  <style>
+    /* Minimal styling to see things clearly */
+
+    body {
+      font-family: sans-serif;
+      margin: 40px;
+    }
+
+    .LoadingMessage {
+      font-size: 1.2rem;
+      margin: 20px 0;
+      /* We'll give some height so we can see fade transitions */
+      min-height: 2em; 
+    }
+
+    /* If you want to highlight the container */
+    .LoadingMessage {
+      border: 1px dashed #ccc;
+      padding: 10px;
+      max-width: 400px;
+    }
+
+    /* Optional: a generic .error class; 
+       we do inline color in the JS, but here's a fallback. */
+    .fadeLayer.error {
+      color: #8c1111;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Test LoadingMessage</h1>
+<div id="app"></div>
+
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+  const $app = document.getElementById('app');
+
+  // 1) Create an instance of LoadingMessage
+  const loadingMsg = new LoadingMessage({
+    id: 'TestMessage',
+    gradientStart: '#30688d',
+    gradientEnd: '#01BFD8',
+    alertColor: '#8c1111'
+  });
+  $app.appendChild(loadingMsg.$view);
+
+  // 2) First text (immediate)
+  loadingMsg.setText('Hello, world!', true, false);
+
+  //const t1 = 2000;
+  //const t2 = 4000;
+  //const t3 = 6000;
+  const t1 = 0;
+  const t2 = 100;
+  const t3 = 200;
+
+
+  // 3) After 2 seconds, show a "Loading data..." with a gradient animation
+  setTimeout(() => {
+    loadingMsg.setText('Loading data from server...', true, false);
+  }, t1);
+
+  // 4) After 4 seconds, show an error message (alert) and turn off loading
+  setTimeout(() => {
+    loadingMsg.setText('Error: Invalid credentials.', true, true);
+  }, t2);
+
+  // 5) After 6 seconds, show a success message
+  setTimeout(() => {
+    loadingMsg.setText('Data loaded successfully! All good.', true, false);
+  }, t3);
+});
+</script>
+
+</body>
+</html>
