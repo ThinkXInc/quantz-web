@@ -104,8 +104,8 @@
   animation: flicker 0.2s linear infinite;
 }
 
-.slideInStartPosition {
-    transform: translateX(100vw);
+.slideInStartPositionRight(@start-position: 100vw) {
+    transform: translateX(@start-position);
     opacity: 0;
     transition:
       //opacity 0.5s @cubic-bezier1,
@@ -115,6 +115,25 @@
 .slideIn {
     opacity: 1;
     transform: translateX(0vw);
+}
+.slideInStartPositionBottom(@start-position: 30vh, @opacity-duration: 0.8s, @transform-duration: 1s) {
+    transform: translateY(@start-position);
+    opacity: 0;
+    transition:
+      //opacity 0.5s @cubic-bezier1,
+      opacity @opacity-duration @cubic-bezier1,
+      transform @transform-duration @cubic-bezier2;
+}
+
+.darkButton1 {
+    transition: 
+        color 0.2s @cubic-bezier1,
+        background 0.2s @cubic-bezier1,
+        border 0.2s @cubic-bezier1;
+    &:hover {
+        background: rgba(110, 110, 110, 0.5);
+        //border: 1px solid #bebebe;
+    }
 }
 
 .textColorPulse(@duration: 1s, @start-color: #a4a4a4, @end-color: #7c7c7c) {

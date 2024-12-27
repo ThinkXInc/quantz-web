@@ -141,7 +141,8 @@ div#CreatePageView {
                 text-align: center;
                 font-size: 34px;
                 margin-bottom: 28px;
-                .textColorPulse(1s, #969696, #7c7c7c);
+                .textColorPulse(2s, #969696, #7c7c7c);
+                .slideInStartPositionBottom(10vh, 0.5s, 1s);
             }
 
             div.VoiceGroupListScrollWrapper {
@@ -161,11 +162,12 @@ div#CreatePageView {
                     flex-direction: row;
                     align-items: center;
                     padding: 43px 43px;
+                    padding-bottom: 84px;
                     min-width: 100%;
                     width: max-content;
                     overflow-y: visible;
 
-                    .slideInStartPosition;
+                    .slideInStartPositionRight;
 
                     div.VoiceGroup {
                         cursor: pointer;
@@ -243,6 +245,10 @@ div#CreatePageView {
                                             margin-right: 12px;
                                             width: 59px;
                                             //width: 41px;
+                                            .tooltipBottom(translateX(0%), #313131);
+                                            svg {
+                                                height: 40px;
+                                            }
                                             img {
                                                 width: 24px;
                                             }
@@ -273,7 +279,9 @@ div#CreatePageView {
                                 }
 
                                 div.locale {
+                                    .tooltipBottom(translateX(0%), #313131);
                                     div.lang-selector {
+                                        .darkButton1();
                                         div.lang-selector-button {
                                             display: flex;
                                             flex-direction: row;

@@ -1,0 +1,27 @@
+.tooltipBottom(@translate-x: translateX(0%), @background-color: #000) {
+    position: relative;
+    span.tooltip {
+        position: absolute;
+        top: 109%;
+        left: 0;
+        font-size: 10px;
+        //transform: translateY(-50%);
+        transform: @translate-x;
+        background-color: @background-color;
+        color: white;
+        padding: 5px 10px;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        border-radius: 3px; /* Optional: Adds rounded corners to the tooltip */
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* Optional: Adds a slight shadow for better visibility */
+    }
+    &:hover {
+        //border: 1px solid #bebebe;
+        span.tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+} 

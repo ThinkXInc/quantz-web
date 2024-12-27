@@ -53,6 +53,33 @@
         "ru": "Использовать эту группу голосов",
         "ar": "استخدم مجموعة الصوت هذه"
     },
+    "create_voice_playbutton_tooltip_play": {
+        "ja": "再生する",
+        "en": "Play",
+        "zh": "播放",
+        "es": "Reproducir",
+        "fr": "Lire",
+        "ru": "Воспроизвести",
+        "ar": "تشغيل"
+    },
+    "create_voice_playbutton_tooltip_pause": {
+        "ja": "停止する",
+        "en": "Pause",
+        "zh": "暂停",
+        "es": "Pausar",
+        "fr": "Pause",
+        "ru": "Пауза",
+        "ar": "إيقاف مؤقت"
+    },
+    "create_voice_locale_tooltip": {
+        "ja": "このグループの他の言語の音声",
+        "en": "Audio in other languages in this group",
+        "zh": "此组中其他语言的音频",
+        "es": "Audio en otros idiomas de este grupo",
+        "fr": "Audio dans d'autres langues de ce groupe",
+        "ru": "Аудио на других языках в этой группе",
+        "ar": "الصوت بلغات أخرى في هذه المجموعة"
+    },
     "create_voice_category_japanese": {
         "ja": "日本語",
         "en": "Japanese",

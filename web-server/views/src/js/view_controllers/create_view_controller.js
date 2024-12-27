@@ -118,6 +118,10 @@ class CreateViewController {
         $voicePageTitle.classList.add('VoicePageTitle');
         $voicePageTitle.textContent = this.locale.get('create_voice_page_title', this.lang);
         $container.appendChild($voicePageTitle);
+        setTimeout(()=> {
+            $voicePageTitle.style.transform = 'translateY(0)';
+            $voicePageTitle.style.opacity = '1.0';
+        }, 0)
 
         const $voiceGroupListScrollWrapper = document.createElement('div');
         $voiceGroupListScrollWrapper.classList.add('VoiceGroupListScrollWrapper');
@@ -381,7 +385,7 @@ class CreateViewController {
             $inlineSvg.setAttribute("height", "60");
             const playPath = "M44.4,31.7 l-19,10.9 c-1.3,0.8 -3,-0.2 -3,-1.7 l0,-21.9 c0,-1.5 1.7,-2.5 3,-1.7 l19,10.9 c1.4,0.8 1.4,2.8 0,3.5 l0,0 c0,0 0,0 0,0 z";
             const pausePath = "M39.8,41.8 l-19.5,0 c-1.1,0 -2,-0.9 -2,-2 l0,-19.5 c0,-1.1 0.9,-2 2,-2 l19.5,0 c1.1,0 2,0.9 2,2 l0,19.5 c0,1.1 -0.9,2 -2,2 z";
-            const playIconColor = "#2f9aed"; //"#32677A"
+            const playIconColor = "#30688d";// "#2f9aed"; //"#32677A"
             $inlineSvg.innerHTML = `
               <circle fill="#FFFFFF" cx="30" cy="30" r="28.8"/>
               <path
@@ -391,6 +395,10 @@ class CreateViewController {
               />
             `;
             $playButton.appendChild($inlineSvg);
+            const $playButtonTooltip = document.createElement('span');
+            $playButtonTooltip.classList.add('tooltip');
+            $playButtonTooltip.textContent = this.locale.get('create_voice_playbutton_tooltip_play', this.lang);
+            $playButton.appendChild($playButtonTooltip);
 
             const pathEl = $playButton.querySelector('#playPausePath'); // or another method
             let isPlaying = false;
@@ -399,6 +407,7 @@ class CreateViewController {
                 isPlaying = !isPlaying;
             
                 console.log('Animate the SVG path', pathEl);
+                $playButtonTooltip.textContent = this.locale.get('create_voice_playbutton_tooltip_play', this.lang);
                 anime({
                     targets: pathEl,
                     d: [{ value: isPlaying ? pausePath : playPath }],
@@ -411,6 +420,7 @@ class CreateViewController {
                     this.playVoice(data.url, () => {
                         // When the audio ends, revert the path?
                         isPlaying = false;
+                        $playButtonTooltip.textContent = this.locale.get('create_voice_playbutton_tooltip_pause', this.lang);
                         anime({
                             targets: pathEl,
                             d: [{ value: playPath }],
@@ -459,6 +469,11 @@ class CreateViewController {
     // ---- Create a 'locale' div just for this voice group
     const $localeSelectorDiv = document.createElement('div');
     $localeSelectorDiv.classList.add('locale');
+
+    const $localeSelectorTooltip = document.createElement('span');
+    $localeSelectorTooltip.classList.add('tooltip');
+    $localeSelectorTooltip.textContent = this.locale.get('create_voice_locale_tooltip', this.lang);
+    $localeSelectorDiv.appendChild($localeSelectorTooltip);
 
     // Here’s the key part: each voice group gets its own LangSelector instance
     const langSelector = new LangSelector({
