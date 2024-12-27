@@ -15,6 +15,66 @@ div#CreatePageView {
     width: 100%;
     height: 100%;
 
+
+    button.commonV1Large {
+        color: #fff;
+        padding: 16px 33px;
+        border: 1px solid #6b6b6b;
+        border-radius: 34px;
+        background: rgb(94 94 94 / 40%);
+
+        transition: 
+            color 0.2s @cubic-bezier1,
+            background 0.2s @cubic-bezier1,
+            border 0.2s @cubic-bezier1;
+
+        &.action {
+            .fadeScaleDown2;
+            span {
+                opacity: 0;
+            }
+        }
+        &:hover {
+            background: rgba(110, 110, 110, 0.5);
+            border: 1px solid #bebebe;
+            span.tooltip {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+    }
+
+    button.commonV1Small {
+        font-size: 12px;
+        color: #a6a6a6;
+        border: 1px solid #a6a6a6;
+        background: rgb(94 94 94 / 40%);
+        padding: 7px 15px;
+        border-radius: 5px;
+        transition: 
+            background 0.2s @cubic-bezier1,
+            color 0.2s @cubic-bezier1,
+            border 0.2s @cubic-bezier1,
+            box-shadow 0.2s @cubic-bezier1;
+
+        &.action {
+            .fadeScaleDown2;
+            span {
+                opacity: 0;
+            }
+        }
+        &:hover {
+            background: rgba(110, 110, 110, 0.5);
+            border: 1px solid #bebebe;
+            span.tooltip {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+    }
+
+
+
     div.PageViewContainer {
         display: flex;
         height: 100%;
@@ -69,49 +129,209 @@ div#CreatePageView {
          * Voice Page
          ****************************************/
         div.VoicePageWrapper {
-            div.VoiceGroupList {
+            height: 100%;
+            display: flex;
+            //flex-direction: column;
+            //align-items: center;
+            padding: 120px 0;
+            flex-direction: column;
+
+            h2.VoicePageTitle {
+                color: #a4a4a4;
+                text-align: center;
+                font-size: 34px;
+                margin-bottom: 28px;
+                .textColorPulse(1s, #969696, #7c7c7c);
+            }
+
+            div.VoiceGroupListScrollWrapper {
                 white-space: nowrap;
-                overflow-x: auto;
+                overflow-y: visible;
 
-                div.VoiceGroup {
-                    div.VoiceGroupWrapper {
-                        div.VoiceOptionsWrapper {
-                            div.VoiceOptions {
-                                div.VoiceOption {
-                                    transition: 
-                                        background-color 0.2s @cubic-bezier1,
-                                        border 0.2s @cubic-bezier1,
-                                        box-shadow 0.2s @cubic-bezier1;
+                overflow-x: scroll;           // or auto, but typically scroll if you want to ensure it’s scrollable
+                scrollbar-width: none;        // Firefox
+                -ms-overflow-style: none;     // IE 10+
+    
+                &::-webkit-scrollbar {
+                    display: none;             // Chrome, Safari, Opera
+                }
+ 
+                div.VoiceGroupList {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    padding: 43px 43px;
+                    min-width: 100%;
+                    width: max-content;
+                    overflow-y: visible;
 
-                                    &:hover {
-                                        //background-color: #000;
+                    .slideInStartPosition;
 
-                                    }
-                                    button.PlayButton {
-                                        img {
+                    div.VoiceGroup {
+                        cursor: pointer;
+                        width: 573px;
+                        background-color: #333333;
+                        border: 1px solid #727272;
+                        border-radius: 6px;
+                        padding: 42px 45px;
+                        box-shadow: 2px 5px 16px rgba(0, 0, 0, 0.2);
+
+                        &:first-child {
+                            margin-left: 200px;
+                        }
+                        &:not(:last-child) {
+                            margin-right: 70px;
+                        }
+                        &:last-child {
+                            margin-right: 400px;
+                        }
+
+                        transition: 
+                            background-color 0.2s @cubic-bezier1,
+                            box-shadow 0.2s @cubic-bezier1,
+                            border 0.2s @cubic-bezier1;
+                        &:hover {
+                            background-color: #3d3d3d;
+                            box-shadow: 2px 5px 16px rgba(0, 0, 0, 0.4);
+                            border: 1px solid #949494;
+                        }
+
+                        div.VoiceGroupWrapper {
+                            label.VoiceGroupName {
+                                color: #c5c5c5;
+                                width: 100%;
+                                font-size: 14px;
+                                display: block;
+                                text-align: center;
+                                margin-bottom: 30px;
+                            }
+                            div.VoiceOptionsWrapper {
+                                display: flex;
+                                flex-direction: row;
+                                align-items: center;
+                                justify-content: center;
+                                margin-bottom: 31px;
+
+                                div.VoiceOptions {
+                                    div.VoiceOption {
+                                        display: flex;
+                                        flex-direction: row;
+                                        align-items: center;
+
+                                        margin-right: 20px;
+                                        &.hide {
+                                            display: none;
+                                        }
+
+                                        //&:not(:last-child) {
+                                        //    margin-bottom: 17px;
+                                        //}
+
+                                        transition: 
+                                            background-color 0.2s @cubic-bezier1,
+                                            border 0.2s @cubic-bezier1,
+                                            box-shadow 0.2s @cubic-bezier1;
+
+                                        &:hover {
+                                            //background-color: #000;
+
+                                        }
+                                        button.PlayButton {
+                                            display: flex;
+                                            flex-direction: row;
+                                            align-items: center;
+                                            margin-right: 12px;
+                                            width: 59px;
+                                            //width: 41px;
+                                            img {
+                                                width: 24px;
+                                            }
+                                        }
+                                        span.name {
+                                            font-size: 14px;
+                                            color: #aaa;
+                                            margin-right: 20px;
+                                        }
+
+                                        ul.categories {
+                                            display: flex;
+                                            flex-direction: row;
+                                            width: max-content;
+                                            li.category {
+                                                color: #aaa;
+                                                background-color: #444;
+                                                border-radius: 20px;
+                                                width: max-content;
+                                                padding: 2px 11px;
+                                                font-size: 10px;
+                                                &:not(:last-child) {
+                                                    margin-right: 14px;
+                                                }
+                                            }
                                         }
                                     }
-                                    span.name {
-                                    }
+                                }
 
-                                    ul.categories {
-                                        li.category {
+                                div.locale {
+                                    div.lang-selector {
+                                        div.lang-selector-button {
+                                            display: flex;
+                                            flex-direction: row;
+                                            align-items: center;
+                                            background-color: transparent;
+                                            padding: 6px 17px;
+                                            border: 1px solid #818181;
+                                            border-radius: 3px;
+                                            img.locale-icon {
+                                                width: 12px;
+                                                margin-right: 6px;
+                                            }
+                                            span.current-lang {
+
+                                            }
+                                            img.arrow-icon {
+
+                                            }
+                                        }
+                                        ul.lang-options {
+                                            top: 70%;
+                                            left: 0;
+                                            background-color: transparent;
+                                            border: 1px solid #545454;
+                                            padding: 0;
+                                            li.select {
+                                                font-size: 13px;
+                                                padding: 11px 16px;
+                                                &:hover {
+                                                    color: #fff;
+                                                    background-color: #3c3c3c;
+                                                }
+                                            }
                                         }
                                     }
                                 }
                             }
 
-                            div.locale {
-                            }
-                        }
-
-                        div.buttonWrapper {
-                            button.SelectButton {
-                                span {
+                            div.buttonWrapper {
+                                display: flex;
+                                flex-direction: row;
+                                align-items: center;
+                                justify-content: center;
+                                button.SelectButton.commonV1Small {
+                                    padding: 12px 20px;
+                                    border-radius: 25px;
+                                    background: rgba(110, 110, 110, 0);
+                                    &:hover {
+                                        background: rgba(110, 110, 110, 0.4);
+                                    }
+                                    span {
+                                    }
                                 }
                             }
                         }
                     }
+
+
                 }
             }
         }

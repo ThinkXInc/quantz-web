@@ -35,14 +35,23 @@
         "ru": "Готово",
         "ar": "تم"
     },
+    "create_voice_page_title": {
+        "ja": "音声グループを選択してください",
+        "en": "Please select a voice group",
+        "zh": "请选择语音分组",
+        "es": "Por favor, seleccione un grupo de voces",
+        "fr": "Veuillez sélectionner un groupe de voix",
+        "ru": "Пожалуйста, выберите голосовую группу",
+        "ar": "يرجى اختيار مجموعة صوتية"
+    },
     "create_voice_group_select_button": {
         "ja": "この音声グループを使う",
-        "en": "",
-        "zh": "",
-        "es": "",
-        "fr": "",
-        "ru": "",
-        "ar": ""
+        "en": "Use this voice group",
+        "zh": "使用此声音组",
+        "es": "Usar este grupo de voces",
+        "fr": "Utiliser ce groupe vocal",
+        "ru": "Использовать эту группу голосов",
+        "ar": "استخدم مجموعة الصوت هذه"
     },
     "create_voice_category_japanese": {
         "ja": "日本語",
@@ -52,6 +61,59 @@
         "fr": "Japonais",
         "ru": "Японский",
         "ar": "ياباني"
+    },
+    "create_voice_category_english": {
+        "ja": "英語",
+        "en": "English",
+        "zh": "英语",
+        "es": "Inglés",
+        "fr": "Anglais",
+        "ru": "Английский"
+    },
+    "create_voice_category_chinese": {
+      "ja": "中国語",
+      "en": "Chinese",
+      "zh": "中文",
+      "es": "Chino",
+      "fr": "Chinois",
+      "ru": "Китайский",
+      "ar": "الصينية"
+    },
+    "create_voice_category_spanish": {
+      "ja": "スペイン語",
+      "en": "Spanish",
+      "zh": "西班牙语",
+      "es": "Español",
+      "fr": "Espagnol",
+      "ru": "Испанский",
+      "ar": "الأسبانية"
+    },
+    "create_voice_category_french": {
+      "ja": "フランス語",
+      "en": "French",
+      "zh": "法语",
+      "es": "Francés",
+      "fr": "Français",
+      "ru": "Французский",
+      "ar": "الفرنسية"
+    },
+    "create_voice_category_russian": {
+      "ja": "ロシア語",
+      "en": "Russian",
+      "zh": "俄语",
+      "es": "Ruso",
+      "fr": "Russe",
+      "ru": "Русский",
+      "ar": "الروسية"
+    },
+    "create_voice_category_arabic": {
+      "ja": "アラビア語",
+      "en": "Arabic",
+      "zh": "阿拉伯语",
+      "es": "Árabe",
+      "fr": "Arabe",
+      "ru": "Арабский",
+      "ar": "عربي"
     },
     "create_voice_category_female": {
       "ja": "女性",

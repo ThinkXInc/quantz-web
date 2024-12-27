@@ -104,6 +104,32 @@
   animation: flicker 0.2s linear infinite;
 }
 
+.slideInStartPosition {
+    transform: translateX(100vw);
+    opacity: 0;
+    transition:
+      //opacity 0.5s @cubic-bezier1,
+      opacity 0.8s @cubic-bezier1,
+      transform 1s @cubic-bezier2;
+}
+.slideIn {
+    opacity: 1;
+    transform: translateX(0vw);
+}
+
+.textColorPulse(@duration: 1s, @start-color: #a4a4a4, @end-color: #7c7c7c) {
+    @keyframes textColorPulse {
+        0% {
+            color: @start-color;
+        }
+        100% {
+            color: @end-color;
+        }
+    }
+    animation: textColorPulse @duration infinite alternate @cubic-bezier2;
+}
+
+
 // ripple circle effect
 
 /*

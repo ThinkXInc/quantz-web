@@ -31,6 +31,8 @@ class CreateViewController {
 
         // Set up the view (build the pages, mount them, etc.)
         this.setupView();
+
+        this.pageView.show(1); // DEBUG
     }
 
     setupView() {
@@ -112,6 +114,19 @@ class CreateViewController {
         const $container = document.createElement('div');
         $container.classList.add('VoicePageWrapper');
 
+        const $voicePageTitle = document.createElement('h2');
+        $voicePageTitle.classList.add('VoicePageTitle');
+        $voicePageTitle.textContent = this.locale.get('create_voice_page_title', this.lang);
+        $container.appendChild($voicePageTitle);
+
+        const $voiceGroupListScrollWrapper = document.createElement('div');
+        $voiceGroupListScrollWrapper.classList.add('VoiceGroupListScrollWrapper');
+
+        $voiceGroupListScrollWrapper.addEventListener('wheel', (evt) => {
+            evt.preventDefault();
+            $voiceGroupListScrollWrapper.scrollLeft += evt.deltaY;
+        }, { passive: false });
+
         // We’ll build a sample VoiceGroupList. 
         // Example voice data—replace or extend as needed:
         const voiceGroups = this.getVoiceGroupList();
@@ -119,11 +134,18 @@ class CreateViewController {
         // The main wrapper for the voice group list
         const $voiceGroupList = document.createElement('div');
         $voiceGroupList.classList.add('VoiceGroupList');
+        $voiceGroupListScrollWrapper.appendChild($voiceGroupList);
 
         voiceGroups.forEach((voiceGroup) => {
             const $voiceGroupWrapper = this.createVoiceGroupDOM(voiceGroup);
             $voiceGroupList.appendChild($voiceGroupWrapper);
         });
+
+        $voiceGroupList.classList.add('slideIn')
+        setTimeout(()=> {
+            $voiceGroupList.style.transform = 'translateX(0)';
+            $voiceGroupList.style.opacity = '1.0';
+        }, 0)
 
         // Language selector (as in your snippet)
         // Typically, you might do an include of `lang_selector.html`,
@@ -133,7 +155,7 @@ class CreateViewController {
         // For actual usage, you might do server-side injection or simply:
         // $localeWrapper.innerHTML = `{% include 'common/lang_selector.html' %}`;
 
-        $container.appendChild($voiceGroupList);
+        $container.appendChild($voiceGroupListScrollWrapper);
         $container.appendChild($localeWrapper);
 
         return $container;
@@ -150,32 +172,163 @@ class CreateViewController {
         // For demonstration, we use your sample snippet:
         // (In real usage, fill in `en` or other locales as well)
         const japaneseCategoryLabel = this.locale.get("create_voice_category_japanese", lang);
+        const englishCategoryLabel  = this.locale.get("create_voice_category_english", lang);
+        const chineseCategoryLabel  = this.locale.get("create_voice_category_chinese", lang);
+        const spanishCategoryLabel  = this.locale.get("create_voice_category_spanish", lang);
+        const frenchCategoryLabel   = this.locale.get("create_voice_category_french", lang);
         const femaleCategoryLabel   = this.locale.get("create_voice_category_female", lang);
         const maleCategoryLabel     = this.locale.get("create_voice_category_male", lang);
-        const conversationalLabel   = this.locale.get("create_voice_category_conversational", lang);
+        const conversationalCategoryLabel   = this.locale.get("create_voice_category_conversational", lang);
 
         return [
             {
                 "id": "fo",
+                "name": "Fo",
                 "ja": {
                     "name": "fo-JA",
-                    "url": "/audio/voice_set_samples/fo_sample.wav",
+                    "url": "/audio/voice_set_samples/fo-JA_sample.wav",
                     "categories": [
                         japaneseCategoryLabel,
                         femaleCategoryLabel,
-                        conversationalLabel
+                        conversationalCategoryLabel
                     ]
                 },
                 "en": {
                     "name": "fo-EN",
-                    "url": "/audio/voice_set_samples/fo_sample_en.wav",
+                    "url": "/audio/voice_set_samples/fo-EN_sample_en.wav",
                     "categories": [
-                        "English",
-                        "Female",
-                        "Conversational"
+                        englishCategoryLabel,
+                        femaleCategoryLabel,
+                        conversationalCategoryLabel
+                    ]
+                },
+                es: {
+                    name: "fo-ES",
+                    url: "/audio/voice_set_samples/fo-ES_sample_es.wav",
+                    categories: [
+                        spanishCategoryLabel,
+                        femaleCategoryLabel,
+                        conversationalCategoryLabel
+                    ]
+                },
+                zh: {
+                    name: "fo-ZH",
+                    url: "/audio/voice_set_samples/fo-ZH_sample_zh.wav",
+                    categories: [
+                        chineseCategoryLabel,
+                        femaleCategoryLabel,
+                        conversationalCategoryLabel
+                    ]
+                },
+                fr: {
+                    name: "fo-FR",
+                    url: "/audio/voice_set_samples/fo-FR_sample_fr.wav",
+                    categories: [
+                        frenchCategoryLabel,
+                        femaleCategoryLabel,
+                        conversationalCategoryLabel
                     ]
                 }
             },
+            {
+                "id": "f1",
+                "name": "F1",
+                "ja": {
+                    "name": "f1-JA",
+                    "url": "/audio/voice_set_samples/f1-JA_sample.wav",
+                    "categories": [
+                        japaneseCategoryLabel,
+                        femaleCategoryLabel,
+                        conversationalCategoryLabel
+                    ]
+                },
+                "en": {
+                    "name": "fo-EN",
+                    "url": "/audio/voice_set_samples/fo-EN_sample_en.wav",
+                    "categories": [
+                        englishCategoryLabel,
+                        femaleCategoryLabel,
+                        conversationalCategoryLabel
+                    ]
+                },
+                es: {
+                    name: "f1-ES",
+                    url: "/audio/voice_set_samples/f1-ES_sample_es.wav",
+                    categories: [
+                        spanishCategoryLabel,
+                        femaleCategoryLabel,
+                        conversationalCategoryLabel
+                    ]
+                },
+                zh: {
+                    name: "f1-ZH",
+                    url: "/audio/voice_set_samples/f1-ZH_sample_zh.wav",
+                    categories: [
+                        chineseCategoryLabel,
+                        femaleCategoryLabel,
+                        conversationalCategoryLabel
+                    ]
+                },
+                fr: {
+                    name: "f1-FR",
+                    url: "/audio/voice_set_samples/f1-FR_sample_fr.wav",
+                    categories: [
+                        frenchCategoryLabel,
+                        femaleCategoryLabel,
+                        conversationalCategoryLabel
+                    ]
+                }
+            },
+            {
+                "id": "f2",
+                "name": "F2",
+                "ja": {
+                    "name": "f1-JA",
+                    "url": "/audio/voice_set_samples/f1-JA_sample.wav",
+                    "categories": [
+                        japaneseCategoryLabel,
+                        femaleCategoryLabel,
+                        conversationalCategoryLabel
+                    ]
+                },
+                "en": {
+                    "name": "fo-EN",
+                    "url": "/audio/voice_set_samples/fo-EN_sample_en.wav",
+                    "categories": [
+                        englishCategoryLabel,
+                        femaleCategoryLabel,
+                        conversationalCategoryLabel
+                    ]
+                },
+                es: {
+                    name: "f1-ES",
+                    url: "/audio/voice_set_samples/f1-ES_sample_es.wav",
+                    categories: [
+                        spanishCategoryLabel,
+                        femaleCategoryLabel,
+                        conversationalCategoryLabel
+                    ]
+                },
+                zh: {
+                    name: "f1-ZH",
+                    url: "/audio/voice_set_samples/f1-ZH_sample_zh.wav",
+                    categories: [
+                        chineseCategoryLabel,
+                        femaleCategoryLabel,
+                        conversationalCategoryLabel
+                    ]
+                },
+                fr: {
+                    name: "f1-FR",
+                    url: "/audio/voice_set_samples/f1-FR_sample_fr.wav",
+                    categories: [
+                        frenchCategoryLabel,
+                        femaleCategoryLabel,
+                        conversationalCategoryLabel
+                    ]
+                }
+            },
+
             // ... Add more voice items as needed
         ];
     }
@@ -190,6 +343,11 @@ class CreateViewController {
 
         const $voiceGroupWrapper = document.createElement('div');
         $voiceGroupWrapper.classList.add('VoiceGroupWrapper');
+
+        const $voiceGroupName = document.createElement('label');
+        $voiceGroupName.textContent = voiceGroup.name;
+        $voiceGroupName.classList.add('VoiceGroupName');
+        $voiceGroupWrapper.appendChild($voiceGroupName);
 
         // VoiceOptionsWrapper
         const $voiceOptionsWrapper = document.createElement('div');
@@ -217,18 +375,60 @@ class CreateViewController {
             // Create the PlayButton
             const $playButton = document.createElement('button');
             $playButton.classList.add('PlayButton');
-            const $playButtonImg = document.createElement('img');
-            $playButtonImg.src = '/img/create/play-voice.svg';
-            $playButton.appendChild($playButtonImg);
+            const $inlineSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            $inlineSvg.setAttribute("viewBox", "0 0 60 60");
+            $inlineSvg.setAttribute("width", "60");
+            $inlineSvg.setAttribute("height", "60");
+            const playPath = "M44.4,31.7 l-19,10.9 c-1.3,0.8 -3,-0.2 -3,-1.7 l0,-21.9 c0,-1.5 1.7,-2.5 3,-1.7 l19,10.9 c1.4,0.8 1.4,2.8 0,3.5 l0,0 c0,0 0,0 0,0 z";
+            const pausePath = "M39.8,41.8 l-19.5,0 c-1.1,0 -2,-0.9 -2,-2 l0,-19.5 c0,-1.1 0.9,-2 2,-2 l19.5,0 c1.1,0 2,0.9 2,2 l0,19.5 c0,1.1 -0.9,2 -2,2 z";
+            const playIconColor = "#2f9aed"; //"#32677A"
+            $inlineSvg.innerHTML = `
+              <circle fill="#FFFFFF" cx="30" cy="30" r="28.8"/>
+              <path
+                id="playPausePath"
+                fill="${playIconColor}"
+                d="${playPath}"
+              />
+            `;
+            $playButton.appendChild($inlineSvg);
 
-            // Toggle the audio and image upon click
+            const pathEl = $playButton.querySelector('#playPausePath'); // or another method
+            let isPlaying = false;
+
             $playButton.addEventListener('click', () => {
-                console.log(`[CreateViewController] PlayButton clicked for voiceGroup "${voiceGroup.id}", lang="${langKey}".`);
-                $playButtonImg.src = '/img/create/playing-voice.svg';
-                this.playVoice(data.url, () => {
-                    $playButtonImg.src = '/img/create/play-voice.svg';
+                isPlaying = !isPlaying;
+            
+                console.log('Animate the SVG path', pathEl);
+                anime({
+                    targets: pathEl,
+                    d: [{ value: isPlaying ? pausePath : playPath }],
+                    duration: 400,
+                    easing: 'cubicBezier(0.645, 0.045, 0.355, 1.000)'
                 });
+          
+                if (isPlaying) {
+                    // Start audio
+                    this.playVoice(data.url, () => {
+                        // When the audio ends, revert the path?
+                        isPlaying = false;
+                        anime({
+                            targets: pathEl,
+                            d: [{ value: playPath }],
+                            duration: 400,
+                            easing: 'cubicBezier(0.645, 0.045, 0.355, 1.000)'
+                        });
+                    });
+                } else {
+                }
             });
+            //// Toggle the audio and image upon click
+            //$playButton.addEventListener('click', () => {
+            //    console.log(`[CreateViewController] PlayButton clicked for voiceGroup "${voiceGroup.id}", lang="${langKey}".`);
+            //    $playButtonImg.src = '/img/create/playing-voice.svg';
+            //    this.playVoice(data.url, () => {
+            //        $playButtonImg.src = '/img/create/play-voice.svg';
+            //    });
+            //});
 
             $voiceOption.appendChild($playButton);
 
@@ -256,9 +456,30 @@ class CreateViewController {
 
         $voiceOptionsWrapper.appendChild($voiceOptions);
 
-        const $localeSelectorDiv = document.createElement('div');
-        $localeSelectorDiv.classList.add('locale');
-        $voiceOptionsWrapper.appendChild($localeSelectorDiv);
+    // ---- Create a 'locale' div just for this voice group
+    const $localeSelectorDiv = document.createElement('div');
+    $localeSelectorDiv.classList.add('locale');
+
+    // Here’s the key part: each voice group gets its own LangSelector instance
+    const langSelector = new LangSelector({
+        container: $localeSelectorDiv,
+        langs: {
+            en: 'English',
+            ja: '日本語',
+            es: 'Español',
+            zh: '中文',
+            fr: 'Français'
+        },
+        currentLang: this.lang,  // or you can store a separate per-group default
+        onLangChange: (newLang) => {
+            // Only update .VoiceOption within *this* voiceGroup
+            this.updateVoiceOptionsForGroup($voiceOptions, newLang);
+        }
+    });
+    // Optionally store on the instance if you need to reference later:
+    // voiceGroup._langSelector = langSelector;
+
+    $voiceOptionsWrapper.appendChild($localeSelectorDiv);
 
         $voiceGroupWrapper.appendChild($voiceOptionsWrapper);
 
@@ -267,9 +488,11 @@ class CreateViewController {
 
         const $selectButton = document.createElement('button');
         $selectButton.classList.add('SelectButton');
+        $selectButton.classList.add('commonV1Small');
 
         const $selectButtonLabel = document.createElement('span');
         $selectButtonLabel.textContent = this.locale.get("create_voice_group_select_button", this.lang);
+        $selectButton.appendChild($selectButtonLabel)
 
         $selectButton.addEventListener('click', () => {
             console.log(`[CreateViewController] SelectButton clicked for voiceGroup "${voiceGroup.id}".`);
@@ -281,6 +504,21 @@ class CreateViewController {
 
         $voiceGroup.appendChild($voiceGroupWrapper);
         return $voiceGroup;
+    }
+
+    updateVoiceOptionsForGroup($voiceOptionsContainer, newLang) {
+        // Find each .VoiceOption inside $voiceOptionsContainer
+        const options = $voiceOptionsContainer.querySelectorAll('.VoiceOption');
+        options.forEach(option => {
+            const langKey = option.getAttribute('data-lang');
+            if (langKey === newLang) {
+                option.classList.add('show');
+                option.classList.remove('hide');
+            } else {
+                option.classList.remove('show');
+                option.classList.add('hide');
+            }
+        });
     }
 
     // Utility function to play audio
