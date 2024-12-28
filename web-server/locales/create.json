@@ -457,7 +457,7 @@
         "ru": "Например: Доброе утро! (Если оставить поле пустым, будет использовано приветствие по умолчанию.)",
         "ar": "مثال: صباح الخير! (إذا ترك فارغًا، سيتم استخدام التحية الافتراضية.)"
       },
-      "create_remark_label_free_conversation": {
+      "create_remark_label_free": {
         "en": "Free Conversation:",
         "ja": "フリー会話",
         "zh": "自由对话",
@@ -466,7 +466,7 @@
         "ru": "Свободная беседа",
         "ar": "محادثة حرة"
       },
-      "create_input_remark_placeholder_free_conversation": {
+      "create_input_remark_placeholder_free": {
         "en": "Example: How are you feeling today? (If left blank, it will be decided automatically.)",
         "ja": "例) 今日の気分は？（未記入の場合は自動的に決定されます。）",
         "zh": "示例：你今天感觉怎么样？（如果未填写，将自动决定。）",

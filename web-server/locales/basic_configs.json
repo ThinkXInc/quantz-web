@@ -62,7 +62,7 @@
         "ar": "تحية",
         "ru": "Приветствие"
     },
-    "basic_configs_task_type_free_conversation": {
+    "basic_configs_task_type_free": {
         "ja": "自由会話",
         "en": "Free Conversation",
         "zh": "自由交谈",

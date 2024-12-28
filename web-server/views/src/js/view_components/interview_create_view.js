@@ -1,5 +1,5 @@
 const TaskType = {
-    FREE_CONVERSATION: "free_conversation",
+    FREE_CONVERSATION: "free",
     GREETING: "greeting",
     QUESTION: "question",
     EXPLANATION: "explanation",
@@ -275,7 +275,7 @@ class InterviewCreateView {
                 value: TaskType.GREETING
             }),
             new ListItem({
-                title: this.locale.get('basic_configs_task_type_free_conversation', this.lang) || 'Free Conversation',
+                title: this.locale.get('basic_configs_task_type_free', this.lang) || 'Free Conversation',
                 value: TaskType.FREE_CONVERSATION
             }),
             new ListItem({
@@ -317,7 +317,7 @@ class InterviewCreateView {
         this.taskTypeSelectors[index] = taskTypeSelector;
     
         taskTypeSelector.$view.addEventListener('selected', (e) => {
-            const selectedValue = e.detail.value;  // greeting, free_conversation, ...
+            const selectedValue = e.detail.value;  // greeting, free, ...
             this.onTaskTypeChanged(index, selectedValue);
         });
     

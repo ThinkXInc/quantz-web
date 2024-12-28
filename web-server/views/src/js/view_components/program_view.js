@@ -1,5 +1,5 @@
 const TaskType = {
-    FREE_CONVERSATION: "free_conversation",
+    FREE_CONVERSATION: "free",
     GREETING: "greeting",
     QUESTION: "question",
     EXPLANATION: "explanation",
@@ -276,7 +276,7 @@ class ProgramView {
                 value: TaskType.GREETING
             }),
             new ListItem({
-                title: this.locale.get('basic_configs_task_type_free_conversation', this.lang) || 'Free Conversation',
+                title: this.locale.get('basic_configs_task_type_free', this.lang) || 'Free Conversation',
                 value: TaskType.FREE_CONVERSATION
             }),
             new ListItem({
@@ -316,10 +316,15 @@ class ProgramView {
         });
         taskTypeSelector.value = step.task_type || TaskType.CONSULTING;
         this.taskTypeSelectors[index] = taskTypeSelector;
+        $stepContainer.classList.add(step.task_type)
     
         taskTypeSelector.$view.addEventListener('selected', (e) => {
-            const selectedValue = e.detail.value;  // greeting, free_conversation, ...
+            const selectedValue = e.detail.value;  // greeting, free, ...
             this.onTaskTypeChanged(index, selectedValue);
+            Object.values(TaskType).forEach((task) => {
+                $stepContainer.classList.remove(task);
+            });
+            $stepContainer.classList.add(e.detail.value)
         });
     
         $taskTypeWrapper.appendChild(taskTypeSelector.$view);

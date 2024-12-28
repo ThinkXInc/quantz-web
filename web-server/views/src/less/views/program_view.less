@@ -1,39 +1,87 @@
 @cubic-bezier1: cubic-bezier(.65,0,.34,1);
 @cubic-bezier2: cubic-bezier(.4, 0, .2, 1);
-@alert-red: #8c1111;
+
+body {
+    --program-bg: #fff;
+    --large-box-box-shadow: 2px 5px 16px rgba(0, 0, 0, 0.2);
+    --program-input-text: #333;
+    --program-input-placeholder: #d5d5d5;
+    --program-textfield-border: #dfdfdf;
+    --program-alert-red: #8c1111;      // Override for dark
+    --program-text-field-border: #dfdfdf;
+    --program-text-label: #2e2e2e;
+    --program-text-title: #d5d5d5;
+}
+body.dark {
+    --program-bg: #2e2e2e;
+    --large-box-box-shadow: 2px 5px 16px rgba(0, 0, 0, 0.2);
+    --program-input-text: #fff;
+    --program-input-placeholder: #d5d5d5;
+    --program-textfield-border: #7e7e7e;
+    --program-alert-red: #f0bcbc;      // Override for dark
+    --program-text-field-border: #7e7e7e;
+    --program-text-label: #adadad;
+    --program-text-title: #d5d5d5;
+}
+
+body {
+    --program-step-color-free: #d1c96a;
+    --program-step-bg-free: #3b3600;
+
+    --program-step-color-question: #876ad1;
+    --program-step-bg-question: #210768;
+
+    --program-step-color-greeting: #ef5656;
+    --program-step-bg-greeting: #450404;
+
+    --program-step-color-explanation: #196d2b;
+    --program-step-bg-explanation: #00310a;
+
+    --program-step-color-test: #1c6cc7;
+    --program-step-bg-test: #02264e;
+
+    --program-step-color-consulting: #32d6ff;
+    --program-step-bg-consulting: #033f4e;
+
+
+
+}
+
+ 
 
 div#ProgramView {
     padding: 0 20px 0 20px;
     width: 100%;
     height: 100%;
     overflow-x: hidden;
+    overflow-y: scroll;
+    max-height: calc(100vh - 69px);
 
     div.ProgramViewContainer {
         padding: 20px 0;
         width: 100%;
         height: 100%;
-
         // Reset default styles for TextField
         div.TextField {
             div.inputOuter {
-                background: #f4f4f4;
-                border: 1px solid #dfdfdf;
+                background: transparent;
+                border: 1px solid var(--program-textfield-border);;
                 transition: 
                     border 0.3s @cubic-bezier1,
                     color 0.3s @cubic-bezier1,
                     background-color 0.3s @cubic-bezier1;
                 &:focus-within {
-                    border: 1px solid #6eb1c7;//#7e7e7e;
-                    background-color: #e3ebed;
+                    //border: 1px solid #6eb1c7;//#7e7e7e;
+                    //background-color: #e3ebed;
                     div.inputWrapper {
                         input {
-                            color: #3195b6;
+                            color: var(--program-input-text);// #3195b6;
                         }
                     }
                 }
                 &:hover {
-                    color: #fafafa;
-                    background-color: #ebebeb;
+                    color: #fff;// #fafafa;
+                    background-color: #4b4b4b;// #ebebeb;
                 }
                 div.inputWrapper input {
                     margin: 0;
@@ -44,20 +92,27 @@ div#ProgramView {
                     transition: 
                         color 0.3s @cubic-bezier1;
                 }
-                .footer {
+                div.footer {
                     padding: 0;
+                    &.alert {
+                        p.alertMessage {
+                            color: var(--program-alert-red)
+                        }
+                    }
                 }
             }
-        }
-        div.TextField.alert {
-            div.inputOuter {
-                border: 1px solid #8c1111;
-                div.footer {
-                    background-color: transparent;
-                    div.middle {
-                        p.alertMessage {
-                            font-size: 11px;
-                            color: @alert-red;
+            &.alert {
+                div.inputOuter {
+                    h6.title {
+                        color: var(--program-alert-red)
+                    }
+                    div.footer {
+                        background-color: transparent;
+                        div.middle {
+                            p.alertMessage {
+                                font-size: 11px;
+                                color: var(--program-alert-red)
+                            }
                         }
                     }
                 }
@@ -66,15 +121,18 @@ div#ProgramView {
 
         div.titleContainer {
             margin-bottom: 34px;
-
+            max-width: 400px;
             div.TextField {
                 div.inputOuter {
+                    border: none;
+                    border-bottom: 1px solid var(--program-text-field-border);
                     h6.title {
                         font-size: 10px;
                     }
                     div.inputWrapper input {
+                        color: var(--program-input-text);
                         padding: 7px 0px;
-                        font-size: 16px;
+                        font-size: 23px;
                         margin: 0;
                         width: 100%;
                         box-sizing: border-box;
@@ -91,9 +149,40 @@ div#ProgramView {
 
         // Step container styling
         div.stepContainer {
+            cursor: pointer;
+            max-width: 700px;
             position: relative;
             margin-bottom: 6px;
+            box-shadow: var(--large-box-box-shadow);
             //margin-bottom: 35px;
+
+            .step(@type) {
+                &.@{type} {
+                    h3.stepTitle {
+                        color: ~"var(--program-step-color-@{type})"
+                    }
+                    div.stepContent {
+                        border-color: ~"var(--program-step-color-@{type})";
+                        div.taskTypeWrapper div.DropdownButton div.DropdownButtonClickable {
+                            background-color: ~"var(--program-step-bg-@{type})";
+                        }
+                        &:hover {
+                            border-color: ~"var(--program-step-color-@{type})";
+                        }
+                        div.configItemWrapper div.TextField div.inputOuter {
+                            &:hover {
+                                border-color: ~"var(--program-step-color-@{type})";
+                            }
+                        }
+                    }
+                }
+            }
+            .step(greeting);
+            .step(question);
+            .step(free);
+            .step(consulting);  
+            .step(explanation);
+            .step(test);
 
             h3.stepTitle {
                 position: absolute;
@@ -101,8 +190,9 @@ div#ProgramView {
                 left: 8%;
                 transform: translate(-50%, -50%);
                 background-color: transparent;
-                padding: 0 10px;
-                font-size: 15px;
+                padding: 6px 10px;
+                font-size: 11px;
+                color: var(--program-text-label);
 
                 &::before {
                     content: '';
@@ -112,12 +202,13 @@ div#ProgramView {
                     transform: translate(-50%, -50%);
                     width: 95%;
                     height: 3px;
-                    background-color: white;
+                    background-color: var(--program-bg);
                     z-index: -1;
                 }
             }
 
             div.stepContent {
+                .largePanel(#ccc, transparent, #333);
                 border: 1px solid #ccc;
                 border-radius: 10px;
                 padding: 20px 20px;
@@ -132,12 +223,14 @@ div#ProgramView {
                         display: block;
                         font-size: 11px;
                         margin-bottom: 6px;
+                        color: var(--program-text-label);
                     }
                     div.TextField {
                         div.inputOuter {
                             div.inputWrapper {
                                 input {
                                     font-size: 14px;
+                                    color: var(--program-input-text)
                                 }
                             }
                         }
@@ -149,6 +242,7 @@ div#ProgramView {
                             }
                             span.title {
                                 font-weight: 200;
+                                color: var(--program-input-text)
                             }
                         }
                     }
@@ -199,18 +293,15 @@ div#ProgramView {
                         display: flex;
                         align-items: center;
                         margin-top: 13px;
-
                         img.moreDetailArrow {
                             transition: transform 0.3s;
                             margin-right: 5px;
                             width: 13px;
                         }
-
                         p.moreDetailLabel {
-                            color: #525252 !important;
+                            color: var(--program-text-label) !important;
                             font-size: 11px;
                         }
-
                         &.rotated img.moreDetailArrow {
                             transform: rotate(180deg);
                             transition: transform 0.7s cubic-bezier(0.4, 0.0, 0.2, 1);
@@ -284,12 +375,16 @@ div#ProgramView {
                             div.inputOuter {
                                 border: none;
                                 background: none;
+                                background-color: transparent;
                                 div.inputWrapper {
                                     flex: 1;
                                     position: relative;
+                                    border: 1px solid var(--program-textfield-border);
+                                    box-shadow: none;
                                     input {
                                         width: 100%;
                                         box-sizing: border-box;
+                                        background: none;
                                     }
                                     div.incrementButton {
                                         position: absolute;

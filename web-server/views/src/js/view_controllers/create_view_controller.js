@@ -13,6 +13,8 @@ class CreateViewController {
         this.locale = locale;
         this.lang = lang;
 
+        document.body.classList.add('dark'); // TODO: switch
+
         // The main container where we mount the PageView
         this.$mainContent = document.getElementById('MainContent');
 
@@ -32,7 +34,7 @@ class CreateViewController {
         // Set up the view (build the pages, mount them, etc.)
         this.setupView();
 
-        this.pageView.show(1); // DEBUG
+        this.pageView.show(2); // DEBUG
     }
 
     setupView() {
@@ -636,10 +638,11 @@ class CreateViewController {
     }
 
     onSelectButtonClicked(voiceGroup, loadButton) {
-        // 1. Lock the screen (add your CSS class)
-        document.body.classList.add('screen-locked');
+        // 1. Lock the screen
+        ScreenLock.lock();
 
         loadButton.load(true);
+        this.loadingMessage.setText(this.locale.get('create_voice_creating_new_interaction_model', this.lang), {gradient: LoadingMessageGradient.ocean});
 
         this.voiceset = voiceGroup;
 
@@ -667,8 +670,9 @@ class CreateViewController {
                     this.loadingMessage.setError(true);
                     this.loadingMessage.load(false);
                     loadButton.load(false);
+                }).finally(()=> {
+                    ScreenLock.lock(false);
                 });
-
         } else {
             // --- CASE: No interactionModelId => we must create first, then update. ---
             console.log('[CreateViewController] Creating new interaction model...');
@@ -695,6 +699,9 @@ class CreateViewController {
                         console.error('[CreateViewController] Error in create+submit:', err);
                         this.loadingMessage.setText(`${err.message || err}`, {alert: true});
                         loadButton.load(false);
+                    })
+                    .finally(()=> {
+                        ScreenLock.lock(false);
                     });
             }, 2000);
         }

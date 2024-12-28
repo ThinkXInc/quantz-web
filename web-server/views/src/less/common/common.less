@@ -38,3 +38,39 @@
         }
     }
 } 
+
+.largePanel(@border-color:#727272, @bg-color: #333, @hover-bg-color: #3d3d3d) {
+    cursor: pointer;
+    background-color: @bg-color;
+    border: 1px solid @border-color;
+    border-radius: 6px;
+    padding: 42px 45px;
+    box-shadow: 2px 5px 16px rgba(0, 0, 0, 0.2);
+
+    transition: 
+        background-color 0.2s @cubic-bezier1,
+        box-shadow 0.2s @cubic-bezier1,
+        border 0.2s @cubic-bezier1;
+    &:hover {
+        background-color: @hover-bg-color;
+        box-shadow: 2px 5px 16px rgba(0, 0, 0, 0.4);
+        border: 1px solid #949494;
+    }
+}
+
+.screen-locked {
+    overflow: hidden; 
+    position: relative; 
+    cursor: wait;
+    &::after {
+        content: "";
+        position: fixed;     /* covers the entire viewport */
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(255, 255, 255, 0.2);
+        z-index: 99999;
+        pointer-events: auto;
+    }
+}
