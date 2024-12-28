@@ -62,6 +62,51 @@
         "ru": "Воспроизвести",
         "ar": "تشغيل"
     },
+    "create_voice_message_playing": {
+        "ja": "再生中...",
+        "en": "Playing...",
+        "zh": "正在播放...",
+        "es": "Reproduciendo...",
+        "fr": "Lecture...",
+        "ru": "Воспроизведение...",
+        "ar": "جارٍ التشغيل..."
+    },
+    "create_voice_message_playing_error": {
+      "ja": "サンプルの再生で問題が起きました。 エラー:$0",
+      "en": "There was an issue playing the sample. Error: $0",
+      "zh": "播放示例时出现问题。错误：$0",
+      "es": "Hubo un problema al reproducir la muestra. Error: $0",
+      "fr": "Un problème est survenu lors de la lecture de l'échantillon. Erreur : $0",
+      "ru": "Произошла ошибка при воспроизведении образца. Ошибка: $0",
+      "ar": "حدثت مشكلة أثناء تشغيل العينة. خطأ: $0"
+    },
+    "create_voice_message_processing": {
+      "ja": "処理中...",
+      "en": "Processing...",
+      "zh": "处理中...",
+      "es": "Procesando...",
+      "fr": "Traitement...",
+      "ru": "Обработка...",
+      "ar": "جارٍ المعالجة..."
+    },
+    "create_voice_creating_new_interaction_model": {
+        "ja": "対話モデルを初期化中...",
+        "en": "Initializing the interaction model...",
+        "zh": "正在初始化交互模型...",
+        "es": "Iniciando el modelo de interacción...",
+        "fr": "Initialisation du modèle d'interaction...",
+        "ru": "Инициализация модели взаимодействия...",
+        "ar": "جارٍ تهيئة نموذج التفاعل..."
+    },
+    "create_voice_updating_interaction_model":{
+        "ja": "対話モデルを更新中...",
+        "en": "Updating the interaction model...",
+        "zh": "正在更新交互模型...",
+        "es": "Actualizando el modelo de interacción...",
+        "fr": "Mise à jour du modèle d'interaction...",
+        "ru": "Обновление модели взаимодействия...",
+        "ar": "جارٍ تحديث نموذج التفاعل..."
+    },
     "create_voice_playbutton_tooltip_pause": {
         "ja": "停止する",
         "en": "Pause",

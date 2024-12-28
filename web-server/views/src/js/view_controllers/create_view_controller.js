@@ -139,8 +139,8 @@ class CreateViewController {
         });
 
      
-        this.loadingMessage.setText('Loading...', true, false);//, '#fafafa', '#aaa');
-        this.loadingMessage.setText('Data loaded successfully! All good.', true, false);
+        //this.loadingMessage.setText('Loading...', true, false, '#fafafa', '#aaa');
+        //this.loadingMessage.setText('Data loaded successfully! All good.', true, false, '#00ff00', '#0000ff');
 
         $loadingMessageWrapper.appendChild(this.loadingMessage.$view);
         // -----------------------------------------------
@@ -212,7 +212,7 @@ class CreateViewController {
                 "name": "Fo",
                 "ja": {
                     "name": "fo-JA",
-                    "url": "/audio/voice_set_samples/fo-JA_sample.wav",
+                    "url": "/audio/voice_set_samples/fo-JA.wav",
                     "categories": [
                         japaneseCategoryLabel,
                         femaleCategoryLabel,
@@ -221,7 +221,7 @@ class CreateViewController {
                 },
                 "en": {
                     "name": "fo-EN",
-                    "url": "/audio/voice_set_samples/fo-EN_sample_en.wav",
+                    "url": "/audio/voice_set_samples/fo-EN.wav",
                     "categories": [
                         englishCategoryLabel,
                         femaleCategoryLabel,
@@ -230,7 +230,7 @@ class CreateViewController {
                 },
                 es: {
                     name: "fo-ES",
-                    url: "/audio/voice_set_samples/fo-ES_sample_es.wav",
+                    url: "/audio/voice_set_samples/fo-ES.wav",
                     categories: [
                         spanishCategoryLabel,
                         femaleCategoryLabel,
@@ -239,7 +239,7 @@ class CreateViewController {
                 },
                 zh: {
                     name: "fo-ZH",
-                    url: "/audio/voice_set_samples/fo-ZH_sample_zh.wav",
+                    url: "/audio/voice_set_samples/fo-ZH.wav",
                     categories: [
                         chineseCategoryLabel,
                         femaleCategoryLabel,
@@ -248,7 +248,7 @@ class CreateViewController {
                 },
                 fr: {
                     name: "fo-FR",
-                    url: "/audio/voice_set_samples/fo-FR_sample_fr.wav",
+                    url: "/audio/voice_set_samples/fo-FR.wav",
                     categories: [
                         frenchCategoryLabel,
                         femaleCategoryLabel,
@@ -261,7 +261,7 @@ class CreateViewController {
                 "name": "F1",
                 "ja": {
                     "name": "f1-JA",
-                    "url": "/audio/voice_set_samples/f1-JA_sample.wav",
+                    "url": "/audio/voice_set_samples/f1-JA.wav",
                     "categories": [
                         japaneseCategoryLabel,
                         femaleCategoryLabel,
@@ -270,7 +270,7 @@ class CreateViewController {
                 },
                 "en": {
                     "name": "fo-EN",
-                    "url": "/audio/voice_set_samples/fo-EN_sample_en.wav",
+                    "url": "/audio/voice_set_samples/fo-EN.wav",
                     "categories": [
                         englishCategoryLabel,
                         femaleCategoryLabel,
@@ -279,7 +279,7 @@ class CreateViewController {
                 },
                 es: {
                     name: "f1-ES",
-                    url: "/audio/voice_set_samples/f1-ES_sample_es.wav",
+                    url: "/audio/voice_set_samples/f1-ES.wav",
                     categories: [
                         spanishCategoryLabel,
                         femaleCategoryLabel,
@@ -288,7 +288,7 @@ class CreateViewController {
                 },
                 zh: {
                     name: "f1-ZH",
-                    url: "/audio/voice_set_samples/f1-ZH_sample_zh.wav",
+                    url: "/audio/voice_set_samples/f1-ZH.wav",
                     categories: [
                         chineseCategoryLabel,
                         femaleCategoryLabel,
@@ -297,7 +297,7 @@ class CreateViewController {
                 },
                 fr: {
                     name: "f1-FR",
-                    url: "/audio/voice_set_samples/f1-FR_sample_fr.wav",
+                    url: "/audio/voice_set_samples/f1-FR.wav",
                     categories: [
                         frenchCategoryLabel,
                         femaleCategoryLabel,
@@ -310,7 +310,7 @@ class CreateViewController {
                 "name": "F2",
                 "ja": {
                     "name": "f1-JA",
-                    "url": "/audio/voice_set_samples/f1-JA_sample.wav",
+                    "url": "/audio/voice_set_samples/f1-JA.wav",
                     "categories": [
                         japaneseCategoryLabel,
                         femaleCategoryLabel,
@@ -319,7 +319,7 @@ class CreateViewController {
                 },
                 "en": {
                     "name": "fo-EN",
-                    "url": "/audio/voice_set_samples/fo-EN_sample_en.wav",
+                    "url": "/audio/voice_set_samples/fo-EN.wav",
                     "categories": [
                         englishCategoryLabel,
                         femaleCategoryLabel,
@@ -328,7 +328,7 @@ class CreateViewController {
                 },
                 es: {
                     name: "f1-ES",
-                    url: "/audio/voice_set_samples/f1-ES_sample_es.wav",
+                    url: "/audio/voice_set_samples/f1-ES.wav",
                     categories: [
                         spanishCategoryLabel,
                         femaleCategoryLabel,
@@ -337,7 +337,7 @@ class CreateViewController {
                 },
                 zh: {
                     name: "f1-ZH",
-                    url: "/audio/voice_set_samples/f1-ZH_sample_zh.wav",
+                    url: "/audio/voice_set_samples/f1-ZH.wav",
                     categories: [
                         chineseCategoryLabel,
                         femaleCategoryLabel,
@@ -346,7 +346,7 @@ class CreateViewController {
                 },
                 fr: {
                     name: "f1-FR",
-                    url: "/audio/voice_set_samples/f1-FR_sample_fr.wav",
+                    url: "/audio/voice_set_samples/f1-FR.wav",
                     categories: [
                         frenchCategoryLabel,
                         femaleCategoryLabel,
@@ -436,20 +436,30 @@ class CreateViewController {
                     duration: 400,
                     easing: 'cubicBezier(0.645, 0.045, 0.355, 1.000)'
                 });
+                this.loadingMessage.setText(this.locale.get('create_voice_message_playing', this.lang), {gradient: LoadingMessageGradient.ocean});
           
+                const audio = new Audio(data.url);
+                const $scaleElem = $voiceGroup;
+
                 if (isPlaying) {
                     // 1) Create or reuse the Audio if you want to keep it around
-                    const audio = new Audio(data.url);
-                    const circleEl = $playButton.querySelector('circle');
+                    console.log('audio load from url', data.url);
+                    //const circleEl = $playButton.querySelector('circle');
                     // 2) Create a VolumeMeter (or reuse a stored instance).
-                    this.volumeMeter = new VolumeMeter(audio, {
-                        minScale: 1.0,
-                        maxScale: 1.3,
-                        smoothing: 0.8,
+                    this.volumeMeter = new VolumeMeter({
+                        audioElement: audio,
+                        options: {
+                            minScale: 1.0,
+                            maxScale: 1.3,
+                            smoothing: 0.8,
+                        },
                         onVolumeChange: (scale) => {
                             // Use transform to scale the circle in real time
-                            circleEl.style.transformOrigin = 'center center';
-                            circleEl.style.transform = `scale(${scale})`;
+                            //circleEl.style.transformOrigin = 'center center';
+                            //circleEl.style.transform = `scale(${scale})`;
+                            $scaleElem.style.transformOrigin = 'center center';
+                            $scaleElem.style.transform = `scale(${scale})`;
+                            
                         },
                     });
                     // 3) Start playback, then start measuring volume
@@ -460,12 +470,15 @@ class CreateViewController {
                     })
                     .catch(err => {
                         console.error('[CreateViewController] Audio play failed:', err);
+                    })
+                    .finally(()=> {
                     });
                     // 4) Stop the volume meter if the audio ends
                     audio.addEventListener('ended', () => {
                         console.log('[CreateViewController] Audio ended.');
                         isPlaying = false;
                         $playButtonTooltip.textContent = this.locale.get('create_voice_playbutton_tooltip_pause', this.lang);
+                        this.loadingMessage.stop();
                         anime({
                             targets: pathEl,
                             d: [{ value: playPath }],
@@ -473,11 +486,8 @@ class CreateViewController {
                             easing: 'cubicBezier(0.645, 0.045, 0.355, 1.000)'
                         });
 
-                        // Stop the volume meter
                         this.volumeMeter.stop();
-
-                        // Optionally reset circle scale
-                        circleEl.style.transform = `scale(1.0)`;
+                        $scaleElem.style.transform = `scale(1.0)`;
                     });
                     //this.playVoice(data.url, () => {
                     //    // When the audio ends, revert the path?
@@ -493,6 +503,10 @@ class CreateViewController {
                 } else {
                     if (this.volumeMeter) {
                         this.volumeMeter.stop();
+                        $scaleElem.style.transform = `scale(1.0)`;
+                    }
+                    if (audio) {
+                        audio.stop();
                     }
                 }
             });
@@ -625,19 +639,16 @@ class CreateViewController {
         // 1. Lock the screen (add your CSS class)
         document.body.classList.add('screen-locked');
 
-        // 2. Start button loading
         loadButton.load(true);
 
-        // 3. Also start the loading message
-        this.loadingMessage.setText('Processing...', true);
-
-        // For convenience, store the selected voiceGroup in this.voiceset
         this.voiceset = voiceGroup;
 
         // 4. Check if we already have an ID:
         if (this.interactionModelId) {
             // --- CASE: Interaction Model already exists => just do an update. ---
             console.log('[CreateViewController] Updating existing interaction model:', this.interactionModelId);
+            this.loadingMessage.setText(this.locale.get('create_voice_creating_new_interaction_model', this.lang), {gradient: LoadingMessageGradient.ocean});
+ 
             this.updateInteractionModel()
                 .then(() => {
                     // After update, we can optionally call submitVoiceSet (which is also an update)
@@ -646,9 +657,9 @@ class CreateViewController {
                 .then(() => {
                     // Done => stop loading & go next
                     loadButton.load(false);
-                    this.loadingMessage.load(false);
-                    // Move to next page
-                    this.pageView.show(2);
+                    setTimeout(() => {
+                        this.pageView.show(2);
+                    }, 2000)
                 })
                 .catch((err) => {
                     console.error('[CreateViewController] Error in update:', err);
@@ -661,14 +672,12 @@ class CreateViewController {
         } else {
             // --- CASE: No interactionModelId => we must create first, then update. ---
             console.log('[CreateViewController] Creating new interaction model...');
+            this.loadingMessage.setText(this.locale.get('create_voice_updating_interaction_model', this.lang), {gradient: LoadingMessageGradient.ocean});
             setTimeout(() => {
                 this.createInteractionModel()
                     .then((newId) => {
                         // We have a newly created ID
                         this.interactionModelId = newId;
-                        // Show success
-                        this.loadingMessage.setText('Model created! Now submitting voice set...', true);
-                        // Then do the standard update flow:
                         return this.submitVoiceSet(); 
                     })
                     .then(() => {
@@ -678,12 +687,13 @@ class CreateViewController {
                     .then(() => {
                         // Finally, stop loading, go next
                         loadButton.load(false);
-                        this.loadingMessage.load(false);
-                        this.pageView.show(2);
+                        setTimeout(() => {
+                            this.pageView.show(2);
+                        }, 2000)
                     })
                     .catch((err) => {
                         console.error('[CreateViewController] Error in create+submit:', err);
-                        this.loadingMessage.setText(`Create error: ${err.message || err}`, true, false);
+                        this.loadingMessage.setText(`${err.message || err}`, {alert: true});
                         loadButton.load(false);
                     });
             }, 2000);
@@ -702,12 +712,11 @@ class CreateViewController {
         });
         const result = await res.json();
         if (!res.ok) {
-            this.loadingMessage.text = result.message || 'Create failed.';
-            this.loadingMessage.setError(true);
+            this.loadingMessage.setText(result.message, {alert: true})
             throw new Error(result.message || 'Create failed.');
         }
         // Show success
-        this.loadingMessage.text = result.message || 'Create succeeded!';
+        this.loadingMessage.setText(result.message || 'Create succeeded!', {gradient: LoadingMessageGradient.bluegreen});
         this.loadingMessage.setError(false);
 
         // Suppose the backend returns { id: 'xxx', message: '...' }
@@ -726,13 +735,11 @@ class CreateViewController {
         });
         const result = await res.json();
         if (!res.ok) {
-            this.loadingMessage.text = result.message || 'Update failed.';
-            this.loadingMessage.setError(true);
+            this.loadingMessage.setText(result.message, {alert: true});
             throw new Error(result.message || 'Update failed.');
         }
         // Show success
-        this.loadingMessage.text = result.message || 'Update succeeded!';
-        this.loadingMessage.setError(false);
+        this.loadingMessage.setText(result.message, {gradient: LoadingMessageGradient.ocean});
     }
 
     /**
@@ -751,18 +758,18 @@ class CreateViewController {
             const result = await res.json();
             if (!res.ok) {
                 console.error('[CreateViewController] voiceset update error:', result);
-                this.loadingMessage.setText(result.message || 'Voiceset update failed.', true, true);
+                this.loadingMessage.setText(result.message, {alert: true});
                 throw new Error(result.message || 'Update failed.');
             }
             console.log('[CreateViewController] Voice set updated:', result);
-            this.loadingMessage.setText(result.message || 'Voiceset update succeeded!', true, false);
+            this.loadingMessage.setText(result.message, {gradient: LoadingMessageGradient.bluegreen});
 
             // Possibly go to next page automatically, or not:
             // this.pageView.show(2);
         })
         .catch((err) => {
             console.error('[CreateViewController] submitVoiceSet error:', err);
-            this.loadingMessage.setText(`Update failed. ${err.message || ''}`, true, true);
+            this.loadingMessage.setText(`${err.message || 'Submit voiceset failed.'}`, {alert: true});
             throw err;
         });
     }
