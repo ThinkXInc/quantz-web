@@ -11,6 +11,8 @@ body {
     --program-text-field-border: #dfdfdf;
     --program-text-label: #2e2e2e;
     --program-text-title: #d5d5d5;
+    --program-tools-bg: #484848;
+    --program-tools-border: #5e5c5c;
 }
 body.dark {
     --program-bg: #2e2e2e;
@@ -22,6 +24,8 @@ body.dark {
     --program-text-field-border: #7e7e7e;
     --program-text-label: #adadad;
     --program-text-title: #d5d5d5;
+    --program-tools-bg: #484848;
+    --program-tools-border: #5e5c5c;
 }
 
 body {
@@ -91,6 +95,10 @@ div#ProgramView {
                     height: 30px;
                     transition: 
                         color 0.3s @cubic-bezier1;
+                    &::placeholder {
+                        color: #777777;
+                        font-weight: 300;
+                    }
                 }
                 div.footer {
                     padding: 0;
@@ -119,28 +127,40 @@ div#ProgramView {
             }
         }
 
-        div.titleContainer {
+        div.headerContainer {
             margin-bottom: 34px;
-            max-width: 400px;
-            div.TextField {
-                div.inputOuter {
-                    border: none;
-                    border-bottom: 1px solid var(--program-text-field-border);
-                    h6.title {
-                        font-size: 10px;
-                    }
-                    div.inputWrapper input {
-                        color: var(--program-input-text);
-                        padding: 7px 0px;
-                        font-size: 23px;
-                        margin: 0;
-                        width: 100%;
-                        box-sizing: border-box;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+
+            div.titleContainer {
+                max-width: 400px;
+                margin-right: 30px;
+                div.TextField {
+                    div.inputOuter {
+                        border: none;
+                        border-bottom: 1px solid var(--program-text-field-border);
+                        h6.title {
+                            font-size: 10px;
+                        }
+                        div.inputWrapper input {
+                            color: var(--program-input-text);
+                            padding: 7px 0px;
+                            font-size: 23px;
+                            margin: 0;
+                            width: 100%;
+                            box-sizing: border-box;
+                        }
                     }
                 }
             }
+            div.LoadingMessage {
+                padding: 5px 13px;
+                text-align: center;
+                font-size: 14px;
+            }
         }
-
         // Hide arrow containers if not needed
         div.stepArrowContainer,
         div.endArrowContainer {
@@ -513,6 +533,51 @@ div#ProgramView {
         }
     }
 }
+
+// ─────────────────────────────────────────────────────────────────
+// TOOLS
+// ─────────────────────────────────────────────────────────────────
+
+div#ProgramView div.ProgramViewContainer div.stepContainer {
+    position: relative; // Ensure absolute-positioned .tools stays in the top-right corner
+    &.show {
+        div.tools {
+            opacity: 1;
+            visibility: visible;
+            transform: tranlateY(0%);
+            transform: translateX(100%);
+        }
+    }
+
+    div.tools {
+        .menu();
+        width: 53px;
+        background-color: var(--program-tools-bg);
+        border-radius: 8px;
+        position: absolute;
+        top: 0;
+        right: -9px;
+        opacity: 0;
+        visibility: hidden;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        border: 1px solid var(--program-tools-border);
+        transition:
+            opacity 0.3s @cubic-bezier1,
+            visibility 0.3s @cubic-bezier1,
+            transform 0.3s @cubic-bezier1;
+        transform: translateX(100%) translateY(-5%);
+        z-index: 10; // So tools hover above step content
+
+        div.toolsWrapper {
+            width: 100%;
+            position: relative;
+        }
+    }
+ }
+// ─────────────────────────────────────────────────────────────────
+// END TOOLS
+// ─────────────────────────────────────────────────────────────────
+
 
 @tablet-width: 768px;
 @smartphone-width: 480px;

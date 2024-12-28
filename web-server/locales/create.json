@@ -80,7 +80,7 @@
       "ru": "Произошла ошибка при воспроизведении образца. Ошибка: $0",
       "ar": "حدثت مشكلة أثناء تشغيل العينة. خطأ: $0"
     },
-    "create_voice_message_processing": {
+    "create_processing": {
       "ja": "処理中...",
       "en": "Processing...",
       "zh": "处理中...",
@@ -89,7 +89,7 @@
       "ru": "Обработка...",
       "ar": "جارٍ المعالجة..."
     },
-    "create_voice_creating_new_interaction_model": {
+    "create_creating_new_interaction_model": {
         "ja": "対話モデルを初期化中...",
         "en": "Initializing the interaction model...",
         "zh": "正在初始化交互模型...",
@@ -98,7 +98,7 @@
         "ru": "Инициализация модели взаимодействия...",
         "ar": "جارٍ تهيئة نموذج التفاعل..."
     },
-    "create_voice_updating_interaction_model":{
+    "create_updating_interaction_model":{
         "ja": "対話モデルを更新中...",
         "en": "Updating the interaction model...",
         "zh": "正在更新交互模型...",
@@ -106,6 +106,42 @@
         "fr": "Mise à jour du modèle d'interaction...",
         "ru": "Обновление модели взаимодействия...",
         "ar": "جارٍ تحديث نموذج التفاعل..."
+    },
+    "create_tools_add": {
+      "ja": "ステップを追加",
+      "en": "Add Step",
+      "zh": "添加步骤",
+      "es": "Agregar paso",
+      "fr": "Ajouter une étape",
+      "ru": "Добавить шаг",
+      "ar": "إضافة خطوة"
+    },
+    "create_tools_delete": {
+      "ja": "ステップを削除",
+      "en": "Delete Step",
+      "zh": "删除步骤",
+      "es": "Eliminar paso",
+      "fr": "Supprimer l'étape",
+      "ru": "Удалить шаг",
+      "ar": "حذف خطوة"
+    },
+    "create_tools_image": {
+      "ja": "画像を追加",
+      "en": "Add Image",
+      "zh": "添加图片",
+      "es": "Agregar imagen",
+      "fr": "Ajouter une image",
+      "ru": "Добавить изображение",
+      "ar": "إضافة صورة"
+    },
+    "create_tools_video": {
+      "ja": "動画を追加",
+      "en": "Add Video",
+      "zh": "添加视频",
+      "es": "Agregar video",
+      "fr": "Ajouter une vidéo",
+      "ru": "Добавить видео",
+      "ar": "إضافة مقطع فيديو"
     },
     "create_voice_playbutton_tooltip_pause": {
         "ja": "停止する",
@@ -395,13 +431,22 @@
         "ru": "Скопировано в буфер обмена."
     },
     "create_title_label": {
-        "ja": "テンプレート名 (管理用の名前です。対話では使用されません。)",
-        "en": "Template Name (for administrative use only, not used in dialogues).",
-        "zh": "模板名称（仅供管理使用，对话中不使用）。",
-        "es": "Nombre de la plantilla (solo para uso administrativo, no se utiliza en diálogos).",
-        "fr": "Nom du modèle (à usage administratif uniquement, non utilisé dans les dialogues).",
-        "ru": "Название шаблона (используется только для административных целей, в диалогах не используется).",
-        "ar": "اسم القالب (للاستخدام الإداري فقط، ولا يُستخدم في الحوارات)."
+        "ja": "",
+        "en": "",
+        "zh": "",
+        "es": "",
+        "fr": "",
+        "ru": "",
+        "ar": ""
+    },
+    "create_title_placeholder": {
+        "ja": "対話モデルのタイトル",
+        "en": "Interaction Model Title",
+        "zh": "交互模型标题",
+        "es": "Título del modelo de interacción",
+        "fr": "Titre du modèle d'interaction",
+        "ru": "Название модели взаимодействия",
+        "ar": "عنوان نموذج التفاعل"
     },
     "create_opening_remark_label": {
         "ja": "開始時の喋り出し",

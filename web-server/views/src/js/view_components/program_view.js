@@ -149,7 +149,7 @@ class ProgramView {
     }
 
     createView() {
-        console.warn('Creating view for ProgramView');
+        console.warn('***Creating view for ProgramView');
         // Create the main container
         this.$view = document.createElement('div');
         this.$view.id = this.id;
@@ -159,6 +159,14 @@ class ProgramView {
         const $interviewCreateViewContainer = document.createElement('div');
         $interviewCreateViewContainer.classList.add('ProgramViewContainer');
 
+        // ───────────────────────────────────────────────────────────────────────────
+        //  1) HEADER CONTAINER
+        //     holds: titleForm + loadingMessage
+        // ───────────────────────────────────────────────────────────────────────────
+        const $headerContainer = document.createElement('div');
+        $headerContainer.classList.add('headerContainer');
+
+        // Title container (wraps the titleForm)
         const $titleContainer = document.createElement('div');
         $titleContainer.classList.add('titleContainer');
 
@@ -180,12 +188,33 @@ class ProgramView {
             defaultValue: this.interactionModel.title,
             hasTitle: true,
             title: this.locale.get("create_title_label", this.lang),
-            placeholder: "Enter the interview title.",
+            placeholder: this.locale.get("create_title_placeholder", this.lang),
             isCounter: false,
         });
         this.titleForm = titleForm;
         $titleContainer.appendChild(titleForm.$view);
-        $interviewCreateViewContainer.appendChild($titleContainer);
+        $headerContainer.appendChild($titleContainer);
+
+        this.loadingMessage = new LoadingMessage({
+            id: 'ProgramLoadingMessage',
+            classList: 'hover-grad-txt',
+            gradientStart: '#00ff00',
+            gradientEnd: '#0000ff',
+            alertColor: '#ff3333',
+            pattern: LoadingMessagePattern.B
+        });
+        $headerContainer.appendChild(this.loadingMessage.$view);
+        this.loadingMessage.setText('Loading..', {gradient: LoadingMessageGradient.ocean})
+
+        $interviewCreateViewContainer.appendChild($headerContainer);
+
+
+        // ───────────────────────────────────────────────────────────────────────────
+        //  2) MAIN CONTAINER
+        //     holds: stepContainer(s)
+        // ───────────────────────────────────────────────────────────────────────────
+        const $mainContainer = document.createElement('div');
+        $mainContainer.classList.add('mainContainer');
 
         // **Steps**
         this.interactionModel.steps.forEach((step, index) => {
@@ -228,6 +257,10 @@ class ProgramView {
         //$endContainer.appendChild(endForm.$view);
 
         //$interviewCreateViewContainer.appendChild($endContainer);
+
+        // Finally, append the mainContainer
+        $interviewCreateViewContainer.appendChild($mainContainer);
+
 
         // Assign the container before calling methods that use it
         this.$interviewCreateViewContainer = $interviewCreateViewContainer;
@@ -860,6 +893,25 @@ class ProgramView {
         this.goalForms[index] = goalForm;
         this.topicForms[index] = topicForm;
         this.maxTurnsForms[index] = maxTurnsForm;
+
+        // Create an instance of ProgramTools:
+        const tools = new ProgramTools({
+          id: `programTools_${index}`,
+          locale: this.locale,
+          lang: this.lang,
+          onClickAdd: () => {
+            console.log(`Add step from step #${index + 1}`);
+            //this.addStep(index);
+            this.addStep();
+          },
+          onClickDelete: () => {
+            console.log(`Delete step #${index + 1}`);
+            this.removeStep(index);
+          },
+          // onClickAddImage: () => { ... },
+          // onClickAddVideo: () => { ... },
+        });
+        tools.attach($stepContainer);
 
         console.warn(`Step container created for step ${index + 1}`);
         return $stepContainer;

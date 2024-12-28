@@ -179,7 +179,7 @@ class InterviewCreateView {
             defaultValue: this.interview.title,
             hasTitle: true,
             title: this.locale.get("interview_create_title_label", this.lang),
-            placeholder: "Enter the interview title.",
+            placeholder: "---",
             isCounter: false,
         });
         this.titleForm = titleForm;

@@ -31,46 +31,45 @@
     div.upper {
         width: 100%;
 
-    button.createNew { // Styles for the "Add new material" section
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        padding: 20px;
-        height: 46px;
-        margin: 6px auto;
-        //width: 95%;
-        //width: 54%; // Create
-        width: 68%; // Start Creating
-        border: 1px solid #888888;
-        border-radius: 27px;
-        margin-bottom: 62px;
+        button.createNew { // Styles for the "Add new material" section
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            height: 46px;
+            margin: 6px auto;
+            //width: 95%;
+            //width: 54%; // Create
+            width: 68%; // Start Creating
+            border: 1px solid #888888;
+            border-radius: 27px;
+            margin-bottom: 62px;
 
-        transition: 
-            border 0.2s @cubic-bezier1,
-            background-color 0.2s @cubic-bezier1; /* Smooth transition */
-
-        img.plusIcon {
-            width: 16px;
-            margin-right: 10px; // Added for some space between the icon and label
-        }
-
-        h4.title {
-            font-size: 14px;
-            //color: @create-new-title;
-            color: #e3e3e3;
             transition: 
-                color 0.2s @cubic-bezier1; /* Smooth transition */
-        }
+                border 0.2s @cubic-bezier1,
+                background-color 0.2s @cubic-bezier1; /* Smooth transition */
 
-    }
-    button.createNew:hover {
-        border: 1px solid #c4c4c4;
-        background-color: #555555;
-        h4.title {
-            color: #fff;
-        }
-    }
+            img.plusIcon {
+                width: 16px;
+                margin-right: 10px; // Added for some space between the icon and label
+            }
 
+            h4.title {
+                font-size: 14px;
+                //color: @create-new-title;
+                color: #e3e3e3;
+                transition: 
+                    color 0.2s @cubic-bezier1; /* Smooth transition */
+            }
+
+        }
+        button.createNew:hover {
+            border: 1px solid #c4c4c4;
+            background-color: #555555;
+            h4.title {
+                color: #fff;
+            }
+        }
 
         ul.menu {
             li.item {
@@ -92,7 +91,6 @@
                 padding: 0px 17px;
             }
         }
-
     }
 
     ul.menu {

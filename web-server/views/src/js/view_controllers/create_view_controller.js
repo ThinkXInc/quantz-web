@@ -642,7 +642,7 @@ class CreateViewController {
         ScreenLock.lock();
 
         loadButton.load(true);
-        this.loadingMessage.setText(this.locale.get('create_voice_creating_new_interaction_model', this.lang), {gradient: LoadingMessageGradient.ocean});
+        this.loadingMessage.setText(this.locale.get('create_processing', this.lang), {gradient: LoadingMessageGradient.ocean});
 
         this.voiceset = voiceGroup;
 
@@ -650,7 +650,7 @@ class CreateViewController {
         if (this.interactionModelId) {
             // --- CASE: Interaction Model already exists => just do an update. ---
             console.log('[CreateViewController] Updating existing interaction model:', this.interactionModelId);
-            this.loadingMessage.setText(this.locale.get('create_voice_creating_new_interaction_model', this.lang), {gradient: LoadingMessageGradient.ocean});
+            this.loadingMessage.setText(this.locale.get('create_creating_new_interaction_model', this.lang), {gradient: LoadingMessageGradient.ocean});
  
             this.updateInteractionModel()
                 .then(() => {
@@ -666,9 +666,7 @@ class CreateViewController {
                 })
                 .catch((err) => {
                     console.error('[CreateViewController] Error in update:', err);
-                    this.loadingMessage.text = `Update error: ${err.message || err}`;
-                    this.loadingMessage.setError(true);
-                    this.loadingMessage.load(false);
+                    this.loadingMessage.setText(`${err.message || err}`, {alert: true});
                     loadButton.load(false);
                 }).finally(()=> {
                     ScreenLock.lock(false);
@@ -676,7 +674,7 @@ class CreateViewController {
         } else {
             // --- CASE: No interactionModelId => we must create first, then update. ---
             console.log('[CreateViewController] Creating new interaction model...');
-            this.loadingMessage.setText(this.locale.get('create_voice_updating_interaction_model', this.lang), {gradient: LoadingMessageGradient.ocean});
+            this.loadingMessage.setText(this.locale.get('create_updating_interaction_model', this.lang), {gradient: LoadingMessageGradient.ocean});
             setTimeout(() => {
                 this.createInteractionModel()
                     .then((newId) => {
