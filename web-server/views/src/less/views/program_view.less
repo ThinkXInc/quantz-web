@@ -54,12 +54,12 @@ body {
  
 
 div#ProgramView {
-    width: 100%;
-    height: 100%;
-    max-height: calc(100vh - 69px);
-    max-width: calc(100vw - 60px);
+    position: relative;
+    height: calc(100vh - 69px);
+    width: calc(100vw - 60px);
 
     div.ProgramViewContainer {
+        position: relative;
         padding: 20px 20px;
         width: 100%;
         height: 100%;
@@ -126,6 +126,7 @@ div#ProgramView {
         }
 
         div.headerContainer {
+            position: fixed;
             margin-bottom: 34px;
             display: flex;
             flex-direction: row;
@@ -160,18 +161,24 @@ div#ProgramView {
             }
         }
 
-        div.mainContainer {
-            // Hide arrow containers if not needed
-            div.stepArrowContainer,
-            div.endArrowContainer {
-                display: none;
-            }
+        div.backgroundContainer {
+            width: 5000px;
+            height: 5000px;
+            //width: 100%;
+            //height: 100%;
+            div.mainContainer {
+                width: 5000px;
+                height: 5000px;
+ 
+                position: relative;
+                // Hide arrow containers if not needed
+                div.stepArrowContainer,
+                div.endArrowContainer {
+                    display: none;
+                }
 
-            // Step container styling
-            div.stepListScrollContainer {
-                .horizontalScrollListWrapper();
+                // Step container styling
                 ul.stepList {
-                    .horizontalScrollList();
                     padding: 43px 43px;
 
                     li.stepContainer {
@@ -539,9 +546,7 @@ div#ProgramView {
                         }
                     }
                 }
-
             }
-
         }
     }
 }
@@ -570,6 +575,14 @@ div#ProgramView div.ProgramViewContainer ul.stepList li.stepContainer {
             transform 0.3s @cubic-bezier1;
         transform: translateX(100%) translateY(-5%);
         z-index: 10; // So tools hover above step content
+        ul.menu {
+            padding: 9px 0 0 0;
+            li.item {
+                span.tooltip {
+                    font-size: 11px;
+                }
+            }
+        }
 
         &.show {
             opacity: 1;

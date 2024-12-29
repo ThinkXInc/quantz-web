@@ -118,6 +118,13 @@ class ProgramView {
         // Create the main view
         this.createView();
 
+        // Instantiate the connections manager
+        // TODO: ensure createView is all done then run this
+        this.connectionsManager = new ProgramViewConnections({
+            programView: this,
+            $parentView: this.$mainContainer});
+        this.connectionsManager.drawAllArrows();
+
         // Start interval update
         this._lastSnapshot = JSON.stringify(
             this.interactionModelObjectFromFormData() || {}
@@ -206,25 +213,78 @@ class ProgramView {
 
         $programViewContainer.appendChild($headerContainer);
 
+        // ───────────────────────────────────────────────────────────────────────────
+        //  2) BACKGROUND CONTAINER (draggable)
+        // ───────────────────────────────────────────────────────────────────────────
+        // This container will fill the space under the header and hold mainContainer, steps, etc.
+        const $backgroundContainer = document.createElement('div');
+        $backgroundContainer.classList.add('backgroundContainer');
+        this.$backgroundContainer = $backgroundContainer;
+        $programViewContainer.appendChild($backgroundContainer);
+        console.error(
+            'Container rect:', 
+            $backgroundContainer.getBoundingClientRect()
+        );
+        console.error(
+            'Container clientH:', 
+            this.$backgroundContainer.clientHeight
+        );
+
+
+        /*
+        const mesh = new Mesh({
+            id: 'ProgramViewBackgroundMesh',
+            n: 100,
+            m: 100,
+            lineColor: '#fff',
+            lineWidth: 1
+        });
+        mesh.mount($backgroundContainer);
+
+        console.error('************************************88')
+        console.error(
+            'Container styles:',
+            getComputedStyle($backgroundContainer).cssText
+        );
+        console.error(
+            'Container rect:', 
+            $backgroundContainer.getBoundingClientRect()
+        );
+        console.error(
+            'Container clientH:', 
+            this.$backgroundContainer.clientHeight
+        );
+        console.log($backgroundContainer.parentNode?);
+        console.log("Parent rect:", $backgroundContainer.parentNode?.getBoundingClientRect());
+        console.log("BackgroundContainer rect:", $backgroundContainer.getBoundingClientRect());
+        */
+
+ 
+        //mesh.animate({ type: MeshAnimation.perspective });
+
+        new Draggable({ element: $backgroundContainer });
+        
 
         // ───────────────────────────────────────────────────────────────────────────
         //  2) MAIN CONTAINER (Steps)
         // ───────────────────────────────────────────────────────────────────────────
         const $mainContainer = document.createElement('div');
+        this.$mainContainer = $mainContainer;
         $mainContainer.classList.add('mainContainer');
 
-        const $stepListScrollContainer = document.createElement('div');
-        $stepListScrollContainer.classList.add('stepListScrollContainer');
-        $mainContainer.appendChild($stepListScrollContainer);
+        //const $stepListScrollContainer = document.createElement('div');
+        //$stepListScrollContainer.classList.add('stepListScrollContainer');
+        //$mainContainer.appendChild($stepListScrollContainer);
 
-        $stepListScrollContainer.addEventListener('wheel', (evt) => {
-            evt.preventDefault();
-            $stepListScrollContainer.scrollLeft += evt.deltaY;
-        }, { passive: false });
+        //$stepListScrollContainer.addEventListener('wheel', (evt) => {
+        //    evt.preventDefault();
+        //    $stepListScrollContainer.scrollLeft += evt.deltaY;
+        //}, { passive: false });
 
         const $stepList = document.createElement('ul');
         $stepList.classList.add('stepList');
-        $stepListScrollContainer.appendChild($stepList);
+        //$stepListScrollContainer.appendChild($stepList);
+        $mainContainer.appendChild($stepList);
 
         // **Steps**
         this.interactionModel.steps.forEach((step, index) => {
@@ -233,8 +293,8 @@ class ProgramView {
             $stepList.appendChild(stepData.container); // mount
         });
 
-        // Finally, append the mainContainer
-        $programViewContainer.appendChild($mainContainer);
+        // Finally, append mainContainer inside the background
+        $backgroundContainer.appendChild($mainContainer);
 
         // Assign the container before calling methods that use it
         this.$programViewContainer = $programViewContainer;
@@ -243,7 +303,31 @@ class ProgramView {
         this.$view.appendChild($programViewContainer);
 
         this.updateRemoveButtonVisibility();
+
+        this.adjustContainersInitialPosition({w: 5000, h: 5000})
     }
+
+    adjustContainersInitialPosition({w, h}) {
+        const W = w;
+        const H = h;
+        this.$backgroundContainer.style.position = 'absolute';
+        this.$backgroundContainer.style.width = W + 'px';
+        this.$backgroundContainer.style.height = H + 'px';
+    
+        // 3) Center the backgroundContainer in the *browser window*
+        //    so that (0,0) of backgroundContainer is in the center of the screen
+        const screenW = window.innerWidth;
+        const screenH = window.innerHeight;
+        this.$backgroundContainer.style.left = (- W / 2) + 'px';
+        this.$backgroundContainer.style.top  = (- H / 2) + 'px';
+    
+        // 4) Place the mainContainer so that its (0,0) is at
+        //    the center of the backgroundContainer
+        this.$mainContainer.style.position = 'absolute';
+        this.$mainContainer.style.left = (W / 2) + 'px';
+        this.$mainContainer.style.top  = (H / 2) + 'px';
+    }
+
 
     /**
      * Build one "stepData" object containing everything for that step:
@@ -259,6 +343,9 @@ class ProgramView {
         const $stepContainer = document.createElement('li');
         $stepContainer.classList.add('stepContainer');
         $stepContainer.dataset.index = index;
+
+        // Make the step container draggable
+        new Draggable({ element: $stepContainer });
     
         // Step Title
         const $stepTitle = document.createElement('h3');
@@ -749,13 +836,17 @@ class ProgramView {
             id: `programTools_${index}`,
             locale: this.locale,
             lang: this.lang,
-            onClickAdd: () => {
-              console.log(`Add step from step #${index + 1}`);
-              this.addStep();
+            onClickAddFlow: () => {
+              console.log(`Add flow from step #${index + 1}`);
+              this.addFlow();
+            },
+            onClickAddFunction: () => {
+              console.log(`Add function from step #${index + 1}`);
+              this.addFunction();
             },
             onClickDelete: () => {
-              console.log(`Delete step #${index + 1}`);
-              this.removeStep(index);
+              console.log(`Delete step #${$stepContainer.dataset.index}`);
+              this.removeStep($stepContainer); 
             },
             // If you eventually need these:
             // onClickAddImage: () => { ... },
@@ -830,7 +921,7 @@ class ProgramView {
         console.log(`Task type for step ${stepIndex} changed to ${newTaskType}`);
     }
 
-    addStep({ indexAfter } = {}) {
+    addFlow({ indexAfter } = {}) {
         if (this.interactionModel.steps.length >= this.maxSteps) {
             console.warn('Max steps reached. Cannot add more steps.');
             return;
@@ -864,32 +955,42 @@ class ProgramView {
         // Re-index the DOM
         this.updateStepIndices();
         this.updateRemoveButtonVisibility();
+
+        this.connectionsManager.drawAllArrows();
     }
 
-    removeStep(index) {
-        console.warn(`Removing step at index ${index}`);
-        // Safety checks
-        if (index < 0 || index >= this.stepsData.length) {
+    removeStep(containerElement) {
+        console.warn(`Removing step by container`, containerElement);
+    
+        // 1) Find which stepData has this container
+        const index = this.stepsData.findIndex(sd => sd.container === containerElement);
+        if (index === -1) {
+            console.warn("Could not find stepData for container. Aborting removeStep().");
             return;
         }
-        // Remove from data
+    
+        // 2) Remove the actual step object from interactionModel
         this.interactionModel.steps.splice(index, 1);
-
+    
+        // 3) Remove the DOM node
         const stepData = this.stepsData[index];
         const $container = stepData.container;
         if ($container && $container.parentNode) {
             $container.parentNode.removeChild($container);
         }
+    
+        // 4) Remove from stepsData array
         this.stepsData.splice(index, 1);
-
-        // Re-index
+    
+        // 5) Re-index the steps & re-check
         this.updateStepIndices();
         this.updateRemoveButtonVisibility();
-
-        // Ensure an empty step if needed
         this.ensureEmptyStepAtEnd();
-    }
 
+        this.connectionsManager.drawAllArrows();
+    }
+    
+    
     updateStepIndices() {
         console.warn('Updating step indices');
         this.stepsData.forEach((sd, index) => {
@@ -901,6 +1002,8 @@ class ProgramView {
             }
         });
         console.warn('Step indices updated');
+
+        this.connectionsManager.drawAllArrows();
     }
 
     updateRemoveButtonVisibility() {

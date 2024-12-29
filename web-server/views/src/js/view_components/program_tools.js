@@ -3,7 +3,8 @@ class ProgramTools {
         id,
         locale,
         lang,
-        onClickAdd,
+        onClickAddFlow,
+        onClickAddFunction,
         onClickDelete,
         onClickAddImage,
         onClickAddVideo,
@@ -13,7 +14,8 @@ class ProgramTools {
         this.locale  = locale;
         this.lang = lang;
         // Store the callback functions
-        this.onClickAdd = onClickAdd;
+        this.onClickAddFlow = onClickAddFlow;
+        this.onClickAddFunction = onClickAddFunction;
         this.onClickDelete = onClickDelete;
         this.onClickAddImage = onClickAddImage;
         this.onClickAddVideo = onClickAddVideo;
@@ -48,7 +50,7 @@ class ProgramTools {
         $addStepIcon.classList.add('icon');
         const $addStepTooltip = document.createElement('span');
         $addStepTooltip.classList.add('tooltip');
-        $addStepTooltip.textContent = this.locale.get('create_tools_add', this.lang);
+        $addStepTooltip.textContent = this.locale.get('create_tools_add_flow', this.lang);
 
         this.$addStepItem.appendChild($addStepIcon);
         this.$addStepItem.appendChild($addStepTooltip);
@@ -56,13 +58,43 @@ class ProgramTools {
         // Event handler: Add Step
         this.$addStepItem.addEventListener('click', (e) => {
             e.stopPropagation();
-            if (this.onClickAdd) {
-                this.onClickAdd(e);
+            if (this.onClickAddFlow) {
+                // If you want a direct callback, use `this.onClickAddFlow(e)`:
+                // this.onClickAddFlow(e);
+                // If you prefer an internal method, you can define `this.onClickAdd(e)` and call it here:
+                this.onClickAddFlow(e);
             }
         });
 
         this.$menuList.appendChild(this.$addStepItem);
 
+        // ─────────────────────────────────────────────────────────────────────
+        //  2) Add Function
+        // ─────────────────────────────────────────────────────────────────────
+        this.$addFunctionItem = document.createElement('li');
+        this.$addFunctionItem.classList.add('item', 'addFunction');
+
+        // Adjust these values to your icons / text keys
+        const $addFunctionIcon = document.createElement('img');
+        $addFunctionIcon.src = '/img/create/add-function-icon.svg'; 
+        $addFunctionIcon.classList.add('icon');
+        const $addFunctionTooltip = document.createElement('span');
+        $addFunctionTooltip.classList.add('tooltip');
+        $addFunctionTooltip.textContent = this.locale.get('create_tools_add_function', this.lang);
+
+        this.$addFunctionItem.appendChild($addFunctionIcon);
+        this.$addFunctionItem.appendChild($addFunctionTooltip);
+
+        // Event handler: Add Function
+        this.$addFunctionItem.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (this.onClickAddFunction) {
+                this.onClickAddFunction(e);
+            }
+        });
+
+        this.$menuList.appendChild(this.$addFunctionItem);
+ 
         // ─────────────────────────────────────────────────────────────────────
         //  2) Delete Step
         // ─────────────────────────────────────────────────────────────────────
@@ -89,7 +121,7 @@ class ProgramTools {
 
         this.$menuList.appendChild(this.$deleteStepItem);
 
-        // ─────────────────────────────────────────────────────────────────────
+       // ─────────────────────────────────────────────────────────────────────
         //  3) Add Image (hidden for now)
         // ─────────────────────────────────────────────────────────────────────
         this.$addImageItem = document.createElement('li');
@@ -144,6 +176,7 @@ class ProgramTools {
         });
 
         this.$menuList.appendChild(this.$addVideoItem);
+
     }
 
     attach($stepContainer) {
@@ -163,8 +196,7 @@ class ProgramTools {
             const windowWidth = window.innerWidth;
     
             // For “center of the screen,” we check if the center (both x and y) 
-            // is within $stepContainer’s bounding rect. 
-            // Tweak this to fit your exact definition of “displayed.”
+            // is within $stepContainer’s bounding rect.
             const centerX = windowWidth / 2;
             const centerY = windowHeight / 2;
     
@@ -187,6 +219,28 @@ class ProgramTools {
         // Then attach
         window.addEventListener('scroll', this._scrollHandler, { passive: true });
         window.addEventListener('resize', this._scrollHandler);
+    }
+
+    // Example for an internal "add" method if you want to keep consistent naming:
+    onClickAddFlow(e) {
+        // Just call the provided callback
+        if (this.onClickAddFlow) {
+            this.onClickAddFlow(e);
+        }
+    }
+
+    onClickAddFunction(e) {
+        // Just call the provided callback
+        if (this.onClickAddFunction) {
+            this.onClickAddFunction(e);
+        }
+    }
+
+    onClickDelete(e) {
+        // Just call the provided callback
+        if (this.onClickDelete) {
+            this.onClickDelete(e);
+        }
     }
 
     destroy() {

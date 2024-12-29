@@ -169,3 +169,13 @@
     width: max-content;
     overflow-y: visible;
 }
+
+.draggable() {
+    cursor: grab;          /* Hand cursor when hovering */
+    user-select: none;     /* Prevent text selection while dragging */
+    transform-origin: center center; /* So zoom occurs from the container center */
+    transform: translate(0, 0) scale(1);
+    &:active {
+        cursor: grabbing;      /* Hand closed when dragging */
+    }
+}

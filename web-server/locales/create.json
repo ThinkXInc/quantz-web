@@ -107,14 +107,23 @@
         "ru": "Обновление модели взаимодействия...",
         "ar": "جارٍ تحديث نموذج التفاعل..."
     },
-    "create_tools_add": {
-      "ja": "ステップを追加",
-      "en": "Add Step",
-      "zh": "添加步骤",
-      "es": "Agregar paso",
-      "fr": "Ajouter une étape",
-      "ru": "Добавить шаг",
-      "ar": "إضافة خطوة"
+    "create_tools_add_flow": {
+      "ja": "対話フローを追加",
+      "en": "",
+      "zh": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
+    },
+    "create_tools_add_function": {
+      "ja": "ファンクションを追加",
+      "en": "",
+      "zh": "",
+      "es": "",
+      "fr": "",
+      "ru": "",
+      "ar": ""
     },
     "create_tools_delete": {
       "ja": "ステップを削除",

@@ -14,6 +14,7 @@ class CreateViewController {
         this.lang = lang;
 
         document.body.classList.add('dark'); // TODO: switch
+        document.body.style.overflow = 'hidden';
 
         // The main container where we mount the PageView
         this.$mainContent = document.getElementById('MainContent');
