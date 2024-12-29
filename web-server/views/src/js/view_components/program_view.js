@@ -90,35 +90,24 @@ class ProgramView {
         user,
         interactionModelId,
         interactionModel,
-        $message,
         onInteractionModelCreated,
-        maxSteps = 3
+        maxSteps = 3,
+        updateIntervalMs = 3000
     }) {
         this.id = id;
         this.locale = locale;
         this.lang = lang;
- 
         this.user = user;
         this.interactionModelId = interactionModelId;
-        this.interactionModel = interactionModel || defaults;
-        this.$message = $message;
+        this.interactionModel = interactionModel || defaults; 
 
         this.maxGuidelines = 3;
-
         this.maxSteps = maxSteps;
         this.onInteractionModelCreated = onInteractionModelCreated;
 
-        // Arrays to store DOM elements and forms for each step
-        this.stepContainers = [];
-        this.taskTypeSelectors = [];
-        this.topicForms = [];
-        this.remarkForms = [];
-        this.goalForms = [];
-        this.maxTurnsForms = [];
-        this.instructionForms = [];
-        this.responseModeSelectors = []; 
-        this.referenceTypeSelectors = [];
-        this.referencesSelectors = [];
+        // Instead of parallel arrays, we keep ONE array:
+        // each element in stepsData = { container, step, topicForm, remarkForm, ... }
+        this.stepsData = [];
 
         this.fetchMaterials();
         this.materialsReady = new Promise((resolve, reject) => {
@@ -126,7 +115,17 @@ class ProgramView {
             this._materialsReadyRejecter = reject;
         });
 
+        // Create the main view
         this.createView();
+
+        // Start interval update
+        this._lastSnapshot = JSON.stringify(
+            this.interactionModelObjectFromFormData() || {}
+        );
+        this.updateIntervalMs = updateIntervalMs; // adjust as needed
+        this.updateScheduler = setInterval(() => {
+            this.checkForUpdates();
+        }, this.updateIntervalMs);
     }
 
     fetchMaterials() {
@@ -156,12 +155,11 @@ class ProgramView {
         this.$view.classList.add('ProgramView');
 
         // **ProgramView**
-        const $interviewCreateViewContainer = document.createElement('div');
-        $interviewCreateViewContainer.classList.add('ProgramViewContainer');
+        const $programViewContainer = document.createElement('div');
+        $programViewContainer.classList.add('ProgramViewContainer');
 
         // ───────────────────────────────────────────────────────────────────────────
-        //  1) HEADER CONTAINER
-        //     holds: titleForm + loadingMessage
+        //  1) HEADER CONTAINER (title + loadingMessage)
         // ───────────────────────────────────────────────────────────────────────────
         const $headerContainer = document.createElement('div');
         $headerContainer.classList.add('headerContainer');
@@ -206,102 +204,78 @@ class ProgramView {
         $headerContainer.appendChild(this.loadingMessage.$view);
         this.loadingMessage.setText('Loading..', {gradient: LoadingMessageGradient.ocean})
 
-        $interviewCreateViewContainer.appendChild($headerContainer);
+        $programViewContainer.appendChild($headerContainer);
 
 
         // ───────────────────────────────────────────────────────────────────────────
-        //  2) MAIN CONTAINER
-        //     holds: stepContainer(s)
+        //  2) MAIN CONTAINER (Steps)
         // ───────────────────────────────────────────────────────────────────────────
         const $mainContainer = document.createElement('div');
         $mainContainer.classList.add('mainContainer');
 
+        const $stepListScrollContainer = document.createElement('div');
+        $stepListScrollContainer.classList.add('stepListScrollContainer');
+        $mainContainer.appendChild($stepListScrollContainer);
+
+        $stepListScrollContainer.addEventListener('wheel', (evt) => {
+            evt.preventDefault();
+            $stepListScrollContainer.scrollLeft += evt.deltaY;
+        }, { passive: false });
+
+        const $stepList = document.createElement('ul');
+        $stepList.classList.add('stepList');
+        $stepListScrollContainer.appendChild($stepList);
+
         // **Steps**
         this.interactionModel.steps.forEach((step, index) => {
-            console.warn(`Creating step container for step ${index + 1}`, step);
-
-            const $stepContainer = this.createStepContainer(step, index);
-            $interviewCreateViewContainer.appendChild($stepContainer);
-            this.stepContainers[index] = $stepContainer;
+            const stepData = this.buildStepData(step, index);
+            this.stepsData.push(stepData);  // store
+            $stepList.appendChild(stepData.container); // mount
         });
 
-        //// **End Container**
-        //const $endContainer = document.createElement('div');
-        //$endContainer.classList.add('endContainer');
-
-        //const $endLabel = document.createElement('span');
-        //$endLabel.classList.add('endLabel');
-        //$endLabel.textContent = this.locale.get('create_end_label', this.lang) || 'Closing Remarks:';
-        //$endContainer.appendChild($endLabel);
-
-        //const endForm = new TextField({
-        //    id: 'endForm',
-        //    fieldName: 'end',
-        //    validators: [
-        //        new Validator({
-        //            errorType: ValidationErrorType.required,
-        //            errorMessage: this.locale.get(ValidationErrorType.required, this.lang)
-        //        }),
-        //        new Validator({
-        //            errorType: ValidationErrorType.maxLength,
-        //            errorMessage: this.locale.get(ValidationErrorType.maxLength, this.lang),
-        //            maxLength: 300 
-        //        }),
-        //    ],
-        //    defaultValue: this.interactionModel.end,
-        //    hasTitle: false,
-        //    placeholder: "Enter the closing remarks.",
-        //    isCounter: false,
-        //});
-        //this.endForm = endForm;
-        //$endContainer.appendChild(endForm.$view);
-
-        //$interviewCreateViewContainer.appendChild($endContainer);
-
         // Finally, append the mainContainer
-        $interviewCreateViewContainer.appendChild($mainContainer);
-
+        $programViewContainer.appendChild($mainContainer);
 
         // Assign the container before calling methods that use it
-        this.$interviewCreateViewContainer = $interviewCreateViewContainer;
-
-        // Ensure an empty step at the end if necessary
-        //this.ensureEmptyStepAtEnd();
+        this.$programViewContainer = $programViewContainer;
 
         // append the container to main view
-        this.$view.appendChild($interviewCreateViewContainer);
+        this.$view.appendChild($programViewContainer);
 
         this.updateRemoveButtonVisibility();
     }
 
-    createStepContainer(step, index) {
-        console.warn(`Creating container for step ${index + 1}`, step);
-        // **Step Container**
-        const $stepContainer = document.createElement('div');
+    /**
+     * Build one "stepData" object containing everything for that step:
+     *  - container (DOM)
+     *  - references to forms, dropdowns, etc.
+     *  - the actual step object
+     * Returns an object { container, step, topicForm, remarkForm, ... }
+     */
+    buildStepData(step, index) {
+        console.warn(`Building step data for step ${index + 1}`, step);
+    
+        // Container
+        const $stepContainer = document.createElement('li');
         $stepContainer.classList.add('stepContainer');
         $stepContainer.dataset.index = index;
-
-        // **Step Title**
+    
+        // Step Title
         const $stepTitle = document.createElement('h3');
         $stepTitle.classList.add('stepTitle');
         const stepLabelTemplate = this.locale.get('create_steps_label', this.lang) || 'Step $0';
         $stepTitle.textContent = stepLabelTemplate.replace('$0', index + 1);
         $stepContainer.appendChild($stepTitle);
-
-        // **Step Content Container**
+    
+        // Step Content
         const $stepContent = document.createElement('div');
         $stepContent.classList.add('stepContent');
-
-        // ----------------------------------------------------------------------
-        // 0) TASK TYPE
-        // ----------------------------------------------------------------------
+    
+        // ───────────────────────────────────────────────────────────────────────────
+        //  0) TASK TYPE
+        // ───────────────────────────────────────────────────────────────────────────
         const $taskTypeWrapper = document.createElement('div');
         $taskTypeWrapper.classList.add('taskTypeWrapper', 'configItemWrapper');
-    
-        //const $taskTypeLabel = document.createElement('span');
-        //$taskTypeLabel.classList.add('taskTypeLabel', 'configItemLabel');
-        //$taskTypeLabel.textContent = this.locale.get('create_task_type_selector_title', this.lang) || 'Task Type';
-        //$taskTypeWrapper.appendChild($taskTypeLabel);
     
         const taskTypeItems = [
             new ListItem({
@@ -348,38 +322,35 @@ class ProgramView {
             ],
         });
         taskTypeSelector.value = step.task_type || TaskType.CONSULTING;
-        this.taskTypeSelectors[index] = taskTypeSelector;
-        $stepContainer.classList.add(step.task_type)
+    
+        // Add class to container for style
+        $stepContainer.classList.add(step.task_type);
     
         taskTypeSelector.$view.addEventListener('selected', (e) => {
-            const selectedValue = e.detail.value;  // greeting, free, ...
+            const selectedValue = e.detail.value; 
+            // handle task type changed
             this.onTaskTypeChanged(index, selectedValue);
+            // Update container class
             Object.values(TaskType).forEach((task) => {
                 $stepContainer.classList.remove(task);
             });
-            $stepContainer.classList.add(e.detail.value)
+            $stepContainer.classList.add(selectedValue);
         });
     
         $taskTypeWrapper.appendChild(taskTypeSelector.$view);
         $stepContent.appendChild($taskTypeWrapper);
-
-        // ----------------------------------------------------------------------
-        // 1) TOPIC
-        // ----------------------------------------------------------------------
+    
+        // ───────────────────────────────────────────────────────────────────────────
+        //  1) TOPIC
+        // ───────────────────────────────────────────────────────────────────────────
         const $topicWrapper = document.createElement('div');
-        $topicWrapper.classList.add('topicWrapper');
-        $topicWrapper.classList.add('configItemWrapper');
-
+        $topicWrapper.classList.add('topicWrapper', 'configItemWrapper');
+    
         const $topicLabel = document.createElement('span');
-        $topicLabel.classList.add('topicLabel');
-        $topicLabel.classList.add('configItemLabel');
-        // "Topic/Content for this step"
-        $topicLabel.textContent = this.locale.get(
-          'create_step_topic_label', 
-          this.lang
-        ) || 'Topic/Content:';
+        $topicLabel.classList.add('topicLabel', 'configItemLabel');
+        $topicLabel.textContent = this.locale.get('create_step_topic_label', this.lang) || 'Topic/Content:';
         $topicWrapper.appendChild($topicLabel);
-
+    
         const topicForm = new TextField({
             id: `topicForm_${index}`,
             fieldName: `topic_${index}`,
@@ -396,113 +367,65 @@ class ProgramView {
             isCounter: false,
         });
         topicForm.$view.classList.add('topicForm');
-        this.topicForms[index] = topicForm;
+    
         $topicWrapper.appendChild(topicForm.$view);
-
-        //// Trigger add empty step if topic is filled
-        //topicForm.$textField.addEventListener('textchanged', (e) => {
-        //    const isLastStep = topicForm === this.topicForms[this.topicForms.length -1];
-        //    if (isLastStep) {
-        //        this.ensureEmptyStepAtEnd();
-        //    }
-        //});
-
         $stepContent.appendChild($topicWrapper);
-
-        // ----------------------------------------------------------------------
-        // 2) REMARK (Question)
-        // ----------------------------------------------------------------------
-        // **Remark Wrapper**
+    
+        // ───────────────────────────────────────────────────────────────────────────
+        //  2) REMARK
+        // ───────────────────────────────────────────────────────────────────────────
         const $remarkWrapper = document.createElement('div');
         $remarkWrapper.classList.add('remarkWrapper', 'configItemWrapper');
-
+    
         const $remarkLabel = document.createElement('span');
         $remarkLabel.classList.add('remarkLabel', 'configItemLabel');
-
-        if (!step.task_type) {
-            step.task_type = TaskType.CONSULTING
-        }
-
-        // We look up the label/placeholder according to step.task_type
-        const remarkLabelKey       = `create_remark_label_${step.task_type}`;
-        const defaultLabelKey       = 'create_step_remark_label'; // fallback
-        const remarkPlaceholderKey = `create_input_remark_placeholder_${step.task_type}`;
-        const defaultPlaceholderKey = 'create_input_remark_placeholder'; // fallback
-
-        // Retrieve text from locale:
+    
+        // Decide label/placeholder from step.task_type
+        const remarkLabelKey       = `create_remark_label_${step.task_type || TaskType.CONSULTING}`;
+        const defaultLabelKey      = 'create_step_remark_label';
+        const remarkPlaceholderKey = `create_input_remark_placeholder_${step.task_type || TaskType.CONSULTING}`;
+        const defaultPlaceholderKey= 'create_input_remark_placeholder';
+    
         const labelText = this.locale.get(remarkLabelKey, this.lang)
-          || this.locale.get(defaultLabelKey, this.lang)
-          || 'Question:';
-
+            || this.locale.get(defaultLabelKey, this.lang)
+            || 'Question:';
         const placeholderText = this.locale.get(remarkPlaceholderKey, this.lang)
-          || this.locale.get(defaultPlaceholderKey, this.lang)
-          || 'Enter your remark.';
-
-        // Apply the label text
+            || this.locale.get(defaultPlaceholderKey, this.lang)
+            || 'Enter your remark.';
+    
         $remarkLabel.textContent = labelText;
         $remarkWrapper.appendChild($remarkLabel);
-
-        // Create the remark form
+    
         const remarkForm = new TextField({
-          id: `remarkForm_${index}`,
-          fieldName: `remark_${index}`,
-          validators: [
-            new Validator({
-              errorType: ValidationErrorType.maxLength,
-              errorMessage: this.locale.get(ValidationErrorType.maxLength, this.lang),
-              maxLength: 300 
-            }),
-          ],
-          defaultValue: step.remark,
-          hasTitle: false,
-          placeholder: placeholderText, // set the placeholder here
-          isCounter: false,
+            id: `remarkForm_${index}`,
+            fieldName: `remark_${index}`,
+            validators: [
+                new Validator({
+                    errorType: ValidationErrorType.maxLength,
+                    errorMessage: this.locale.get(ValidationErrorType.maxLength, this.lang),
+                    maxLength: 300 
+                }),
+            ],
+            defaultValue: step.remark,
+            hasTitle: false,
+            placeholder: placeholderText,
+            isCounter: false,
         });
         remarkForm.$view.classList.add('remarkForm');
-        this.remarkForms[index] = remarkForm;
-
         $remarkWrapper.appendChild(remarkForm.$view);
-
-        // **Event Listener for remark field**  
-        //remarkForm.$textField.addEventListener('textchanged', (e) => {
-        //    const isLastStep = remarkForm === this.remarkForms[this.remarkForms.length -1];
-        //    if (isLastStep) {
-        //        this.ensureEmptyStepAtEnd();
-        //    }
-        //});
- 
-        // // **Remove Step Button**
-        // const $removeStepButton = document.createElement('img');
-        // $removeStepButton.src = '/img/interviews/minus-icon.svg';
-        // $removeStepButton.classList.add('removeStepButton');
-        // $removeStepButton.style.cursor = 'pointer';
- 
-        // $removeStepButton.addEventListener('click', () => {
-        //     const idx = this.stepContainers.indexOf($stepContainer);
-        //     this.removeStep(idx);
-        // });
- 
-        //$remarkAndRemoveWrapper.appendChild($removeStepButton);
-
         $stepContent.appendChild($remarkWrapper);
-
-        // ----------------------------------------------------------------------
-        // 3) GOAL (Finish Condition)
-        // ----------------------------------------------------------------------
+    
+        // ───────────────────────────────────────────────────────────────────────────
+        //  3) GOAL
+        // ───────────────────────────────────────────────────────────────────────────
         const $goalWrapper = document.createElement('div');
-        $goalWrapper.classList.add('goalWrapper');
-        $goalWrapper.classList.add('configItemWrapper');
-
+        $goalWrapper.classList.add('goalWrapper', 'configItemWrapper');
+    
         const $goalLabel = document.createElement('span');
-        $goalLabel.classList.add('configItemLabel');
-        $goalLabel.classList.add('goalLabel');
-        // "Goal/Completion criteria for this step"
-        $goalLabel.textContent = this.locale.get(
-          'create_step_goal_label', 
-          this.lang
-        ) || 'Finish Condition:';
+        $goalLabel.classList.add('goalLabel', 'configItemLabel');
+        $goalLabel.textContent = this.locale.get('create_step_goal_label', this.lang) || 'Finish Condition:';
         $goalWrapper.appendChild($goalLabel);
-
+    
         const goalForm = new TextField({
             id: `goalForm_${index}`,
             fieldName: `goal_${index}`,
@@ -520,71 +443,52 @@ class ProgramView {
             defaultValue: step.goal,
             hasTitle: false,
             placeholder: this.locale.get("create_input_goal_placeholder", this.lang) 
-              || "Enter the finish condition.",
+                        || "Enter the finish condition.",
             isCounter: false,
         });
         goalForm.$view.classList.add('goalForm');
-        this.goalForms[index] = goalForm;
         $goalWrapper.appendChild(goalForm.$view);
-
         $stepContent.appendChild($goalWrapper);
-
+    
+        // ───────────────────────────────────────────────────────────────────────────
+        //  4) DETAILS (hidden content)
+        // ───────────────────────────────────────────────────────────────────────────
         const $detailsWrapper = document.createElement('div');
         $detailsWrapper.classList.add('detailsWrapper');
-
-        // **More Detail**
+    
         const $moreDetail = document.createElement('span');
         $moreDetail.classList.add('moreDetail');
-
+    
         const $arrowIcon = document.createElement('img');
         $arrowIcon.src = '/img/interviews/down-arrow.svg';
         $arrowIcon.classList.add('moreDetailArrow');
-
+    
         const $moreDetailLabel = document.createElement('p');
         $moreDetailLabel.classList.add('moreDetailLabel');
         $moreDetailLabel.textContent = this.locale.get('create_step_more_detail_label', this.lang) || 'More detail';
-
+    
         $moreDetail.appendChild($arrowIcon);
         $moreDetail.appendChild($moreDetailLabel);
         $detailsWrapper.appendChild($moreDetail);
-
-        // **Hidden Content**
+    
         const $hiddenContent = document.createElement('div');
         $hiddenContent.classList.add('hiddenContent');
-
-        // ----------------------------------------------------------------------
-        // Details (Hidden area)
-        // ----------------------------------------------------------------------
-
-        // ----------------------------------------------------------------------
-        // Detail 1) GUIDELINES
-        // ----------------------------------------------------------------------
-
-        // **Guidelines List**
+    
+        // 4.1) GUIDELINES
         const $guidelinesWrapper = document.createElement('div');
-        $guidelinesWrapper.classList.add('guidelinesWrapper');
-        $guidelinesWrapper.classList.add('configItemWrapper');
-
-        // **Guidelines Label**
+        $guidelinesWrapper.classList.add('guidelinesWrapper', 'configItemWrapper');
+    
         const $guidelinesLabel = document.createElement('span');
-        $guidelinesLabel.classList.add('guidelinesLabel');
-        $guidelinesLabel.classList.add('configItemLabel');
+        $guidelinesLabel.classList.add('guidelinesLabel', 'configItemLabel');
         $guidelinesLabel.textContent = this.locale.get('create_step_guidelines_label', this.lang) || 'Guidelines:';
         $guidelinesWrapper.appendChild($guidelinesLabel);
-
-        // Make sure we have a sub-array for guidelineForms
-        if (!this.guidelineForms) {
-            this.guidelineForms = [];
-        }
-        if (!this.guidelineForms[index]) {
-            this.guidelineForms[index] = [];
-        }
-        this.guidelineForms[index] = [];
-
-        step.guidelines.forEach((guideline, idx) => {
+    
+        // Prepare guideline forms array
+        const guidelineForms = [];
+        step.guidelines.forEach((guideline, gIdx) => {
             const guidelineForm = new TextField({
-                id: `guidelineForm_${index}_${idx}`,
-                fieldName: `guideline_${index}_${idx}`,
+                id: `guidelineForm_${index}_${gIdx}`,
+                fieldName: `guideline_${index}_${gIdx}`,
                 validators: [
                     new Validator({
                         errorType: ValidationErrorType.required,
@@ -598,57 +502,83 @@ class ProgramView {
                 ],
                 defaultValue: guideline,
                 hasTitle: false,
-                placeholder: `Enter guideline ${idx + 1}.`,
+                placeholder: `Enter guideline ${gIdx + 1}.`,
                 isCounter: false,
             });
             guidelineForm.$view.classList.add('guidelineForm');
-            this.guidelineForms[index][idx] = guidelineForm;
-
+    
             const $guidelineWrapper = document.createElement('div');
             $guidelineWrapper.classList.add('guidelineWrapper');
-
             $guidelineWrapper.appendChild(guidelineForm.$view);
-
+    
             $guidelinesWrapper.appendChild($guidelineWrapper);
+            guidelineForms.push(guidelineForm);
         });
-
-        $hiddenContent.appendChild($guidelinesWrapper);
-
-        // **Add Guideline Button Container**
+    
+        // Add Guideline Button
         const $addGuidelineButtonContainer = document.createElement('div');
         $addGuidelineButtonContainer.classList.add('addGuidelineButtonContainer');
         $addGuidelineButtonContainer.style.display = 'flex';
         $addGuidelineButtonContainer.style.justifyContent = 'center';
-
-        // **Add Guideline Button**
+    
         const $addGuidelineButton = document.createElement('img');
         $addGuidelineButton.src = '/img/interviews/plus-icon.svg';
         $addGuidelineButton.classList.add('addGuidelineButton');
         $addGuidelineButton.style.cursor = 'pointer';
-
+    
         $addGuidelineButtonContainer.appendChild($addGuidelineButton);
-
-        // Hide the button if the number of guidelines is >= 3
-        if (this.guidelineForms[index].length >= 3) {
+        if (guidelineForms.length >= 3) {
             $addGuidelineButtonContainer.style.display = 'none';
         }
-
         $guidelinesWrapper.appendChild($addGuidelineButtonContainer);
-
-
-        // ----------------------------------------------------------------------
-        // Detail 3) MAX TURNS
-        // ----------------------------------------------------------------------
+    
+        // Add Guideline Button event
+        $addGuidelineButton.addEventListener('click', () => {
+            const gIdx = guidelineForms.length;
+            if (gIdx >= 3) return;
+            const guidelineForm = new TextField({
+                id: `guidelineForm_${index}_${gIdx}`,
+                fieldName: `guideline_${index}_${gIdx}`,
+                validators: [
+                    new Validator({
+                        errorType: ValidationErrorType.required,
+                        errorMessage: this.locale.get(ValidationErrorType.required, this.lang)
+                    }),
+                    new Validator({
+                        errorType: ValidationErrorType.maxLength,
+                        errorMessage: this.locale.get(ValidationErrorType.maxLength, this.lang),
+                        maxLength: 300 
+                    }),
+                ],
+                defaultValue: '',
+                hasTitle: false,
+                placeholder: `Enter guideline ${gIdx + 1}.`,
+                isCounter: false,
+            });
+            guidelineForm.$view.classList.add('guidelineForm');
+            guidelineForms.push(guidelineForm);
+    
+            const $guidelineWrapper = document.createElement('div');
+            $guidelineWrapper.classList.add('guidelineWrapper');
+            $guidelineWrapper.appendChild(guidelineForm.$view);
+            $guidelinesWrapper.appendChild($guidelineWrapper);
+    
+            if (guidelineForms.length >= 3) {
+                $addGuidelineButtonContainer.style.display = 'none';
+            }
+        });
+    
+        $hiddenContent.appendChild($guidelinesWrapper);
+    
+        // 4.2) MAX TURNS
         const $maxTurnsWrapper = document.createElement('div');
-        $maxTurnsWrapper.classList.add('maxTurnsWrapper');
-        $maxTurnsWrapper.classList.add('configItemWrapper');
-
+        $maxTurnsWrapper.classList.add('maxTurnsWrapper', 'configItemWrapper');
+    
         const $maxTurnsLabel = document.createElement('span');
-        $maxTurnsLabel.classList.add('maxTurnsLabel');
-        $maxTurnsLabel.classList.add('configItemLabel');
+        $maxTurnsLabel.classList.add('maxTurnsLabel', 'configItemLabel');
         $maxTurnsLabel.textContent = this.locale.get('create_step_max_turns_label', this.lang) || 'Max Turns:';
         $maxTurnsWrapper.appendChild($maxTurnsLabel);
-
+    
         const maxTurnsForm = new TextField({
             id: `maxTurnsForm_${index}`,
             fieldName: `maxTurns_${index}`,
@@ -668,25 +598,14 @@ class ProgramView {
             incrementDownImgSrc: '/img/down.svg',
         });
         maxTurnsForm.$view.classList.add('maxTurnsForm');
-        this.maxTurnsForms[index] = maxTurnsForm;
         $maxTurnsWrapper.appendChild(maxTurnsForm.$view);
-
+    
         $hiddenContent.appendChild($maxTurnsWrapper);
-
-        // ----------------------------------------------------------------------
-        // Detail 3.1) RESPONSE MODE
-        // ----------------------------------------------------------------------
+    
+        // 4.3) RESPONSE MODE
         const $responseModeWrapper = document.createElement('div');
-        $responseModeWrapper.classList.add('responseModeWrapper');
-        $responseModeWrapper.classList.add('configItemWrapper');
-
-        //const $responseModeLabel = document.createElement('span');
-        //$responseModeLabel.classList.add('responseModeLabel');
-        //$responseModeLabel.classList.add('configItemLabel');
-        //// "Response Mode:"
-        //$responseModeLabel.textContent = this.locale.get('create_response_mode_title', this.lang);
-        //$responseModeWrapper.appendChild($responseModeLabel);
-
+        $responseModeWrapper.classList.add('responseModeWrapper', 'configItemWrapper');
+    
         const responseModeItems = [
             new ListItem({
                 title: this.locale.get('basic_configs_response_mode_tempo_oriented', this.lang),
@@ -705,19 +624,17 @@ class ProgramView {
                 value: 3
             })
         ];
-
-        /** Create the actual dropdown */
+    
         const responseModeSelector = new DropdownButton({
             id: `responseModeSelector_${index}`,
             fieldName: `response_mode_${index}`,
-            title: '', // We can dynamically set this after picking an item
+            title: '',
             description: this.locale.get('create_response_mode_title', this.lang),
             type: DropdownMenuType.list,
             position: DropdownMenuDisplayPositionType.bottomover,
-            hasSelectedIcon: true,    // to show the checkmark
-            isMultiSelect: false,     
+            hasSelectedIcon: true,
+            isMultiSelect: false,
             items: responseModeItems,
-            // defaultValue is from the step or fallback to 1
             validators: [
               new Validator({
                 errorType: ValidationErrorType.required,
@@ -725,34 +642,22 @@ class ProgramView {
               }),
             ],
         });
-        responseModeSelector.value = step.response_mode || defaultStep.response_mode;
-        this.responseModeSelectors[index] = responseModeSelector;
+        responseModeSelector.value = step.response_mode || defaultStep().response_mode;
+    
         $responseModeWrapper.appendChild(responseModeSelector.$view);
-
-        // Finally, append it to the hidden content
         $hiddenContent.appendChild($responseModeWrapper);
-
-        // ----------------------------------------------------------------------
-        // Detail 4) REFERENCES
-        // ----------------------------------------------------------------------
-
+    
+        // 4.4) REFERENCES
         const $referenceWrapper = document.createElement('div');
-        $referenceWrapper.classList.add('referenceWrapper');
-        $referenceWrapper.classList.add('configItemWrapper');
-
+        $referenceWrapper.classList.add('referenceWrapper', 'configItemWrapper');
+    
         const $referenceTypeContainer = document.createElement('div');
         $referenceTypeContainer.classList.add('referenceTypeContainer');
-    
-        //const $referenceTypeLabel = document.createElement('span');
-        //$referenceTypeLabel.classList.add('referenceTypeLabel');
-        //$referenceTypeLabel.classList.add('configItemLabel');
-        //$referenceTypeLabel.textContent = this.locale.get('create_reference_type_selector_label', this.lang);
-        //$referenceTypeContainer.appendChild($referenceTypeLabel);
     
         const referenceTypeSelector = new DropdownButton({
             id: `referenceTypeSelector_${index}`,
             fieldName: `reference_type_${index}`,
-            title: '', // We'll use the label above, so title can remain empty or be used differently.
+            title: '',
             description: this.locale.get('create_reference_type_selector_label', this.lang),
             type: DropdownMenuType.list,
             position: DropdownMenuDisplayPositionType.bottomover,
@@ -775,25 +680,22 @@ class ProgramView {
             defaultValue: step.reference_type || 'all',
             validators: [new Validator({
                 errorType: ValidationErrorType.required,
-                errorMessage: this.locale.get(ValidationErrorType.required, lang)
+                errorMessage: this.locale.get(ValidationErrorType.required, this.lang)
             })]
         });
-        this.referenceTypeSelectors[index] = referenceTypeSelector;
     
         $referenceTypeContainer.appendChild(referenceTypeSelector.$view);
         $referenceWrapper.appendChild($referenceTypeContainer);
     
-        /**
-         *  References Multi-select
-         */
         const $referencesContainer = document.createElement('div');
         $referencesContainer.classList.add('referencesContainer');
     
+        // Build references dropdown only after materials fetch
         this.materialsReady.then(() => {
             const referencesSelector = new DropdownButton({
                 id: `referencesDropdown_${index}`,
                 fieldName: `references_${index}`,
-                title: '', 
+                title: '',
                 description: this.locale.get('create_reference_selector_label', this.lang),
                 type: DropdownMenuType.list,
                 position: DropdownMenuDisplayPositionType.bottomover,
@@ -803,245 +705,200 @@ class ProgramView {
                 multiSelectDisplayTitle: this.locale.get('create_reference_selector_display_title', this.lang),
             });
     
-            // If step already has references, pre-populate
+            // Pre-populate
             if (step.references && Array.isArray(step.references)) {
                 referencesSelector.value = step.references;  
             }
     
-            this.referencesSelectors[index] = referencesSelector;
-    
+            // store in stepData as well
             $referencesContainer.appendChild(referencesSelector.$view);
-            $referenceWrapper.appendChild($referencesContainer);
-        }).catch((error) => {
-            console.error("Materials failed to fetch:", error);
-        });
     
-        // Show/hide referencesContainer when referenceType changes
-        referenceTypeSelector.$view.addEventListener('selected', (e) => {
-            const val = e.detail.value;   // The selected item’s value
-            if (val === 'select') {
-                $referencesContainer.style.display = 'block';
-            } else {
+            // Show/hide referencesContainer based on referenceType
+            if (referenceTypeSelector.value !== 'select') {
                 $referencesContainer.style.display = 'none';
             }
+    
+            referenceTypeSelector.$view.addEventListener('selected', (e) => {
+                if (e.detail.value === 'select') {
+                    $referencesContainer.style.display = 'block';
+                } else {
+                    $referencesContainer.style.display = 'none';
+                }
+            });
+    
+            stepData.referencesSelector = referencesSelector; // We'll define stepData later
+        }).catch((error) => {
+            console.error("Materials fetch failed:", error);
         });
     
-        // Set initial value
-        referenceTypeSelector.value = step.reference_type || defaultStep.reference_type
-
+        $referenceWrapper.appendChild($referencesContainer);
         $hiddenContent.appendChild($referenceWrapper);
-
+    
         $detailsWrapper.appendChild($hiddenContent);
-
-        // **More Detail Event Listener**
+        $stepContainer.appendChild($stepContent);
+        $stepContent.appendChild($detailsWrapper);
+    
+        // More detail toggle
         $moreDetail.addEventListener('click', () => {
             $hiddenContent.classList.toggle('expanded');
             $moreDetail.classList.toggle('rotated');
         });
 
-        // **Add Guideline Button Event Listener**
-        $addGuidelineButton.addEventListener('click', () => {
-            const idx = this.guidelineForms[index].length;
-            if (idx >= 3) {
-                return;
-            }
-            const guidelineForm = new TextField({
-                id: `guidelineForm_${index}_${idx}`,
-                fieldName: `guideline_${index}_${idx}`,
-                validators: [
-                    new Validator({
-                        errorType: ValidationErrorType.required,
-                        errorMessage: this.locale.get(ValidationErrorType.required, this.lang)
-                    }),
-                    new Validator({
-                        errorType: ValidationErrorType.maxLength,
-                        errorMessage: this.locale.get(ValidationErrorType.maxLength, this.lang),
-                        maxLength: 300 
-                    }),
-                ],
-                defaultValue: '',
-                hasTitle: false,
-                placeholder: `Enter guideline ${idx + 1}.`,
-                isCounter: false,
-            });
-            guidelineForm.$view.classList.add('guidelineForm');
-            this.guidelineForms[index][idx] = guidelineForm;
-
-            const $guidelineWrapper = document.createElement('div');
-            $guidelineWrapper.classList.add('guidelineWrapper');
-
-            const $indexSpan = document.createElement('span');
-            $indexSpan.classList.add('index');
-            $indexSpan.textContent = idx + 1;
-
-            $guidelineWrapper.appendChild($indexSpan);
-            $guidelineWrapper.appendChild(guidelineForm.$view);
-
-            $guidelinesWrapper.appendChild($guidelineWrapper);
-
-            if (this.guidelineForms[index].length >= 3) {
-                $addGuidelineButtonContainer.style.display = 'none';
-            }
-            this.guidelineForms[index].push(guidelineForm); // add to guidelineForms
-        });
-
-        $stepContent.appendChild($detailsWrapper);
-        $stepContainer.appendChild($stepContent);
-
-        // Store references
-        this.remarkForms[index] = remarkForm;
-        this.goalForms[index] = goalForm;
-        this.topicForms[index] = topicForm;
-        this.maxTurnsForms[index] = maxTurnsForm;
-
-        // Create an instance of ProgramTools:
+        // Add ProgramTools
         const tools = new ProgramTools({
-          id: `programTools_${index}`,
-          locale: this.locale,
-          lang: this.lang,
-          onClickAdd: () => {
-            console.log(`Add step from step #${index + 1}`);
-            //this.addStep(index);
-            this.addStep();
-          },
-          onClickDelete: () => {
-            console.log(`Delete step #${index + 1}`);
-            this.removeStep(index);
-          },
-          // onClickAddImage: () => { ... },
-          // onClickAddVideo: () => { ... },
+            id: `programTools_${index}`,
+            locale: this.locale,
+            lang: this.lang,
+            onClickAdd: () => {
+              console.log(`Add step from step #${index + 1}`);
+              this.addStep();
+            },
+            onClickDelete: () => {
+              console.log(`Delete step #${index + 1}`);
+              this.removeStep(index);
+            },
+            // If you eventually need these:
+            // onClickAddImage: () => { ... },
+            // onClickAddVideo: () => { ... },
         });
         tools.attach($stepContainer);
+        tools.$view.classList.add('show')
 
-        console.warn(`Step container created for step ${index + 1}`);
-        return $stepContainer;
+    
+        // Return a single object with everything we need
+        const stepData = {
+            container: $stepContainer,
+            step,   // the underlying step data in this.interactionModel.steps[index]
+            taskTypeSelector,
+            topicForm,
+            remarkForm,
+            goalForm,
+            guidelineForms,
+            maxTurnsForm,
+            responseModeSelector,
+            referenceTypeSelector,
+            referencesSelector: null // we set it in .then() above
+        };
+    
+        return stepData;
     }
 
     onTaskTypeChanged(stepIndex, newTaskType) {
-        this.interactionModel.steps[stepIndex].task_type = newTaskType;
-    
-        // 1) Apply config (maxTurns, responseMode, etc.)
+        // Get the step data
+        const stepData = this.stepsData[stepIndex];
+        if (!stepData) return;
+
+        // Update the actual step object
+        stepData.step.task_type = newTaskType;
+
         const config = taskTypeConfigs[newTaskType];
         if (!config) return;
-        // set default values
-        this.interactionModel.steps[stepIndex].max_turns = config.maxTurns;
-        if (this.maxTurnsForms[stepIndex]) {
-            this.maxTurnsForms[stepIndex].value = String(config.maxTurns);
-        }
-        this.interactionModel.steps[stepIndex].response_mode = config.responseMode;
-        if (this.responseModeSelectors[stepIndex]) {
-            this.responseModeSelectors[stepIndex].value = config.responseMode;
-        }
-        this.interactionModel.steps[stepIndex].reference_type = config.referenceType;
-        if (this.referenceTypeSelectors[stepIndex]) {
-            this.referenceTypeSelectors[stepIndex].value = config.referenceType;
-        }
 
-        // 2) Update the label/placeholder for the remark text
-        const remarkForm = this.remarkForms[stepIndex];
-        if (remarkForm) {
-          const labelKey = `create_remark_label_${newTaskType}`;
-          const placeholderKey = `create_input_remark_placeholder_${newTaskType}`;
+        // Update step data & forms
+        stepData.step.max_turns = config.maxTurns;
+        stepData.maxTurnsForm.value = String(config.maxTurns);
 
-          const newLabel = this.locale.get(labelKey, this.lang) 
-            || this.locale.get('create_step_remark_label', this.lang) 
-            || 'Remark:';
-          const newPlaceholder = this.locale.get(placeholderKey, this.lang) 
-            || this.locale.get('create_input_remark_placeholder', this.lang) 
-            || 'Enter the remark.';
+        stepData.step.response_mode = config.responseMode;
+        stepData.responseModeSelector.value = config.responseMode;
 
-          // If you have a separate DOM label, update its textContent:
-          const $remarkLabel = this.stepContainers[stepIndex].querySelector('.remarkLabel');
-          if ($remarkLabel) {
+        stepData.step.reference_type = config.referenceType;
+        stepData.referenceTypeSelector.value = config.referenceType;
+
+        // Update remark label/placeholder
+        const $remarkLabel = stepData.container.querySelector('.remarkLabel');
+        if ($remarkLabel) {
+            const labelKey = `create_remark_label_${newTaskType}`;
+            const fallbackLabelKey = 'create_step_remark_label';
+            const newLabel = this.locale.get(labelKey, this.lang)
+                || this.locale.get(fallbackLabelKey, this.lang)
+                || 'Remark:';
             $remarkLabel.textContent = newLabel;
-          }
-
-          // And for the remark form placeholder:
-          remarkForm.placeholder = newPlaceholder;
         }
+        const placeholderKey = `create_input_remark_placeholder_${newTaskType}`;
+        const fallbackPlaceholder = 'create_input_remark_placeholder';
+        const newPlaceholder = this.locale.get(placeholderKey, this.lang)
+            || this.locale.get(fallbackPlaceholder, this.lang)
+            || 'Enter the remark.';
+        stepData.remarkForm.placeholder = newPlaceholder;
 
-        // 3) Toggle visibility if needed
-        const $stepContainer = this.stepContainers[stepIndex];
-        const $remarkWrapper = $stepContainer?.querySelector('.remarkWrapper');
+        // show/hide remark wrapper
+        const $remarkWrapper = stepData.container.querySelector('.remarkWrapper');
         if ($remarkWrapper) {
-          $remarkWrapper.style.display = config.showRemark ? 'block' : 'none';
+            $remarkWrapper.style.display = config.showRemark ? 'block' : 'none';
         }
-    
+
         console.log(`Task type for step ${stepIndex} changed to ${newTaskType}`);
     }
-    
-    addStep() {
+
+    addStep({ indexAfter } = {}) {
         if (this.interactionModel.steps.length >= this.maxSteps) {
             console.warn('Max steps reached. Cannot add more steps.');
             return;
         }
-    
+
         const newStep = defaultStep();
-        this.interactionModel.steps.push(newStep);
-    
-        console.warn(`Adding new step at index ${this.interactionModel.steps.length - 1}`, newStep);
-    
-        const index = this.interactionModel.steps.length - 1;
-        const $newStepContainer = this.createStepContainer(newStep, index);
-    
-        // Find the position for the new step
-        const $lastStepContainer = this.stepContainers[this.stepContainers.length - 1];
-        //const $endContainer = this.$interviewCreateViewContainer.querySelector('.endContainer');
-    
-        // Insert the new step container after the last step container, before the endContainer
-        //if ($lastStepContainer) {
-        //    this.$interviewCreateViewContainer.insertBefore($newStepContainer, $endContainer);
-        //} else {
-            this.$interviewCreateViewContainer.appendChild($newStepContainer);
-        //}
-    
-        this.stepContainers.push($newStepContainer);
+        let insertIndex = this.interactionModel.steps.length; // default => end
+        if (typeof indexAfter === 'number' && indexAfter >= 0 && indexAfter < this.interactionModel.steps.length) {
+            insertIndex = indexAfter + 1;
+        }
+
+        // Insert into the data array
+        this.interactionModel.steps.splice(insertIndex, 0, newStep);
+        const newStepData = this.buildStepData(newStep, insertIndex);
+        this.stepsData.splice(insertIndex, 0, newStepData);
+
+        // Insert DOM after the stepContainer at indexAfter
+        if (this.stepsData[insertIndex - 1]) {
+            const refContainer = this.stepsData[insertIndex - 1].container;
+            if (refContainer && refContainer.nextSibling) {
+                refContainer.parentNode.insertBefore(newStepData.container, refContainer.nextSibling);
+            } else {
+                refContainer.parentNode.appendChild(newStepData.container);
+            }
+        } else {
+            // If no existing step => just append
+            const $parent = this.$view.querySelector('.ProgramViewContainer');
+            $parent.appendChild(newStepData.container);
+        }
+
+        // Re-index the DOM
+        this.updateStepIndices();
         this.updateRemoveButtonVisibility();
     }
-    
 
     removeStep(index) {
         console.warn(`Removing step at index ${index}`);
-    
-        // Remove the step data from interview steps
+        // Safety checks
+        if (index < 0 || index >= this.stepsData.length) {
+            return;
+        }
+        // Remove from data
         this.interactionModel.steps.splice(index, 1);
-    
-        // Remove the step DOM element
-        const $stepContainer = this.stepContainers[index];
-        if ($stepContainer && $stepContainer.parentNode) {
-            $stepContainer.parentNode.removeChild($stepContainer);
+
+        const stepData = this.stepsData[index];
+        const $container = stepData.container;
+        if ($container && $container.parentNode) {
+            $container.parentNode.removeChild($container);
         }
-    
-        // Remove the step from arrays
-        this.stepContainers.splice(index, 1);
-        this.topicForms.splice(index, 1);
-        this.remarkForms.splice(index, 1);
-        this.goalForms.splice(index, 1);
-        this.maxTurnsForms.splice(index, 1);
-        this.instructionForms.splice(index, 1);
-        if (this.guidelineForms && this.guidelineForms[index]) {
-            this.guidelineForms.splice(index, 1);
-        }
-    
-        // Update indices for the remaining steps
+        this.stepsData.splice(index, 1);
+
+        // Re-index
         this.updateStepIndices();
-    
-        // Update remove button visibility
         this.updateRemoveButtonVisibility();
-    
+
         // Ensure an empty step if needed
         this.ensureEmptyStepAtEnd();
-    
-        console.warn(`Step ${index + 1} removed. Remaining steps: ${this.interactionModel.steps.length}`);
     }
-    
+
     updateStepIndices() {
         console.warn('Updating step indices');
-        this.stepContainers.forEach(($stepContainer, index) => {
-            $stepContainer.dataset.index = index;
-            const $stepTitle = $stepContainer.querySelector('.stepTitle');
+        this.stepsData.forEach((sd, index) => {
+            sd.container.dataset.index = index;
+            const $stepTitle = sd.container.querySelector('.stepTitle');
             const stepLabelTemplate = this.locale.get('create_steps_label', this.lang) || 'Step $0';
-            $stepTitle.textContent = stepLabelTemplate.replace('$0', index + 1); 
+            if ($stepTitle) {
+                $stepTitle.textContent = stepLabelTemplate.replace('$0', index + 1);
+            }
         });
         console.warn('Step indices updated');
     }
@@ -1050,15 +907,15 @@ class ProgramView {
         const visible = this.interactionModel.steps.length > 1;
         console.warn(`Setting remove button visibility to ${visible ? 'visible' : 'hidden'}`);
 
-        // If there's only one step, hide the remove button on that step
-        if (this.interactionModel.steps.length <= 1 && this.stepContainers.length > 0) {
-            const $removeStepButton = this.stepContainers[0].querySelector('.removeStepButton');
+        // If there's only one step, hide the remove button
+        if (this.interactionModel.steps.length <= 1 && this.stepsData.length > 0) {
+            const $removeStepButton = this.stepsData[0].container.querySelector('.removeStepButton');
             if ($removeStepButton) {
                 $removeStepButton.style.display = 'none';
             }
         } else {
-            this.stepContainers.forEach($stepContainer => {
-                const $removeStepButton = $stepContainer.querySelector('.removeStepButton');
+            this.stepsData.forEach(sd => {
+                const $removeStepButton = sd.container.querySelector('.removeStepButton');
                 if ($removeStepButton) {
                     $removeStepButton.style.display = 'block';
                 }
@@ -1067,17 +924,18 @@ class ProgramView {
     }
 
     ensureEmptyStepAtEnd() {
-        // Ensure that if the last topic/remark is filled and steps are < maxSteps, we add a new empty step
         if (this.interactionModel.steps.length < this.maxSteps) {
-            const lastTopicForm = this.topicForms[this.topicForms.length -1];
-            const lastRemarkForm = this.remarkForms[this.remarkForms.length -1];
-            if (
-                (lastTopicForm && lastTopicForm.value && lastTopicForm.value.trim() !== '') ||
-                (lastRemarkForm && lastRemarkForm.value && lastRemarkForm.value.trim() !== '')
-            ) {
+            // Check last step's topic or remark forms
+            const lastStepData = this.stepsData[this.stepsData.length - 1];
+            if (!lastStepData) {
+                // no steps => add
                 this.addStep();
-            } else if (!lastTopicForm && !lastRemarkForm) {
-                // If there are no topic/remark forms yet, add an initial step
+                return;
+            }
+            const topicVal = lastStepData.topicForm.value.trim();
+            const remarkVal = lastStepData.remarkForm.value.trim();
+            if (topicVal || remarkVal) {
+                // if we have content => add empty
                 this.addStep();
             }
         }
@@ -1087,126 +945,212 @@ class ProgramView {
         $parent.appendChild(this.$view);
     }
 
-    interviewObjectFromFormData() {
+    interactionModelObjectFromFormData() {
         const title = this.titleForm.value;
         const steps = [];
-        let hasQuestionValue = false;
+        let hasAnyStepContent = false;
 
-        // Build each step from forms
-        this.topicForms.forEach((topicForm, index) => {
-            const taskTypeSelector = this.taskTypeSelectors[index];
-            const remarkForm = this.remarkForms[index];
-            const goalForm = this.goalForms[index];
-            const maxTurnsForm = this.maxTurnsForms[index];
-            const guidelinesArray = this.guidelineForms[index] || [];
+        // Build each step from stepsData
+        this.stepsData.forEach((stepData, index) => {
+            const topicVal = stepData.topicForm.value?.trim();
+            const remarkVal = stepData.remarkForm.value?.trim();
 
-            const responseModeSelector = this.responseModeSelectors[index];
-            const referencesSelector = this.referencesSelectors
-                ? this.referencesSelectors[index]
-                : null;
-            const referenceTypeSelector = this.referenceTypeSelectors[index];
-
-            const topicVal = topicForm?.value?.trim() || '';
-            const remarkVal = remarkForm?.value?.trim() || '';
-
-            // If user typed something in remark or topic, it’s a valid step
+            // If user typed something, we consider it a valid step
             if (topicVal || remarkVal) {
-                hasQuestionValue = true;
+                hasAnyStepContent = true;
+                const referencesVal = stepData.referencesSelector
+                    ? stepData.referencesSelector.value || []
+                    : [];
+                const referenceTypeVal = stepData.referenceTypeSelector.value;
 
-                const referencesVal = referencesSelector?.value || [];
-                const referenceTypeVal = referenceTypeSelector?.value || ReferenceType.ALL;
-
-                const step = {
-                    // 1) Task Type
-                    task_type: taskTypeSelector.value,
-
-                    // 2) Basic fields
+                const stepObj = {
+                    task_type: stepData.taskTypeSelector.value,
                     topic: topicVal,
                     remark: remarkVal,
-                    goal: goalForm?.value || '',
-
-                    // 3) Guidelines
-                    guidelines: guidelinesArray.map(gForm => gForm?.value || ''),
-
-                    // 4) Config fields
-                    max_turns: parseInt(maxTurnsForm?.value, 10),
-                    response_mode: parseInt(responseModeSelector?.value, 10),
+                    goal: stepData.goalForm.value || '',
+                    guidelines: stepData.guidelineForms.map(g => g.value || ''),
+                    max_turns: parseInt(stepData.maxTurnsForm.value, 10),
+                    response_mode: parseInt(stepData.responseModeSelector.value, 10),
                     reference_type: referenceTypeVal,
                     references: referenceTypeVal === 'select' ? referencesVal : []
                 };
-                steps.push(step);
+                steps.push(stepObj);
             }
         });
-    
-        // If no topic/remark form has value, show an alert on the first step’s remark
-        if (!hasQuestionValue && this.remarkForms.length > 0) {
-            this.remarkForms[0].alert(
-              this.locale.get("create_no_remark_error", this.lang)
-            );
-            console.log('No topic or remark. return.');
+
+        if (!hasAnyStepContent) {
+            // Alert if no step content
+            if (this.stepsData[0]?.remarkForm) {
+                this.stepsData[0].remarkForm.alert(
+                    this.locale.get("create_no_remark_error", this.lang)
+                );
+            }
+            console.log('No topic or remark. return null');
             return null;
         }
-    
+
         return {
-            title: title,
-            steps: steps
+            title,
+            steps
         };
     }
 
-    submitCreateInterview() {
-        const interviewJSON = this.interactionModelObjectFromFormData();
-        if (!interviewJSON) {
+    checkForUpdates() {
+        console.log("[checkForUpdates] Checking for changes in interaction model...");
+
+        // If there's no interactionModelId, skip
+        if (!this.interactionModelId) {
+            console.log("[checkForUpdates] No interactionModelId present. Skipping update check.");
             return;
         }
 
-        if (this.$message) {
-            this.$message.classList.remove('alert', 'success');
-            this.$message.textContent = '';
-        } else {
-            console.error(`ProgramView.$message not exist.`)
+        // Build the current data object from the form
+        const currentData = this.interactionModelObjectFromFormData();
+        console.log("[checkForUpdates] currentData:", currentData);
+
+        if (!currentData) {
+            // Possibly invalid or empty => skip
+            console.log("[checkForUpdates] currentData is null or invalid. Skipping update.");
+            return;
         }
 
-        Http.post(`/v1/${this.lang}/interviews/create`, interviewJSON,
+        // Compare with the last snapshot
+        const currentJson = JSON.stringify(currentData);
+        if (currentJson !== this._lastSnapshot) {
+            console.log("[checkForUpdates] Detected changes. Preparing to submit update...");
+
+            // Show a "Updating..." message
+            this.loadingMessage.setText(
+                this.locale.get('create_updating_interaction_model', this.lang), { gradient: LoadingMessageGradient.ocean }
+            );
+
+            // Call update
+            this.submitUpdateInteractionModelAsync(this.interactionModelId)
+                .then(() => {
+                    // On success, update snapshot and show success
+                    this._lastSnapshot = currentJson;
+                    console.log("[checkForUpdates] Update successful. Snapshot refreshed.");
+                    this.loadingMessage.setText(
+                        this.locale.get('create_update_success', this.lang),
+                        { gradient: LoadingMessageGradient.bluegreen }
+                    );
+                })
+                .catch((err) => {
+                    // On error, show an alert
+                    console.error("[checkForUpdates] Update failed:", err);
+                    this.loadingMessage.setText(err.message, { alert: true }
+                    );
+                });
+        } else {
+            console.log("[checkForUpdates] No changes detected in interaction model. No update needed.");
+        }
+    }
+
+    submitCreateInteractionModel() {
+        console.log("[submitCreateInteractionModel] Starting interview creation process...");
+
+        const interviewJSON = this.interactionModelObjectFromFormData();
+        console.log("[submitCreateInteractionModel] Generated interview JSON:", interviewJSON);
+
+        if (!interviewJSON) {
+            console.warn("[submitCreateInteractionModel] interviewJSON is null or invalid. Aborting creation.");
+            return;
+        }
+
+        console.log("[submitCreateInteractionModel] Sending POST request to create interview...");
+        this.loadingMessage.setText(this.locale.get('create_creating_new_interaction_model', this.lang), {gradient: LoadingMessageGradient.ocean});
+
+        Http.post(
+            `/v1/${this.lang}/interviews/create`,
+            interviewJSON,
             (res) => {
+                if (!res.ok) {
+                    this.loadingMessage.setText(result.message, {alert: true})
+                    throw new Error(result.message || 'Create failed.');
+                }
                 const { code, message } = res;
-                console.log(`[${code} success] ${message}`);
-                this.$message.classList.add('success');
-                this.$message.textContent = message;
+                console.log(`[submitCreateInteractionModel] [${code} success] ${message}`);
+                this.loadingMessage.setText(result.message || 'Create succeeded!', {gradient: LoadingMessageGradient.bluegreen});
 
                 this.interactionModelId = res.id;
+                console.log("[submitCreateInteractionModel] Interview created successfully with ID:", res.id);
+
                 // show url
                 if (this.onInteractionModelCreated) {
+                    console.log("[submitCreateInteractionModel] Calling onInteractionModelCreated callback with ID:", res.id);
                     this.onInteractionModelCreated(this.interactionModelId);
                 }
             },
             (error) => {
-                this.handleError(error, this.$message);
+                console.error("[submitCreateInteractionModel] Interview creation failed:", error);
+                this.handleError(error);
             }
         );
     }
 
-    submitUpdateInterview(interactionModelId) {
-        const interviewJSON = this.interactionModelObjectFromFormData();
-        if (!interviewJSON) {
+    submitUpdateInteractionModelAsync(interactionModelId) {
+        return new Promise((resolve, reject) => {
+            console.log("[submitUpdateInteractionModelAsync] Preparing to update interaction model:", interactionModelId);
+            
+            const interactionModelJSON = this.interactionModelObjectFromFormData();
+            console.log("[submitUpdateInteractionModelAsync] interactionModelJSON:", interactionModelJSON);
+
+            this.loadingMessage.setText(this.locale.get('create_updating_interaction_model', this.lang), {gradient: LoadingMessageGradient.ocean});
+
+            if (!interactionModelJSON) {
+                // No data or invalid => just reject
+                const msg = "[submitUpdateInteractionModelAsync] No data to update. Rejecting promise.";
+                console.warn(msg);
+                return reject(new Error('No data to update.'));
+            }
+
+            console.log("[submitUpdateInteractionModelAsync] Sending POST request to update interaction model...");
+            Http.post(
+                `/v1/${this.lang}/interaction_model/${interactionModelId}/update`,
+                interactionModelJSON,
+                (res) => {
+                    const { code, message } = res;
+                    console.log(`[submitUpdateInteractionModelAsync] [${code} success] ${message}`);
+                    this.loadingMessage.setText(message || 'Update succeeded!', {gradient: LoadingMessageGradient.bluegreen});
+                    console.log("[submitUpdateInteractionModelAsync] Update operation resolved successfully.");
+                    resolve();
+                },
+                (error) => {
+                    console.error("[submitUpdateInteractionModelAsync] Update operation failed:", error);
+                    this.handleError(error, this.$message);
+                    reject(error);
+                }
+            );
+        });
+    }
+
+    submitUpdateInteractionModel(interactionModelId) {
+        const interactionModelJSON = this.interactionModelObjectFromFormData();
+        if (!interactionModelJSON) {
             return;
         }
 
-        this.$message.textContent = '';
+        this.loadingMessage.setText('Updating interaction model...', {
+            gradient: LoadingMessageGradient.ocean
+        });
 
-        Http.post(`/v1/${this.lang}/interviews/${interactionModelId}/update`, interviewJSON,
+        Http.post(`/v1/${this.lang}/interaction_model/${interactionModelId}/update`, 
+            interactionModelJSON,
             (res) => {
                 const { code, message } = res;
                 console.log(`[${code} success] ${message}`);
-                this.$message.classList.add('success');
-                this.$message.textContent = message;
+                this.loadingMessage.setText('Update successful!', {
+                    gradient: LoadingMessageGradient.bluegreen
+                });
             },
             (error) => {
-                this.handleError(error, this.$message);
+                this.handleError(error);
+                this.loadingMessage.setText(error.message || 'Update failed.', {alert: true});
             }
         );
     }
 
-    handleError(error, $message) {
+    handleError(error) {
         if (error && error.code) {
             console.log(`[error] code:${error.code} reason:${error.reason} message:${error.message}`);
             const { errors, message } = error; 
@@ -1214,16 +1158,12 @@ class ProgramView {
             if (errors) {
                 errors.forEach(errorObj => {
                     const { field_name, message } = errorObj;
-    
                     switch (field_name) {
                         case 'title':
                             this.titleForm?.alert(message);
                             break;
-                        //case 'end':
-                        //    this.endForm?.alert(message);
-                        //    break;
-                        default:
-                            // Check if the field belongs to a specific step
+                        default: {
+                            // e.g., "topic_0", "remark_1", "guideline_2_1"...
                             const stepMatchTopic = field_name.match(/^topic_(\d+)$/);
                             const stepMatchRemark = field_name.match(/^remark_(\d+)$/);
                             const stepMatchGoal  = field_name.match(/^goal_(\d+)$/);
@@ -1231,33 +1171,37 @@ class ProgramView {
 
                             if (stepMatchTopic) {
                                 const stepIndex = parseInt(stepMatchTopic[1], 10);
-                                this.topicForms[stepIndex]?.alert(message);
+                                this.stepsData[stepIndex]?.topicForm?.alert(message);
                             } else if (stepMatchRemark) {
                                 const stepIndex = parseInt(stepMatchRemark[1], 10);
-                                this.remarkForms[stepIndex]?.alert(message);
+                                this.stepsData[stepIndex]?.remarkForm?.alert(message);
                             } else if (stepMatchGoal) {
                                 const stepIndex = parseInt(stepMatchGoal[1], 10);
-                                this.goalForms[stepIndex]?.alert(message);
+                                this.stepsData[stepIndex]?.goalForm?.alert(message);
                             } else if (stepMatchGuide) {
-                                const stepIndex    = parseInt(stepMatchGuide[1], 10);
+                                const stepIndex = parseInt(stepMatchGuide[1], 10);
                                 const guideSubIndex = parseInt(stepMatchGuide[2], 10);
-                                this.guidelineForms[stepIndex][guideSubIndex]?.alert(message);
+                                this.stepsData[stepIndex]?.guidelineForms[guideSubIndex]?.alert(message);
                             } else if (message) {
-                                $message.classList.add('alert');
-                                $message.textContent = message;
+                                this.loadingMessage.setText(message, {alert: true});
                             }
                             break;
+                        }
                     }
                 });
             } else if (message) {
-                $message.classList.add('alert');
-                $message.textContent = message;
+                this.loadingMessage.setText(message, {alert: true});
             }
         } else {
             console.error(error);
-            $message.classList.add('alert');
-            $message.textContent = 'An unexpected error occurred.';
+            this.loadingMessage.setText('An unexpected error occurred.', {alert: true});
         }
     }
     
+    destroy() {
+        if (this.updateScheduler) {
+            clearInterval(this.updateScheduler);
+            this.updateScheduler = null;
+        }
+    }
 }

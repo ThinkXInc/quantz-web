@@ -54,15 +54,13 @@ body {
  
 
 div#ProgramView {
-    padding: 0 20px 0 20px;
     width: 100%;
     height: 100%;
-    overflow-x: hidden;
-    overflow-y: scroll;
     max-height: calc(100vh - 69px);
+    max-width: calc(100vw - 60px);
 
     div.ProgramViewContainer {
-        padding: 20px 0;
+        padding: 20px 20px;
         width: 100%;
         height: 100%;
         // Reset default styles for TextField
@@ -161,375 +159,389 @@ div#ProgramView {
                 font-size: 14px;
             }
         }
-        // Hide arrow containers if not needed
-        div.stepArrowContainer,
-        div.endArrowContainer {
-            display: none;
-        }
 
-        // Step container styling
-        div.stepContainer {
-            cursor: pointer;
-            max-width: 700px;
-            position: relative;
-            margin-bottom: 6px;
-            box-shadow: var(--large-box-box-shadow);
-            //margin-bottom: 35px;
-
-            .step(@type) {
-                &.@{type} {
-                    h3.stepTitle {
-                        color: ~"var(--program-step-color-@{type})"
-                    }
-                    div.stepContent {
-                        border-color: ~"var(--program-step-color-@{type})";
-                        div.taskTypeWrapper div.DropdownButton div.DropdownButtonClickable {
-                            background-color: ~"var(--program-step-bg-@{type})";
-                        }
-                        &:hover {
-                            border-color: ~"var(--program-step-color-@{type})";
-                        }
-                        div.configItemWrapper div.TextField div.inputOuter {
-                            &:hover {
-                                border-color: ~"var(--program-step-color-@{type})";
-                            }
-                        }
-                    }
-                }
-            }
-            .step(greeting);
-            .step(question);
-            .step(free);
-            .step(consulting);  
-            .step(explanation);
-            .step(test);
-
-            h3.stepTitle {
-                position: absolute;
-                top: 0;
-                left: 8%;
-                transform: translate(-50%, -50%);
-                background-color: transparent;
-                padding: 6px 10px;
-                font-size: 11px;
-                color: var(--program-text-label);
-
-                &::before {
-                    content: '';
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    width: 95%;
-                    height: 3px;
-                    background-color: var(--program-bg);
-                    z-index: -1;
-                }
+        div.mainContainer {
+            // Hide arrow containers if not needed
+            div.stepArrowContainer,
+            div.endArrowContainer {
+                display: none;
             }
 
-            div.stepContent {
-                .largePanel(#ccc, transparent, #333);
-                border: 1px solid #ccc;
-                border-radius: 10px;
-                padding: 20px 20px;
-                margin-top: 20px;
+            // Step container styling
+            div.stepListScrollContainer {
+                .horizontalScrollListWrapper();
+                ul.stepList {
+                    .horizontalScrollList();
+                    padding: 43px 43px;
 
-                div.configItemWrapper {
-                    margin-top: 10px;
-                    display: flex;
-                    flex-direction: column;
-                    span.configItemLabel {
-                        font-weight: bold;
-                        display: block;
-                        font-size: 11px;
+                    li.stepContainer {
+                        cursor: pointer;
+                        max-width: 700px;
+                        margin-right: 153px;
+                        width: 700px;
+                        position: relative;
                         margin-bottom: 6px;
-                        color: var(--program-text-label);
-                    }
-                    div.TextField {
-                        div.inputOuter {
-                            div.inputWrapper {
-                                input {
-                                    font-size: 14px;
-                                    color: var(--program-input-text)
+                        box-shadow: var(--large-box-box-shadow);
+                        //margin-bottom: 35px;
+
+                        .step(@type) {
+                            &.@{type} {
+                                h3.stepTitle {
+                                    color: ~"var(--program-step-color-@{type})"
+                                }
+                                div.stepContent {
+                                    border-color: ~"var(--program-step-color-@{type})";
+                                    div.taskTypeWrapper div.DropdownButton div.DropdownButtonClickable {
+                                        background-color: ~"var(--program-step-bg-@{type})";
+                                    }
+                                    &:hover {
+                                        border-color: ~"var(--program-step-color-@{type})";
+                                    }
+                                    div.configItemWrapper div.TextField div.inputOuter {
+                                        &:hover {
+                                            border-color: ~"var(--program-step-color-@{type})";
+                                        }
+                                    }
                                 }
                             }
                         }
-                    }
-                    div.DropdownButton {
-                        div.DropdownButtonClickable {
-                            h6.description {
+                        .step(greeting);
+                        .step(question);
+                        .step(free);
+                        .step(consulting);  
+                        .step(explanation);
+                        .step(test);
 
-                            }
-                            span.title {
-                                font-weight: 200;
-                                color: var(--program-input-text)
-                            }
-                        }
-                    }
-                }
-
-                div.taskTypeWrapper {
-                    margin-top: 0;
-                    flex-direction: row;
-                    justify-content: end;
-                    div.DropdownButton {
-                        width: 200px;
-                        ul.listmenu {
-                            width: 200px;
-                        }
-                    }
-                }
-
-                div.topicWrapper {
-                    margin-top: 0;
-                }
-
-                div.remarkWrapper {
-                    div.TextField {
-                        .inputWrapper input {
-                            border-radius: 5px;
-                            font-weight: 600;
-                            width: 100%;
-                            box-sizing: border-box;
-                        }
-                    }
-                }
-
-                div.goalWrapper {
-                    span.goalLabel {
-                    }
-
-                    div.TextField {
-                        .inputWrapper input {
-                            width: 100%;
-                            box-sizing: border-box;
-                        }
-                    }
-                }
-
-                div.detailsWrapper {
-                    span.moreDetail {
-                        cursor: pointer;
-                        display: flex;
-                        align-items: center;
-                        margin-top: 13px;
-                        img.moreDetailArrow {
-                            transition: transform 0.3s;
-                            margin-right: 5px;
-                            width: 13px;
-                        }
-                        p.moreDetailLabel {
-                            color: var(--program-text-label) !important;
+                        h3.stepTitle {
+                            position: absolute;
+                            top: 0;
+                            left: 8%;
+                            transform: translate(-50%, -50%);
+                            background-color: transparent;
+                            padding: 6px 10px;
                             font-size: 11px;
-                        }
-                        &.rotated img.moreDetailArrow {
-                            transform: rotate(180deg);
-                            transition: transform 0.7s cubic-bezier(0.4, 0.0, 0.2, 1);
-                        }
-                    }
+                            color: var(--program-text-label);
 
-                    div.hiddenContent {
-                        overflow: hidden;
-                        max-height: 0;
-                        transition: 
-                            padding 0.5s cubic-bezier(0.4, 0.0, 0.2, 1),
-                            max-height 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
-
-                        &.expanded {
-                            max-height: 1000px; // Adjust as needed
-                            padding: 10px 0;
+                            &::before {
+                                content: '';
+                                position: absolute;
+                                top: 50%;
+                                left: 50%;
+                                transform: translate(-50%, -50%);
+                                width: 95%;
+                                height: 3px;
+                                background-color: var(--program-bg);
+                                z-index: -1;
+                            }
                         }
 
+                        div.stepContent {
+                            .largePanel(#ccc, transparent, #333);
+                            border: 1px solid #ccc;
+                            border-radius: 10px;
+                            padding: 20px 20px;
 
-                        div.guidelinesWrapper {
-                            span.guidelinesLabel {
+                            div.configItemWrapper {
+                                margin-top: 10px;
+                                display: flex;
+                                flex-direction: column;
+                                span.configItemLabel {
+                                    font-weight: bold;
+                                    display: block;
+                                    font-size: 11px;
+                                    margin-bottom: 6px;
+                                    color: var(--program-text-label);
+                                }
+                                div.TextField {
+                                    div.inputOuter {
+                                        div.inputWrapper {
+                                            input {
+                                                font-size: 14px;
+                                                color: var(--program-input-text)
+                                            }
+                                        }
+                                    }
+                                }
+                                div.DropdownButton {
+                                    div.DropdownButtonClickable {
+                                        h6.description {
+
+                                        }
+                                        span.title {
+                                            font-weight: 200;
+                                            color: var(--program-input-text)
+                                        }
+                                    }
+                                }
                             }
 
-                            div.instructionWrapper {
-                                display: flex;
-                                align-items: center;
-                                margin-bottom: 2px;
+                            div.taskTypeWrapper {
+                                margin-top: 0;
+                                flex-direction: row;
+                                justify-content: end;
+                                div.DropdownButton {
+                                    width: 200px;
+                                    ul.listmenu {
+                                        width: 200px;
+                                    }
+                                }
+                            }
 
-                                span.index {
-                                    display: inline-block;
-                                    background-color: #e2e2e2;
-                                    color: #fff;
-                                    border-radius: 5px;
-                                    padding: 2px 8px;
-                                    margin-right: 9px;
-                                    font-size: 13px;
+                            div.topicWrapper {
+                                margin-top: 0;
+                            }
+
+                            div.remarkWrapper {
+                                div.TextField {
+                                    .inputWrapper input {
+                                        border-radius: 5px;
+                                        font-weight: 600;
+                                        width: 100%;
+                                        box-sizing: border-box;
+                                    }
+                                }
+                            }
+
+                            div.goalWrapper {
+                                span.goalLabel {
                                 }
 
                                 div.TextField {
-                                    flex: 1;
-
                                     .inputWrapper input {
                                         width: 100%;
                                         box-sizing: border-box;
                                     }
                                 }
                             }
-                            div.addGuidelineButtonContainer {
-                                display: flex;
-                                justify-content: center;
-                                //justify-content: left;
-                                //margin-left: 1px;
-                                margin-top: 5px;
 
-                                img.addGuidelineButton {
+                            div.detailsWrapper {
+                                span.moreDetail {
                                     cursor: pointer;
-                                    width: 20px;
-                                    height: 20px;
+                                    display: flex;
+                                    align-items: center;
+                                    margin-top: 13px;
+                                    img.moreDetailArrow {
+                                        transition: transform 0.3s;
+                                        margin-right: 5px;
+                                        width: 13px;
+                                    }
+                                    p.moreDetailLabel {
+                                        color: var(--program-text-label) !important;
+                                        font-size: 11px;
+                                    }
+                                    &.rotated img.moreDetailArrow {
+                                        transform: rotate(180deg);
+                                        transition: transform 0.7s cubic-bezier(0.4, 0.0, 0.2, 1);
+                                    }
+                                }
+
+                                div.hiddenContent {
+                                    overflow: hidden;
+                                    max-height: 0;
+                                    transition: 
+                                        padding 0.5s cubic-bezier(0.4, 0.0, 0.2, 1),
+                                        max-height 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+
+                                    &.expanded {
+                                        max-height: 1000px; // Adjust as needed
+                                        padding: 10px 0;
+                                    }
+
+
+                                    div.guidelinesWrapper {
+                                        span.guidelinesLabel {
+                                        }
+
+                                        div.instructionWrapper {
+                                            display: flex;
+                                            align-items: center;
+                                            margin-bottom: 2px;
+
+                                            span.index {
+                                                display: inline-block;
+                                                background-color: #e2e2e2;
+                                                color: #fff;
+                                                border-radius: 5px;
+                                                padding: 2px 8px;
+                                                margin-right: 9px;
+                                                font-size: 13px;
+                                            }
+
+                                            div.TextField {
+                                                flex: 1;
+
+                                                .inputWrapper input {
+                                                    width: 100%;
+                                                    box-sizing: border-box;
+                                                }
+                                            }
+                                        }
+                                        div.addGuidelineButtonContainer {
+                                            display: flex;
+                                            justify-content: center;
+                                            //justify-content: left;
+                                            //margin-left: 1px;
+                                            margin-top: 5px;
+
+                                            img.addGuidelineButton {
+                                                cursor: pointer;
+                                                width: 20px;
+                                                height: 20px;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                div.maxTurnsWrapper {
+                                    span.maxTurnsLabel {
+                                    }
+
+                                    div.TextField {
+                                        display: flex;
+                                        align-items: center;
+                                        div.inputOuter {
+                                            border: none;
+                                            background: none;
+                                            background-color: transparent;
+                                            div.inputWrapper {
+                                                flex: 1;
+                                                position: relative;
+                                                border: 1px solid var(--program-textfield-border);
+                                                box-shadow: none;
+                                                input {
+                                                    width: 100%;
+                                                    box-sizing: border-box;
+                                                    background: none;
+                                                }
+                                                div.incrementButton {
+                                                    position: absolute;
+                                                    right: 0;
+                                                    top: 50%;
+                                                    transform: translateY(-50%);
+                                                    display: flex;
+                                                    flex-direction: column;
+
+                                                    button {
+                                                        background: none;
+                                                        border: none;
+                                                        cursor: pointer;
+                                                        padding: 0;
+
+                                                        &:focus {
+                                                            outline: none;
+                                                        }
+
+                                                        img {
+                                                            width: 10px;
+                                                            height: 10px;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        &.alert {
+                                            div.inputOuter {
+                                                div.inputWrapper {
+                                                    input {
+                                                        color: @alert-red;
+                                                    }
+                                                }
+                                                div.footer {
+                                                    div.middle {
+                                                        p.alertMessage {
+                                                            font-size: 11px;
+                                                            color: @alert-red;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                div.responseModeWrapper {
+                                    div.DropdownButton {
+                                        width: 200px;
+                                    }
+                                }
+
+                                div.referenceWrapper.configItemWrapper {
+                                    div.referenceTypeContainer {
+                                        span.referenceTypeLabel.configItemLabel {
+
+                                        }
+                                        div.DropdownButton {
+                                            div.DropdownButtonClickable {
+                                                h6.description {
+
+                                                }
+                                                span.title {
+                                                    font-weight: 200;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    div.referencesContainer {
+                                        margin-top: 10px;
+                                        span.referencesLabel {
+
+                                        }
+                                        div.DropdownButton {
+                                            div.DropdownButtonClickable {
+                                                h6.description {
+
+                                                }
+                                                span.title {
+
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
 
-                    div.maxTurnsWrapper {
-                        span.maxTurnsLabel {
+                    div.addStepButtonContainer {
+                        margin-top: 0px;
+                        display: flex;
+                        justify-content: center;
+                        &.disable {
+                            margin-top: 20px;
+                            img.addStepButton {
+                                display: none;
+                            }
+                        }
+                        &.enable {
+                            img.addStepButton {
+                                display: flex;
+                                width: 24px;
+                                height: 24px;
+                                cursor: pointer;
+                            }
+                        }
+                    }
+        
+                    // End container styling
+                    div.endContainer {
+                        margin-top: 20px;
+                        span.endLabel {
                         }
 
                         div.TextField {
-                            display: flex;
-                            align-items: center;
-                            div.inputOuter {
-                                border: none;
-                                background: none;
-                                background-color: transparent;
-                                div.inputWrapper {
-                                    flex: 1;
-                                    position: relative;
-                                    border: 1px solid var(--program-textfield-border);
-                                    box-shadow: none;
-                                    input {
-                                        width: 100%;
-                                        box-sizing: border-box;
-                                        background: none;
-                                    }
-                                    div.incrementButton {
-                                        position: absolute;
-                                        right: 0;
-                                        top: 50%;
-                                        transform: translateY(-50%);
-                                        display: flex;
-                                        flex-direction: column;
-
-                                        button {
-                                            background: none;
-                                            border: none;
-                                            cursor: pointer;
-                                            padding: 0;
-
-                                            &:focus {
-                                                outline: none;
-                                            }
-
-                                            img {
-                                                width: 10px;
-                                                height: 10px;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            &.alert {
-                                div.inputOuter {
-                                    div.inputWrapper {
-                                        input {
-                                            color: @alert-red;
-                                        }
-                                    }
-                                    div.footer {
-                                        div.middle {
-                                            p.alertMessage {
-                                                font-size: 11px;
-                                                color: @alert-red;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    div.responseModeWrapper {
-                        div.DropdownButton {
-                            width: 200px;
-                        }
-                    }
-
-                    div.referenceWrapper.configItemWrapper {
-                        div.referenceTypeContainer {
-                            span.referenceTypeLabel.configItemLabel {
-
-                            }
-                            div.DropdownButton {
-                                div.DropdownButtonClickable {
-                                    h6.description {
-
-                                    }
-                                    span.title {
-                                        font-weight: 200;
-                                    }
-                                }
-                            }
-                        }
-                        div.referencesContainer {
-                            margin-top: 10px;
-                            span.referencesLabel {
-
-                            }
-                            div.DropdownButton {
-                                div.DropdownButtonClickable {
-                                    h6.description {
-
-                                    }
-                                    span.title {
-
-                                    }
-                                }
+                            .inputWrapper input {
+                                border-radius: 7px;
+                                font-size: 19px;
+                                font-weight: 600;
+                                width: 100%;
+                                box-sizing: border-box;
                             }
                         }
                     }
                 }
-            }
-        }
 
-        div.addStepButtonContainer {
-            margin-top: 0px;
-            display: flex;
-            justify-content: center;
-            &.disable {
-                margin-top: 20px;
-                img.addStepButton {
-                    display: none;
-                }
-            }
-            &.enable {
-                img.addStepButton {
-                    display: flex;
-                    width: 24px;
-                    height: 24px;
-                    cursor: pointer;
-                }
-            }
-        }
-        
-        // End container styling
-        div.endContainer {
-            margin-top: 20px;
-            span.endLabel {
             }
 
-            div.TextField {
-                .inputWrapper input {
-                    border-radius: 7px;
-                    font-size: 19px;
-                    font-weight: 600;
-                    width: 100%;
-                    box-sizing: border-box;
-                }
-            }
         }
     }
 }
@@ -538,18 +550,9 @@ div#ProgramView {
 // TOOLS
 // ─────────────────────────────────────────────────────────────────
 
-div#ProgramView div.ProgramViewContainer div.stepContainer {
+div#ProgramView div.ProgramViewContainer ul.stepList li.stepContainer {
     position: relative; // Ensure absolute-positioned .tools stays in the top-right corner
-    &.show {
-        div.tools {
-            opacity: 1;
-            visibility: visible;
-            transform: tranlateY(0%);
-            transform: translateX(100%);
-        }
-    }
-
-    div.tools {
+    div.ProgramTools {
         .menu();
         width: 53px;
         background-color: var(--program-tools-bg);
@@ -567,6 +570,15 @@ div#ProgramView div.ProgramViewContainer div.stepContainer {
             transform 0.3s @cubic-bezier1;
         transform: translateX(100%) translateY(-5%);
         z-index: 10; // So tools hover above step content
+
+        &.show {
+            opacity: 1;
+            visibility: visible;
+            transform: tranlateY(0%);
+            transform: translateX(100%);
+        }
+
+
 
         div.toolsWrapper {
             width: 100%;

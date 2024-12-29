@@ -6,7 +6,8 @@ class ProgramTools {
         onClickAdd,
         onClickDelete,
         onClickAddImage,
-        onClickAddVideo
+        onClickAddVideo,
+        showOnAttachedElementDisplayed = false
     } = {}) {
         this.id = id;
         this.locale  = locale;
@@ -17,9 +18,11 @@ class ProgramTools {
         this.onClickAddImage = onClickAddImage;
         this.onClickAddVideo = onClickAddVideo;
 
+        this.showOnAttachedElementDisplayed = showOnAttachedElementDisplayed;
+
         // Create the main tools container
         this.$view = document.createElement('div');
-        this.$view.classList.add('tools');
+        this.$view.classList.add('ProgramTools');
         if (this.id) {
             this.$view.id = this.id;
         }
@@ -146,5 +149,54 @@ class ProgramTools {
     attach($stepContainer) {
         // Attach the entire tools view to the step container
         $stepContainer.appendChild(this.$view);
+
+        if (this.showOnAttachedElementDisplayed) {
+            this._initShowOnViewCenter($stepContainer);
+        }
+    }
+
+    _initShowOnViewCenter($stepContainer) {
+        // Attach a scroll event listener (and maybe also a resize listener)
+        this._scrollHandler = () => {
+            const rect = $stepContainer.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            const windowWidth = window.innerWidth;
+    
+            // For “center of the screen,” we check if the center (both x and y) 
+            // is within $stepContainer’s bounding rect. 
+            // Tweak this to fit your exact definition of “displayed.”
+            const centerX = windowWidth / 2;
+            const centerY = windowHeight / 2;
+    
+            const isCenterInside =
+                rect.left < centerX &&
+                rect.right > centerX &&
+                rect.top < centerY &&
+                rect.bottom > centerY;
+    
+            if (isCenterInside) {
+                this.$view.classList.add('show');
+            } else {
+                this.$view.classList.remove('show');
+            }
+        };
+    
+        // Call once initially
+        this._scrollHandler();
+    
+        // Then attach
+        window.addEventListener('scroll', this._scrollHandler, { passive: true });
+        window.addEventListener('resize', this._scrollHandler);
+    }
+
+    destroy() {
+        if (this._scrollHandler) {
+            window.removeEventListener('scroll', this._scrollHandler);
+            window.removeEventListener('resize', this._scrollHandler);
+        }
+        if (this.observer) {
+            this.observer.disconnect();
+        }
+        // etc.
     }
 }

@@ -57,7 +57,6 @@ class CreateViewController {
             user: this.user,
             interactionModelId: this.interactionModelId,
             interactionModel: this.interactionModel,
-            $message: this.$message,
             onInteractionModelCreated: (id) => {
                 this.handleInteractionModelCreated(id);
             }
