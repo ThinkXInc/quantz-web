@@ -13,6 +13,7 @@ body {
     --program-text-title: #d5d5d5;
     --program-tools-bg: #484848;
     --program-tools-border: #5e5c5c;
+    --program-step-bg: #2e2e2e;
 }
 body.dark {
     --program-bg: #2e2e2e;
@@ -26,6 +27,7 @@ body.dark {
     --program-text-title: #d5d5d5;
     --program-tools-bg: #484848;
     --program-tools-border: #5e5c5c;
+    --program-step-bg: #2e2e2e;
 }
 
 body {
@@ -243,7 +245,7 @@ div#ProgramView {
                         }
 
                         div.stepContent {
-                            .largePanel(#ccc, transparent, #333);
+                            .largePanel(#ccc, var(--program-step-bg), #333);
                             border: 1px solid #ccc;
                             border-radius: 10px;
                             padding: 20px 20px;

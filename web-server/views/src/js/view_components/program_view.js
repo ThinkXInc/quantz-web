@@ -92,7 +92,8 @@ class ProgramView {
         interactionModel,
         onInteractionModelCreated,
         maxSteps = 3,
-        updateIntervalMs = 3000
+        updateIntervalMs = 3000,
+        stepPositionMargin = 200
     }) {
         this.id = id;
         this.locale = locale;
@@ -104,6 +105,8 @@ class ProgramView {
         this.maxGuidelines = 3;
         this.maxSteps = maxSteps;
         this.onInteractionModelCreated = onInteractionModelCreated;
+
+        this.stepPositionMargin = stepPositionMargin;
 
         // Instead of parallel arrays, we keep ONE array:
         // each element in stepsData = { container, step, topicForm, remarkForm, ... }
@@ -230,35 +233,6 @@ class ProgramView {
             this.$backgroundContainer.clientHeight
         );
 
-
-        /*
-        const mesh = new Mesh({
-            id: 'ProgramViewBackgroundMesh',
-            n: 100,
-            m: 100,
-            lineColor: '#fff',
-            lineWidth: 1
-        });
-        mesh.mount($backgroundContainer);
-
-        console.error('************************************88')
-        console.error(
-            'Container styles:',
-            getComputedStyle($backgroundContainer).cssText
-        );
-        console.error(
-            'Container rect:', 
-            $backgroundContainer.getBoundingClientRect()
-        );
-        console.error(
-            'Container clientH:', 
-            this.$backgroundContainer.clientHeight
-        );
-        console.log($backgroundContainer.parentNode?);
-        console.log("Parent rect:", $backgroundContainer.parentNode?.getBoundingClientRect());
-        console.log("BackgroundContainer rect:", $backgroundContainer.getBoundingClientRect());
-        */
-
  
         //mesh.animate({ type: MeshAnimation.perspective });
 
@@ -305,6 +279,56 @@ class ProgramView {
         this.updateRemoveButtonVisibility();
 
         this.adjustContainersInitialPosition({w: 5000, h: 5000})
+        setTimeout(() => {
+            this.setupMesh({n: 100, m: 100})
+        }, 20)
+    }
+
+    setupMesh({n, m}) {
+        const mesh = new Mesh({
+            id: 'ProgramViewBackgroundMesh',
+            n: n,
+            m: m,
+            lineColor: '#888',
+            lineWidth: 0.1
+        });
+        mesh.mount(this.$backgroundContainer);
+
+        console.error('************************************88')
+        console.error(
+            'Container styles:',
+            getComputedStyle(this.$view).cssText
+        );
+        console.error(
+            'Container rect:', 
+            this.$view.getBoundingClientRect()
+        );
+ 
+        console.error(
+            'Container styles:',
+            getComputedStyle(this.$mainContainer).cssText
+        );
+        console.error(
+            'Container rect:', 
+            this.$mainContainer.getBoundingClientRect()
+        );
+ 
+        console.error(
+            'Container styles:',
+            getComputedStyle(this.$backgroundContainer).cssText
+        );
+        console.error(
+            'Container rect:', 
+            this.$backgroundContainer.getBoundingClientRect()
+        );
+        console.error(
+            'Container clientH:', 
+            this.$backgroundContainer.clientHeight
+        );
+        console.log(this.$backgroundContainer.parentNode);
+        console.log("Parent rect:", this.$backgroundContainer.parentNode?.getBoundingClientRect());
+        console.log("BackgroundContainer rect:", this.$backgroundContainer.getBoundingClientRect());
+
     }
 
     adjustContainersInitialPosition({w, h}) {
@@ -345,7 +369,16 @@ class ProgramView {
         $stepContainer.dataset.index = index;
 
         // Make the step container draggable
-        new Draggable({ element: $stepContainer });
+        new Draggable({ 
+            element: $stepContainer,
+            ondragend: (pos) => {
+                step.left = pos.left;
+                step.top = pos.top;
+                console.log(
+                    `Step #${index + 1} position updated -> left=${step.left}, top=${step.top}`
+                );
+            },
+         });
     
         // Step Title
         const $stepTitle = document.createElement('h3');
@@ -1075,7 +1108,9 @@ class ProgramView {
                     max_turns: parseInt(stepData.maxTurnsForm.value, 10),
                     response_mode: parseInt(stepData.responseModeSelector.value, 10),
                     reference_type: referenceTypeVal,
-                    references: referenceTypeVal === 'select' ? referencesVal : []
+                    references: referenceTypeVal === 'select' ? referencesVal : [],
+                    left: stepData.step.left,
+                    top:  stepData.step.top
                 };
                 steps.push(stepObj);
             }
