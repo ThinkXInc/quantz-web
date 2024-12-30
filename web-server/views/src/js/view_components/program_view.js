@@ -125,7 +125,7 @@ class ProgramView {
         // TODO: ensure createView is all done then run this
         this.connectionsManager = new ProgramViewConnections({
             programView: this,
-            $parentView: this.$mainContainer});
+            $parentView: this.$backgroundContainer});
         this.connectionsManager.drawAllArrows();
 
         // Start interval update
@@ -203,6 +203,38 @@ class ProgramView {
         $titleContainer.appendChild(titleForm.$view);
         $headerContainer.appendChild($titleContainer);
 
+        // ───────────────────────────────────────────────────────────────────────────
+        //  VOICESET: Show voiceset name + "change" button
+        // ───────────────────────────────────────────────────────────────────────────
+        const $voiceSetContainer = document.createElement('div');
+        $voiceSetContainer.classList.add('voiceSetContainer');
+    
+        // Display either the voiceset name or a "not set" message
+        const $voiceSetName = document.createElement('span');
+        $voiceSetName.classList.add('voiceSetName');
+        
+        // If voiceset or name doesn’t exist, we show the localized “not set” message
+        if (this.interactionModel.voiceset && this.interactionModel.voiceset.name) {
+            $voiceSetName.textContent = this.interactionModel.voiceset.name;
+            $voiceSetContainer.classList.remove('alert');
+        } else {
+            $voiceSetName.textContent = this.locale.get("create_voiceset_not_set", this.lang);
+            $voiceSetContainer.classList.add('alert');
+        }
+        $voiceSetContainer.appendChild($voiceSetName);
+    
+        // "Change" button
+        const $changeButton = document.createElement('button');
+        $changeButton.classList.add('changeVoiceSetButton');
+        $changeButton.textContent = this.locale.get("create_voiceset_edit_button", this.lang);
+        $voiceSetContainer.appendChild($changeButton);
+    
+        // Finally, attach the entire container to the header
+        $headerContainer.appendChild($voiceSetContainer);
+        // ───────────────────────────────────────────────────────────────────────────
+        //  Loading Message
+        // ───────────────────────────────────────────────────────────────────────────
+
         this.loadingMessage = new LoadingMessage({
             id: 'ProgramLoadingMessage',
             classList: 'hover-grad-txt',
@@ -236,7 +268,17 @@ class ProgramView {
  
         //mesh.animate({ type: MeshAnimation.perspective });
 
-        new Draggable({ element: $backgroundContainer });
+        new Draggable({
+            element: this.$backgroundContainer,
+            onDrag: () => {
+              // Continuously redraw to keep the arrows aligned with background movement
+              this.connectionsManager.drawAllArrows();
+            },
+            onDragEnd: () => {
+              // Final alignment
+              this.connectionsManager.drawAllArrows();
+            }
+        });
         
 
         // ───────────────────────────────────────────────────────────────────────────
@@ -280,7 +322,9 @@ class ProgramView {
 
         this.adjustContainersInitialPosition({w: 5000, h: 5000})
         setTimeout(() => {
+            // NOTE: wait until $backgroundContainer is rendered. otherwise w,h becomes 0.
             this.setupMesh({n: 100, m: 100})
+            //this.mesh.animate({type: MeshAnimation.perspective})
         }, 20)
     }
 
@@ -293,26 +337,9 @@ class ProgramView {
             lineWidth: 0.1
         });
         mesh.mount(this.$backgroundContainer);
-
-        console.error('************************************88')
-        console.error(
-            'Container styles:',
-            getComputedStyle(this.$view).cssText
-        );
-        console.error(
-            'Container rect:', 
-            this.$view.getBoundingClientRect()
-        );
- 
-        console.error(
-            'Container styles:',
-            getComputedStyle(this.$mainContainer).cssText
-        );
-        console.error(
-            'Container rect:', 
-            this.$mainContainer.getBoundingClientRect()
-        );
- 
+        this.mesh = mesh;
+        /*
+        // DEBUG
         console.error(
             'Container styles:',
             getComputedStyle(this.$backgroundContainer).cssText
@@ -325,9 +352,8 @@ class ProgramView {
             'Container clientH:', 
             this.$backgroundContainer.clientHeight
         );
-        console.log(this.$backgroundContainer.parentNode);
-        console.log("Parent rect:", this.$backgroundContainer.parentNode?.getBoundingClientRect());
         console.log("BackgroundContainer rect:", this.$backgroundContainer.getBoundingClientRect());
+        */
 
     }
 
@@ -369,17 +395,25 @@ class ProgramView {
         $stepContainer.dataset.index = index;
 
         // Make the step container draggable
-        new Draggable({ 
+        new Draggable({
             element: $stepContainer,
-            ondragend: (pos) => {
+            onDrag: (pos) => {
+                // Continuously redraw while moving the step
                 step.left = pos.left;
-                step.top = pos.top;
+                step.top  = pos.top;
+                this.connectionsManager.drawAllArrows();
+            },
+            onDragEnd: (pos) => {
+                // Final position
+                step.left = pos.left;
+                step.top  = pos.top;
+                this.connectionsManager.drawAllArrows();
                 console.log(
                     `Step #${index + 1} position updated -> left=${step.left}, top=${step.top}`
                 );
-            },
-         });
-    
+            }
+        });
+   
         // Step Title
         const $stepTitle = document.createElement('h3');
         $stepTitle.classList.add('stepTitle');

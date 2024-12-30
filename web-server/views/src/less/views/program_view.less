@@ -134,6 +134,7 @@ div#ProgramView {
             flex-direction: row;
             align-items: center;
             justify-content: flex-start;
+            z-index: 100;
 
             div.titleContainer {
                 max-width: 400px;
@@ -156,10 +157,35 @@ div#ProgramView {
                     }
                 }
             }
+            div.voiceSetContainer {
+                .smallPanel(#494949, none);
+                flex-direction: row;
+                align-items: center;
+                display: flex;
+                &.alert {
+                    border-color: var(--program-alert-red);
+                    span.voiceSetName {
+                        color: var(--program-alert-red);
+                    }
+                }
+
+                span.voiceSetName {
+                    color: #b5b5b5;
+                    font-size: 12px;
+                    margin-right: 21px;
+                }
+                button.changeVoiceSetButton {
+                    .button1();
+                    padding: 3px 13px;
+                    font-size: 12px;
+                    color: #aaa;
+                }
+            }
             div.LoadingMessage {
                 padding: 5px 13px;
                 text-align: center;
                 font-size: 14px;
+                margin-left: 28px;
             }
         }
 
@@ -249,6 +275,7 @@ div#ProgramView {
                             border: 1px solid #ccc;
                             border-radius: 10px;
                             padding: 20px 20px;
+                            z-index: 900;
 
                             div.configItemWrapper {
                                 margin-top: 10px;

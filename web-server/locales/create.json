@@ -107,23 +107,41 @@
         "ru": "Обновление модели взаимодействия...",
         "ar": "جارٍ تحديث نموذج التفاعل..."
     },
+    "create_voiceset_edit_button": {
+      "ja": "変更",
+      "en": "Edit",
+      "zh": "编辑",
+      "es": "Editar",
+      "fr": "Modifier",
+      "ru": "Изменить",
+      "ar": "تعديل"
+    },
+    "create_voiceset_not_set": {
+      "ja": "音声セットが選択されていません",
+      "en": "No voice set selected",
+      "zh": "尚未选择语音集",
+      "es": "No se ha seleccionado un conjunto de voces",
+      "fr": "Aucun ensemble vocal n'a été sélectionné",
+      "ru": "Набор голосов не выбран",
+      "ar": "لم يتم اختيار مجموعة صوتية"
+    },
     "create_tools_add_flow": {
       "ja": "対話フローを追加",
-      "en": "",
-      "zh": "",
-      "es": "",
-      "fr": "",
-      "ru": "",
-      "ar": ""
+      "en": "Add conversation flow",
+      "zh": "添加对话流程",
+      "es": "Agregar flujo de conversación",
+      "fr": "Ajouter un flux de conversation",
+      "ru": "Добавить поток диалога",
+      "ar": "إضافة تدفّق المحادثة"
     },
     "create_tools_add_function": {
       "ja": "ファンクションを追加",
-      "en": "",
-      "zh": "",
-      "es": "",
-      "fr": "",
-      "ru": "",
-      "ar": ""
+      "en": "Add function",
+      "zh": "添加函数",
+      "es": "Agregar función",
+      "fr": "Ajouter une fonction",
+      "ru": "Добавить функцию",
+      "ar": "إضافة وظيفة"
     },
     "create_tools_delete": {
       "ja": "ステップを削除",

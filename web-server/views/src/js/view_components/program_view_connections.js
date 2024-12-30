@@ -64,85 +64,58 @@ class ProgramViewConnections {
      * Main method to re-draw all arrows for the current set of steps.
      */
     drawAllArrows() {
-        console.log('[ProgramViewConnections.drawAllArrows] Clearing existing arrow paths.');
-
-        // Clear existing paths
+        // Clear existing
         while (this.$svgLayer.firstChild) {
-            this.$svgLayer.removeChild(this.$svgLayer.firstChild);
+          this.$svgLayer.removeChild(this.$svgLayer.firstChild);
         }
-
-        // If there's less than 2 steps, no arrows needed
+    
         const stepsData = this.programView.stepsData;
-        console.log('[ProgramViewConnections.drawAllArrows] stepsData length:', stepsData.length);
-        if (stepsData.length < 2) {
-            console.log('[ProgramViewConnections.drawAllArrows] Fewer than 2 steps; skipping arrow drawing.');
-            return;
-        }
-
-        // Iterate over each adjacent pair of steps and create an arrow
+        if (stepsData.length < 2) return;
+    
+        // Suppose we connect each consecutive pair:
         for (let i = 0; i < stepsData.length - 1; i++) {
-            console.log(`[ProgramViewConnections.drawAllArrows] Creating arrow from step ${i} to step ${i + 1}.`);
-            this.createArrow(i, i + 1);
+          const fromView = stepsData[i].container;
+          const toView   = stepsData[i+1].container;
+          this.createArrow(fromView, toView);
         }
-    }
+      }
+    
 
     /**
      * Create one arrow (path) from step i to step j
      */
-    createArrow(fromIndex, toIndex) {
-        console.log(`[ProgramViewConnections.createArrow] Creating arrow from step ${fromIndex} to step ${toIndex}.`);
-
-        // DOM elements for each step container
-        const fromContainer = this.programView.stepsData[fromIndex].container;
-        const toContainer = this.programView.stepsData[toIndex].container;
-
-        // Compute bounding rects
-        const fromRect = fromContainer.getBoundingClientRect();
-        const toRect = toContainer.getBoundingClientRect();
-        console.log('[ProgramViewConnections.createArrow] fromRect:', fromRect);
-        console.log('[ProgramViewConnections.createArrow] toRect:', toRect);
-
-        // Because we are inside a scroll container, you might need
-        // the container's offset or scrollLeft:
-        const parentViewRect = this.$parentView.getBoundingClientRect();
-        const scrollLeft = this.$parentView.scrollLeft;
-        const scrollTop = this.$parentView.scrollTop;
-
-        console.log('[ProgramViewConnections.createArrow] parentViewRect:', parentViewRect);
-        console.log('[ProgramViewConnections.createArrow] scrollLeft:', scrollLeft, ' scrollTop:', scrollTop);
-
-        // Calculate positions relative to the SVG or container
-        const fromX = (fromRect.right - parentViewRect.left) + scrollLeft;
-        const fromY = (fromRect.top - parentViewRect.top) + (fromRect.height / 2) + scrollTop;
-        const toX = (toRect.left - parentViewRect.left) + scrollLeft;
-        const toY = (toRect.top - parentViewRect.top) + (toRect.height / 2) + scrollTop;
-
-        console.log('[ProgramViewConnections.createArrow] fromX:', fromX, 'fromY:', fromY, 'toX:', toX, 'toY:', toY);
-
-        // A simple cubic bezier path (S-curve)
-        const midX = (fromX + toX) / 2;
+    createArrow(fromView, toView) {
+        // getBoundingClientRect relative to background container
+        const bgRect = this.$parentView.getBoundingClientRect();
+    
+        const fromRect = fromView.getBoundingClientRect();
+        const toRect   = toView.getBoundingClientRect();
+    
+        // Right edge of fromView at vertical center
+        const fromX = fromRect.right - bgRect.left;
+        const fromY = (fromRect.top + fromRect.height/2) - bgRect.top;
+    
+        // Left edge of toView at vertical center
+        const toX   = toRect.left - bgRect.left;
+        const toY   = (toRect.top + toRect.height/2) - bgRect.top;
+    
+        // Then construct your path
+        const elbowX = fromX + 50; // horizontal elbow offset
         const pathD = `
-            M ${fromX},${fromY}
-            C ${midX},${fromY}
-              ${midX},${toY}
-              ${toX},${toY}
+          M ${fromX},${fromY}
+          L ${elbowX},${fromY}
+          L ${elbowX},${toY}
+          L ${toX},${toY}
         `;
-
-        // Create path element
+    
         const pathEl = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         pathEl.setAttribute('d', pathD);
         pathEl.setAttribute('fill', 'none');
         pathEl.setAttribute('stroke', this.strokeColor);
         pathEl.setAttribute('stroke-width', '2');
-        // Optionally add a tiny arrowhead or circle
-
-        // If you want an animation of drawing:
-        pathEl.style.strokeDasharray = '400';     // Or compute from path length
-        pathEl.style.strokeDashoffset = '400';
-        pathEl.style.animation = 'arrowDraw 1s forwards ease';
-
+        pathEl.setAttribute('marker-end', 'url(#arrowHead)'); // if you define a marker
+    
         this.$svgLayer.appendChild(pathEl);
-        console.log('[ProgramViewConnections.createArrow] Arrow path appended to SVG layer.');
     }
 
     /**

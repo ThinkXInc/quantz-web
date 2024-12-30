@@ -46,7 +46,7 @@ class ProgramTools {
         this.$addStepItem.classList.add('item', 'addStep');
         
         const $addStepIcon = document.createElement('img');
-        $addStepIcon.src = '/img/create/add-step-icon.svg';
+        $addStepIcon.src = '/img/create/add-flow-icon.svg';
         $addStepIcon.classList.add('icon');
         const $addStepTooltip = document.createElement('span');
         $addStepTooltip.classList.add('tooltip');
