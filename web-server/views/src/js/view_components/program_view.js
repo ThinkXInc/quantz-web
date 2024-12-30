@@ -286,14 +286,15 @@ class ProgramView {
 
         new Draggable({
             element: this.$backgroundContainer,
-            onDrag: () => {
+            onDrag: (pos) => {
                 // Continuously redraw to keep the arrows aligned with background movement
-                this.offsetX += pos.deltaX;
-                this.offsetY += pos.deltaY;
+                console.warn(pos)
+                //this.offsetX += pos.deltaX;
+                //this.offsetY += pos.deltaY;
                 this.updateTransform();
                 this.connectionsManager.drawAllArrows();
             },
-            onDragEnd: () => {
+            onDragEnd: (pos) => {
                 // Final alignment
                 this.connectionsManager.drawAllArrows();
             }
@@ -1217,7 +1218,7 @@ class ProgramView {
     onBackgroundWheel(evt) {
         evt.preventDefault();
 
-        const zoomSpeed = 0.001;  
+        const zoomSpeed = 0.0003;  
         const delta = -evt.deltaY * zoomSpeed; // negative => zoom in
 
         const oldScale = this.scale;
