@@ -108,6 +108,12 @@ class ProgramView {
         this.stepPositionInitY = 165;
         this.stepPositionMargin = 40;
 
+        this.scale = 1.0;
+        this.offsetX = 0;
+        this.offsetY = 0;
+        this.minScale = 0.2;
+        this.maxScale = 5.0;
+
         this.maxGuidelines = 3;
         this.maxSteps = maxSteps;
         this.onInteractionModelCreated = onInteractionModelCreated;
@@ -277,15 +283,25 @@ class ProgramView {
         new Draggable({
             element: this.$backgroundContainer,
             onDrag: () => {
-              // Continuously redraw to keep the arrows aligned with background movement
-              this.connectionsManager.drawAllArrows();
+                // Continuously redraw to keep the arrows aligned with background movement
+                this.offsetX += pos.deltaX;
+                this.offsetY += pos.deltaY;
+                this.updateTransform();
+                this.connectionsManager.drawAllArrows();
             },
             onDragEnd: () => {
-              // Final alignment
-              this.connectionsManager.drawAllArrows();
+                // Final alignment
+                this.connectionsManager.drawAllArrows();
             }
         });
         
+        this.$backgroundContainer.addEventListener(
+            'wheel',
+            (evt) => this.onBackgroundWheel(evt),
+            { passive: false }
+        );
+
+        this.$backgroundContainer.style.transformOrigin = '0 0';
 
         // ───────────────────────────────────────────────────────────────────────────
         //  2) MAIN CONTAINER (Steps)
@@ -401,10 +417,9 @@ class ProgramView {
         $stepContainer.dataset.index = index;
 
         // (A) Immediately position the container
-        $stepContainer.style.position = 'absolute';
-        $stepContainer.style.left = step.left + 'px';
-        $stepContainer.style.top  = step.top + 'px';
-
+        $stepContainer.style.left = step.left ?? this.stepPositionInitX + 'px';
+        $stepContainer.style.top  = step.top  ?? this.stepPositionInitY + 'px';
+        
         // Make the step container draggable
         new Draggable({
             element: $stepContainer,
@@ -915,16 +930,16 @@ class ProgramView {
             locale: this.locale,
             lang: this.lang,
             onClickAddFlow: () => {
-              console.log(`Add flow from step #${index + 1}`);
-              this.addFlow();
+                console.log(`Add flow from step #${index + 1}`);
+                this.addFlow({ indexAfter: index });
             },
             onClickAddFunction: () => {
-              console.log(`Add function from step #${index + 1}`);
-              this.addFunction();
+                console.log(`Add function from step #${index + 1}`);
+                this.addFunction({ indexAfter: index });
             },
             onClickDelete: () => {
-              console.log(`Delete step #${$stepContainer.dataset.index}`);
-              this.removeStep($stepContainer); 
+                console.log(`Delete step #${$stepContainer.dataset.index}`);
+                this.removeStep($stepContainer); 
             },
             // If you eventually need these:
             // onClickAddImage: () => { ... },
@@ -1009,6 +1024,10 @@ class ProgramView {
         if (index === 0) {
             step.left = this.stepPositionInitX;  // or whatever you want
             step.top  = this.stepPositionInitY;
+            // --- Additional LOG:
+            console.log(
+                `Setting initial position for the first step: left=${step.left}, top=${step.top}`
+            );
             return;
         }
 
@@ -1018,6 +1037,9 @@ class ProgramView {
             // Fallback if somehow there's no previous step data
             step.left = this.stepPositionInitX;
             step.top  = this.stepPositionInitY;
+            console.log(
+                `No previous step data found; fallback position: left=${step.left}, top=${step.top}`
+            );
             return;
         }
 
@@ -1025,17 +1047,24 @@ class ProgramView {
         const prevRect = prevStepData.container.getBoundingClientRect();
         step.left = prevStepData.step.left + prevRect.width + this.stepPositionMargin;
         step.top  = prevStepData.step.top;
+        // --- Additional LOG:
+        console.log(
+            `Positioning step #${index + 1} to the right of step #${index} => left=${step.left}, top=${step.top}`
+        );
     }
 
     shiftStepsToRight(startIndex) {
-        // Decide how far to shift (could use stepPositionMargin again or a bigger offset)
+        // Decide how far to shift
         const shiftDistance = this.stepPositionMargin || 200;
+        console.log(`Shifting steps to the right starting from index=${startIndex}, distance=${shiftDistance}`);
 
         for (let i = startIndex; i < this.stepsData.length; i++) {
             const sd = this.stepsData[i];
             sd.step.left += shiftDistance;
             // Also update the container’s style to visually move it
             sd.container.style.left = sd.step.left + 'px';
+            // --- Additional LOG:
+            console.log(`Step #${i + 1} => new left=${sd.step.left}, top remains=${sd.step.top}`);
         }
 
         // Redraw arrows so they follow the updated positions
@@ -1048,6 +1077,7 @@ class ProgramView {
             return;
         }
 
+        console.log('Adding a new step via addFlow()...');
         const newStep = defaultStep();
         let insertIndex = this.interactionModel.steps.length; // default => end
         if (typeof indexAfter === 'number' && indexAfter >= 0 && indexAfter < this.interactionModel.steps.length) {
@@ -1057,9 +1087,12 @@ class ProgramView {
         // Insert into the data array
         this.interactionModel.steps.splice(insertIndex, 0, newStep);
 
+        console.log(`Determining position for the new step at index=${insertIndex}`);
         this.determineStepPosition(newStep, insertIndex);
 
         const newStepData = this.buildStepData(newStep, insertIndex);
+        console.log(`New step data created.`)
+        console.log(newStepData);
         this.stepsData.splice(insertIndex, 0, newStepData);
 
         // Insert DOM after the stepContainer at indexAfter
@@ -1083,12 +1116,14 @@ class ProgramView {
             this.shiftStepsToRight(insertIndex + 1);
         }
 
-
         // Re-index the DOM
         this.updateStepIndices();
         this.updateRemoveButtonVisibility();
         this.connectionsManager.drawAllArrows();
+
+        console.log(`Step added successfully at index=${insertIndex}. Current total steps: ${this.stepsData.length}`);
     }
+
 
     removeStep(containerElement) {
         console.warn(`Removing step by container`, containerElement);
@@ -1157,20 +1192,71 @@ class ProgramView {
         }
     }
 
+    onBackgroundWheel(evt) {
+        evt.preventDefault();
+
+        const zoomSpeed = 0.001;  
+        const delta = -evt.deltaY * zoomSpeed; // negative => zoom in
+
+        const oldScale = this.scale;
+        let newScale = oldScale + delta;
+        if (newScale < this.minScale) newScale = this.minScale;
+        if (newScale > this.maxScale) newScale = this.maxScale;
+        if (Math.abs(newScale - oldScale) < 1e-6) return;
+
+        // get bounding rect
+        const rect = this.$backgroundContainer.getBoundingClientRect();
+        const mouseX = evt.clientX - rect.left;
+        const mouseY = evt.clientY - rect.top;
+
+        // find anchor in unscaled coords
+        const anchorX = (mouseX - this.offsetX) / oldScale;
+        const anchorY = (mouseY - this.offsetY) / oldScale;
+
+        // offset so anchor remains (mouseX, mouseY)
+        this.offsetX = mouseX - anchorX * newScale;
+        this.offsetY = mouseY - anchorY * newScale;
+
+        // set
+        this.scale = newScale;
+        this.updateTransform();
+        
+        // if needed, re-draw
+        this.connectionsManager.drawAllArrows();
+    }
+
+    updateTransform() {
+        this.$backgroundContainer.style.transform = `
+          translate(${this.offsetX}px, ${this.offsetY}px)
+          scale(${this.scale})
+        `;
+
+        // Also transform the SVG so it matches exactly
+        if (this.connectionsManager?.$svgLayer) {
+          this.connectionsManager.$svgLayer.style.transformOrigin = "0 0";
+          this.connectionsManager.$svgLayer.style.transform = `
+            translate(${this.offsetX}px, ${this.offsetY}px) scale(${this.scale})
+          `;
+        }
+
+        // Then re-draw arrows if needed
+        this.connectionsManager.drawAllArrows();
+    }
+
     ensureEmptyStepAtEnd() {
         if (this.interactionModel.steps.length < this.maxSteps) {
             // Check last step's topic or remark forms
             const lastStepData = this.stepsData[this.stepsData.length - 1];
             if (!lastStepData) {
                 // no steps => add
-                this.addStep();
+                this.addFlow();
                 return;
             }
             const topicVal = lastStepData.topicForm.value.trim();
             const remarkVal = lastStepData.remarkForm.value.trim();
             if (topicVal || remarkVal) {
                 // if we have content => add empty
-                this.addStep();
+                this.addFlow();
             }
         }
     }

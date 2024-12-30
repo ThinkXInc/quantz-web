@@ -103,23 +103,25 @@ class ProgramViewConnections {
      * Main method to re-draw all arrows for the current set of steps.
      */
     drawAllArrows() {
-        // Clear existing
-        while (this.$svgLayer.firstChild) {
-            this.$svgLayer.removeChild(this.$svgLayer.firstChild);
-        }
-
-        // We need to re-append the marker <defs> because removing all children
-        // also removes our marker definition.
-        this.initSVG();
-
+        this.clearArrows();
+    
         const stepsData = this.programView.stepsData;
         if (stepsData.length < 2) return;
-
-        // Suppose we connect each consecutive pair:
+    
         for (let i = 0; i < stepsData.length - 1; i++) {
             const fromView = stepsData[i].container;
             const toView   = stepsData[i+1].container;
             this.createArrow(fromView, toView);
+        }
+    }
+
+    clearArrows() {
+        // remove everything except <defs>
+        const childNodes = Array.from(this.$svgLayer.childNodes);
+        for (const node of childNodes) {
+            if (node.tagName !== 'defs') {
+                this.$svgLayer.removeChild(node);
+            }
         }
     }
 
