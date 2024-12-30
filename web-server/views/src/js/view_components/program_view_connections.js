@@ -46,7 +46,7 @@ class ProgramViewConnections {
         this.$svgLayer.style.pointerEvents = 'none';
 
         // Append to the scroll container
-        this.programView.$backgroundContainer.appendChild(this.$svgLayer);
+        this.$parentView.appendChild(this.$svgLayer);
 
         // --- 2) Define <marker> using your arrow SVG path, so we can do `marker-end="url(#arrowHead)"` ---
         const defsEl = document.createElementNS('http://www.w3.org/2000/svg', 'defs');

@@ -256,7 +256,8 @@ class ProgramView {
             gradientStart: '#00ff00',
             gradientEnd: '#0000ff',
             alertColor: '#ff3333',
-            pattern: LoadingMessagePattern.B
+            pattern: LoadingMessagePattern.B,
+            textAlign: LoadingMessageTextAlign.left
         });
         $headerContainer.appendChild(this.loadingMessage.$view);
         this.loadingMessage.setText('Loading..', {gradient: LoadingMessageGradient.ocean})
@@ -352,7 +353,7 @@ class ProgramView {
         // TODO: ensure createView is all done then run this
         this.connectionsManager = new ProgramViewConnections({
             programView: this,
-            $parentView: this.$backgroundContainer,
+            $parentView: this.$programViewContainer,
             width: this.backgroundContainerWidth,
             height: this.backgroundContainerHeight
         });
