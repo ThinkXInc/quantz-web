@@ -70,7 +70,9 @@ const defaultStep = () => ({
     guidelines: [
         "First, read the remark.",
         "When the answer looks done, ask 'Are you sure that's it?'"
-    ]
+    ],
+    left: undefined,
+    top: undefined
 });
 
 const defaults = {
@@ -101,6 +103,10 @@ class ProgramView {
         this.user = user;
         this.interactionModelId = interactionModelId;
         this.interactionModel = interactionModel || defaults; 
+
+        this.stepPositionInitX = 28;
+        this.stepPositionInitY = 165;
+        this.stepPositionMargin = 40;
 
         this.maxGuidelines = 3;
         this.maxSteps = maxSteps;
@@ -393,6 +399,11 @@ class ProgramView {
         const $stepContainer = document.createElement('li');
         $stepContainer.classList.add('stepContainer');
         $stepContainer.dataset.index = index;
+
+        // (A) Immediately position the container
+        $stepContainer.style.position = 'absolute';
+        $stepContainer.style.left = step.left + 'px';
+        $stepContainer.style.top  = step.top + 'px';
 
         // Make the step container draggable
         new Draggable({
@@ -988,6 +999,49 @@ class ProgramView {
         console.log(`Task type for step ${stepIndex} changed to ${newTaskType}`);
     }
 
+    determineStepPosition(step, index) {
+        // If the step already has a (left, top) from saved data, just use it
+        if (typeof step.left === 'number' && typeof step.top === 'number') {
+            return;
+        }
+
+        // Rule 1: If this is the very first step, place it at (initX, initY)
+        if (index === 0) {
+            step.left = this.stepPositionInitX;  // or whatever you want
+            step.top  = this.stepPositionInitY;
+            return;
+        }
+
+        // Otherwise, anchor it to the right of the previous step
+        const prevStepData = this.stepsData[index - 1];
+        if (!prevStepData) {
+            // Fallback if somehow there's no previous step data
+            step.left = this.stepPositionInitX;
+            step.top  = this.stepPositionInitY;
+            return;
+        }
+
+        // Get the previous step’s bounding rectangle
+        const prevRect = prevStepData.container.getBoundingClientRect();
+        step.left = prevStepData.step.left + prevRect.width + this.stepPositionMargin;
+        step.top  = prevStepData.step.top;
+    }
+
+    shiftStepsToRight(startIndex) {
+        // Decide how far to shift (could use stepPositionMargin again or a bigger offset)
+        const shiftDistance = this.stepPositionMargin || 200;
+
+        for (let i = startIndex; i < this.stepsData.length; i++) {
+            const sd = this.stepsData[i];
+            sd.step.left += shiftDistance;
+            // Also update the container’s style to visually move it
+            sd.container.style.left = sd.step.left + 'px';
+        }
+
+        // Redraw arrows so they follow the updated positions
+        this.connectionsManager.drawAllArrows();
+    }
+
     addFlow({ indexAfter } = {}) {
         if (this.interactionModel.steps.length >= this.maxSteps) {
             console.warn('Max steps reached. Cannot add more steps.');
@@ -1002,6 +1056,9 @@ class ProgramView {
 
         // Insert into the data array
         this.interactionModel.steps.splice(insertIndex, 0, newStep);
+
+        this.determineStepPosition(newStep, insertIndex);
+
         const newStepData = this.buildStepData(newStep, insertIndex);
         this.stepsData.splice(insertIndex, 0, newStepData);
 
@@ -1019,10 +1076,17 @@ class ProgramView {
             $parent.appendChild(newStepData.container);
         }
 
+        // If we're NOT appending at the very end (meaning we inserted in the middle),
+        // shift all subsequent steps to avoid overlap
+        // i.e. if "insertIndex" is NOT the last index in the array
+        if (insertIndex < this.interactionModel.steps.length - 1) {
+            this.shiftStepsToRight(insertIndex + 1);
+        }
+
+
         // Re-index the DOM
         this.updateStepIndices();
         this.updateRemoveButtonVisibility();
-
         this.connectionsManager.drawAllArrows();
     }
 
@@ -1369,7 +1433,7 @@ class ProgramView {
             this.loadingMessage.setText('An unexpected error occurred.', {alert: true});
         }
     }
-    
+
     destroy() {
         if (this.updateScheduler) {
             clearInterval(this.updateScheduler);
