@@ -95,7 +95,8 @@ class ProgramView {
         onInteractionModelCreated,
         maxSteps = 3,
         updateIntervalMs = 3000,
-        stepPositionMargin = 200
+        stepPositionMargin = 200,
+        onChangeVoiceSet,
     }) {
         this.id = id;
         this.locale = locale;
@@ -103,6 +104,9 @@ class ProgramView {
         this.user = user;
         this.interactionModelId = interactionModelId;
         this.interactionModel = interactionModel || defaults; 
+
+        this.backgroundContainerHeight = 5000;
+        this.backgroundContainerWidth = 5000;
 
         this.stepPositionInitX = 28;
         this.stepPositionInitY = 165;
@@ -117,6 +121,7 @@ class ProgramView {
         this.maxGuidelines = 3;
         this.maxSteps = maxSteps;
         this.onInteractionModelCreated = onInteractionModelCreated;
+        this.onChangeVoiceSet = onChangeVoiceSet;
 
         this.stepPositionMargin = stepPositionMargin;
 
@@ -132,13 +137,6 @@ class ProgramView {
 
         // Create the main view
         this.createView();
-
-        // Instantiate the connections manager
-        // TODO: ensure createView is all done then run this
-        this.connectionsManager = new ProgramViewConnections({
-            programView: this,
-            $parentView: this.$backgroundContainer});
-        this.connectionsManager.drawAllArrows();
 
         // Start interval update
         this._lastSnapshot = JSON.stringify(
@@ -239,6 +237,11 @@ class ProgramView {
         const $changeButton = document.createElement('button');
         $changeButton.classList.add('changeVoiceSetButton');
         $changeButton.textContent = this.locale.get("create_voiceset_edit_button", this.lang);
+        $changeButton.addEventListener('click', () => {
+            if (this.onChangeVoiceSet) {
+                this.onChangeVoiceSet();
+            }
+        });
         $voiceSetContainer.appendChild($changeButton);
     
         // Finally, attach the entire container to the header
@@ -301,7 +304,6 @@ class ProgramView {
             { passive: false }
         );
 
-        this.$backgroundContainer.style.transformOrigin = '0 0';
 
         // ───────────────────────────────────────────────────────────────────────────
         //  2) MAIN CONTAINER (Steps)
@@ -331,9 +333,6 @@ class ProgramView {
             $stepList.appendChild(stepData.container); // mount
         });
 
-        // Finally, append mainContainer inside the background
-        $backgroundContainer.appendChild($mainContainer);
-
         // Assign the container before calling methods that use it
         this.$programViewContainer = $programViewContainer;
 
@@ -342,12 +341,26 @@ class ProgramView {
 
         this.updateRemoveButtonVisibility();
 
-        this.adjustContainersInitialPosition({w: 5000, h: 5000})
+        this.adjustContainersInitialPosition({w: this.backgroundContainerWidth, h: this.backgroundContainerHeight})
         setTimeout(() => {
             // NOTE: wait until $backgroundContainer is rendered. otherwise w,h becomes 0.
             this.setupMesh({n: 100, m: 100})
             //this.mesh.animate({type: MeshAnimation.perspective})
         }, 20)
+
+        // Instantiate the connections manager
+        // TODO: ensure createView is all done then run this
+        this.connectionsManager = new ProgramViewConnections({
+            programView: this,
+            $parentView: this.$backgroundContainer,
+            width: this.backgroundContainerWidth,
+            height: this.backgroundContainerHeight
+        });
+
+        this.connectionsManager.drawAllArrows();
+
+        // Finally, append mainContainer inside the background
+        $backgroundContainer.appendChild($mainContainer);
     }
 
     setupMesh({n, m}) {
@@ -358,7 +371,10 @@ class ProgramView {
             lineColor: '#888',
             lineWidth: 0.1
         });
-        mesh.mount(this.$backgroundContainer);
+        mesh.mount({
+            $parent: this.$backgroundContainer,
+            $insertBefore: this.$mainContainer
+          });
         this.mesh = mesh;
         /*
         // DEBUG

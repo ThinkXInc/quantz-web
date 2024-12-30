@@ -60,6 +60,11 @@ class CreateViewController {
             interactionModel: this.interactionModel,
             onInteractionModelCreated: (id) => {
                 this.handleInteractionModelCreated(id);
+            },
+            onChangeVoiceSet: () => {
+                // This will be invoked when $changeButton is clicked in ProgramView
+                console.log('Switching to Voice Page (page index = 1)');
+                this.pageView.show(1);
             }
         });
         console.log('[CreateViewController] ProgramView created.');
@@ -650,8 +655,7 @@ class CreateViewController {
         if (this.interactionModelId) {
             // --- CASE: Interaction Model already exists => just do an update. ---
             console.log('[CreateViewController] Updating existing interaction model:', this.interactionModelId);
-            this.loadingMessage.setText(this.locale.get('create_creating_new_interaction_model', this.lang), {gradient: LoadingMessageGradient.ocean});
- 
+            this.loadingMessage.setText(this.locale.get('create_updating_interaction_model', this.lang), {gradient: LoadingMessageGradient.ocean});
             this.updateInteractionModel()
                 .then(() => {
                     // After update, we can optionally call submitVoiceSet (which is also an update)
@@ -661,20 +665,20 @@ class CreateViewController {
                     // Done => stop loading & go next
                     loadButton.load(false);
                     setTimeout(() => {
+                        ScreenLock.lock(false);
                         this.pageView.show(2);
-                    }, 2000)
+                    }, 1000)
                 })
                 .catch((err) => {
+                    ScreenLock.lock(false);
                     console.error('[CreateViewController] Error in update:', err);
                     this.loadingMessage.setText(`${err.message || err}`, {alert: true});
                     loadButton.load(false);
-                }).finally(()=> {
-                    ScreenLock.lock(false);
                 });
         } else {
             // --- CASE: No interactionModelId => we must create first, then update. ---
             console.log('[CreateViewController] Creating new interaction model...');
-            this.loadingMessage.setText(this.locale.get('create_updating_interaction_model', this.lang), {gradient: LoadingMessageGradient.ocean});
+            this.loadingMessage.setText(this.locale.get('create_creating_new_interaction_model', this.lang), {gradient: LoadingMessageGradient.ocean});
             setTimeout(() => {
                 this.createInteractionModel()
                     .then((newId) => {
@@ -689,18 +693,18 @@ class CreateViewController {
                     .then(() => {
                         // Finally, stop loading, go next
                         loadButton.load(false);
+                        return
                         setTimeout(() => {
+                            ScreenLock.lock(false);
                             this.pageView.show(2);
-                        }, 2000)
+                        }, 1000)
                     })
                     .catch((err) => {
                         console.error('[CreateViewController] Error in create+submit:', err);
                         this.loadingMessage.setText(`${err.message || err}`, {alert: true});
                         loadButton.load(false);
-                    })
-                    .finally(()=> {
                         ScreenLock.lock(false);
-                    });
+                    })
             }, 2000);
         }
     }
@@ -722,7 +726,6 @@ class CreateViewController {
         }
         // Show success
         this.loadingMessage.setText(result.message || 'Create succeeded!', {gradient: LoadingMessageGradient.bluegreen});
-        this.loadingMessage.setError(false);
 
         // Suppose the backend returns { id: 'xxx', message: '...' }
         return result.id; 

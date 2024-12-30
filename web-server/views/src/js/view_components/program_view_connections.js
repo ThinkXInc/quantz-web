@@ -5,7 +5,9 @@ class ProgramViewConnections {
         strokeColor = '#fafafa',
         lineStrokeWidth = 1,         // 3) line thickness
         arrowHeadSize = 12,          // 2) arrow head size
-        cornerRadius = 8             // 1) small radius at 90° bends
+        cornerRadius = 8,
+        width = 5000,
+        height = 5000,             // 1) small radius at 90° bends
     }) {
         console.log('[ProgramViewConnections.constructor] Initializing with programView and $parentView:', {
             programView,
@@ -18,6 +20,8 @@ class ProgramViewConnections {
         this.lineStrokeWidth = lineStrokeWidth;
         this.arrowHeadSize   = arrowHeadSize;
         this.cornerRadius    = cornerRadius;
+        this.width = width;
+        this.height = height;
 
         this.$svgLayer = null;
 
@@ -36,15 +40,13 @@ class ProgramViewConnections {
         this.$svgLayer.classList.add('ProgramView-ArrowsLayer');
 
         // Position absolutely so it covers the scroll area
-        this.$svgLayer.style.position = 'absolute';
-        this.$svgLayer.style.top = '0';
-        this.$svgLayer.style.left = '0';
-        this.$svgLayer.style.width = '100%';
-        this.$svgLayer.style.height = '100%';
+        this.$svgLayer.style.position = 'relative';
+        this.$svgLayer.style.width = `${this.width}px`;
+        this.$svgLayer.style.height = `${this.height}px`;
         this.$svgLayer.style.pointerEvents = 'none';
 
         // Append to the scroll container
-        this.$parentView.appendChild(this.$svgLayer);
+        this.programView.$backgroundContainer.appendChild(this.$svgLayer);
 
         // --- 2) Define <marker> using your arrow SVG path, so we can do `marker-end="url(#arrowHead)"` ---
         const defsEl = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
@@ -87,16 +89,7 @@ class ProgramViewConnections {
     attachListeners() {
         console.log('[ProgramViewConnections.attachListeners] Setting up scroll and resize event listeners.');
 
-        // Throttle or debounce as needed in real usage
-        window.addEventListener('resize', () => {
-            console.log('[ProgramViewConnections.attachListeners] Window resized; calling drawAllArrows().');
-            this.drawAllArrows();
-        });
-
-        this.$parentView.addEventListener('scroll', () => {
-            console.log('[ProgramViewConnections.attachListeners] Parent view scrolled; calling drawAllArrows().');
-            this.drawAllArrows();
-        });
+        window.addEventListener('resize', () => this.drawAllArrows());
     }
 
     /**
