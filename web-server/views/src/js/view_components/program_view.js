@@ -409,7 +409,7 @@ class ProgramView {
      * Returns an object { container, step, topicForm, remarkForm, ... }
      */
     buildStepData(step, index) {
-        console.warn(`Building step data for step ${index + 1}`, step);
+        console.warn(`Building step data for step ${index + 1}`, step, `(left: ${step.left}, top: ${step.top})`);
     
         // Container
         const $stepContainer = document.createElement('li');
@@ -417,9 +417,14 @@ class ProgramView {
         $stepContainer.dataset.index = index;
 
         // (A) Immediately position the container
-        $stepContainer.style.left = step.left ?? this.stepPositionInitX + 'px';
-        $stepContainer.style.top  = step.top  ?? this.stepPositionInitY + 'px';
-        
+        $stepContainer.style.left = (step.left !== null && step.left !== undefined)
+        ? step.left + 'px'
+        : this.stepPositionInitX + 'px';
+      
+        $stepContainer.style.top = (step.top !== null && step.top !== undefined)
+          ? step.top + 'px'
+          : this.stepPositionInitY + 'px';
+      
         // Make the step container draggable
         new Draggable({
             element: $stepContainer,
@@ -1230,14 +1235,6 @@ class ProgramView {
           translate(${this.offsetX}px, ${this.offsetY}px)
           scale(${this.scale})
         `;
-
-        // Also transform the SVG so it matches exactly
-        if (this.connectionsManager?.$svgLayer) {
-          this.connectionsManager.$svgLayer.style.transformOrigin = "0 0";
-          this.connectionsManager.$svgLayer.style.transform = `
-            translate(${this.offsetX}px, ${this.offsetY}px) scale(${this.scale})
-          `;
-        }
 
         // Then re-draw arrows if needed
         this.connectionsManager.drawAllArrows();
