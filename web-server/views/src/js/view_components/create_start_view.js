@@ -2,6 +2,15 @@
  * A view class responsible for building and handling the Start Page,
  * including fetching and displaying the list of interaction models.
  */
+
+const VOICE_SET_LABEL_COLOR_PATTERNS = [
+    'var(--voiceset-label-bg-blue)',
+    'var(--voiceset-label-bg-green)',
+    'var(--voiceset-label-bg-yellow)',
+    'var(--voiceset-label-bg-red)',
+    'var(--voiceset-label-bg-purple)'
+];
+
 class CreateStartView {
     constructor({ locale, lang, onNext, onInteractionModelClick }) {
         this.locale = locale;
@@ -121,13 +130,13 @@ class CreateStartView {
             this.loadingMessage.setText(successText, {
                 gradient: LoadingMessageGradient.ocean
             }, () => {
-                this.loader.stopLoading();
-                const interactionModels = json.interaction_models || [];
-                this.renderInteractionModelList(interactionModels);
-            });
             //    this.loader.stopLoading();
             //    const interactionModels = json.interaction_models || [];
             //    this.renderInteractionModelList(interactionModels);
+            });
+                this.loader.stopLoading();
+                const interactionModels = json.interaction_models || [];
+                this.renderInteractionModelList(interactionModels);
  
         } catch (err) {
             this.loadingMessage.setText(String(err.message || err), { alert: true });
@@ -158,25 +167,38 @@ class CreateStartView {
             const createdStr   = model.created_str || '(no time)';
             const voicsetName  = model.voiceset?.name || '(no voice)';
 
+            const $main = document.createElement('div');
+            $main.classList.add('main');
+
             // 1) <h4> for title
-            const $titleEl = document.createElement('h4');
-            $titleEl.classList.add('title');
-            $titleEl.textContent = title;
+            const $title = document.createElement('h4');
+            $title.classList.add('title');
+            $title.textContent = title;
+            $main.appendChild($title)
+
+            // 3) <span> for voicsetName
+            const $voicset = document.createElement('span');
+            $voicset.classList.add('voicesetName');
+            $voicset.textContent = voicsetName;
+            const colorIndex = this.hashVoicesetName(voicsetName);
+            const bgColor = VOICE_SET_LABEL_COLOR_PATTERNS[colorIndex];
+            $voicset.style.backgroundColor = bgColor;
+            $main.appendChild($voicset)
+
+            const $footer = document.createElement('div');
+            $footer.classList.add('footer');
+
 
             // 2) <span> for created_str
             const $createdSpan = document.createElement('span');
             $createdSpan.classList.add('createdStr');
             $createdSpan.textContent = createdStr;
+            $footer.appendChild($createdSpan);
 
-            // 3) <span> for voicsetName
-            const $voicsetSpan = document.createElement('span');
-            $voicsetSpan.classList.add('voicesetName');
-            $voicsetSpan.textContent = voicsetName;
 
             // Append them to the <li>
-            $interactionmodel.appendChild($titleEl);
-            $interactionmodel.appendChild($createdSpan);
-            $interactionmodel.appendChild($voicsetSpan);
+            $interactionmodel.appendChild($main);
+            $interactionmodel.appendChild($footer);
 
             // Add click handler
             $interactionmodel.addEventListener('click', () => {
@@ -190,4 +212,16 @@ class CreateStartView {
             this.$interactionModelsList.appendChild($interactionmodel);
         });
     }
+
+
+    hashVoicesetName(str) {
+        let hashValue = 0;
+        for (let i = 0; i < str.length; i++) {
+          hashValue = (hashValue << 5) - hashValue + str.charCodeAt(i);
+          hashValue |= 0; // convert to 32-bit integer
+        }
+        // Make sure it's positive and within array bounds
+        return Math.abs(hashValue) % VOICE_SET_LABEL_COLOR_PATTERNS.length;
+    }
+
 }

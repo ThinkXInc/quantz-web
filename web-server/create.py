@@ -187,17 +187,19 @@ def interaction_model_list(user, lang, lang_name):
             message=locale.get('interaction_model_list_failed', lang)
         ).http_response()
 
-    # Convert numeric 'created' to a friendly time-ago string
+    models_json = []
     for model in interaction_models:
         if model.created:
-            # Convert numeric 'created' to a friendly time-ago string
-            # and store it in a new attribute, e.g., model.created_str
             model.created_str = timestamp_to_time_ago_text(model.created, lang)
         else:
             model.created_str = "(unknown)"
 
+        model_dict = model.response_json()
+        model_dict['created_str'] = model.created_str  # explicitly add it
+        models_json.append(model_dict)
+
     response_data = {
-        'interaction_models': interaction_models,
+        'interaction_models': models_json,
         'count': count
     }
     logger.debug(f'response data: {response_data}')

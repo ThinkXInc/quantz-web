@@ -61,13 +61,25 @@
     }
 } 
 
-.smallPanel(@border-color:#494949, @bg-color: #333, @border-radius: 3px, @hover-bg-color: #3d3d3d) {
+.smallPanel(@border-color:#494949, @bg-color: #333, @border-radius: 3px, @hover-bg-color: #3d3d3d, @isHoverTransition: false) {
     cursor: pointer;
     background-color: @bg-color;
     border: 1px solid @border-color;
     border-radius: @border-radius;
     padding: 9px 21px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    & when (@isHoverTransition = true) {
+        transition:
+          background-color 0.2s @cubic-bezier1,
+          box-shadow 0.2s @cubic-bezier1,
+          border 0.2s @cubic-bezier1;
+    
+        &:hover {
+          background-color: @hover-bg-color;
+          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+          border: 1px solid lighten(@border-color, 10%);
+        }
+    }
 }
 
 .largePanel(@border-color:#727272, @bg-color: #333, @hover-bg-color: #3d3d3d) {
