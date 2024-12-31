@@ -156,6 +156,7 @@ div#CreatePageView {
                         .horizontalScrollList();
                         align-items: flex-start;
                         li.InteractionModel {
+                            position: relative;
                             .smallPanel(@isHoverTransition: true);
                             display: flex;
                             min-width: 300px;
@@ -164,24 +165,57 @@ div#CreatePageView {
                             flex-direction: column;
                             color: #fafafa;
                             margin-right: 20px;
-                            h4.title {
-                                font-size: 28px;
-                                white-space: normal;
-                                margin-bottom: 7px;
+                            div.main {
+                                h4.title {
+                                    font-size: 28px;
+                                    white-space: normal;
+                                    margin-bottom: 7px;
+                                }
+                                span.voicesetName {
+                                    font-size: 11px;
+                                    background-color: var(--create-label-bg-blue);
+                                    padding: 2px 4px;
+                                    border-radius: 2px;
+                                }
                             }
-                            span.createdStr {
-                                margin-bottom: 7px;
-                                text-align: right;
-                                width: 100%;
-                                display: block;
-                                color: #aaa;
-                                font-size: 13px;
+
+                            div.footer {
+                                span.createdStr {
+                                    margin-bottom: 7px;
+                                    text-align: right;
+                                    width: 100%;
+                                    display: block;
+                                    color: #aaa;
+                                    font-size: 13px;
+                                }
                             }
-                            span.voicesetName {
-                                font-size: 11px;
-                                background-color: var(--create-label-bg-blue);
-                                padding: 2px 4px;
-                                border-radius: 2px;
+                            div.control {
+                                display: none;
+                                position: absolute;
+                                bottom: 10px;
+                                left: 10px;
+                                background: transparent;
+                                border-radius: 4px;
+                                padding: 4px 8px;
+                                // Fade in
+                                transition: opacity 0.2s ease-in-out;
+                                opacity: 0;
+                  
+                                div.edit,
+                                div.delete {
+                                    .tooltipBottom();
+                                    width: 20px;
+                                    cursor: pointer;
+                                    color: #fff;
+                                    margin: 0 5px;
+                                    display: inline-block;
+                                }
+                            }
+                  
+                            // when hovered over li, show .control
+                            &:hover .control {
+                              display: block;
+                              opacity: 1;
                             }
 
                         }
@@ -428,6 +462,27 @@ div#CreatePageView {
          * Program Page
          ****************************************/
         div.ProgramPageWrapper {
+        }
+    }
+}
+
+div#DeleteInteractionModelModal {
+    div.bg {
+
+    }
+    div.window {
+        h3.ModalViewTitle {
+            font-size: 14px;
+        }
+        div.modalViewFooter {
+            button.doneButton {
+                border-color: #c40000;
+                background-color: #960000;
+                &:hover {
+                    border-color: #c06161;
+                    background-color: #d30a0a;
+                }
+            }
         }
     }
 }

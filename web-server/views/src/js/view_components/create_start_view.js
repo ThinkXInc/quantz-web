@@ -62,7 +62,8 @@ class CreateStartView {
         this.loadingMessage = new LoadingMessage({
             id: 'StartPageLoadingMessage',
             pattern: LoadingMessagePattern.B,
-            textAlign: LoadingMessageTextAlign.center
+            textAlign: LoadingMessageTextAlign.center,
+            minimumWaitTimeMs: 0
         });
         $loadingMessageWrapper.appendChild(this.loadingMessage.$view);
         $container.appendChild($loadingMessageWrapper);
@@ -76,13 +77,13 @@ class CreateStartView {
         // GradientViewLoader
         this.loader = new GradientViewLoader({
             id: 'InteractionModelListGradientLoader',
-            numIndicator: 3,
+            numIndicator: 1,
             indicatorWidth: 500,
             individualHeight: 3,
             spaceBetween: 5,
             alignment: IndicatorAlignment.center,
             initialBaseColor: [80, 80, 80],
-            animationDelay: 10,
+            animationDelay: 5,
             initialX1: -50,
             defaultShift: 10,
             shiftAmount: -20,
@@ -90,16 +91,19 @@ class CreateStartView {
             ry: 2,
         });
         this.loader.mount(this.$interactionModelListContainer);
- 
+
         this.$interactionModelsScrollWrapper = document.createElement('div');
         this.$interactionModelsScrollWrapper.classList.add('InteractionModelsScrollWrapper');
-        this.$interactionModelsScrollWrapper.addEventListener('wheel', (evt) => {
-            evt.preventDefault();
-            this.$interactionModelsScrollWrapper.scrollLeft += evt.deltaY;
-        }, { passive: false });
+        this.$interactionModelsScrollWrapper.addEventListener(
+            'wheel',
+            (evt) => {
+                evt.preventDefault();
+                this.$interactionModelsScrollWrapper.scrollLeft += evt.deltaY;
+            },
+            { passive: false }
+        );
 
         this.$interactionModelListContainer.appendChild(this.$interactionModelsScrollWrapper);
-
 
         this.$interactionModelsList = document.createElement('ul');
         this.$interactionModelsList.classList.add('InteractionModelList');
@@ -110,11 +114,13 @@ class CreateStartView {
 
     async fetchInteractionModels() {
         this.loader.startLoading();
-        const loadingText = this.locale.get('create_interaction_model_list_loading', this.lang)
-            || 'Loading interaction models...';
+        const loadingText =
+            this.locale.get('create_interaction_model_list_loading', this.lang) ||
+            'Loading interaction models...';
         this.loadingMessage.setText(loadingText, {
             loading: true,
-            gradient: LoadingMessageGradient.ocean
+            gradient: LoadingMessageGradient.ocean,
+            fadeOutAfterMs: 0
         });
 
         try {
@@ -127,22 +133,24 @@ class CreateStartView {
             }
 
             const successText = json.message || 'Success';
-            this.loadingMessage.setText(successText, {
-                gradient: LoadingMessageGradient.ocean
-            }, () => {
-            //    this.loader.stopLoading();
-            //    const interactionModels = json.interaction_models || [];
-            //    this.renderInteractionModelList(interactionModels);
-            });
-                this.loader.stopLoading();
-                const interactionModels = json.interaction_models || [];
-                this.renderInteractionModelList(interactionModels);
- 
+            this.loadingMessage.setText(
+                successText,
+                {
+                    gradient: LoadingMessageGradient.ocean
+                },
+                () => {
+                    // callback after setting text
+                    this.loader.stopLoading();
+                    const interactionModels = json.interaction_models || [];
+                    this.renderInteractionModelList(interactionModels);
+
+                }
+            );
+
         } catch (err) {
             this.loadingMessage.setText(String(err.message || err), { alert: true });
             throw err;
         } finally {
-            //this.loader.stopLoading();
             this.$interactionModelListContainer.style.display = 'block';
         }
     }
@@ -151,8 +159,9 @@ class CreateStartView {
      * Renders the list of interaction models.
      * Each item includes:
      *   - <h4> for the title
-     *   - <span> for the createdStr
      *   - <span> for the voicsetName
+     *   - <span> for createdStr
+     *   - a <div class="control"> containing .edit and .delete
      */
     renderInteractionModelList(interactionModels) {
         // Clear old items, if any
@@ -160,60 +169,145 @@ class CreateStartView {
 
         interactionModels.forEach(model => {
             // Create one <li> per model
-            const $interactionmodel = document.createElement('li');
-            $interactionmodel.classList.add('InteractionModel');
-
-            const title        = model.title || '(no title)';
-            const createdStr   = model.created_str || '(no time)';
-            const voicsetName  = model.voiceset?.name || '(no voice)';
-
+            const $interactionModel = document.createElement('li');
+            $interactionModel.classList.add('InteractionModel');
+    
+            // For readability
+            const title       = model.title        || '(no title)';
+            const createdStr  = model.created_str  || '(no time)';
+            const voicsetName = model.voiceset?.name || '(no voice)';
+    
+            // main container
             const $main = document.createElement('div');
             $main.classList.add('main');
-
+    
             // 1) <h4> for title
             const $title = document.createElement('h4');
             $title.classList.add('title');
             $title.textContent = title;
-            $main.appendChild($title)
-
-            // 3) <span> for voicsetName
+            $main.appendChild($title);
+    
+            // 2) <span> for the voicesetName
             const $voicset = document.createElement('span');
             $voicset.classList.add('voicesetName');
             $voicset.textContent = voicsetName;
             const colorIndex = this.hashVoicesetName(voicsetName);
             const bgColor = VOICE_SET_LABEL_COLOR_PATTERNS[colorIndex];
             $voicset.style.backgroundColor = bgColor;
-            $main.appendChild($voicset)
-
+            $main.appendChild($voicset);
+    
+            // footer container
             const $footer = document.createElement('div');
             $footer.classList.add('footer');
-
-
-            // 2) <span> for created_str
+    
+            // 3) <span> for created_str
             const $createdSpan = document.createElement('span');
             $createdSpan.classList.add('createdStr');
             $createdSpan.textContent = createdStr;
             $footer.appendChild($createdSpan);
+    
+            // Append them to the $interactionModel
+            $interactionModel.appendChild($main);
+            $interactionModel.appendChild($footer);
+    
+            // ---- the .control container (fade in on hover) ----
+            const $control = document.createElement('div');
+            $control.classList.add('control');
+    
+            // .edit
+            const $edit = document.createElement('div');
+            $edit.classList.add('edit');
+            // Replace text with an SVG icon
+            $edit.innerHTML = `<img src="/img/create/edit-icon.svg" alt="Edit" />`;
+            $edit.addEventListener('click', (evt) => {
+                evt.stopPropagation(); // Prevent the entire li's click from also firing
+                if (typeof this.onInteractionModelClick === 'function') {
+                    this.onInteractionModelClick(model);
+                }
+            });
+            $control.appendChild($edit);
+    
+            // .delete
+            const $delete = document.createElement('div');
+            $delete.classList.add('delete');
+            // Replace text with an SVG icon
+            $delete.innerHTML = `<img src="/img/create/delete-icon.svg" alt="Delete" />`;
+            $delete.addEventListener('click', (evt) => {
+                evt.stopPropagation(); 
+                this.deleteInteractionModel(model);
+            });
+            $control.appendChild($delete);
 
-
-            // Append them to the <li>
-            $interactionmodel.appendChild($main);
-            $interactionmodel.appendChild($footer);
-
-            // Add click handler
-            $interactionmodel.addEventListener('click', () => {
+            //const $deleteTooltip = document.createElement('span');
+            //$deleteTooltip.classList.add('tooltip');
+            //$deleteTooltip.textContent = this.locale.get('create_delete_interaction_model_tooltip', this.lang);
+            //$delete.appendChild($deleteTooltip);
+    
+            // Add the .control div to the $interactionModel
+            $interactionModel.appendChild($control);
+    
+            // If user clicks the main part of the li, call onInteractionModelClick
+            $interactionModel.addEventListener('click', () => {
                 console.log('[CreateStartView] Interaction model clicked:', model);
                 if (typeof this.onInteractionModelClick === 'function') {
                     this.onInteractionModelClick(model);
                 }
             });
-
-            // Finally, add the <li> to the <ul>
-            this.$interactionModelsList.appendChild($interactionmodel);
+    
+            // Finally, add the $interactionModel <li> to the <ul>
+            this.$interactionModelsList.appendChild($interactionModel);
         });
     }
 
+    /**
+     * Show a confirmation Modal, and delete the model if user clicks "Done"
+     */
+    deleteInteractionModel(model) {
+        const modalMessage = this.locale.get("create_delete_interaction_model_message", this.lang, [model.title]);
 
+        const modal = new ModalView({
+            id: 'DeleteInteractionModelModal',
+            title: this.locale.get("create_delete_interaction_model_title", this.lang),
+            text: modalMessage,
+            cancelButtonText: this.locale.get("create_delete_modal_cancel_button", this.lang),
+            doneButtonText: this.locale.get("create_delete_modal_done_button", this.lang),
+            showAnimation: AnimationType.EXPAND,
+            closeAnimation: AnimationType.SHRINK,
+            baseCSSStyle: ModalViewStyle.DEFAULT,
+            onDone: async () => {
+                // Send delete request
+                const endpoint = `/v1/${this.lang}/interaction_model/${model.id}/delete`;
+                try {
+                    const res = await fetch(endpoint, { method: 'GET' });
+                    if (!res.ok) {
+                        const errJson = await res.json();
+                        const errMsg = errJson.message || 'Failed to delete.';
+                        alert(errMsg);
+                        return;
+                    }
+                    // If success, optionally refetch or remove from list
+                    const data = await res.json();
+                    console.log('[DeleteInteractionModelModal] success:', data);
+                    // Refresh the list or remove the item
+                    // E.g., call fetchInteractionModels() again:
+                    await this.fetchInteractionModels();
+                } catch (e) {
+                    console.error('[DeleteInteractionModelModal] error:', e);
+                    alert('Error while deleting interaction model');
+                } finally {
+                    modal.close();
+                }
+            }
+        });
+
+        // Mount and show
+        modal.mount(document.body);
+        modal.show();
+    }
+
+    /**
+     * a simple hash function for distributing label colors
+     */
     hashVoicesetName(str) {
         let hashValue = 0;
         for (let i = 0; i < str.length; i++) {

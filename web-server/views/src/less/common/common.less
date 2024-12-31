@@ -33,6 +33,7 @@
     &.load {
     }
 }
+
 .tooltipBottom(@translate-x: translateX(0%), @background-color: #000) {
     position: relative;
     span.tooltip {
@@ -222,3 +223,123 @@
         cursor: grabbing;      /* Hand closed when dragging */
     }
 }
+
+body.dark {
+    .ModalView {
+        display: block;
+
+        div.bg {
+            background-color: rgba(0, 0, 0, 0.5) !important;
+        }
+
+        div.window {
+
+            div.contentWrapper {
+                background-color: #2e2e2e;
+                border-top: 1px solid #424040;
+                border-left: 1px solid #424040;
+                border-right: 1px solid #424040;
+                border-bottom: none;
+            
+                h3.ModalViewTitle {
+                    font-size: 18px;
+                    color: #cdcdcd;
+                }
+
+                .mainContent {
+                    color: #ffffff;
+
+                    div.TextField {
+                        div.inputOuter {
+                            border: none;
+                            div.inputWrapper {
+                                background-color: #3f3f3f;
+                                font-size: 1em;
+                                margin: 0;
+                                border: 1px solid #5a5a5a;
+                                padding: 8px;
+                                border-radius: 4px;
+                                transition: border-color 0.3s @cubic-bezier1, background-color 0.3s @cubic-bezier1;
+
+                                &:focus-within {
+                                    border-color: #bebebe;
+                                }
+
+                                &:hover {
+                                    background-color: lighten(#4e4e4e, 10%);
+                                }
+                            }
+                            input {
+                                margin: 0;
+                                height: 38px;
+                                color: #fff;
+                                &::placeholder {
+                                    font-size: 0.9em;
+                                    color: #b7b7b7;
+                                }
+                            }
+                            div.inputAfter {
+                                margin-left: 20px;
+                            }
+                            div.footer {
+                                background-color: transparent;
+                                padding: 0;
+                                div.left {
+                                    span.indicator {
+                                    }
+                                }
+                                div.middle {
+                                    span.message {
+                                    }
+                                }
+                                div.right {
+                                }
+                                p.alertMessage {
+                                    font-size: 0.8em;
+                                    color: #ffa0a0;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                div.ModalViewAlert {
+
+                }
+            }
+
+            div.modalViewFooter {
+                background-color: #2e2e2e;
+                border-bottom: 1px solid #424040;
+                border-left: 1px solid #424040;
+                border-right: 1px solid #424040;
+                border-top: none;
+            
+                button.cancelButton {
+                    min-width: 78px;
+                    border: 1px solid #656565;
+                    font-size: 12px;
+                    color: #fff;
+                    background-color: #3a3a3a;
+                    margin-right: 20px;
+                }
+
+                button.doneButton {
+                    min-width: 78px;
+                    background-color: #3a3a3a;
+                    color: #fff;
+                    border: 1px solid #656565;
+                    font-size: 12px;
+                    padding: 8px 10px;
+                    transition: all 0.4s @cubic-bezier1;
+                
+                    &:hover {
+                        background-color: #676767;
+                        color: #fff;
+                    }
+                }
+            }
+        }
+    }
+}
+
