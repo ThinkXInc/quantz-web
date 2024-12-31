@@ -43,6 +43,10 @@ class CreateViewController {
             onNext: () => {
                 console.log('[CreateViewController] onNext from StartView called. Navigating to Voice page.');
                 this.pageView.show(1);
+            },
+            onInteractionModelClick: (model) => {
+                console.log('[CreateViewController] Interaction model clicked:', model);
+                this.editInteractionModel(model);
             }
         });
         this.pageView.appendChild(startView.$view, 0);
@@ -92,6 +96,25 @@ class CreateViewController {
         // Finally, mount the entire PageView into the main content area
         this.pageView.mount(this.$mainContent);
         console.log('[CreateViewController] PageView mounted to MainContent.');
+    }
+
+    editInteractionModel(model) {
+        console.log('[CreateViewController] editInteractionModel called with:', model);
+    
+        // 1) Set the controller’s interactionModel & interactionModelId
+        this.interactionModel = model;
+        this.interactionModelId = model.id;
+    
+        // 2) Update the ProgramView so that it references the newly clicked model:
+        //    (assuming ProgramView looks at this.controller's .interactionModel)
+        //    If you need to dynamically "refresh" ProgramView, you might call a method
+        //    like this.programView.setInteractionModel(model). 
+        //    Otherwise, if ProgramView only reads from props once, 
+        //    you could re-instantiate or re-mount as needed.
+        this.programView.interactionModel = model;
+    
+        // 3) Show the Program page
+        this.pageView.show(2);
     }
 
     handleVoiceSelection(voiceGroup, loadButton) {

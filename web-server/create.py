@@ -65,6 +65,9 @@ from libcommon.language import Language
 # Locale
 from libcommon.locale import Locale, COMMON_LOCALES_FILE_PATHS
 
+# Datetime
+from libcommon.dateutils import timestamp_to_time_ago_text
+
 # Here we load from create_responses.json (which replaces interviews_responses.json)
 # Make sure the "create_responses.json" file has the updated keys, such as:
 #  "interaction_model_not_found", "interaction_model_update_error", etc.
@@ -167,6 +170,43 @@ def test_load_message():
 # --------------------------------------------------------------------
 #  Interaction Model CRUD endpoints
 # --------------------------------------------------------------------
+
+@blueprint_create.route('/v1/<lang>/interaction_model/list', methods=['GET'])
+@language_wrapper
+@session_helper
+def interaction_model_list(user, lang, lang_name):
+    logger.info(magenta(f'[GET] /v1/{lang}/interaction_model/list'))
+
+    try:
+        interaction_models = interaction_model_db.get_many(str(user.id), limit=100)
+        count = len(interaction_models)
+        logger.debug(f'fetched {count} interaction_models => {interaction_models}')
+    except InteractionModelQueryError:
+        return UnexpectedAPIErrorFormat(
+            lang=lang,
+            message=locale.get('interaction_model_list_failed', lang)
+        ).http_response()
+
+    # Convert numeric 'created' to a friendly time-ago string
+    for model in interaction_models:
+        if model.created:
+            # Convert numeric 'created' to a friendly time-ago string
+            # and store it in a new attribute, e.g., model.created_str
+            model.created_str = timestamp_to_time_ago_text(model.created, lang)
+        else:
+            model.created_str = "(unknown)"
+
+    response_data = {
+        'interaction_models': interaction_models,
+        'count': count
+    }
+    logger.debug(f'response data: {response_data}')
+
+    return OKAPISuccessFormat(
+        message=locale.get('interaction_model_list_success', lang),
+        data=response_data
+    ).http_response()
+
 
 #
 # CREATE

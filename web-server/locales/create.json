@@ -17,6 +17,15 @@
         "ru": "Начать создание модели взаимодействия",
         "ar": "بدء إنشاء نموذج التفاعل"
     },
+    "create_interaction_model_list_loading": {
+      "ja": "対話モデルをロード中...",
+      "en": "Loading the interaction model...",
+      "zh": "正在加载交互模型...",
+      "es": "Cargando el modelo de interacción...",
+      "fr": "Chargement du modèle d'interaction...",
+      "ru": "Загрузка модели взаимодействия...",
+      "ar": "جارٍ تحميل نموذج التفاعل..."
+    },
     "create_title_page_title": {
         "ja": "インタビュータイトル",
         "en": "Interview Title",
