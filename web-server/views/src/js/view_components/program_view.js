@@ -253,11 +253,9 @@ class ProgramView {
         this.loadingMessage = new LoadingMessage({
             id: 'ProgramLoadingMessage',
             classList: 'hover-grad-txt',
-            gradientStart: '#00ff00',
-            gradientEnd: '#0000ff',
-            alertColor: '#ff3333',
             pattern: LoadingMessagePattern.B,
-            textAlign: LoadingMessageTextAlign.left
+            textAlign: LoadingMessageTextAlign.left,
+            minimumWaitTimeMs: 0
         });
         $headerContainer.appendChild(this.loadingMessage.$view);
         this.loadingMessage.setText('Loading..', {gradient: LoadingMessageGradient.ocean})
@@ -527,7 +525,7 @@ class ProgramView {
         taskTypeSelector.value = step.task_type || TaskType.CONSULTING;
     
         // Add class to container for style
-        $stepContainer.classList.add(step.task_type);
+        $stepContainer.classList.add(taskTypeSelector.value);
     
         taskTypeSelector.$view.addEventListener('selected', (e) => {
             const selectedValue = e.detail.value; 
@@ -1280,6 +1278,42 @@ class ProgramView {
         $parent.appendChild(this.$view);
     }
 
+    unmount() {
+        console.log('[ProgramView] unmount() called. Cleaning up resources...');
+
+        // 1) Stop the scheduled interval that checks for updates:
+        this.destroy(); 
+        //    (We already have a destroy() that clears the interval)
+
+        // 2) If you need to remove event listeners or destroy Draggable objects,
+        //    do so here. For instance, if you stored references:
+        // if (this.backgroundDraggable) {
+        //     this.backgroundDraggable.destroy();
+        //     this.backgroundDraggable = null;
+        // }
+        // if (this.stepDraggables) {
+        //     this.stepDraggables.forEach(d => d.destroy());
+        //     this.stepDraggables = [];
+        // }
+        //
+        // Also, if your mesh or any additional objects have `unmount()` or `destroy()` methods, 
+        // call them here:
+        // if (this.mesh) {
+        //     this.mesh.unmount();
+        //     this.mesh = null;
+        // }
+
+        // 3) Remove the root DOM element from the parent
+        if (this.$view && this.$view.parentNode) {
+            this.$view.parentNode.removeChild(this.$view);
+        }
+
+        // 4) Optionally, null out references to avoid memory leaks
+        this.$view = null;
+        this.$backgroundContainer = null;
+        this.$mainContainer = null;
+    }
+
     interactionModelObjectFromFormData() {
         const title = this.titleForm.value;
         const steps = [];
@@ -1356,27 +1390,16 @@ class ProgramView {
         if (currentJson !== this._lastSnapshot) {
             console.log("[checkForUpdates] Detected changes. Preparing to submit update...");
 
-            // Show a "Updating..." message
-            this.loadingMessage.setText(
-                this.locale.get('create_updating_interaction_model', this.lang), { gradient: LoadingMessageGradient.ocean }
-            );
-
             // Call update
             this.submitUpdateInteractionModelAsync(this.interactionModelId)
                 .then(() => {
                     // On success, update snapshot and show success
                     this._lastSnapshot = currentJson;
                     console.log("[checkForUpdates] Update successful. Snapshot refreshed.");
-                    this.loadingMessage.setText(
-                        this.locale.get('create_update_success', this.lang),
-                        { gradient: LoadingMessageGradient.bluegreen }
-                    );
                 })
                 .catch((err) => {
                     // On error, show an alert
                     console.error("[checkForUpdates] Update failed:", err);
-                    this.loadingMessage.setText(err.message, { alert: true }
-                    );
                 });
         } else {
             console.log("[checkForUpdates] No changes detected in interaction model. No update needed.");
@@ -1432,7 +1455,7 @@ class ProgramView {
             const interactionModelJSON = this.interactionModelObjectFromFormData();
             console.log("[submitUpdateInteractionModelAsync] interactionModelJSON:", interactionModelJSON);
 
-            this.loadingMessage.setText(this.locale.get('create_updating_interaction_model', this.lang), {gradient: LoadingMessageGradient.ocean});
+            this.loadingMessage.setText(this.locale.get('create_updating_interaction_model', this.lang), {gradient: LoadingMessageGradient.gray2});
 
             if (!interactionModelJSON) {
                 // No data or invalid => just reject
@@ -1448,7 +1471,10 @@ class ProgramView {
                 (res) => {
                     const { code, message } = res;
                     console.log(`[submitUpdateInteractionModelAsync] [${code} success] ${message}`);
-                    this.loadingMessage.setText(message || 'Update succeeded!', {gradient: LoadingMessageGradient.bluegreen});
+                    this.loadingMessage.setText(
+                        this.locale.get('create_interaction_model_updated', this.lang),
+                        { gradient: LoadingMessageGradient.gray2 }
+                    );
                     console.log("[submitUpdateInteractionModelAsync] Update operation resolved successfully.");
                     resolve();
                 },
@@ -1482,7 +1508,6 @@ class ProgramView {
             },
             (error) => {
                 this.handleError(error);
-                this.loadingMessage.setText(error.message || 'Update failed.', {alert: true});
             }
         );
     }
@@ -1520,13 +1545,14 @@ class ProgramView {
                                 const guideSubIndex = parseInt(stepMatchGuide[2], 10);
                                 this.stepsData[stepIndex]?.guidelineForms[guideSubIndex]?.alert(message);
                             } else if (message) {
-                                this.loadingMessage.setText(message, {alert: true});
+                                console.error(`[handleError] Unexpected API Error`, message)
                             }
                             break;
                         }
                     }
                 });
             } else if (message) {
+                console.error(`[handleError] API Error with errors`, errors)
                 this.loadingMessage.setText(message, {alert: true});
             }
         } else {

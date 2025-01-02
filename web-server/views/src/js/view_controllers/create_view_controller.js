@@ -68,54 +68,97 @@ class CreateViewController {
 
         // --- Page 2: Program Page ---
         console.log('[CreateViewController] Creating ProgramView...');
-        this.programView = new ProgramView({
-            id: 'ProgramView',
-            locale: this.locale,
-            lang: this.lang,
-            user: this.user,
-            interactionModelId: this.interactionModelId,
-            interactionModel: this.interactionModel,
-            onInteractionModelCreated: (id) => {
-                this.handleInteractionModelCreated(id);
-            },
-            onChangeVoiceSet: () => {
-                // This will be invoked when $changeButton is clicked in ProgramView
-                console.log('Switching to Voice Page (page index = 1)');
-                this.pageView.show(1);
-            }
-        });
-        console.log('[CreateViewController] ProgramView created.');
+        this.programPageWrapper = document.createElement('div');
+        this.programPageWrapper.classList.add('ProgramPageWrapper');
+        this.pageView.appendChild(this.programPageWrapper, 2);
 
-        // Create a container to mount the ProgramView
-        const programPageElement = document.createElement('div');
-        programPageElement.classList.add('ProgramPageWrapper');
-        this.programView.mount(programPageElement);
+        //this.programView = new ProgramView({
+        //    id: 'ProgramView',
+        //    locale: this.locale,
+        //    lang: this.lang,
+        //    user: this.user,
+        //    interactionModelId: this.interactionModelId,
+        //    interactionModel: this.interactionModel,
+        //    onInteractionModelCreated: (id) => {
+        //        this.handleInteractionModelCreated(id);
+        //    },
+        //    onChangeVoiceSet: () => {
+        //        // This will be invoked when $changeButton is clicked in ProgramView
+        //        console.log('Switching to Voice Page (page index = 1)');
+        //        this.pageView.show(1);
+        //    }
+        //});
+        //console.log('[CreateViewController] ProgramView created.');
 
-        this.pageView.appendChild(programPageElement, 2);
+        // // Create a container to mount the ProgramView
+        // const programPageElement = document.createElement('div');
+        // programPageElement.classList.add('ProgramPageWrapper');
+        // this.programView.mount(programPageElement);
+
+        // this.pageView.appendChild(programPageElement, 2);
 
         // Finally, mount the entire PageView into the main content area
         this.pageView.mount(this.$mainContent);
         console.log('[CreateViewController] PageView mounted to MainContent.');
     }
 
-    editInteractionModel(model) {
-        console.log('[CreateViewController] editInteractionModel called with:', model);
+    createProgramView(interactionModel, loadingMessage) {
+        console.log('[CreateViewController] createProgramView called.');
     
-        // 1) Set the controller’s interactionModel & interactionModelId
-        this.interactionModel = model;
-        this.interactionModelId = model.id;
+        // Optionally update a loading message:
+        if (loadingMessage) {
+            // For example, show “Preparing Program View…”
+            loadingMessage.setText(
+                this.locale.get('create_prepare_program_view', this.lang), 
+                { gradient: LoadingMessageGradient.ocean }
+            );
+        }
     
-        // 2) Update the ProgramView so that it references the newly clicked model:
-        //    (assuming ProgramView looks at this.controller's .interactionModel)
-        //    If you need to dynamically "refresh" ProgramView, you might call a method
-        //    like this.programView.setInteractionModel(model). 
-        //    Otherwise, if ProgramView only reads from props once, 
-        //    you could re-instantiate or re-mount as needed.
-        this.programView.interactionModel = model;
+        // If there's an existing ProgramView, remove/unmount it if you wish
+        if (this.programView) {
+            this.programView.unmount();  // If your ProgramView has an unmount() method
+            this.programView = null;
+        }
     
-        // 3) Show the Program page
+        // Now create a fresh ProgramView. 
+        this.programView = new ProgramView({
+            id: 'ProgramView',
+            locale: this.locale,
+            lang: this.lang,
+            user: this.user,
+            interactionModelId: interactionModel.id, 
+            interactionModel: interactionModel,
+            onInteractionModelCreated: (id) => {
+                this.handleInteractionModelCreated(id);
+            },
+            onChangeVoiceSet: () => {
+                console.log('Switching back to Voice Page (page=1)');
+                this.pageView.show(1);
+            },
+        });
+    
+        // Mount the newly created ProgramView
+        this.programView.mount(this.programPageWrapper);
+        console.log('[CreateViewController] ProgramView created & mounted.');
+    }
+
+    goToProgramView(interactionModel, loadingMessage) {
+        // 1) Update controller’s model references
+        this.interactionModel = interactionModel;
+        this.interactionModelId = interactionModel.id;
+    
+        // 2) Create (or recreate) the ProgramView
+        this.createProgramView(interactionModel, loadingMessage);
+    
+        // 3) Navigate to page=2
         this.pageView.show(2);
     }
+
+    editInteractionModel(model, loadingMessage) {
+        console.log('[CreateViewController] editInteractionModel called with:', model);
+        this.goToProgramView(model, loadingMessage);
+    }
+    
 
     handleVoiceSelection(voiceGroup, loadButton) {
         // This logic used to be in onSelectButtonClicked(voiceGroup, loadButton).
@@ -138,7 +181,7 @@ class CreateViewController {
                     loadButton.load(false);
                     setTimeout(() => {
                         ScreenLock.lock(false);
-                        this.pageView.show(2);
+                        this.goToProgramView(this.interactionModel, this.voiceSetSelectView.loadingMessage);
                     }, 1000);
                 })
                 .catch(err => {
@@ -164,7 +207,7 @@ class CreateViewController {
                         loadButton.load(false);
                         setTimeout(() => {
                             ScreenLock.lock(false);
-                            this.pageView.show(2);
+                            this.goToProgramView(this.interactionModel, this.voiceSetSelectView.loadingMessage);
                         }, 1000);
                     })
                     .catch((err) => {
@@ -202,10 +245,10 @@ class CreateViewController {
     async updateInteractionModel() {
         const endpoint = `/v1/${this.lang}/interaction_model/${this.interactionModelId}/update`;
         const body = { voiceset: this.voiceset };
-        console.log('[CreateViewController] PATCH =>', endpoint, body);
+        console.log('[CreateViewController] POST =>', endpoint, body);
 
         const res = await fetch(endpoint, {
-            method: 'PATCH',  // or POST if your update is a POST
+            method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body)
         });

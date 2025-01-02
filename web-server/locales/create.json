@@ -44,6 +44,15 @@
       "ru": "Вы уверены, что хотите удалить $0?",
       "ar": "هل تريد حذف $0؟ هل أنت متأكد؟"
     },
+    "create_edit_interaction_model_tooltip": {
+      "ja": "編集",
+      "en": "Edit",
+      "zh": "编辑",
+      "es": "Editar",
+      "fr": "Modifier",
+      "ru": "Редактировать",
+      "ar": "تحرير"
+    },
     "create_delete_interaction_model_tooltip": {
       "ja": "この対話モデルを削除",
       "en": "Delete this interaction model",
@@ -151,6 +160,15 @@
         "fr": "Mise à jour du modèle d'interaction...",
         "ru": "Обновление модели взаимодействия...",
         "ar": "جارٍ تحديث نموذج التفاعل..."
+    },
+    "create_interaction_model_updated": {
+        "ja": "正常に更新されました。",
+        "en": "Successfully updated.",
+        "zh": "已成功更新。",
+        "es": "Actualizado con éxito.",
+        "fr": "Mise à jour réussie.",
+        "ru": "Успешно обновлено.",
+        "ar": "تم التحديث بنجاح."
     },
     "create_voiceset_edit_button": {
       "ja": "変更",

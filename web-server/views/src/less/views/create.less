@@ -148,6 +148,7 @@ div#CreatePageView {
                 }
 
                 div.InteractionModelsScrollWrapper {
+                    padding-bottom: 30px;
                     .horizontalScrollListWrapper();
                     ul.InteractionModelList {
                         display: flex;
@@ -160,7 +161,7 @@ div#CreatePageView {
                             .smallPanel(@isHoverTransition: true);
                             display: flex;
                             min-width: 300px;
-                            min-height: 148px;
+                            min-height: 156px;
                             justify-content: space-between;
                             flex-direction: column;
                             color: #fafafa;
@@ -180,8 +181,8 @@ div#CreatePageView {
                             }
 
                             div.footer {
+                                padding: 0 0px 8px 8px;
                                 span.createdStr {
-                                    margin-bottom: 7px;
                                     text-align: right;
                                     width: 100%;
                                     display: block;
@@ -192,8 +193,8 @@ div#CreatePageView {
                             div.control {
                                 display: none;
                                 position: absolute;
-                                bottom: 10px;
-                                left: 10px;
+                                bottom: 8px;
+                                left: 5px;
                                 background: transparent;
                                 border-radius: 4px;
                                 padding: 4px 8px;
@@ -203,8 +204,8 @@ div#CreatePageView {
                   
                                 div.edit,
                                 div.delete {
-                                    .tooltipBottom();
-                                    width: 20px;
+                                    .menuIconHover(@width: 33px, @padding: 5px 7px);
+                                    .tooltipBottom(@top: 100%);
                                     cursor: pointer;
                                     color: #fff;
                                     margin: 0 5px;

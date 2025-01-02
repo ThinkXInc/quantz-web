@@ -34,7 +34,7 @@
     }
 }
 
-.tooltipBottom(@translate-x: translateX(0%), @background-color: #000) {
+.tooltipBottom(@translate-x: translateX(0%), @background-color: #000, @top: 109%) {
     position: relative;
     span.tooltip {
         position: absolute;
@@ -190,6 +190,20 @@
             }
         }
     }
+}
+
+.menuIconHover(@width: 38px, @padding: 5px 7px) {
+    width: @width;
+    padding: @padding;
+    transition: 
+        border-radius 0.2s @cubic-bezier1,
+        background-color 0.2s @cubic-bezier1; /* Smooth transition */
+ 
+    &:hover {
+        background-color: #727272;
+        border-radius: 25px;
+    }
+ 
 }
 
 .horizontalScrollListWrapper() {

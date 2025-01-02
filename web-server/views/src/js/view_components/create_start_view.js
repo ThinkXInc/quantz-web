@@ -226,6 +226,12 @@ class CreateStartView {
                 }
             });
             $control.appendChild($edit);
+
+            const $editTooltip = document.createElement('span');
+            $editTooltip.classList.add('tooltip');
+            $editTooltip.textContent = this.locale.get('create_edit_interaction_model_tooltip', this.lang);
+            $edit.appendChild($editTooltip);
+ 
     
             // .delete
             const $delete = document.createElement('div');
@@ -238,10 +244,10 @@ class CreateStartView {
             });
             $control.appendChild($delete);
 
-            //const $deleteTooltip = document.createElement('span');
-            //$deleteTooltip.classList.add('tooltip');
-            //$deleteTooltip.textContent = this.locale.get('create_delete_interaction_model_tooltip', this.lang);
-            //$delete.appendChild($deleteTooltip);
+            const $deleteTooltip = document.createElement('span');
+            $deleteTooltip.classList.add('tooltip');
+            $deleteTooltip.textContent = this.locale.get('create_delete_interaction_model_tooltip', this.lang);
+            $delete.appendChild($deleteTooltip);
     
             // Add the .control div to the $interactionModel
             $interactionModel.appendChild($control);

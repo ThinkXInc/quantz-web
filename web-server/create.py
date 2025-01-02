@@ -59,6 +59,10 @@ from libcommon.web.validation_errors import RequiredFieldsNotSatisfiedFormat
 from libcommon.web.flask_helpers import language_wrapper, content_type_check_json, \
     required_fields_check, validate_request, handle_error, session_helper
 
+
+# Basic Config
+from llm.models.basic_config import ResponseMode, ReferenceType
+
 # Language
 from libcommon.language import Language
 
@@ -283,18 +287,23 @@ def interaction_model_create(user, lang, lang_name):
 @required_fields_check([])
 def interaction_model_update(user, lang, lang_name, interaction_model_id):
     """
-    Update an existing InteractionModel
+    Update an existing InteractionModel using set_interaction_model, 
+    ignoring unknown keys in the request JSON.
     """
     logger.info(cyan(f'request: {request.url} => {request.json}'))
     validation_error = validate_request(lang, locale)
     if validation_error:
         return validation_error.http_response()
 
+    # Possible fields allowed for updates
+    allowed_update_keys = ['title', 'steps', 'voiceset']
+
+    # Filter out any unknown keys from request.json
     updates = {}
-    for key in ['title', 'steps', 'voiceset']:
+    for key in allowed_update_keys:
         if key in request.json:
+            # If the key is voiceset, validate that it must be a dict
             if key == 'voiceset':
-                # Validate voiceset if provided
                 if not isinstance(request.json['voiceset'], dict):
                     message = locale.get('interaction_model_invalid_voiceset', lang, ["voiceset"])
                     logger.error(red(f"voiceset must be a dict, got {type(request.json['voiceset'])}"))
@@ -308,24 +317,57 @@ def interaction_model_update(user, lang, lang_name, interaction_model_id):
     logger.info(magenta(f'[POST] interaction_model/{interaction_model_id}/update => \n{"-"*100}\n{updates}\n{"-"*100}'))
 
     try:
-        updated_model = interaction_model_db.update(interaction_model_id, updates)
-        logger.info(light_green(f'updated interaction_model {updated_model}'))
+        # 1) Retrieve the existing model
+        existing_model = interaction_model_db.get_one(interaction_model_id)
+
+        # 2) Apply updates safely
+        if 'title' in updates:
+            existing_model.title = updates['title']
+
+        if 'voiceset' in updates:
+            existing_model.voiceset = updates['voiceset']
+
+        # If steps are included in the update
+        if 'steps' in updates:
+            new_steps = []
+            for step_dict in updates['steps']:
+                # Remove any old or unknown keys such as 'question' 
+                # (or anything else not used by InteractionModelStep)
+                safe_step_data = {
+                    # Use only the known InteractionModelStep fields
+                    "topic": step_dict.get("topic", ""),
+                    "remark": step_dict.get("remark", ""),
+                    "goal": step_dict.get("goal", ""),
+                    "max_turns": step_dict.get("max_turns", 3),
+                    "guidelines": step_dict.get("guidelines", []),
+                    "response_mode": step_dict.get("response_mode", ResponseMode.TEMPO_ORIENTED),
+                    "reference_type": step_dict.get("reference_type", ReferenceType.ALL),
+                    "references": step_dict.get("references", []),
+                    "left": step_dict.get("left", 0.0),
+                    "top": step_dict.get("top", 0.0),
+                }
+                # Construct each step as an InteractionModelStep
+                new_steps.append(InteractionModelStep(**safe_step_data))
+
+            existing_model.steps = new_steps
+
+        # 3) Use set_interaction_model to store updates (instead of update)
+        interaction_model_db.set_interaction_model(existing_model)
+
+        logger.info(light_green(f'updated interaction_model {interaction_model_id}'))
+        return existing_model.response_json()
+
     except InteractionModelNotFoundError:
         return ResourceNotFoundAPIErrorFormat(
             lang=lang, 
             message=locale.get('interaction_model_not_found', lang)
         ).http_response()
-    except InteractionModelUpdateError:
+    except Exception as e:
+        logger.error(red(f"Unexpected error updating InteractionModel: {e}"))
         return UnexpectedAPIErrorFormat(
             lang=lang, 
             message=locale.get('interaction_model_update_error', lang)
         ).http_response()
-
-    return OKAPISuccessFormat(
-        message=locale.get('interaction_model_updated', lang, [updated_model.title]),
-        data=updated_model.response_json()
-    ).http_response()
-
 
 #
 # DELETE one
