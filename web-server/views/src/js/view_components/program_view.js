@@ -105,6 +105,10 @@ class ProgramView {
         this.interactionModelId = interactionModelId;
         this.interactionModel = interactionModel || defaults; 
 
+        if (!this.interactionModel.steps || this.interactionModel.steps.length === 0) {
+            this.interactionModel.steps = [ defaultStep() ];
+        }
+
         this.backgroundContainerHeight = 5000;
         this.backgroundContainerWidth = 5000;
 

@@ -175,6 +175,59 @@ def test_load_message():
 #  Interaction Model CRUD endpoints
 # --------------------------------------------------------------------
 
+#
+# READ (Single)
+#
+@blueprint_create.route('/v1/<lang>/interaction_model/<interaction_model_id>', methods=['GET'])
+@language_wrapper
+@session_helper
+def interaction_model_get(user, lang, lang_name, interaction_model_id):
+    """
+    Fetch a single InteractionModel by its ID.
+    """
+    logger.info(magenta(f'[GET] /v1/{lang}/interaction_model/{interaction_model_id}'))
+
+    try:
+        model = interaction_model_db.get_one(interaction_model_id)
+    except InteractionModelNotFoundError:
+        # Could not find a model with the given ID
+        return ResourceNotFoundAPIErrorFormat(
+            lang=lang,
+            message=locale.get('interaction_model_not_found', lang)
+        ).http_response()
+    except InteractionModelQueryError:
+        # Some other issue occurred while querying Redis
+        return UnexpectedAPIErrorFormat(
+            lang=lang,
+            message=locale.get('interaction_model_list_failed', lang)
+        ).http_response()
+
+    # Optional ownership check: ensure that the requested model belongs to the current user.
+    # If you do NOT want to enforce ownership, remove this check.
+    if model.user_id != str(user.id):
+        # Return 404 to avoid leaking existence of other users' models
+        return ResourceNotFoundAPIErrorFormat(
+            lang=lang,
+            message=locale.get('interaction_model_not_found', lang)
+        ).http_response()
+
+    # Format timestamps (if they exist)
+    model.created_str = timestamp_to_time_ago_text(model.created, lang) if model.created else "(unknown)"
+    model.updated_str = timestamp_to_time_ago_text(model.updated, lang) if model.updated else "(unknown)"
+
+    model_dict = model.response_json()
+    model_dict['created_str'] = model.created_str
+    model_dict['updated_str'] = model.updated_str
+
+    response_data = {
+        'interaction_model': model_dict
+    }
+
+    return OKAPISuccessFormat(
+        message=locale.get('interaction_model_list_success', lang),
+        data=response_data
+    ).http_response()
+
 @blueprint_create.route('/v1/<lang>/interaction_model/list', methods=['GET'])
 @language_wrapper
 @session_helper

@@ -1,10 +1,12 @@
 class StudioHeader {
     constructor({
         id,
+        locale,
         lang
     }) {
         console.log(`[StudioHeader] constructor called. id=${id}, lang=${lang}`);
         this.id = id;
+        this.locale = locale;
         this.lang = lang;
         this.$toggleMenu = document.getElementById('StudioHeaderToggleMenu');
         this.$logo = document.getElementById('StudioHeaderLogo');
@@ -101,7 +103,8 @@ class StudioHeader {
 
     onLogoClick() {
         console.log('[StudioHeader] onLogoClick called.');
-        window.location.href = `/${this.lang}/studio`;
+        //window.location.href = `/${this.lang}/studio`;
+        window.location.href = `/${this.lang}/create`;
     }
 
     onCreateNewClick() {

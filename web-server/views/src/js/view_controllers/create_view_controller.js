@@ -30,7 +30,45 @@ class CreateViewController {
         // Set up the view (build the pages, mount them, etc.)
         this.setupView();
 
+        const page = Browser.getURLParam('page');        // e.g. 'voiceset' or 'program'
+        const modelId = Browser.getURLParam('model_id'); // e.g. 'abc123' if present
+        console.log(window.location.search)
+        console.log(page)
+        console.log(modelId)
+        const modelId2 = Browser.getValueFromSearchParams('model_id'); // e.g. 'abc123' if present
+        console.log(modelId2)
+
+        if (modelId) {
+            this.fetchInteractionModel(modelId).then((model) => {
+                this.interactionModel = model;
+                this.interactionModelId = model.id;
+    
+                if (page === 'voiceset') {
+                    this.goToVoiceSetSelectView();
+                } else if (page === 'program') {
+                    this.goToProgramView(model);
+                } else {
+                    // Default to Start page if no recognized page param
+                    this.pageView.show(0);
+                }
+            });
+        } else {
+            // If no model_id, maybe just show Start page
+            this.pageView.show(0);
+        }
+
+
         //this.pageView.show(2); // DEBUG
+    }
+
+    get interactionModelId() {
+        return this._interactionModelId;
+    }
+
+    set interactionModelId(value) {
+        this._interactionModelId = value;
+        // Whenever we set the model ID, update the URL param:
+        Browser.setQueryParam('model_id', value || null);
     }
 
     setupView() {
@@ -162,25 +200,40 @@ class CreateViewController {
     }
 
     goToVoiceSetSelectView() {
+        // 1) Create or re-create the view
         this.createVoiceSetSelectView();
+        
+        // 2) Show page=1 in PageView
         this.pageView.show(1);
-
-        // Make sure to call openAnimation once it’s in the DOM
+    
+        // 3) Update the URL
+        Browser.setQueryParam('page', 'voiceset');
+        if (this.interactionModelId) {
+            Browser.setQueryParam('model_id', this.interactionModelId, true);
+        } else {
+            Browser.setQueryParam('model_id', null, true);
+        }
+    
+        // 4) Animation
         if (this.voiceSetSelectView && typeof this.voiceSetSelectView.openAnimation === 'function') {
             this.voiceSetSelectView.openAnimation();
         }
     }
-
+    
     goToProgramView(interactionModel, loadingMessage) {
-        // 1) Update controller’s model references
+        // 1) Update our controller’s model references
         this.interactionModel = interactionModel;
         this.interactionModelId = interactionModel.id;
-    
-        // 2) Create (or recreate) the ProgramView
+        
+        // 2) Create the ProgramView
         this.createProgramView(interactionModel, loadingMessage);
-    
-        // 3) Navigate to page=2
+        
+        // 3) Switch to page=2
         this.pageView.show(2);
+    
+        // 4) Update the URL
+        Browser.setQueryParam('page', 'program');
+        Browser.setQueryParam('model_id', this.interactionModelId, true);
     }
 
     editInteractionModel(model, loadingMessage) {
