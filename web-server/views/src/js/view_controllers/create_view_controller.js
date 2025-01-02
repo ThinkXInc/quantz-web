@@ -42,7 +42,7 @@ class CreateViewController {
             lang: this.lang,
             onNext: () => {
                 console.log('[CreateViewController] onNext from StartView called. Navigating to Voice page.');
-                this.pageView.show(1);
+                this.goToVoiceSetSelectView();
             },
             onInteractionModelClick: (model) => {
                 console.log('[CreateViewController] Interaction model clicked:', model);
@@ -52,19 +52,6 @@ class CreateViewController {
         this.pageView.appendChild(startView.$view, 0);
 
         // --- Page 1: Voice Page ---
-        this.voiceSetSelectView = new VoiceSetSelectView({
-            locale: this.locale,
-            lang: this.lang,
-            onVoiceSelected: (voiceGroup, loadButton) => {
-                // Do whatever you were doing in onSelectButtonClicked, or call that function
-                this.handleVoiceSelection(voiceGroup, loadButton);
-            },
-            getInteractionModelId: () => this.interactionModelId,
-            createInteractionModel: () => this.createInteractionModel(),
-            updateInteractionModel: () => this.updateInteractionModel(),
-            submitVoiceSet: () => this.submitVoiceSet(),
-        });
-        this.pageView.appendChild(this.voiceSetSelectView.$view, 1);
 
         // --- Page 2: Program Page ---
         console.log('[CreateViewController] Creating ProgramView...');
@@ -102,6 +89,38 @@ class CreateViewController {
         console.log('[CreateViewController] PageView mounted to MainContent.');
     }
 
+    createVoiceSetSelectView() {
+        console.log('[CreateViewController] createVoiceSetSelectView called.');
+        // If an old instance exists, remove/unmount it
+        if (this.voiceSetSelectView) {
+            // Optionally remove from DOM if you want a fresh re-creation:
+            this.voiceSetSelectView.$view.remove();
+            this.voiceSetSelectView = null;
+        }
+
+        // Determine which voiceGroup is currently selected in the interactionModel
+        // (Typically something like interactionModel.voiceset.id or entire object.)
+        const selectedVoiceGroupId = this.interactionModel?.voiceset?.id;
+
+        // Create the new VoiceSetSelectView instance
+        this.voiceSetSelectView = new VoiceSetSelectView({
+            locale: this.locale,
+            lang: this.lang,
+            interactionModelId: this.interactionModelId,
+            interactionModel: this.interactionModel,
+            onVoiceSelected: (voiceGroup, loadButton) => {
+                this.handleVoiceSelection(voiceGroup, loadButton);
+            },
+            getInteractionModelId: () => this.interactionModelId,
+            createInteractionModel: () => this.createInteractionModel(),
+            updateInteractionModel: () => this.updateInteractionModel(),
+            submitVoiceSet: () => this.submitVoiceSet(),
+        });
+
+        // Put it into PageView’s page index=1
+        this.pageView.appendChild(this.voiceSetSelectView.$view, 1);
+    }
+
     createProgramView(interactionModel, loadingMessage) {
         console.log('[CreateViewController] createProgramView called.');
     
@@ -133,13 +152,23 @@ class CreateViewController {
             },
             onChangeVoiceSet: () => {
                 console.log('Switching back to Voice Page (page=1)');
-                this.pageView.show(1);
+                this.goToVoiceSetSelectView();
             },
         });
     
         // Mount the newly created ProgramView
         this.programView.mount(this.programPageWrapper);
         console.log('[CreateViewController] ProgramView created & mounted.');
+    }
+
+    goToVoiceSetSelectView() {
+        this.createVoiceSetSelectView();
+        this.pageView.show(1);
+
+        // Make sure to call openAnimation once it’s in the DOM
+        if (this.voiceSetSelectView && typeof this.voiceSetSelectView.openAnimation === 'function') {
+            this.voiceSetSelectView.openAnimation();
+        }
     }
 
     goToProgramView(interactionModel, loadingMessage) {
@@ -236,7 +265,7 @@ class CreateViewController {
             throw new Error(result.message || 'Create failed.');
         }
         // Show success
-        this.voiceSetSelectView.loadingMessage.setText(result.message || 'Create succeeded!', {gradient: LoadingMessageGradient.bluegreen});
+        this.voiceSetSelectView.loadingMessage.setText(result.message || 'Create succeeded!', {gradient: LoadingMessageGradient.ocean});
 
         // Suppose the backend returns { id: 'xxx', message: '...' }
         return result.id; 
@@ -281,7 +310,7 @@ class CreateViewController {
                 throw new Error(result.message || 'Update failed.');
             }
             console.log('[CreateViewController] Voice set updated:', result);
-            this.voiceSetSelectView.loadingMessage.setText(result.message, {gradient: LoadingMessageGradient.bluegreen});
+            this.voiceSetSelectView.loadingMessage.setText(result.message, {gradient: LoadingMessageGradient.ocean});
 
             // Possibly go to next page automatically, or not:
             // this.pageView.show(2);

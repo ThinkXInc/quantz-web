@@ -1,10 +1,20 @@
 /* global LoadingMessage, LoadingMessagePattern, LoadingMessageGradient,
           VolumeMeter, ScreenLock, LoadButton, LangSelector, anime */
 
+const VOICE_SET_CATEGORY_COLOR_PATTERNS = [
+    'var(--voiceset-category-bg-blue)',
+    'var(--voiceset-category-bg-green)',
+    'var(--voiceset-category-bg-yellow)',
+    'var(--voiceset-category-bg-red)',
+    'var(--voiceset-category-bg-purple)'
+];
+
 class VoiceSetSelectView {
     constructor({
         locale,
         lang,
+        interactionModelId,
+        interactionModel,
         onVoiceSelected,     // Callback when user hits “Select” on a voice
         getInteractionModelId,  // Optionally let us read the current interactionModelId
         createInteractionModel, // Callbacks from the parent if we need to create
@@ -13,6 +23,9 @@ class VoiceSetSelectView {
     }) {
         this.locale = locale;
         this.lang = lang;
+
+        this.interactionModelId = interactionModelId;
+        this.interactionModel = interactionModel;
 
         // The parent (CreateViewController) can pass in callbacks:
         this.onVoiceSelected = onVoiceSelected;
@@ -67,15 +80,15 @@ class VoiceSetSelectView {
         $voiceGroupList.classList.add('VoiceGroupList');
         $voiceGroupListScrollWrapper.appendChild($voiceGroupList);
         $voiceGroupList.classList.add('slideIn');
-        setTimeout(() => {
-            $voiceGroupList.style.transform = 'translateX(0)';
-            $voiceGroupList.style.opacity = '1.0';
-        }, 0);
+        this.$voiceGroupList = $voiceGroupList;
 
         // Populate the list from the voiceGroups we define (or fetch):
         const voiceGroups = this.getVoiceGroupList();
         voiceGroups.forEach((voiceGroup) => {
             const $voiceGroupDOM = this.createVoiceGroupDOM(voiceGroup);
+            if (this.interactionModelId && voiceGroup.id === this.interactionModel?.voiceset?.id) {
+                $voiceGroupDOM.classList.add('selected');
+            }
             $voiceGroupList.appendChild($voiceGroupDOM);
         });
 
@@ -88,6 +101,14 @@ class VoiceSetSelectView {
         $container.appendChild($localeWrapper);
 
         return $container;
+    }
+
+    openAnimation() {
+        this.$voiceGroupList.classList.add('slideIn');
+        setTimeout(() => {
+            this.$voiceGroupList.style.transform = 'translateX(0)';
+            this.$voiceGroupList.style.opacity = '1.0';
+        }, 0);
     }
 
     /**
@@ -260,6 +281,19 @@ class VoiceSetSelectView {
     }
 
     /**
+     * A simple hash function for distributing label colors.
+     */
+        hashVoicesetName(str) {
+            let hashValue = 0;
+            for (let i = 0; i < str.length; i++) {
+                hashValue = (hashValue << 5) - hashValue + str.charCodeAt(i);
+                hashValue |= 0; // convert to 32-bit integer
+            }
+            // Make sure it's positive and within array bounds
+            return Math.abs(hashValue) % VOICE_SET_CATEGORY_COLOR_PATTERNS.length;
+    }
+
+    /**
      * Create the DOM for a single voiceGroup.
      */
     createVoiceGroupDOM(voiceGroup) {
@@ -313,6 +347,8 @@ class VoiceSetSelectView {
                     const $li = document.createElement('li');
                     $li.classList.add('category');
                     $li.textContent = cat;
+                    const colorIndex = this.hashVoicesetName(cat);
+                    $li.style.backgroundColor = VOICE_SET_CATEGORY_COLOR_PATTERNS[colorIndex];
                     $categories.appendChild($li);
                 });
                 $voiceOption.appendChild($categories);
@@ -383,11 +419,13 @@ class VoiceSetSelectView {
         const playPath  = "M44.4,31.7 l-19,10.9 c-1.3,0.8 -3,-0.2 -3,-1.7 l0,-21.9 c0,-1.5 1.7,-2.5 3,-1.7 l19,10.9 c1.4,0.8 1.4,2.8 0,3.5 z";
         const pausePath = "M39.8,41.8 l-19.5,0 c-1.1,0 -2,-0.9 -2,-2 l0,-19.5 c0,-1.1 0.9,-2 2,-2 l19.5,0 c1.1,0 2,0.9 2,2 l0,19.5 c0,1.1 -0.9,2 -2,2 z";
 
+        const fill = "#000";// "#30688d";
+
         $inlineSvg.innerHTML = `
           <circle fill="#FFFFFF" cx="30" cy="30" r="28.8"/>
           <path
             id="playPausePath"
-            fill="#30688d"
+            fill="${fill}"
             d="${playPath}"
           />
         `;

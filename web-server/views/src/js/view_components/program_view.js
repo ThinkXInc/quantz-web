@@ -1349,16 +1349,16 @@ class ProgramView {
             }
         });
 
-        if (!hasAnyStepContent) {
-            // Alert if no step content
-            if (this.stepsData[0]?.remarkForm) {
-                this.stepsData[0].remarkForm.alert(
-                    this.locale.get("create_no_remark_error", this.lang)
-                );
-            }
-            console.log('No topic or remark. return null');
-            return null;
-        }
+        //if (!hasAnyStepContent) {
+        //    // Alert if no step content
+        //    if (this.stepsData[0]?.remarkForm) {
+        //        this.stepsData[0].remarkForm.alert(
+        //            this.locale.get("create_no_remark_error", this.lang)
+        //        );
+        //    }
+        //    console.log('No topic or remark. return null');
+        //    return null;
+        //}
 
         return {
             title,

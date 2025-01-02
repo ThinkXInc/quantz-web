@@ -152,6 +152,15 @@
         "ru": "Инициализация модели взаимодействия...",
         "ar": "جارٍ تهيئة نموذج التفاعل..."
     },
+    "create_prepare_program_view": {
+      "ja": "ウィンドウを初期化中...",
+      "en": "Initializing the window...",
+      "zh": "正在初始化窗口...",
+      "es": "Inicializando la ventana...",
+      "fr": "Initialisation de la fenêtre...",
+      "ru": "Инициализация окна...",
+      "ar": "جاري تهيئة النافذة..."
+    },
     "create_updating_interaction_model":{
         "ja": "対話モデルを更新中...",
         "en": "Updating the interaction model...",
