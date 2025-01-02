@@ -348,7 +348,7 @@ class VoiceSetSelectView {
                     $li.classList.add('category');
                     $li.textContent = cat;
                     const colorIndex = this.hashVoicesetName(cat);
-                    $li.style.backgroundColor = VOICE_SET_CATEGORY_COLOR_PATTERNS[colorIndex];
+                    $li.style.background = VOICE_SET_CATEGORY_COLOR_PATTERNS[colorIndex];
                     $categories.appendChild($li);
                 });
                 $voiceOption.appendChild($categories);
@@ -372,6 +372,7 @@ class VoiceSetSelectView {
             container: $localeSelectorDiv,
             langs: { en: 'English', ja: '日本語', es: 'Español', zh: '中文', fr: 'Français' },
             currentLang: this.lang,
+            iconLocalePath: '/img/create/locale-icon.svg',
             onLangChange: (newLang) => {
                 this.updateVoiceOptionsForGroup($voiceOptions, newLang);
             }
@@ -381,8 +382,8 @@ class VoiceSetSelectView {
         $voiceGroupWrapper.appendChild($voiceOptionsWrapper);
 
         // --- “Select” button ---
-        const $buttonWrapper = document.createElement('div');
-        $buttonWrapper.classList.add('buttonWrapper');
+        const $selectButtonWrapper = document.createElement('div');
+        $selectButtonWrapper.classList.add('selectButtonWrapper');
 
         const selectButton = new LoadButton({
             id: `SelectButton-${voiceGroup.id}`,
@@ -397,8 +398,8 @@ class VoiceSetSelectView {
         });
         selectButton.$view.classList.add('SelectButton', 'commonV1Small');
 
-        $buttonWrapper.appendChild(selectButton.$view);
-        $voiceGroupWrapper.appendChild($buttonWrapper);
+        $selectButtonWrapper.appendChild(selectButton.$view);
+        $voiceGroupWrapper.appendChild($selectButtonWrapper);
 
         $voiceGroup.appendChild($voiceGroupWrapper);
         return $voiceGroup;

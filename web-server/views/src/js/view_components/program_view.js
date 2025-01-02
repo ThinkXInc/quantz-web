@@ -94,7 +94,7 @@ class ProgramView {
         interactionModel,
         onInteractionModelCreated,
         maxSteps = 3,
-        updateIntervalMs = 3000,
+        updateIntervalMs = 1000,
         stepPositionMargin = 200,
         onChangeVoiceSet,
     }) {
@@ -218,6 +218,11 @@ class ProgramView {
         // ───────────────────────────────────────────────────────────────────────────
         const $voiceSetContainer = document.createElement('div');
         $voiceSetContainer.classList.add('voiceSetContainer');
+
+        const $voiceSetLabel = document.createElement('span');
+        $voiceSetLabel.classList.add('voiceSetLabel');
+        $voiceSetLabel.textContent = this.locale.get("create_voiceset_label", this.lang) || "Voice Set:";
+        $voiceSetContainer.appendChild($voiceSetLabel);
     
         // Display either the voiceset name or a "not set" message
         const $voiceSetName = document.createElement('span');

@@ -3,12 +3,21 @@ class LangSelector {
         container,    // The DOM element to render into (per group)
         langs = {},   // A map of langCode->displayName (e.g. {en:'English',ja:'日本語',...})
         currentLang,  // Which language to show as selected initially
-        onLangChange  // A callback that fires when user changes language
+        onLangChange, // A callback that fires when user changes language
+
+        // Add two new optional parameters with default paths
+        iconLocalePath = "/img/locale-icon.svg",
+        iconArrowPath  = "/img/down-arrow.svg",
     }) {
         this.container = container;
         this.langs = langs;
         this.currentLang = currentLang;
         this.onLangChange = onLangChange;
+
+        // Store the icon paths
+        this.iconLocalePath = iconLocalePath;
+        this.iconArrowPath = iconArrowPath;
+
         this.init();
     }
 
@@ -20,10 +29,12 @@ class LangSelector {
         // The "button" that toggles open/close
         const button = document.createElement('div');
         button.classList.add('lang-selector-button');
+
+        // Use icon paths from constructor
         button.innerHTML = `
-            <img class="locale-icon" src="/img/locale-icon.svg"/>
+            <img class="locale-icon" src="${this.iconLocalePath}" />
             <span class="current-lang">${this.langs[this.currentLang] || this.currentLang}</span>
-            <img class="arrow-icon" src="/img/down-arrow.svg"/>
+            <img class="arrow-icon" src="${this.iconArrowPath}" />
         `;
         wrapper.appendChild(button);
 

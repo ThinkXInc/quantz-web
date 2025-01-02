@@ -166,9 +166,16 @@ div#ProgramView {
                 display: flex;
                 &.alert {
                     border-color: var(--program-alert-red);
-                    span.voiceSetName {
+                    span.voiceSetName, span.voiceSetLabel {
                         color: var(--program-alert-red);
                     }
+                }
+
+                span.voiceSetLabel {
+                    font-size: 12px;
+                    font-weight: 200;
+                    color: #b5b5b5;
+                    margin-right: 10px;
                 }
 
                 span.voiceSetName {

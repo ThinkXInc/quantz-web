@@ -124,7 +124,7 @@ class CreateStartView {
         });
 
         try {
-            const endpoint = `/v1/${this.lang}/interaction_model/list`;
+            const endpoint = `/v1/${this.lang}/interaction_model/list?sort=latest`;
             const res = await fetch(endpoint, { method: 'GET' });
             const json = await res.json();
 
@@ -160,7 +160,7 @@ class CreateStartView {
      * Each item includes:
      *   - <h4> for the title
      *   - <span> for the voicsetName
-     *   - <span> for createdStr
+     *   - <span> for updatedStr
      *   - a <div class="control"> containing .edit and .delete
      */
     renderInteractionModelList(interactionModels) {
@@ -174,7 +174,7 @@ class CreateStartView {
     
             // For readability
             const title       = model.title        || '(no title)';
-            const createdStr  = model.created_str  || '(no time)';
+            const updatedStr  = model.updated_str  || '(no time)';
             const voicsetName = model.voiceset?.name || '(no voice)';
     
             // main container
@@ -202,8 +202,8 @@ class CreateStartView {
     
             // 3) <span> for created_str
             const $createdSpan = document.createElement('span');
-            $createdSpan.classList.add('createdStr');
-            $createdSpan.textContent = createdStr;
+            $createdSpan.classList.add('updatedStr');
+            $createdSpan.textContent = updatedStr;
             $footer.appendChild($createdSpan);
     
             // Append them to the $interactionModel

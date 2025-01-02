@@ -205,7 +205,11 @@ class CreateViewController {
                 { gradient: LoadingMessageGradient.ocean }
             );
             this.updateInteractionModel()
-                .then(() => this.submitVoiceSet())
+                .then((interactionModel) => {
+                    this.interactionModel = interactionModel;
+                    this.interactionModelId = interactionModel.id;
+                    this.submitVoiceSet()
+                })
                 .then(() => {
                     loadButton.load(false);
                     setTimeout(() => {
@@ -227,8 +231,9 @@ class CreateViewController {
             );
             setTimeout(() => {
                 this.createInteractionModel()
-                    .then((newId) => {
-                        this.interactionModelId = newId;
+                    .then((interactionModel) => {
+                        this.interactionModel = interactionModel;
+                        this.interactionModelId = interactionModel.id;
                         return this.submitVoiceSet();
                     })
                     .then(() => this.submitVoiceSet())
@@ -260,15 +265,17 @@ class CreateViewController {
             body: JSON.stringify(body)
         });
         const result = await res.json();
+        const { interaction_model, message } = result;
+        console.log(`[createInteractionModel] response result`, result)
+        console.log(`[createInteractionModel] `, message)
         if (!res.ok) {
             this.voiceSetSelectView.loadingMessage.setText(result.message, {alert: true})
             throw new Error(result.message || 'Create failed.');
         }
         // Show success
-        this.voiceSetSelectView.loadingMessage.setText(result.message || 'Create succeeded!', {gradient: LoadingMessageGradient.ocean});
+        this.voiceSetSelectView.loadingMessage.setText(message || 'Create succeeded!', {gradient: LoadingMessageGradient.ocean});
 
-        // Suppose the backend returns { id: 'xxx', message: '...' }
-        return result.id; 
+        return interaction_model; 
     }
 
     async updateInteractionModel() {
@@ -282,12 +289,16 @@ class CreateViewController {
             body: JSON.stringify(body)
         });
         const result = await res.json();
+        const { interaction_model, message } = result;
+        console.log(`[updateInteractionModel] response result`, result)
+        console.log(`[updateInteractionModel] `, message)
         if (!res.ok) {
             this.voiceSetSelectView.loadingMessage.setText(result.message, {alert: true});
             throw new Error(result.message || 'Update failed.');
         }
         // Show success
-        this.voiceSetSelectView.loadingMessage.setText(result.message, {gradient: LoadingMessageGradient.ocean});
+        this.voiceSetSelectView.loadingMessage.setText(message, {gradient: LoadingMessageGradient.ocean});
+        return interaction_model
     }
 
     /**

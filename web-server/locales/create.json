@@ -9,13 +9,13 @@
         "ar": ""
     },
     "create_start_button" : {
-        "ja": "対話モデルの作成をはじめる",
-        "en": "Start Creating Interaction Model",
-        "zh": "开始创建交互模型",
-        "es": "Comenzar a crear el modelo de interacción",
-        "fr": "Commencer à créer le modèle d'interaction",
-        "ru": "Начать создание модели взаимодействия",
-        "ar": "بدء إنشاء نموذج التفاعل"
+      "ja": "対話モデルを新規作成",
+      "en": "Create New Interaction Model",
+      "zh": "新建交互模型",
+      "es": "Crear nuevo modelo de interacción",
+      "fr": "Créer un nouveau modèle d'interaction",
+      "ru": "Создать новую модель взаимодействия",
+      "ar": "إنشاء نموذج تفاعل جديد"
     },
     "create_interaction_model_list_loading": {
       "ja": "対話モデルをロード中...",
@@ -178,6 +178,15 @@
         "fr": "Mise à jour réussie.",
         "ru": "Успешно обновлено.",
         "ar": "تم التحديث بنجاح."
+    },
+    "create_voiceset_label": {
+      "ja": "音声セット",
+      "en": "Voice Set",
+      "zh": "语音集",
+      "es": "Conjunto de voces",
+      "fr": "Ensemble de voix",
+      "ru": "Набор голосов",
+      "ar": "مجموعة الأصوات"
     },
     "create_voiceset_edit_button": {
       "ja": "変更",

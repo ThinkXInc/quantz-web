@@ -181,8 +181,19 @@ def test_load_message():
 def interaction_model_list(user, lang, lang_name):
     logger.info(magenta(f'[GET] /v1/{lang}/interaction_model/list'))
 
+    limit_str = request.args.get('limit', default='100', type=str)
+    sort_str = request.args.get('sort', default='latest', type=str)
+
+    # Validate and convert
     try:
-        interaction_models = interaction_model_db.get_many(str(user.id), limit=100)
+        limit = int(limit_str)
+        if limit < 1:
+            limit = 100
+    except ValueError:
+        limit = 100  # fallback
+
+    try:
+        interaction_models = interaction_model_db.get_many(str(user.id), limit=limit)
         count = len(interaction_models)
         logger.debug(f'fetched {count} interaction_models => {interaction_models}')
     except InteractionModelQueryError:
@@ -191,15 +202,22 @@ def interaction_model_list(user, lang, lang_name):
             message=locale.get('interaction_model_list_failed', lang)
         ).http_response()
 
+    if sort_str.lower() == 'latest':
+        interaction_models = sorted(interaction_models, key=lambda m: m.updated, reverse=True)
+    else:  # default to desc
+        interaction_models = sorted(interaction_models, key=lambda m: m.updated)
+
     models_json = []
     for model in interaction_models:
         if model.created:
             model.created_str = timestamp_to_time_ago_text(model.created, lang)
+            model.updated_str = timestamp_to_time_ago_text(model.updated, lang)
         else:
             model.created_str = "(unknown)"
 
         model_dict = model.response_json()
         model_dict['created_str'] = model.created_str  # explicitly add it
+        model_dict['updated_str'] = model.updated_str  # explicitly add it
         models_json.append(model_dict)
 
     response_data = {
@@ -262,6 +280,10 @@ def interaction_model_create(user, lang, lang_name):
         )
         host_manager.set_id_in_service_with_host_id("interaction_model", str(new_model.id), str(user.id))
 
+        response_data = {
+            'interaction_model': new_model.response_json(),
+        }
+
     except HostSettingError as e:
         message = str(e)
         logger.error(red({message}))
@@ -273,7 +295,7 @@ def interaction_model_create(user, lang, lang_name):
 
     return AcceptedAPISuccessFormat(
         message=locale.get('interaction_model_created', lang, [str(new_model.title)]),
-        data=new_model.response_json()
+        data=response_data
     ).http_response()
 
 
@@ -354,8 +376,15 @@ def interaction_model_update(user, lang, lang_name, interaction_model_id):
         # 3) Use set_interaction_model to store updates (instead of update)
         interaction_model_db.set_interaction_model(existing_model)
 
+        response_data = {
+            'interaction_model': existing_model.response_json(),
+        }
+
         logger.info(light_green(f'updated interaction_model {interaction_model_id}'))
-        return existing_model.response_json()
+        return AcceptedAPISuccessFormat(
+                message=locale.get('interaction_model_updated', lang, [str(existing_model.title)]),
+                data=response_data
+            ).http_response()
 
     except InteractionModelNotFoundError:
         return ResourceNotFoundAPIErrorFormat(
