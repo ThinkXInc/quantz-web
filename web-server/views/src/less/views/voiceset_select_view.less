@@ -10,10 +10,20 @@ body {
     --voiceset-category-bg-yellow: #a07800;
     --voiceset-category-bg-red:    #ff0000;
     --voiceset-category-bg-purple: #8400ff;
-    --voiceset-group-selected-border: #0075ff;// #00beff;
+    --voiceset-text: #ffffff;
+    --voiceset-button-border: #ffffff;
+    --voiceset-button-bg: transparent;
+    --voiceset-group-border: #9b9b9b;//#e5e5e5;//#bebebe;
+    --voiceset-group-selected-border: #fff;// #ff4f00;//#0075ff;// #00beff;
+    --voiceset-group-selected-border-hover: #fff;//#ff7637;// #00c0ff;
+    --voiceset-group-bg-red-blue: linear-gradient(45deg, #960000, #00799d);//linear-gradient(45deg, #960000, #007a9e);
+    --voiceset-group-bg-purple-green: linear-gradient(45deg, #450096, #04994b);
+    --voiceset-group-bg-pink-orange: linear-gradient(45deg, #a049c8, #854f00);
     --voiceset-group-selected-bg: #003446;
-    --voiceset-group-selected-border-hover: #00c0ff;
     --voiceset-group-selected-bg-hover: #004d66;
+    --voiceset-select-button-bg: transparent;// rgb(44 91 249);
+    --voiceset-select-button-bg-hover: rgb(44 91 249);//#ffffff;// rgb(44 91 249);
+    --voiceset-select-button-text-hover: #fff;// #333;// rgb(44 91 249);
 
     --voiceset-category-bg-blue: linear-gradient(
         135deg,
@@ -106,8 +116,7 @@ div#CreatePageView div.VoicePageWrapper {
             div.VoiceGroup {
                 cursor: pointer;
                 width: 573px;
-                background-color: #333333;
-                border: 1px solid #727272;
+                border: 1px solid var(--voiceset-group-border);
                 border-radius: 6px;
                 padding: 42px 45px;
                 box-shadow: 2px 5px 16px rgba(0, 0, 0, 0.2);
@@ -143,7 +152,7 @@ div#CreatePageView div.VoicePageWrapper {
 
                 div.VoiceGroupWrapper {
                     label.VoiceGroupName {
-                        color: #ffffff;
+                        color: var(--voiceset-text);
                         width: 100%;
                         font-size: 22px;
                         display: block;
@@ -198,7 +207,7 @@ div#CreatePageView div.VoicePageWrapper {
                                 }
                                 span.name {
                                     font-size: 14px;
-                                    color: #aaa;
+                                    color: var(--voiceset-text);
                                     margin-right: 20px;
                                 }
 
@@ -207,7 +216,7 @@ div#CreatePageView div.VoicePageWrapper {
                                     flex-direction: row;
                                     width: max-content;
                                     li.category {
-                                        color: #fff;
+                                        color: var(--voiceset-text);
                                         background-color: #444;
                                         border-radius: 20px;
                                         width: max-content;
@@ -231,7 +240,7 @@ div#CreatePageView div.VoicePageWrapper {
                                     align-items: center;
                                     background-color: transparent;
                                     padding: 6px 17px;
-                                    border: 1px solid #a9a9a9;
+                                    border: 1px solid var(--voiceset-button-border);
                                     border-radius: 3px;
                                     img.locale-icon {
                                         width: 12px;
@@ -248,18 +257,22 @@ div#CreatePageView div.VoicePageWrapper {
                                     top: 70%;
                                     left: 0;
                                     background-color: transparent;
-                                    border: 1px solid #838383;
+                                    border: 1px solid #9a9a9a;
                                     padding: 0;
                                     li {
                                         background-color: #3d3d3d;
-                                        color: #b6b6b6;
+                                        color: var(--voiceset-text);
+                                        &:hover {
+                                            color: #fff;
+                                            background-color: #828282;
+                                        }
                                     }
                                     li.select {
                                         font-size: 13px;
                                         padding: 11px 16px;
                                         &:hover {
                                             color: #fff;
-                                            background-color: #3c3c3c;
+                                            background-color: #868686;
                                         }
                                     }
                                 }
@@ -272,17 +285,27 @@ div#CreatePageView div.VoicePageWrapper {
                         flex-direction: row;
                         align-items: center;
                         justify-content: center;
-                        button.SelectButton.commonV1Small {
+                        button.SelectButton {
+                            font-size: 12px;
                             padding: 12px 20px;
-                            border-radius: 25px;
-                            background: rgba(110, 110, 110, 0);
-                            width: 167px;
+                            border-radius: 4px;
+                            border-color: var(--voiceset-button-border);
+                            background: var(--voiceset-select-button-bg);
+                            width: 153px;
                             height: 44px;
+                            transition: 
+                                background 0.2s @cubic-bezier1,
+                                color 0.2s @cubic-bezier1,
+                                border 0.2s @cubic-bezier1;
                             &:hover {
-                                background: rgba(110, 110, 110, 0.4);
+                                background: var(--voiceset-select-button-bg-hover);// rgba(110, 110, 110, 0.4);
+                                box-shadow: none;
+                                span {
+                                    color: var(--voiceset-select-button-text-hover);
+                                }
                             }
                             span {
-                                color: #fff;
+                                color: var(--voiceset-text);
                             }
                         }
                     }

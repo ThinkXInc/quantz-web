@@ -9,6 +9,12 @@ const VOICE_SET_CATEGORY_COLOR_PATTERNS = [
     'var(--voiceset-category-bg-purple)'
 ];
 
+const VOICE_SET_GROUP_BG_COLOR_PATTERNS = [
+    'var(--voiceset-group-bg-red-blue)',
+    'var(--voiceset-group-bg-purple-green)',
+    'var(--voiceset-group-bg-pink-orange)'
+]
+
 class VoiceSetSelectView {
     constructor({
         locale,
@@ -283,14 +289,24 @@ class VoiceSetSelectView {
     /**
      * A simple hash function for distributing label colors.
      */
-        hashVoicesetName(str) {
-            let hashValue = 0;
-            for (let i = 0; i < str.length; i++) {
-                hashValue = (hashValue << 5) - hashValue + str.charCodeAt(i);
-                hashValue |= 0; // convert to 32-bit integer
-            }
-            // Make sure it's positive and within array bounds
-            return Math.abs(hashValue) % VOICE_SET_CATEGORY_COLOR_PATTERNS.length;
+    hashVoicesetName(str) {
+        let hashValue = 0;
+        for (let i = 0; i < str.length; i++) {
+            hashValue = (hashValue << 5) - hashValue + str.charCodeAt(i);
+            hashValue |= 0; // convert to 32-bit integer
+        }
+        // Make sure it's positive and within array bounds
+        return Math.abs(hashValue) % VOICE_SET_GROUP_BG_COLOR_PATTERNS.length;
+    }
+
+    hashCategoryName(str) {
+        let hashValue = 0;
+        for (let i = 0; i < str.length; i++) {
+            hashValue = (hashValue << 5) - hashValue + str.charCodeAt(i);
+            hashValue |= 0; // convert to 32-bit integer
+        }
+        // Make sure it's positive and within array bounds
+        return Math.abs(hashValue) % VOICE_SET_CATEGORY_COLOR_PATTERNS.length;
     }
 
     /**
@@ -298,6 +314,7 @@ class VoiceSetSelectView {
      */
     createVoiceGroupDOM(voiceGroup) {
         const $voiceGroup = document.createElement('div');
+        $voiceGroup.style.background = VOICE_SET_GROUP_BG_COLOR_PATTERNS[this.hashVoicesetName(voiceGroup.name)]
         $voiceGroup.classList.add('VoiceGroup');
 
         const $voiceGroupWrapper = document.createElement('div');
@@ -308,6 +325,7 @@ class VoiceSetSelectView {
         $voiceGroupName.textContent = voiceGroup.name;
         $voiceGroupName.classList.add('VoiceGroupName');
         $voiceGroupWrapper.appendChild($voiceGroupName);
+
 
         // VoiceOptionsWrapper
         const $voiceOptionsWrapper = document.createElement('div');
@@ -347,7 +365,7 @@ class VoiceSetSelectView {
                     const $li = document.createElement('li');
                     $li.classList.add('category');
                     $li.textContent = cat;
-                    const colorIndex = this.hashVoicesetName(cat);
+                    const colorIndex = this.hashCategoryName(cat);
                     $li.style.background = VOICE_SET_CATEGORY_COLOR_PATTERNS[colorIndex];
                     $categories.appendChild($li);
                 });
@@ -373,6 +391,7 @@ class VoiceSetSelectView {
             langs: { en: 'English', ja: '日本語', es: 'Español', zh: '中文', fr: 'Français' },
             currentLang: this.lang,
             iconLocalePath: '/img/create/locale-icon.svg',
+            iconArrowPath: '/img/create/down-arrow.svg',
             onLangChange: (newLang) => {
                 this.updateVoiceOptionsForGroup($voiceOptions, newLang);
             }
@@ -396,7 +415,7 @@ class VoiceSetSelectView {
                 }
             },
         });
-        selectButton.$view.classList.add('SelectButton', 'commonV1Small');
+        selectButton.$view.classList.add('SelectButton');
 
         $selectButtonWrapper.appendChild(selectButton.$view);
         $voiceGroupWrapper.appendChild($selectButtonWrapper);
