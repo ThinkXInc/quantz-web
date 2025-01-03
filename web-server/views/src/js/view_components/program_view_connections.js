@@ -96,9 +96,6 @@ class ProgramViewConnections {
      * Main method to re-draw all arrows for the current set of steps.
      */
     drawAllArrows() {
-        console.warn(
-            'WOWOWOWOWOW'
-        )
         this.clearArrows();
     
         const stepsData = this.programView.stepsData;

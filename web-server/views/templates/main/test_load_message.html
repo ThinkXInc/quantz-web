@@ -77,7 +77,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // 5) After 6 seconds, show a success message
   setTimeout(() => {
-    loadingMsg.setText('Data loaded successfully! All good.', true, false);
+    loadingMsg.setText('Data loaded successfully! All good.', options = {
+      fadeOutAfterMs: 3000
+    });
   }, t3);
 });
 </script>

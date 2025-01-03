@@ -172,7 +172,7 @@ class ProgramView {
     }
 
     createView() {
-        console.warn('***Creating view for ProgramView');
+        console.log('***Creating view for ProgramView');
         // Create the main container
         this.$view = document.createElement('div');
         this.$view.id = this.id;
@@ -295,7 +295,6 @@ class ProgramView {
             element: this.$backgroundContainer,
             onDrag: (pos) => {
                 // Continuously redraw to keep the arrows aligned with background movement
-                console.warn(pos)
                 //this.offsetX += pos.deltaX;
                 //this.offsetY += pos.deltaY;
                 this.updateTransform();
@@ -434,7 +433,7 @@ class ProgramView {
      * Returns an object { container, step, topicForm, remarkForm, ... }
      */
     buildStepData(step, index) {
-        console.warn(`Building step data for step ${index + 1}`, step, `(left: ${step.left}, top: ${step.top})`);
+        console.log(`Building step data for step ${index + 1}`, step, `(left: ${step.left}, top: ${step.top})`);
     
         // Container
         const $stepContainer = document.createElement('li');
@@ -1156,7 +1155,7 @@ class ProgramView {
 
 
     removeStep(containerElement) {
-        console.warn(`Removing step by container`, containerElement);
+        console.log(`Removing step by container`, containerElement);
     
         // 1) Find which stepData has this container
         const index = this.stepsData.findIndex(sd => sd.container === containerElement);
@@ -1188,7 +1187,7 @@ class ProgramView {
     
     
     updateStepIndices() {
-        console.warn('Updating step indices');
+        console.log('Updating step indices');
         this.stepsData.forEach((sd, index) => {
             sd.container.dataset.index = index;
             const $stepTitle = sd.container.querySelector('.stepTitle');
@@ -1197,14 +1196,14 @@ class ProgramView {
                 $stepTitle.textContent = stepLabelTemplate.replace('$0', index + 1);
             }
         });
-        console.warn('Step indices updated');
+        console.log('Step indices updated');
 
         this.connectionsManager.drawAllArrows();
     }
 
     updateRemoveButtonVisibility() {
         const visible = this.interactionModel.steps.length > 1;
-        console.warn(`Setting remove button visibility to ${visible ? 'visible' : 'hidden'}`);
+        console.log(`Setting remove button visibility to ${visible ? 'visible' : 'hidden'}`);
 
         // If there's only one step, hide the remove button
         if (this.interactionModel.steps.length <= 1 && this.stepsData.length > 0) {

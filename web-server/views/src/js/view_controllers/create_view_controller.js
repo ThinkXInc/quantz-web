@@ -11,24 +11,13 @@ class CreateViewController {
         this.locale = locale;
         this.lang = lang;
 
+        this.user = user;
+
         document.body.classList.add('dark'); // TODO: switch
         document.body.style.overflow = 'hidden';
 
         // The main container where we mount the PageView
         this.$mainContent = document.getElementById('MainContent');
-
-        this.user = user;
-        this.interactionModelId = interactionModelId;
-        this.interactionModel = interactionModel || defaults;
-
-        // Create a PageView with 3 pages: 0=Start, 1=Voice, 2=Program
-        this.pageView = new PageView({
-            id: 'CreatePageView',
-            numPages: 3,
-        });
-
-        // Set up the view (build the pages, mount them, etc.)
-        this.setupView();
 
         const page = Browser.getURLParam('page');        // e.g. 'voiceset' or 'program'
         const modelId = Browser.getURLParam('model_id'); // e.g. 'abc123' if present
@@ -37,11 +26,19 @@ class CreateViewController {
         console.log(modelId)
         const modelId2 = Browser.getValueFromSearchParams('model_id'); // e.g. 'abc123' if present
         console.log(modelId2)
+        console.log(location.href);
+
+        // Create a PageView with 3 pages: 0=Start, 1=Voice, 2=Program
+        this.pageView = new PageView({
+            id: 'CreatePageView',
+            numPages: 3,
+        });
 
         if (modelId) {
             this.fetchInteractionModel(modelId).then((model) => {
                 this.interactionModel = model;
                 this.interactionModelId = model.id;
+                this.setupView();
     
                 if (page === 'voiceset') {
                     this.goToVoiceSetSelectView();
@@ -55,8 +52,14 @@ class CreateViewController {
         } else {
             // If no model_id, maybe just show Start page
             this.pageView.show(0);
+
+            this.interactionModelId = interactionModelId;
+            this.interactionModel = interactionModel || defaults;
+
+            this.setupView();
         }
 
+        // Set up the view (build the pages, mount them, etc.)
 
         //this.pageView.show(2); // DEBUG
     }
@@ -304,6 +307,30 @@ class CreateViewController {
                         ScreenLock.lock(false);
                     });
             }, 2000);
+        }
+    }
+
+    async fetchInteractionModel(id) {
+        const endpoint = `/v1/${this.lang}/interaction_model/${id}`;
+        console.log(`[CreateViewController] GET => ${endpoint}`);
+    
+        try {
+            const res = await fetch(endpoint, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+            });
+            const result = await res.json();
+    
+            if (!res.ok) {
+                console.error('[CreateViewController] fetchInteractionModel error =>', result);
+                throw new Error(result.message || 'Could not fetch Interaction Model');
+            }
+    
+            console.log('[CreateViewController] fetchInteractionModel result =>', result);
+            return result.interaction_model;
+        } catch (err) {
+            console.error('[CreateViewController] fetchInteractionModel Exception =>', err);
+            throw err;
         }
     }
 
