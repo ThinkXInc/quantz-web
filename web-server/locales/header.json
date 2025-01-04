@@ -126,13 +126,13 @@
         "ru": "База знаний"
     },
     "header_create_menu_title": {
-        "en": "Create a Conversation Model",
+        "en": "Create Conversation Model",
         "ja": "対話モデルの作成",
         "zh": "创建对话模型",
-        "fr": "Créer un modèle de dialogue",
-        "es": "Crear un modelo de diálogo",
-        "ar": "إنشاء نموذج حوار",
-        "ru": "Создать диалоговую модель"
+        "fr": "Créer un modèle de conversation",
+        "es": "Crear un modelo de conversación",
+        "ar": "إنشاء نموذج محادثة",
+        "ru": "Создать модель диалога"
     },
     "header_customize_menu_title": {
         "en": "Customize Interaction Button",
