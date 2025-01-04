@@ -230,10 +230,10 @@ class CustomizeView {
             fieldName: "button_type",
             hasTitle: true,
             defaultValue: this.user.customize.button_type,
-            title: this.locale.get("settings_customize_button_type_title", lang),
+            title: this.locale.get("settings_customize_button_type_title", this.lang),
             items: [
-                new RadioButtonItem({value: "A", name: this.locale.get("settings_customize_button_type_item_A", lang)}),
-                new RadioButtonItem({value: "B", name: this.locale.get("settings_customize_button_type_item_B", lang)}),
+                new RadioButtonItem({value: "A", name: this.locale.get("settings_customize_button_type_item_A", this.lang)}),
+                new RadioButtonItem({value: "B", name: this.locale.get("settings_customize_button_type_item_B", this.lang)}),
             ]
         })
 
@@ -249,7 +249,7 @@ class CustomizeView {
 
         const $buttonSizeTitle = document.createElement('h4');
         $buttonSizeTitle.classList.add('subtitle');
-        $buttonSizeTitle.textContent = locale.get('settings_customize_button_size_title', lang)
+        $buttonSizeTitle.textContent = this.locale.get('settings_customize_button_size_title', this.lang)
 
         const min = 40;
         const max = 2000;
@@ -260,22 +260,22 @@ class CustomizeView {
             validators: [
                 new Validator({
                     errorType: ValidationErrorType.required,
-                    errorMessage: locale.get(ValidationErrorType.required, lang)
+                    errorMessage: locale.get(ValidationErrorType.required, this.lang)
                 }),
                 new Validator({
                     errorType: ValidationErrorType.positiveIntegerFormat,
-                    errorMessage: this.locale.get(ValidationErrorType.positiveIntegerFormat, lang),
+                    errorMessage: this.locale.get(ValidationErrorType.positiveIntegerFormat, this.lang),
                     min: min,
                     max: max
                 })
             ],
             defaultValue: String(this.user.customize.button_width),
             hasTitle: true,
-            title: this.locale.get('settings_customize_button_width_title', lang),
+            title: this.locale.get('settings_customize_button_width_title', this.lang),
             hasUnit: true,
             unit: "px",
             unitPlace: TextFieldPlaceTo.inputOuter,
-            placeholder: this.locale.get('settings_customize_button_height_placeholder', lang),
+            placeholder: this.locale.get('settings_customize_button_height_placeholder', this.lang),
             isCounter: false,
             isIncrementer: true,
             incrementButtonPlace: TextFieldPlaceTo.inputAfter,
@@ -289,22 +289,22 @@ class CustomizeView {
             validators: [
                 new Validator({
                     errorType: ValidationErrorType.required,
-                    errorMessage: locale.get(ValidationErrorType.required, lang)
+                    errorMessage: locale.get(ValidationErrorType.required, this.lang)
                 }),
                 new Validator({
                     errorType: ValidationErrorType.positiveIntegerFormat,
-                    errorMessage: this.locale.get(ValidationErrorType.positiveIntegerFormat, lang),
+                    errorMessage: this.locale.get(ValidationErrorType.positiveIntegerFormat, this.lang),
                     min: min,
                     max: max
                 })
             ],
             defaultValue: String(this.user.customize.button_height),
             hasTitle: true,
-            title: this.locale.get('settings_customize_button_height_title', lang),
+            title: this.locale.get('settings_customize_button_height_title', this.lang),
             hasUnit: true,
             unit: "px",
             unitPlace: TextFieldPlaceTo.inputOuter,
-            placeholder: this.locale.get('settings_customize_button_height_placeholder', lang),
+            placeholder: this.locale.get('settings_customize_button_height_placeholder', this.lang),
             isCounter: false,
             isIncrementer: true,
             incrementButtonPlace: TextFieldPlaceTo.inputAfter,
@@ -336,7 +336,7 @@ class CustomizeView {
 
         const $buttonColorTitle = document.createElement('h4');
         $buttonColorTitle.classList.add('subtitle');
-        $buttonColorTitle.textContent = locale.get('settings_customize_button_color_title', lang)
+        $buttonColorTitle.textContent = this.locale.get('settings_customize_button_color_title', this.lang)
 
         const buttonColorPicker = new ColorPicker({
             id: "ButtonColorPicker",
@@ -365,21 +365,21 @@ class CustomizeView {
             validators: [
                 new Validator({
                     errorType: ValidationErrorType.required,
-                    errorMessage: locale.get(ValidationErrorType.required, lang)
+                    errorMessage: locale.get(ValidationErrorType.required, this.lang)
                 }),
                 new Validator({
                     errorType: ValidationErrorType.positiveFloatFormat,
-                    errorMessage: this.locale.get(ValidationErrorType.positiveFloatFormat, lang),
+                    errorMessage: this.locale.get(ValidationErrorType.positiveFloatFormat, this.lang),
                     min: min,
                     max: max
                 })
             ],
             defaultValue: String(this.user.customize.font_size),
             hasTitle: true,
-            title: this.locale.get('settings_customize_font_size_title', lang),
+            title: this.locale.get('settings_customize_font_size_title', this.lang),
             hasUnit: true,
-            unit: this.locale.get('settings_customize_px_unit', lang),
-            placeholder: this.locale.get('settings_customize_font_size_placeholder', lang),
+            unit: this.locale.get('settings_customize_px_unit', this.lang),
+            placeholder: this.locale.get('settings_customize_font_size_placeholder', this.lang),
             isCounter: false,
         });
 
@@ -398,7 +398,7 @@ class CustomizeView {
 
         const $balloonSizeTitle = document.createElement('h4');
         $balloonSizeTitle.classList.add('subtitle');
-        $balloonSizeTitle.textContent = locale.get('settings_customize_balloon_size_title', lang)
+        $balloonSizeTitle.textContent = this.locale.get('settings_customize_balloon_size_title', this.lang)
 
         const min = 1;
         const max = 100;
@@ -409,22 +409,22 @@ class CustomizeView {
             validators: [
                 new Validator({
                     errorType: ValidationErrorType.required,
-                    errorMessage: locale.get(ValidationErrorType.required, lang)
+                    errorMessage: locale.get(ValidationErrorType.required, this.lang)
                 }),
                 new Validator({
                     errorType: ValidationErrorType.positiveIntegerFormat,
-                    errorMessage: this.locale.get(ValidationErrorType.positiveIntegerFormat, lang),
+                    errorMessage: this.locale.get(ValidationErrorType.positiveIntegerFormat, this.lang),
                     min: min,
                     max: max
                 })
             ],
             defaultValue: String(this.user.customize.balloon_width),
             hasTitle: true,
-            title: this.locale.get('settings_customize_balloon_width_title', lang),
+            title: this.locale.get('settings_customize_balloon_width_title', this.lang),
             hasUnit: true,
             unit: "vw",
             unitPlace: TextFieldPlaceTo.inputOuter,
-            placeholder: this.locale.get('settings_customize_balloon_height_placeholder', lang),
+            placeholder: this.locale.get('settings_customize_balloon_height_placeholder', this.lang),
             isCounter: false,
             isIncrementer: true,
             incrementButtonPlace: TextFieldPlaceTo.inputAfter,
@@ -438,22 +438,22 @@ class CustomizeView {
             validators: [
                 new Validator({
                     errorType: ValidationErrorType.required,
-                    errorMessage: locale.get(ValidationErrorType.required, lang)
+                    errorMessage: locale.get(ValidationErrorType.required, this.lang)
                 }),
                 new Validator({
                     errorType: ValidationErrorType.positiveIntegerFormat,
-                    errorMessage: this.locale.get(ValidationErrorType.positiveIntegerFormat, lang),
+                    errorMessage: this.locale.get(ValidationErrorType.positiveIntegerFormat, this.lang),
                     min: min,
                     max: max
                 })
             ],
             defaultValue: String(this.user.customize.balloon_height),
             hasTitle: true,
-            title: this.locale.get('settings_customize_balloon_height_title', lang),
+            title: this.locale.get('settings_customize_balloon_height_title', this.lang),
             hasUnit: true,
             unit: "vh",
             unitPlace: TextFieldPlaceTo.inputOuter,
-            placeholder: this.locale.get('settings_customize_balloon_height_placeholder', lang),
+            placeholder: this.locale.get('settings_customize_balloon_height_placeholder', this.lang),
             isCounter: false,
             isIncrementer: true,
             incrementButtonPlace: TextFieldPlaceTo.inputAfter,
@@ -512,7 +512,7 @@ class CustomizeView {
 
         const $toolTip = document.createElement('span');
         $toolTip.classList.add('tooltip');
-        $toolTip.textContent = this.locale.get("settings_preview_code_copy_tooltip", lang);
+        $toolTip.textContent = this.locale.get("settings_preview_code_copy_tooltip", this.lang);
 
         $copyButton.addEventListener('mouseenter', () => {
             $toolTip.classList.add('visible');
@@ -525,13 +525,13 @@ class CustomizeView {
 
         $copyButton.addEventListener('click', () => {
             navigator.clipboard.writeText($code.textContent).then(() => {
-                $toolTip.textContent = this.locale.get("settings_preview_code_copy_done_tooltip", lang);
+                $toolTip.textContent = this.locale.get("settings_preview_code_copy_done_tooltip", this.lang);
                 $toolTip.classList.add('copied');
                 setTimeout(() => {
                     $toolTip.classList.add('fade-out');
                     setTimeout(() => {
                         $toolTip.classList.remove('visible', 'fade-out', 'copied');
-                        $toolTip.textContent = this.locale.get("settings_preview_code_copy_tooltip", lang);
+                        $toolTip.textContent = this.locale.get("settings_preview_code_copy_tooltip", this.lang);
                     }, 1000);
                 }, 2000);
             }, err => {
@@ -646,71 +646,6 @@ class CustomizeView {
         }
     }
 
-    handleEventCustomizePage() {
-        const _this = this;
-
-        // Button Type
-        this.buttonTypeSelector.$view.addEventListener('valuechanged', (e) => {
-            e.preventDefault();
-            const {newValue} = e.detail;
-            console.warn(`button type: ${newValue}`)
-            this.submitCustomize({'button_type': newValue})
-        })
-        // Button Size
-        this.buttonWidthForm.$view.addEventListener('textchanged', (e)=> {
-            e.preventDefault();
-            const {newValue} = e.detail;
-            console.warn(`button width: ${newValue}`)
-            if(!this.buttonWidthForm.validate()) {
-                this.submitCustomize({'button_width': Number(newValue)})
-            }
-
-        })
-        this.buttonHeightForm.$view.addEventListener('textchanged', (e)=> {
-            e.preventDefault();
-            const {newValue} = e.detail;
-            console.warn(`button height: ${newValue}`)
-            if(!this.buttonHeightForm.validate()) {
-                this.submitCustomize({'button_height': Number(newValue)})
-            }
-        })
-        // Button Color
-        this.buttonColorPicker.$view.addEventListener('valuechanged', (e)=> {
-            e.preventDefault();
-            const {newValue} = e.detail;
-            console.warn(`button color: ${newValue}`)
-            this.submitCustomize({'button_color': newValue})
-
-        })
-        // Font Size
-        this.fontSizeForm.$view.addEventListener('textchanged', (e)=> {
-            e.preventDefault();
-            const {newValue} = e.detail;
-            const parsedFontSize = parseFloat(newValue);
-            console.warn(`font size: ${parsedFontSize}`)
-            if(!this.fontSizeForm.validate()) {
-                this.submitCustomize({'font_size': parsedFontSize.toFixed(2)}) // NOTE: string (javascript convert float 11.0 to int 11 automatically) 
-            }
-        })
-        // Balloon Size
-        this.balloonWidthForm.$view.addEventListener('textchanged', (e)=> {
-            e.preventDefault();
-            const {newValue} = e.detail;
-            console.warn(`balloon width: ${newValue}`)
-            if(!this.balloonWidthForm.validate()) {
-                this.submitCustomize({'balloon_width': Number(newValue)})
-            }
-        })
-        this.balloonHeightForm.$view.addEventListener('textchanged', (e)=> {
-            e.preventDefault();
-            const {newValue} = e.detail;
-            console.warn(`balloon height: ${newValue}`)
-            if(!this.balloonHeightForm.validate()) {
-                this.submitCustomize({'balloon_height': newValue})
-            }
-        })
-    }
-
     submitCustomize(updates) {
         const _this = this;
         //this.clearAllCustomizeAlert();
@@ -778,7 +713,7 @@ class CustomizeView {
 
         const $title = document.createElement('h4');
         $title.classList.add('subtitle');
-        $title.textContent = locale.get('settings_model_select_title', lang)
+        $title.textContent = this.locale.get('settings_model_select_title', this.lang)
         $wrapper.appendChild($title)
 
         let listMenuItems = [
@@ -800,7 +735,7 @@ class CustomizeView {
             htmlTag: 'div',
             validators: [new Validator({
                 errorType: ValidationErrorType.required,
-                errorMessage: this.locale.get(ValidationErrorType.required, lang)
+                errorMessage: this.locale.get(ValidationErrorType.required, this.lang)
             })]
         });
         this.selectInteractionModel.$view.addEventListener('selected', (e)=> {

@@ -736,7 +736,7 @@ class InterviewCreateView {
             defaultValue: step.reference_type || 'all',
             validators: [new Validator({
                 errorType: ValidationErrorType.required,
-                errorMessage: this.locale.get(ValidationErrorType.required, lang)
+                errorMessage: this.locale.get(ValidationErrorType.required, this.lang)
             })]
         });
         this.referenceTypeSelectors[index] = referenceTypeSelector;

@@ -118,6 +118,15 @@ def materials_view(user, lang, lang_name):
         header_customize_menu_title=locale.get('header_customize_menu_title', lang),
         header_interviews_menu_title=locale.get('header_interviews_menu_title', lang),
         header_logout_menu_title=locale.get('header_logout_menu_title', lang),
+
+        studio_header_menu_open=locale.get('studio_header_menu_open', lang),
+        studio_header_menu_close=locale.get('studio_header_menu_close', lang),
+        studio_header_tooltip_logo=locale.get('studio_header_tooltip_logo', lang),
+        studio_header_create_new_label=locale.get('studio_header_create_new_label', lang),
+        studio_header_tooltip_create_new=locale.get('studio_header_tooltip_create_new', lang),
+        studio_header_deploy_label=locale.get('studio_header_deploy_label', lang),
+        studio_header_tooltip_deploy=locale.get('studio_header_tooltip_deploy', lang),
+ 
         metadata=locale.dict()["metadata_home"][lang])
 
 @blueprint_materials.route('/v1/<lang>/home', methods=['GET'])
