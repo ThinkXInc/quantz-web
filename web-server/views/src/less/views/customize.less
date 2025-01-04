@@ -2,6 +2,14 @@
 @cubic-bezier2: cubic-bezier(.4, 0, .2, 1);
 @alert-red: #8c1111;
 
+body.dark {
+    --customize-preview-bg: #eaeaea;
+}
+
+#MainContainer #MainContent div.CustomizeContainer {
+    padding: 20px 20px;
+}
+
 // Customize Container
 div.container.CustomizeContainer {
     display: flex;
@@ -348,9 +356,10 @@ div.CustomizePreview {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background-color: #494949;
+        background-color: var(--customize-preview-bg);
         border-radius: 1px;
         min-width: 300px;
+        height: 400px;
         //width: 300px;
         //min-height: 300px;
         width: 80%;
