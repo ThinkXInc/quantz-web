@@ -80,6 +80,15 @@
         "ar": "النوع ب",
         "ru": "Тип Б"
     },
+    "settings_customize_button_type_item_C": {
+        "en": "Type C",
+        "ja": "タイプC",
+        "zh": "类型C",
+        "fr": "Type C",
+        "es": "Tipo C",
+        "ar": "النوع ج",
+        "ru": "Тип C"
+    },
     "settings_customize_button_size_title": {
         "en": "Button Size",
         "ja": "ボタンサイズ",

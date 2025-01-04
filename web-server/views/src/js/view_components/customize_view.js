@@ -93,13 +93,12 @@ class CustomizeView {
         this.$customizeAlert = $customizeAlert;
 
         this.createButtonTypeView($items);
+        this.createModelSelectView($items);
+        this.createResponseModeView($items);
         this.createButtonSizeView($items);
         this.createButtonColorView($items);
         this.createButtonFontSizeView($items);
         this.createButtonBalloonSizeView($items);
-        this.createModelSelectView($items);
-        this.createResponseModeView($items);
-
 
         $items.appendChild($customizeAlert);
         this.$customizeContainer.appendChild($items);
@@ -229,18 +228,32 @@ class CustomizeView {
             id: "ButtonType",
             fieldName: "button_type",
             hasTitle: true,
-            defaultValue: this.user.customize.button_type,
+    
+            // Make "C" the default if the user has not chosen any button_type yet:
+            defaultValue: this.user.customize.button_type || 'C',
+    
             title: this.locale.get("settings_customize_button_type_title", this.lang),
             items: [
-                new RadioButtonItem({value: "A", name: this.locale.get("settings_customize_button_type_item_A", this.lang)}),
-                new RadioButtonItem({value: "B", name: this.locale.get("settings_customize_button_type_item_B", this.lang)}),
+                new RadioButtonItem({
+                    value: "A",
+                    name: this.locale.get("settings_customize_button_type_item_A", this.lang)
+                }),
+                new RadioButtonItem({
+                    value: "B",
+                    name: this.locale.get("settings_customize_button_type_item_B", this.lang)
+                }),
+                // Add the new Type C
+                new RadioButtonItem({
+                    value: "C",
+                    name: this.locale.get("settings_customize_button_type_item_C", this.lang)
+                }),
             ]
-        })
-
+        });
+    
         $items.appendChild(buttonTypeSelector.$view);
         this.buttonTypeSelector = buttonTypeSelector;
- 
     }
+    
 
     createButtonSizeView($items) {
         const $wrapper = document.createElement('div');
@@ -563,6 +576,8 @@ class CustomizeView {
             $buttonLoader.setAttribute('data-button-key', buttonKey);
             $buttonLoader.setAttribute('data-publisher-id', `${this.user._id}`);
 
+            $buttonLoader.setAttribute('data-model-id', this.selectInteractionModel._selectedValue || 'default');
+
             const configString = this.configStringFromLatestValues();
             $buttonLoader.setAttribute('data-quantz-config', configString);
 
@@ -577,6 +592,7 @@ class CustomizeView {
             $buttonLoader.classList.add('QBTN-button-loader');
             $buttonLoader.setAttribute('data-button-key', buttonKey);
             $buttonLoader.setAttribute('data-publisher-id', `${this.user._id}`);
+            $buttonLoader.setAttribute('data-model-id', this.selectInteractionModel._selectedValue || 'default');
             const configString = this.configStringFromLatestValues();
             $buttonLoader.setAttribute('data-quantz-config', configString);
             this.$previewWrapper.appendChild($buttonLoader)
@@ -602,6 +618,7 @@ class CustomizeView {
             balloonRectWidth: `${this.balloonWidthForm.value}vw`,
             balloonRectHeight: `${this.balloonHeightForm.value}vh`,
             defaultLang: this.lang,
+            modelId: this.selectInteractionModel._selectedValue || 'default',
             responseMode: 0
         });
         return configString
@@ -622,6 +639,7 @@ class CustomizeView {
             balloonRectWidth: `${this.balloonWidthForm.value}vw`,
             balloonRectHeight: `${this.balloonHeightForm.value}vh`,
             defaultLang: this.lang,
+            modelId: this.selectInteractionModel._selectedValue || 'default',
             responseMode: 0  // FAST
         });
     
