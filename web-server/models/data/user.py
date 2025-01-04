@@ -145,11 +145,12 @@ class ApplyChangeDelayInSec(EnumLocale):
 class ButtonType:
     A = 'A'
     B = 'B'
+    C = 'C'
 
 class Customize(EmbeddedDocument):
     #operator_name = StringField(max_length=100, default="Quantz")
     #first_message = StringField(max_length=100, default="")
-    button_type = StringField(choices=[ButtonType.A, ButtonType.B], default=ButtonType.A)
+    button_type = StringField(choices=[ButtonType.A, ButtonType.B, ButtonType.C], default=ButtonType.C)
     button_width = IntField(default=260)  # px
     button_height = IntField(default=50)  # px
     button_color = StringField(default="#0067FF")
