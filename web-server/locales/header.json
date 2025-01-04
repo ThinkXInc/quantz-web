@@ -81,7 +81,7 @@
         "ru": "Создать новый"
       },
       "studio_header_tooltip_create_new": {
-        "en": "Create a dialogue model",
+        "en": "Create a conversation model",
         "ja": "対話モデルを作成",
         "zh": "创建对话模型",
         "fr": "Créer un modèle de dialogue",
@@ -126,13 +126,13 @@
         "ru": "База знаний"
     },
     "header_create_menu_title": {
-        "en": "Conversation Plan",
+        "en": "Create a Conversation Model",
         "ja": "対話モデルの作成",
-        "zh": "会话计划",
-        "fr": "Plan de conversation",
-        "es": "Plan de conversación",
-        "ar": "خطة المحادثة",
-        "ru": "План разговора"
+        "zh": "创建对话模型",
+        "fr": "Créer un modèle de dialogue",
+        "es": "Crear un modelo de diálogo",
+        "ar": "إنشاء نموذج حوار",
+        "ru": "Создать диалоговую модель"
     },
     "header_customize_menu_title": {
         "en": "Customize Interaction Button",

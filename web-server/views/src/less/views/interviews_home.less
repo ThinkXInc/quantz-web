@@ -66,6 +66,24 @@
 
 // ListContainer
 
+div#InterviewListContainer div.TableView.interviewList div.tableViewContainer {
+    height: calc(100vh - 0px);
+    ::-webkit-scrollbar {
+        width: 7px;
+    }
+    ::-webkit-scrollbar-button {
+        background-color: #e4e4e4;
+    }
+    ::-webkit-scrollbar-track {
+      -webkit-box-shadow: none;
+      background-color: #e4e4e4;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background-color: #a7a7a7;
+    }
+}
+
 div#InterviewListContainer {
     div.TableView.interviewList {
         div.tableViewContainer {

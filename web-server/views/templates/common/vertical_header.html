@@ -7,7 +7,7 @@
     </div>
     <ul class="menu">
       <li class="create item">
-        <a href="/v1/{{ lang }}/interviews">
+        <a href="/{{ lang }}/create">
           <img id="interviewIcon" class="interviewIcon icon" src="/img/vertical_menu/conversation-flow-icon.svg" alt="Interview">
           {# NOTE: locale_dictをここに渡すのが難しいので変数を直接使う #}
           <span class="menuTitle">{{ header_create_menu_title }}</span>
@@ -15,7 +15,7 @@
         </a>
       </li>
       <li class="materials item highlight">
-        <a href="/v1/{{ lang }}/home">
+        <a href="/{{ lang }}/materials">
           <img id="knowledgeIcon" class="knowledgeIcon icon" src="/img/vertical_menu/knowledge-icon.svg" alt="Knowledges">
           <span class="tooltip">{{ header_knowledge_menu_title }}</span>
         </a>
