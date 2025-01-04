@@ -82,7 +82,34 @@ div#CreatePageView {
         }
     }
 
+    button.commonV2Small {
+        font-size: 12px;
+        color: #a6a6a6;
+        border: 1px solid #a6a6a6;
+        background: rgb(94 94 94 / 40%);
+        padding: 7px 15px;
+        border-radius: 5px;
+        transition: 
+            background 0.2s @cubic-bezier1,
+            color 0.2s @cubic-bezier1,
+            border 0.2s @cubic-bezier1,
+            box-shadow 0.2s @cubic-bezier1;
 
+        &.action {
+            .fadeScaleDown2;
+            span {
+                opacity: 0;
+            }
+        }
+        &:hover {
+            background: rgba(110, 110, 110, 0.5);
+            border: 1px solid #bebebe;
+            span.tooltip {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+    }
 
     div.PageViewContainer {
         display: flex;

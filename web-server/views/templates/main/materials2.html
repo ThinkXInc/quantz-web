@@ -1,17 +1,28 @@
 {% extends "general/common.html" %}
 {% block content %}
-<section id="MainContent" class="materials">
-    {% include 'common/vertical_header.html' %}
-    {#{% include 'common/vertical_menu.html' %}#}
-    <div id="MaterialListContainer" class="MaterialListContainer"></div>
-    <div id="MaterialCreateView" class="materialCreateView"></div>
-</section>
+{% include 'common/studio_header.html' %}
+<div id="MainContainer">
+{% include 'common/vertical_header.html' %}
+    <section id="MainContent" class="materials">
+        {#{% include 'common/vertical_menu.html' %}#}
+        <div id="MaterialListContainer" class="MaterialListContainer"></div>
+        <div id="MaterialCreateView" class="materialCreateView"></div>
+    </section>
+</div>
 {#
 <script src="https://quantz.thinkxinc.com/js/dist/quantz-button.min.js"></script>
 #}
 <script src="https://quantz.thinkxinc.com/js/dist/quantz-button-v9-dev.js"></script>
 <script src="https://js.stripe.com/v3/"></script>
+
+<script src=/js/view_components/studio_header.js></script>
+
+<script src=/js/view_controllers/root_view_controller.js></script>
+<script src=/js/view_controllers/deploy_view_controller.js></script>
+<script src=/js/view_controllers/create_view_controller.js></script>
+<script src=/js/view_controllers/materials_view_controller.js></script>
 <script src=/js/view_controllers/material_create_view_controller.js></script>
+
 <script src=/js/view_components/material_list.js></script>
 <script src=/js/view_components/material_delete_modal_view.js></script>
 <script src=/js/view_components/origin_form.js></script>
@@ -62,14 +73,22 @@
     window.interviewCreditPerResponse = parseInt(interviewCreditPerResponse);
 }
 </script>
-<script src=/js/view_controllers/materials.js></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const SMARTPHONE_WIDTH = 480;
 
         // initialize root view
-        let materialsView = new MaterialsView({
-            id: 'MainContent',
+        new StudioHeader({
+            id: 'StudioHeader',
+            locale: locale,
+            lang: lang,
+        })
+
+        console.log(`set up create view.\nlang:${lang}`);
+
+        // Create RootViewController, which decides which screen to show
+        new RootViewController({
+            id: 'RootViewController',
             locale: locale,
             lang: lang
         });

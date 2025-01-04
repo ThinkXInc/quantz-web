@@ -8,9 +8,7 @@ basic_auth_users = {
     "citywalk": "klawytic"
 }
 
-# Create a new blueprint or use the existing one
-# If you prefer the name blueprint_interaction_model, rename accordingly:
-blueprint_create = Blueprint('interaction_model', __name__)
+blueprint_create = Blueprint('create', __name__)
 
 # --------------------------------------------------------------------
 #  Bring in all necessary imports from your original code
@@ -44,7 +42,7 @@ REDIS_INTERACTION_MODEL_LOGLEVEL = Config.REDIS_INTERACTION_MODEL_LOGLEVEL
 REDIS_INTERACTION_MODEL_EXPIRATION_TIME_SEC = Config.REDIS_INTERACTION_MODEL_EXPIRATION_TIME_SEC
 
 from libcommon.logger import Logger
-logger = Logger('interaction_model')
+logger = Logger('create')
 logger.setLevel(logger.DEBUG)
 from libcommon.color import *
 from libcommon.validator import Validator, ValidationType
@@ -72,16 +70,11 @@ from libcommon.locale import Locale, COMMON_LOCALES_FILE_PATHS
 # Datetime
 from libcommon.dateutils import timestamp_to_time_ago_text
 
-# Here we load from create_responses.json (which replaces interviews_responses.json)
-# Make sure the "create_responses.json" file has the updated keys, such as:
-#  "interaction_model_not_found", "interaction_model_update_error", etc.
 CREATE_RESPONSES_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/create_responses.json'
 CREATE_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/create.json'
 LOCALES_ROOT = Config.LOCALES_ROOT
 BASIC_CONFIGS_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/basic_configs.json'
-INTERVIEW_TOP_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/interview_top.json'
 METADATA_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/metadata.json'
-CORPORATE_FOOTER_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/corporate_footer.json'
 HEADER_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/header.json'
 locale = Locale(
     [METADATA_LOCALE_FILE_PATH,
@@ -127,7 +120,7 @@ interaction_model_db = InteractionModelDB(
 @blueprint_create.route('/<lang>/create', methods=['GET'])
 @session_helper
 @language_wrapper
-def studio_create(user, lang, lang_name):
+def create_view(user, lang, lang_name):
     logger.info(magenta(f'[GET] /{lang}/create'))
 
     # DEBUG

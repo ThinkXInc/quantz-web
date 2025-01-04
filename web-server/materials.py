@@ -49,6 +49,7 @@ LOCALES_ROOT = Config.LOCALES_ROOT
 BASIC_CONFIGS_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/basic_configs.json'
 METADATA_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/metadata.json'
 SETTINGS_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/settings.json'
+CUSTOMIZE_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/customize.json'
 HEADER_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/header.json'
 MATERIALS_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/materials.json'
 MATERIALS_RESPONSES_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/materials_responses.json'
@@ -56,6 +57,7 @@ BASIC_CONFIGS_RESPONSES_LOCALE_FILE_PATH = f'{LOCALES_ROOT}/basic_configs_respon
 locale = Locale([
     METADATA_LOCALE_FILE_PATH,
     SETTINGS_LOCALE_FILE_PATH,
+    CUSTOMIZE_LOCALE_FILE_PATH,
     MATERIALS_LOCALE_FILE_PATH,
     HEADER_LOCALE_FILE_PATH,
     BASIC_CONFIGS_LOCALE_FILE_PATH,
@@ -89,7 +91,35 @@ from models.data.material_vectordb import (
     MaterialVectorDBDeleteError,
 )
 
-# main page
+
+@blueprint_materials.route('/<lang>/materials', methods=['GET'])
+@session_helper
+@language_wrapper
+def materials_view(user, lang, lang_name):
+    logger.info(magenta(f'[GET] /{lang}/materials'))
+
+    # DEBUG
+    #Session.start('6608eee0010a17bff9abcd0c')
+    #Session.start('660fb470cdab5917fb9023e6')
+
+    return render_template(
+        'main/materials2.html',
+        lang=lang,
+        lang_name=lang_name,
+        locale_json=locale.to_json_string(),
+        unit_price=UNIT_PRICE_USD,
+        general_credit_per_response=GENERAL_CREDIT_PER_RESPONSE,
+        interview_credit_per_response=INTERVIEW_CREDIT_PER_RESPONSE,
+        header_create_button_title=locale.get('header_create_button_title', lang),
+        header_meetings_menu_title=locale.get('header_meetings_menu_title', lang),
+        header_create_menu_title=locale.get('header_create_menu_title', lang),
+        header_knowledge_menu_title=locale.get('header_knowledge_menu_title', lang),
+        header_settings_menu_title=locale.get('header_settings_menu_title', lang),
+        header_customize_menu_title=locale.get('header_customize_menu_title', lang),
+        header_interviews_menu_title=locale.get('header_interviews_menu_title', lang),
+        header_logout_menu_title=locale.get('header_logout_menu_title', lang),
+        metadata=locale.dict()["metadata_home"][lang])
+
 @blueprint_materials.route('/v1/<lang>/home', methods=['GET'])
 @session_helper
 @language_wrapper

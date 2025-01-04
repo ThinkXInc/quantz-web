@@ -40,7 +40,21 @@ const MaterialsLocaleKeys = {
     sampleAnswerViewReviewTitle: "MaterialSampleAnswerView__review__title"
 };
 
-class MaterialsView {
+document.addEventListener('DOMContentLoaded', ()=>{
+    const lang = window.lang;
+    const locale = window.locale;
+
+    console.log(`set up materials view.\nlang:${lang}`);
+
+    // initialize root view
+    let materialsView = new MaterialsView({
+        id: 'MainContent',
+        locale: locale,
+        lang: lang
+    });
+});
+
+class MaterialsViewController {
     constructor({
         id,
         locale,
@@ -255,7 +269,7 @@ class MaterialsView {
 
                         if (response.status === 401 || response.status === 404) {
                             console.log('Redirecting to login page...');
-                            window.location.href = `/v1/${lang}/signin`;
+                            window.location.href = `/v1/${lang}/signup`;
                         }
 
                         return Promise.reject(errData);
