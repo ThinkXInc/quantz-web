@@ -229,23 +229,22 @@ class CustomizeView {
             fieldName: "button_type",
             hasTitle: true,
     
-            // Make "C" the default if the user has not chosen any button_type yet:
-            defaultValue: this.user.customize.button_type || 'C',
+            defaultValue: this.user.customize.button_type || 'Default',
     
             title: this.locale.get("settings_customize_button_type_title", this.lang),
             items: [
-                new RadioButtonItem({
-                    value: "A",
-                    name: this.locale.get("settings_customize_button_type_item_A", this.lang)
-                }),
-                new RadioButtonItem({
-                    value: "B",
-                    name: this.locale.get("settings_customize_button_type_item_B", this.lang)
-                }),
+                //new RadioButtonItem({
+                //    value: "A",
+                //    name: this.locale.get("settings_customize_button_type_item_A", this.lang)
+                //}),
+                //new RadioButtonItem({
+                //    value: "B",
+                //    name: this.locale.get("settings_customize_button_type_item_B", this.lang)
+                //}),
                 // Add the new Type C
                 new RadioButtonItem({
-                    value: "C",
-                    name: this.locale.get("settings_customize_button_type_item_C", this.lang)
+                    value: "Default",
+                    name: this.locale.get("settings_customize_button_type_item_Default", this.lang)
                 }),
             ]
         });

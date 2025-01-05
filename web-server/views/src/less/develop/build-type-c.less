@@ -1,0 +1,276 @@
+@c1: cubic-bezier(.65, 0, .34, 1);
+@c2: cubic-bezier(.4, 0, .2, 1);
+
+div#MainContent.develop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+div#build-type-c {
+    background-color: #fafafa;
+    padding: 200px 300px;
+    border-radius: 3px;
+    width: 800px;
+
+    div.QBTN-button-loader {
+        border: 1px dotted #c37b7b;
+    }
+
+    div.QBTN-button-container {
+        width: 260px;
+
+        button.QBTN-button {
+            position: relative;
+            overflow: hidden; /* Ensures the ripple doesn't overflow visibly */
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 1px dotted #a9a9a93b;
+            div.QBTN-button-component {
+                transition:
+                    all 1.0s @cubic-bezier1;
+            }
+            &.standby {
+                div#QBTN-button-component-0 {
+                    // circle
+                    position: absolute;
+                    width: 52px;
+                    height: 52px;
+                    top: 50%;
+                    left: 50%;
+                    border-radius: 50%;
+                    transform: translate(-50%, -50%);
+                    background: #8318c7;
+                    opacity: 0.3;
+                }
+                div#QBTN-button-component-1 {
+                    position: absolute;
+                    opacity: 0.8;
+                    top: 50%;
+                    left: 50%;
+                    width: 120px;
+                    height: 120px;
+                    border-radius: 50%;
+                    transform: translate(-50%, -50%);
+                    border: 7px solid #8318c7;
+                    animation: standby-ripple-0 5s infinite;
+                    animation-delay: 0s;
+
+                    @keyframes standby-ripple-0 {
+                        0% {
+                            border-width: 15px;
+                            opacity: 0.7;
+                            transform: translate(-50%, -50%) scale(0.55);
+                            animation-timing-function: @c1;
+                        }
+                        50% {
+                            border-width: 10px;
+                            transform: translate(-50%, -50%) scale(0.5);
+                            opacity: 0.5;
+                            animation-timing-function: @c2;
+                        }
+                        100% {
+                            border-width: 15px;
+                            transform: translate(-50%, -50%) scale(0.55);
+                            opacity: 0.7;
+                        }
+                    }
+                }
+                div#QBTN-button-component-2 {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: 50px;
+                    height: 50px;
+                    transform: translate(-50%, -50%);
+                    border-radius: 50%;
+                    box-sizing: border-box;
+                    opacity: 0.7; /* Slightly transparent */
+                    border: 1.5px solid #8318c7;
+                    animation: standby-ripple-1 6s infinite;
+                    animation-delay: 0s;
+
+                    @keyframes standby-ripple-1 {
+                        0% {
+                            transform: translate(-50%, -50%) scale(1.0);
+                            opacity: 0.4;
+                            animation-timing-function: @c1;
+                        }
+                        50% {
+                            transform: translate(-50%, -50%) scale(1.3);
+                            opacity: 0.5;
+                            animation-timing-function: @c2;
+                        }
+                        100% {
+                            transform: translate(-50%, -50%) scale(1.0);
+                            opacity: 0.4;
+                            animation-timing-function: @c2;
+                        }
+                    }
+                }
+                div#QBTN-button-component-3 {
+                    opacity: 0;
+                }
+            } // <- standby
+
+            // Listening
+            &.listening {
+                div#QBTN-button-component-0 {
+                    position: absolute;
+                    opacity: 0.8;
+                    top: 50%;
+                    left: 50%;
+                    width: 120px;
+                    height: 120px;
+                    border-radius: 50%;
+                    opacity: 0.7;
+                    transform: translate(-50%, -50%) scale(0.5);
+                    border: 15px solid #8318c7;
+                    //animation: standby-ripple-0 5s infinite;
+                    animation-delay: 0s;
+                }
+                div#QBTN-button-component-1, div#QBTN-button-component-2, div#QBTN-button-component-3 {
+                    opacity: 0
+                }
+            }
+
+            // Replying 
+            &.replying {
+                @keyframes ripple-breath-all {
+                    0% {
+                        transform: translate(-50%, -50%) scale(0.5);
+                        opacity: 0.1;
+                        animation-timing-function: @c1;
+                    }
+                    50% {
+                        transform: translate(-50%, -50%) scale(1.5);
+                        opacity: 0.3;
+                        animation-timing-function: @c2;
+                    }
+                    100% {
+                        transform: translate(-50%, -50%) scale(0.5);
+                        opacity: 0.1;
+                    }
+                }
+                @keyframes ripple-border-breath {
+                    0% {
+                        border-width: 15px;
+                        opacity: 0.5;
+                        animation-timing-function: @c1;
+                    }
+                    50% {
+                        border-width: 10px;
+                        transform: translate(-50%, -50%) scale(0.5);
+                        opacity: 0.4;
+                        animation-timing-function: @c2;
+                    }
+                    100% {
+                        border-width: 15px;
+                        opacity: 0.5;
+                    }
+                }
+                @keyframes ripple-breath-half {
+                    0% {
+                        transform: translate(-50%, -50%) scale(0.5);
+                        opacity: 0.8;
+                        animation-timing-function: @c1;
+                    }
+                    50% {
+                        transform: translate(-50%, -50%) scale(1.0);
+                        opacity: 0.2;
+                        animation-timing-function: @c2;
+                    }
+                    100% {
+                        transform: translate(-50%, -50%) scale(0.5);
+                        opacity: 0.8;
+                    }
+                }
+
+                div.QBTN-button-component {
+                    // common
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: 50px;
+                    height: 50px;
+                    transform: translate(-50%, -50%);
+                    border-radius: 50%;
+                    box-sizing: border-box;
+                    opacity: 0.7; /* Slightly transparent */
+                }
+                div#QBTN-button-component-0 {
+                    // B0
+                    border: 2px solid #8318c7;
+                    animation: ripple-border-breath 2s infinite;
+                    animation-delay: 0s;
+                }
+                div#QBTN-button-component-1 {
+                    border: 2px solid #8318c7;
+                    animation: ripple-border-breath 2s infinite;
+                    animation-delay: 0.4s;
+                }
+                div#QBTN-button-component-2 {
+                    border: 6px solid #8318c7;
+                    animation: ripple-breath-half 3s infinite;
+                    animation-delay: 0.4s;
+                }
+                div#QBTN-button-component-3 {
+                    border: 1.5px solid #8318c7;
+                    animation: ripple-breath-all 3s infinite;
+                    animation-delay: 1s;
+                }
+            } // <- replying
+        }
+    }
+
+    div.QBTN-balloon-container {
+        display: none;
+    }
+
+    div.QBTN-button-text {
+        display: none;
+    }
+
+    div.QBTN-button-control {
+        margin-left: 8px; /* @ */
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        div.QBTN-spacer {
+            width: 0px; /* @ */
+            flex-shrink: 0;
+            visibility: hidden;
+        }
+        div.QBTN-locale {
+            position: relative; /* This makes it the reference point for its absolutely positioned children */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        div.QBTN-locale-button {
+            cursor: pointer;
+            position: relative; /* To position the selector relative to the button */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 12px;
+            width: 30px;
+            background-color: #fff;
+            cursor: pointer;
+            padding: 4px 6px 4px 5px;
+            border-radius: 3px;
+        }
+    }
+
+    div.QBTN-balloon-container {
+        display: none;
+        img.QBTN-powerdby {
+            width: 20px;
+        }
+    }
+}

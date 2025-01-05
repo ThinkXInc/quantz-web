@@ -4,7 +4,7 @@ const terser = require('gulp-terser');
 const javascriptObfuscator = require('gulp-javascript-obfuscator');
 const sourcemaps = require('gulp-sourcemaps');
 
-const version = 9;
+const version = 10;
 
 gulp.task('scripts', function() {
   return gulp.src([

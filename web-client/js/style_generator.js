@@ -16,12 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
 */
 
 (function(ns) {
-    ns.ButtonType = {
-        A: 'A',
-        B: 'B',
-        C: 'C',
-    }
-
     ns.LayoutSize = {
         small: 'small',
         medium: 'medium',
@@ -36,25 +30,18 @@ document.addEventListener('DOMContentLoaded', () => {
             this.buttonElement = document.getElementById(ns.configs[buttonId].buttonElementId);
             this.buttonContainer = document.getElementById(ns.configs[buttonId].buttonContainerId);
             this.iconElement = this.buttonElement.querySelector(`.${ns.configs[buttonId].prefix + ns.configs[buttonId].iconImageClassName}`);
-            this.textContainer = document.getElementById(ns.configs[buttonId].buttonTextContainerId);
             this.buttonControlElement = document.getElementById(`QBTN-button-control-${buttonId}`)
-            this.signElement = this.buttonElement.querySelector(`.QBTN-sign`);
             this.iconWrapperElement = this.buttonElement.querySelector(`.QBTN-icon-wrapper`);
-            this.textElement = this.textContainer.querySelector(`.${ns.configs[buttonId].prefix + ns.configs[buttonId].buttonTextClassName}`);
-
             this.selectorButtonType = `#QBTN-button-container-${buttonId}.QBTN-TYPE-${this.buttonType}`;
             this.selectorButtonTypeBalloon = `.QBTN-balloon-container.QBTN-TYPE-${this.buttonType}`;
 
             this.buttonType = buttonType;
             this.baseCssSelector = `link[href="./css/quantz-${buttonType}-medium.css"]`
-            // this.baseCssPath = './css/';
 
             this.defaultValues = {
                 buttonPaddingLeft: 10,
                 buttonPaddingRight: 10,
                 iconWidth: 30,
-                signWidth: 10,
-                signMarginRight: 5,
                 localeButtonWidth: 29,
                 buttonControlMarginLeft: 8,
                 balloonRectWidth: '64vw',
@@ -106,9 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (config.iconSize !== undefined) {
                     this.applyIconSize(config.iconSize);
                 }
-                if (config.fontSize !== undefined) {
-                    this.applyFontSize(config.fontSize);
-                }
                 if (config.buttonWidth !== undefined && config.buttonHeight !== undefined) {
                     this.applyButtonSize(config.buttonWidth, config.buttonHeight);
                 }
@@ -133,12 +117,10 @@ document.addEventListener('DOMContentLoaded', () => {
         calculateButtonSize(width, height) {
             const totalPaddingAndMargins = this.defaultValues.localeButtonWidth + this.defaultValues.buttonControlMarginLeft;
             const buttonWidth = width - totalPaddingAndMargins;
-            const buttonTextWidth = buttonWidth - this.defaultValues.buttonPaddingLeft - this.defaultValues.buttonPaddingRight - this.defaultValues.iconWidth - this.defaultValues.signWidth - this.defaultValues.signMarginRight;
 
             const sizeInfo = {
                 buttonWidth: buttonWidth > 0 ? buttonWidth : null,
                 buttonContainerWidth: width,
-                buttonTextWidth: buttonTextWidth > 0 ? buttonTextWidth : null,
             };
 
             console.log('[StyleGenerator] Calculated button size:', sizeInfo);
@@ -159,12 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     this.buttonContainer.style.width = `${sizes.buttonContainerWidth}px`;
                 } else {
                     console.error('[applyButtonSize] No buttonContainer with id:', ns.configs[this.buttonId].buttonContainerId )
-                }
-        
-                if (this.textElement) {
-                    this.textElement.style.width = `${sizes.buttonTextWidth}px`;
-                } else {
-                    console.error('[applyButtonSize] No buttonElement with class:', ns.configs[buttonId].prefix + ns.configs[buttonId].buttonTextClassName )
                 }
         
                 console.log('[StyleGenerator] Applied button size via inline styles.');
@@ -231,36 +207,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!this.iconElement) console.error('[applyIconSize] No iconElement found.');
             }
         }
-        //applyIconSize(iconSize) {
-        //    this.insertRule(`${this.selectorButtonType} #${ns.configs[this.buttonId].buttonElementId} .${ns.configs[this.buttonId].prefix}icon-wrapper, ${this.selectorButtonType} .${ns.configs[this.buttonId].prefix}icon-wrapper img { width: ${iconSize}px !important; height: ${iconSize}px !important; }`);
-        //    console.log(`[StyleGenerator] Applied icon size: ${iconSize}px.`);
-        //}
-
-        applyGlowLightSize(buttonWidth) {
-            const glowLightWidth = parseFloat(buttonWidth) * 0.7;
-            this.glowLightElement = document.getElementById(ns.configs[this.buttonId].glowLightId);
-            if (this.glowLightElement) {
-                this.glowLightElement.style.width = `${glowLightWidth}px`;
-                this.glowLightElement.style.height = `${glowLightWidth}px`;
-                console.log('[StyleGenerator] Applied glow light size via inline styles.');
-            } else {
-                console.error('[applyGlowLightSize] No glowLightElement with id:', ns.configs[this.buttonId].glowLightId);
-            }
-        }
-
-        applyFontSize(fontSize) {
-            if (this.textElement) {
-                this.textElement.style.fontSize = `${fontSize}px`;
-            }
-        
-            if (this.signElement) {
-                const signSize = fontSize * this.defaultValues.signWidth;
-                this.signElement.style.width = `${signSize}px`;
-                this.signElement.style.height = `${signSize}px`;
-            }
-        
-            console.log(`[StyleGenerator] Applied font size via inline styles.`);
-        }
 
         applyBorderRadius(radius) {
             if (this.buttonElement) {
@@ -270,7 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('[applyBorderRadius] No buttonElement with id:', ns.configs[this.buttonId].buttonElementId);
             }
         }
-
 
         applyBalloonRectSize(balloonRectWidth, balloonRectHeight) {
             const width = balloonRectWidth || this.defaultValues.balloonRectWidth;

@@ -143,17 +143,18 @@ class ApplyChangeDelayInSec(EnumLocale):
     twenty_four_hour_later = 3600 * 24
 
 class ButtonType:
-    A = 'A'
-    B = 'B'
-    C = 'C'
+    Default = 'Default'
+    A = 'A' # will deprecate
+    B = 'B' # will deprecate
+    C = 'C' # will deprecate
 
 class Customize(EmbeddedDocument):
     #operator_name = StringField(max_length=100, default="Quantz")
     #first_message = StringField(max_length=100, default="")
-    button_type = StringField(choices=[ButtonType.A, ButtonType.B, ButtonType.C], default=ButtonType.C)
-    button_width = IntField(default=260)  # px
-    button_height = IntField(default=50)  # px
-    button_color = StringField(default="#0067FF")
+    button_type = StringField(choices=[ButtonType.Default], default=ButtonType.Default)
+    button_width = IntField(default=80)  # px
+    button_height = IntField(default=80)  # px
+    button_color = StringField(default="#8318c7")
     font_size = FloatField(default=13.0)  # px
     balloon_width = IntField(default=17)  # vw
     balloon_height = IntField(default=30)  # vh

@@ -63,13 +63,13 @@
         "ru": "Закрыть меню"
     },
     "studio_header_tooltip_logo": {
-        "en": "Go to Quantz Voice AI Studio Home",
-        "ja": "Quantz Voice AI Studio ホーム",
-        "zh": "前往 Quantz Voice AI Studio 首页",
-        "fr": "Aller à la page d’accueil de Quantz Voice AI Studio",
-        "es": "Ir a la página de inicio de Quantz Voice AI Studio",
-        "ar": "الانتقال إلى الصفحة الرئيسية لـ Quantz Voice AI Studio",
-        "ru": "Перейти на домашнюю страницу Quantz Voice AI Studio"
+        "en": "Go to Quantz Voice Agent Studio Home",
+        "ja": "Quantz Voice Agent Studio ホーム",
+        "zh": "前往 Quantz Voice Agent Studio 首页",
+        "fr": "Aller à la page d’accueil de Quantz Voice Agent Studio",
+        "es": "Ir a la página de inicio de Quantz Voice Agent Studio",
+        "ar": "الانتقال إلى الصفحة الرئيسية لـ Quantz Voice Agent Studio",
+        "ru": "Перейти на домашнюю страницу Quantz Voice Agent Studio"
       },
       "studio_header_create_new_label": {
         "en": "Create New",

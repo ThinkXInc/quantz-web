@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html class=no-js lang=en>
+    <head>
+	    <meta charset=utf-8>
+	    <meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
+        <link rel=stylesheet href=/css/main.css>
+        <script src=/js/data/enums.js></script>
+        <link rel=stylesheet href=/js/simplicity/dist/simplicity_default.css>
+        <script src="/js/simplicity/dist/simplicity.js"></script>
+        <script src="/node_modules/js-cookie/dist/js.cookie.min.js"></script>
+        <script src="/js/libs/anime.min.js"></script>
+        <script src="/js/libs/highlight.min.js"></script>
+    </head>
+
+    <body>
+
+        {% include 'common/studio_header.html' %}
+        <div id="MainContainer">
+            {% include 'common/vertical_header.html' %}
+            {#{% include 'common/vertical_menu.html' %}#}
+            <section id="MainContent" class="develop">
+
+                <div id="build-type-c">
+
+                    <div class="QBTN-button-loader" data-button-key="QBTN-preview" data-publisher-id="6761336d842132052346a1bd" data-model-id="6baad74e5402ef595fac91b9" data-quantz-config="{&quot;buttonType&quot;:&quot;C&quot;,&quot;iconSize&quot;:30,&quot;fontSize&quot;:13,&quot;buttonWidth&quot;:260,&quot;buttonHeight&quot;:50,&quot;buttonColor&quot;:&quot;#0067FF&quot;,&quot;borderRadius&quot;:20,&quot;displayLocale&quot;:true,&quot;balloonRectWidth&quot;:&quot;17vw&quot;,&quot;balloonRectHeight&quot;:&quot;30vh&quot;,&quot;defaultLang&quot;:&quot;en&quot;,&quot;modelId&quot;:&quot;6baad74e5402ef595fac91b9&quot;,&quot;responseMode&quot;:0}" id="QBTN-button-loader-WQ9vRJ" data-button-id="WQ9vRJ">
+                        <div id="QBTN-button-container-WQ9vRJ" class="QBTN-button-container QBTN-TYPE-C">
+                            <button id="QBTN-button-WQ9vRJ" class="QBTN-button QBTN-start">
+
+                                <div id="QBTN-button-component-0" class="QBTN-button-component"></div>
+                                <div id="QBTN-button-component-1" class="QBTN-button-component"></div>
+                                <div id="QBTN-button-component-2" class="QBTN-button-component"></div>
+                                <div id="QBTN-button-component-3" class="QBTN-button-component"></div>
+
+                                <div class="QBTN-icon-wrapper" style="width: 30px;height: 30px;">
+                                    <img src="https://quantz.thinkxinc.com/img/quantz_button/standby-icon-white.svg" class="QBTN-button-icon" alt="Button Icon" style="width: 30px; height: 30px;">
+                                </div>
+
+                            </button>
+                            <div id="QBTN-button-text-container-WQ9vRJ" class="QBTN-button-text-container" style="">
+                                <div class="QBTN-sign QBTN-busy">
+
+                                </div>
+                                <div class="QBTN-button-text" style="font-size: 13px; width: 158px;">
+                                    Start Meeting
+                                </div>
+                            </div>
+                            <div id="QBTN-button-control-WQ9vRJ" class="QBTN-button-control" style="">
+                                <div class="QBTN-spacer">
+                                </div>
+                                <div class="QBTN-locale">
+                                    <div class="QBTN-locale-button">
+                                        <img src="https://quantz.thinkxinc.com/img/quantz_button/locale-icon.svg" class="QBTN-locale-icon">
+                                        <img src="https://quantz.thinkxinc.com/img/quantz_button/arrow-down.svg" class="QBTN-arrow-icon">
+                                    </div>
+                                    <div class="QBTN-selector">
+                                        <p>English</p>
+                                        <p>日本語</p>
+                                        <p>Español</p>
+                                        <p>Français</p>
+                                        <p>中文</p>
+                                        <p class="disabled">Русский</p>
+                                        <p class="disabled">العربية</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="QBTN-balloon-WQ9vRJ" class="QBTN-balloon-container QBTN-TYPE-C QBTN-close" style="top: 62px;">
+                            <div class="QBTN-balloon-rect" style="width: 17vw; height: 30vh;">
+                                <img src="https://quantz.thinkxinc.com/img/quantz_button/balloonleg.png" srcset="https://quantz.thinkxinc.com/img/quantz_button/balloonleg@2x.png 2x" class="QBTN-balloon-leg">
+                                <ul id="QBTN-dialogue-WQ9vRJ" class="QBTN-dialogue">
+
+                                </ul>
+                                <a href="https://quantz.thinkxinc.com/en" target="_blank" rel="noopener noreferrer">
+                                    <img src="https://quantz.thinkxinc.com/img/quantz_button/powerdby.svg" class="QBTN-poweredby">
+                                </a>
+                                <div class="QBTN-annotation">
+                                    This system can make mistakes and may not be suitable for important issues.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+        </div>
+
+    </body>
+</html>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+  
+      // States in order
+      const STATES = ['standby', 'replying', 'listening', 'replying'];
+  
+      // Icons (these can be the same or different, just as an example)
+      const STATE_ICONS = {
+        'standby':   'https://quantz.thinkxinc.com/img/quantz_button/standby-icon-white.svg',
+        'active':    'https://quantz.thinkxinc.com/img/quantz_button/standby-icon-white.svg',
+        'listening': 'https://quantz.thinkxinc.com/img/quantz_button/standby-icon-white.svg',
+        'speaking':  'https://quantz.thinkxinc.com/img/quantz_button/standby-icon-white.svg'
+      };
+  
+      // Button text for each state
+      const STATE_TEXTS = {
+        'standby':   'Standby',
+        'active':    'Active',
+        'listening': 'Listening...',
+        'speaking':  'Speaking...'
+      };
+  
+      let currentIndex = 0;
+  
+      const button       = document.getElementById('QBTN-button-WQ9vRJ');
+      const iconElement  = button.querySelector('.QBTN-button-icon');
+      const textElement  = document.getElementById('QBTN-button-text');
+
+    button.classList.add("standby");
+  
+      // Click event
+      button.addEventListener('click', function() {
+        // Move to the next state
+        currentIndex = (currentIndex + 1) % STATES.length;
+        const newState = STATES[currentIndex];
+  
+        // Remove all possible state classes, then add the new one
+        STATES.forEach(state => {
+          button.classList.remove(state);
+        });
+        button.classList.add(newState);
+  
+        // Update icon
+        //iconElement.src = STATE_ICONS[newState];
+  
+        // Update text
+        //textElement.textContent = STATE_TEXTS[newState];
+      });
+    });
+  </script>
