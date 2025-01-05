@@ -41,7 +41,7 @@
 
                                 </div>
                                 <div class="QBTN-button-text" style="font-size: 13px; width: 158px;">
-                                    Start Meeting
+                                    Start Conversation
                                 </div>
                             </div>
                             <div id="QBTN-button-control-WQ9vRJ" class="QBTN-button-control" style="">
@@ -94,7 +94,7 @@
     document.addEventListener('DOMContentLoaded', function() {
   
       // States in order
-      const STATES = ['standby', 'replying', 'listening', 'replying'];
+      const STATES = ['standby', 'connected', 'replying', 'listening', 'replying'];
   
       // Icons (these can be the same or different, just as an example)
       const STATE_ICONS = {
@@ -114,10 +114,12 @@
   
       let currentIndex = 0;
   
+      const container       = document.getElementById('QBTN-button-container-WQ9vRJ');
       const button       = document.getElementById('QBTN-button-WQ9vRJ');
       const iconElement  = button.querySelector('.QBTN-button-icon');
       const textElement  = document.getElementById('QBTN-button-text');
 
+      container.classList.add("standby")
     button.classList.add("standby");
   
       // Click event
@@ -129,8 +131,10 @@
         // Remove all possible state classes, then add the new one
         STATES.forEach(state => {
           button.classList.remove(state);
+            container.classList.remove(state);
         });
         button.classList.add(newState);
+        container.classList.add(newState);
   
         // Update icon
         //iconElement.src = STATE_ICONS[newState];

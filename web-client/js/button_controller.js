@@ -29,11 +29,16 @@
             this.buttonState = defaultState;
             this.lang = lang;
             this.animationController = animationController;
+            this.buttonContainerElement = document.getElementById(ns.configs[buttonId].buttonContainerId);
             this.buttonElement = document.getElementById(ns.configs[buttonId].buttonElementId);
             this.iconElement = this.buttonElement.querySelector(`.${ns.configs[buttonId].prefix + ns.configs[buttonId].iconImageClassName}`);
             this.buttonControlElement = document.getElementById(`QBTN-button-control-${buttonId}`)
             this.iconWrapperElement = this.buttonElement.querySelector(`.QBTN-icon-wrapper`);
 
+            if (!this.buttonContainerElement) {
+                console.error('Button element not found.');
+                return;
+            }
             if (!this.buttonElement) {
                 console.error('Button element not found.');
                 return;
@@ -92,11 +97,13 @@
             // Remove all possible button state classes first
             Object.values(ns.ButtonState).forEach(state => {
                 this.buttonElement.classList.remove(ns.configs[this.buttonId].prefix + state);
+                this.buttonContainerElement.classList.remove(ns.configs[this.buttonId].prefix + state);
             });
 
             // Add the new state as a class to the button element
             if (Object.values(ns.ButtonState).includes(buttonState)) {
                 this.buttonElement.classList.add(ns.configs[this.buttonId].prefix + buttonState);
+                this.buttonContainerElement.classList.add(ns.configs[this.buttonId].prefix + buttonState);
                 this.buttonState = buttonState;
                 console.log(`Button state changed to "${buttonState}".`);
             } else {

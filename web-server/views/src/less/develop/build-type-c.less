@@ -22,6 +22,32 @@ div#build-type-c {
     div.QBTN-button-container {
         width: 260px;
 
+            div.QBTN-button-text-container {
+                position: absolute;
+                div.QBTN-button-text {
+                    display: block;
+                    transform: translate(0%, -30%);
+                    opacity: 0;
+                    color: #8318c7;
+                    transition:
+                        all 0.5s @cubic-bezier1;
+                }
+            }
+
+            // On hover, show text — but only if NOT replying, connected, or listening
+            &:hover.standby {
+                //div.QBTN-button-component {
+                //    opacity: 1.0;
+                //}
+                div.QBTN-button-text-container {
+                    div.QBTN-button-text {
+                        opacity: 1;
+                        transform: translate(0%, 0%);
+                    }
+                }
+            }
+           
+
         button.QBTN-button {
             position: relative;
             overflow: hidden; /* Ensures the ripple doesn't overflow visibly */
@@ -29,9 +55,22 @@ div#build-type-c {
             height: 80px;
             border-radius: 50%;
             border: 1px dotted #a9a9a93b;
+
+
+
             div.QBTN-button-component {
+                    position: absolute;
+                    width: 52px;
+                    height: 52px;
+                    top: 50%;
+                    left: 50%;
+                    border-radius: 50%;
+                    border-color: #8318c7;
+                    transform: translate(-50%, -50%);
+                    opacity: 0.3;
+ 
                 transition:
-                    all 1.0s @cubic-bezier1;
+                    all 0.5s @cubic-bezier1;
             }
             &.standby {
                 div#QBTN-button-component-0 {
@@ -115,6 +154,50 @@ div#build-type-c {
                     opacity: 0;
                 }
             } // <- standby
+
+            // Connected
+            &.connected {
+                div.QBTN-button-component {
+                    position: absolute;
+                    opacity: 0.8;
+                    top: 50%;
+                    left: 50%;
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    transform: translate(-50%, -50%);
+                    border: 3px solid #8318c7;
+                    animation: connected-ripple 0.4s;
+                    animation-delay: 0s;
+
+                    @keyframes connected-ripple {
+                        0% {
+                            border-width: 4px;
+                            opacity: 0.7;
+                            transform: translate(-50%, -50%) scale(0.55);
+                            animation-timing-function: @c1;
+                        }
+                        50% {
+                            border-width: 3px;
+                            transform: translate(-50%, -50%) scale(0.5);
+                            opacity: 0.5;
+                            animation-timing-function: @c2;
+                        }
+                    }
+                }
+                div#QBTN-button-component-0 {
+
+                }
+                div#QBTN-button-component-1 {
+                }
+                div#QBTN-button-component-2 {
+                }
+                div#QBTN-button-component-3 {
+                }
+
+
+            }
+
 
             // Listening
             &.listening {
