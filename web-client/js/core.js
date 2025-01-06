@@ -123,7 +123,7 @@
             try {
                 let pageURL = encodeURIComponent(window.location.href); 
                 let origin = encodeURIComponent(window.location.origin);
-                let url = `https://${ns.configs[this.buttonId].host}/stream/api/request-token?pageURL=${pageURL}&origin=${origin}`;
+                let url = `https://${ns.configs[this.buttonId].host}/stream/api/request-token?pageURL=${pageURL}&origin=${origin}&modelId=${ns.configs[this.buttonId].modelId}`;
                 let response = await fetch(url, {
                     method: 'POST',
                     credentials: 'include',
