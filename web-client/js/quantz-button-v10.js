@@ -219,6 +219,7 @@
             $buttonControl.id = ns.configs[buttonId].buttonControlId;
             $buttonControl.classList.add(ns.configs[buttonId].prefix + 'button-control');
             ns.insertSpacer({container: $buttonControl, buttonId: buttonId});
+            ns.insertButtonTextContainer({container: $buttonControl, buttonId: buttonId});
             $buttonContainer.appendChild($buttonControl);
         }
 
@@ -281,18 +282,18 @@
         return iconWrapper;
     }
 
-    //ns.insertButtonTextContainer = function({container, buttonId}) {
-    //    const buttonTextContainer = document.createElement('div');
-    //    buttonTextContainer.id = ns.configs[buttonId].buttonTextContainerId;
-    //    buttonTextContainer.className = ns.configs[buttonId].prefix + ns.configs[buttonId].buttonTextContainerClassName;
-    //    const buttonText = document.createElement('div');
-    //    buttonText.className = ns.configs[buttonId].prefix + ns.configs[buttonId].buttonTextClassName;
-    //    buttonText.textContent = ns.configs[buttonId].prefix.defaultButtonTextContent;
-    //    buttonTextContainer.appendChild(buttonText);
-    //    container.appendChild(buttonTextContainer);
+    ns.insertButtonTextContainer = function({container, buttonId}) {
+        const buttonTextContainer = document.createElement('div');
+        buttonTextContainer.id = ns.configs[buttonId].buttonTextContainerId;
+        buttonTextContainer.className = ns.configs[buttonId].prefix + ns.configs[buttonId].buttonTextContainerClassName;
+        const buttonText = document.createElement('div');
+        buttonText.className = ns.configs[buttonId].prefix + ns.configs[buttonId].buttonTextClassName;
+        buttonText.textContent = ns.configs[buttonId].prefix.defaultButtonTextContent;
+        buttonTextContainer.appendChild(buttonText);
+        container.appendChild(buttonTextContainer);
 
-    //    return buttonTextContainer;
-    //}
+        return buttonTextContainer;
+    }
 
     ns.insertSpacer = function({container, buttonId}) {
         const spacer = document.createElement('div');

@@ -31,9 +31,11 @@
             this.animationController = animationController;
             this.buttonContainerElement = document.getElementById(ns.configs[buttonId].buttonContainerId);
             this.buttonElement = document.getElementById(ns.configs[buttonId].buttonElementId);
+            this.textContainer = document.getElementById(ns.configs[buttonId].buttonTextContainerId);
             this.iconElement = this.buttonElement.querySelector(`.${ns.configs[buttonId].prefix + ns.configs[buttonId].iconImageClassName}`);
             this.buttonControlElement = document.getElementById(`QBTN-button-control-${buttonId}`)
             this.iconWrapperElement = this.buttonElement.querySelector(`.QBTN-icon-wrapper`);
+            this.textElement = this.textContainer.querySelector(`.${ns.configs[buttonId].prefix + ns.configs[buttonId].buttonTextClassName}`);
 
             if (!this.buttonContainerElement) {
                 console.error('Button element not found.');
@@ -43,8 +45,14 @@
                 console.error('Button element not found.');
                 return;
             }
+            if (!this.textContainer) {
+                console.error('Button text container not found.');
+            }
             if (!this.iconElement) {
                 console.error('Icon element not found.');
+            }
+            if (!this.textElement) {
+                console.error('Text element not found.');
             }
             if (!this.buttonControlElement) {
                 console.error('ButtonControl element not found.');
@@ -114,29 +122,36 @@
         switchToStart() {
             console.log(`[ButtonController] switch to start.`)
             this.toggleButtonState(ns.ButtonState.start);
+            this.updateButtonText('start');
             this.setIcon(ns.IconType.START);
         }
 
         switchToRestart() {
             console.log(`[ButtonController] switch to restart.`)
             this.toggleButtonState(ns.ButtonState.restart);
+            this.updateButtonText('restart');
             this.setIcon(ns.IconType.RESTART);
         }
 
         switchToStandby() {
             console.log(`[ButtonController] switch to standby.`)
             this.toggleButtonState(ns.ButtonState.standby);
+            this.updateButtonText('standby');
             this.setIcon(ns.IconType.STANDBY);
         }
 
         switchToConnected() {
             console.log(`[ButtonController] switch to connected.`)
+            if (ns.configs[this.buttonId].buttonType != ns.ButtonType.Default) {
+                this.updateButtonText('connected');
+            }
             this.toggleButtonState(ns.ButtonState.connected);
         }
 
         switchToLeave() {
             console.log(`[ButtonController] switch to leave.`)
             this.toggleButtonState(ns.ButtonState.leave);
+            this.updateButtonText('leave');
             this.buttonControlElement.style.display = 'none';
             if (this.buttonElement) {
                 this.buttonElement.style.setProperty('width', '145px', 'important');
@@ -153,37 +168,52 @@
         switchStandbyToPushSpeak() {
             console.log(`[ButtonController] switch standby to pushSpeak.`)
             this.toggleButtonState(ns.ButtonState.pushSpeak);
+            this.updateButtonText('pushSpeak');
             this.switchIcon(ns.IconType.STANDBY, ns.IconType.PUSHSPEAK, ns.AnimationType.flipOut, ns.AnimationType.flipIn, 0, 0.3, 0, 0.3);
         }
 
         switchToRecording() {
             console.log(`[ButtonController] switch to listening.`)
             this.toggleButtonState(ns.ButtonState.listening);
+            this.updateButtonText('listening');
             this.setIcon(ns.IconType.RECORDING);
         }
 
         switchToPushSpeak() {
             console.log(`[ButtonController] switch to pushSpeak.`)
             this.toggleButtonState(ns.ButtonState.pushSpeak);
+            this.updateButtonText('pushSpeak');
             this.setIcon(ns.IconType.PUSHSPEAK);
         }
 
         switchToReplying() {
             console.log(`[ButtonController] switch to replying.`)
             this.toggleButtonState(ns.ButtonState.replying);
+            this.updateButtonText('replying');
             this.setIcon(ns.IconType.REPLYING);
         }
 
         switchToBusy() {
             console.log(`[ButtonController] switch to busy.`)
             this.toggleButtonState(ns.ButtonState.busy);
+            this.updateButtonText('busy');
             this.setIcon(ns.IconType.STANDBY);
         }
 
         switchToLimitReached() {
             console.log(`[ButtonController] switch to reach limit.`)
             this.toggleButtonState(ns.ButtonState.busy);
+            this.updateButtonText('limitReached');
             this.setIcon(ns.IconType.STANDBY);
+        }
+
+        updateButtonText(key) {
+            if (this.textElement) {
+                const translation = ns.ButtonTextLocales[this.lang][key];
+                this.textElement.textContent = translation || `Text not found by ${key} ${this.lang}`;
+            } else {
+                console.error(`Text element not found.`);
+            }
         }
 
         changeLanguage(lang) {
