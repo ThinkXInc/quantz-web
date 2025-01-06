@@ -185,14 +185,14 @@ class CustomizeView {
         
             // Clear any existing alerts first
             this.selectInteractionModel.alert(false);
-        
+
             // Call API to update basic config
             Http.post(`/v1/${this.lang}/basic_config/update`, 
                 { 'interaction_model_id': selectedValue },
                 (res) => {
                     const { code, message } = res;
                     console.log(`[${code} success] ${message}`);
-                    // Optionally update something in the UI if needed
+                    this.updateCodeView();
                 },
                 (error) => {
                     // If error has a known format:
