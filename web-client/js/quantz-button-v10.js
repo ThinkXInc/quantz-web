@@ -734,6 +734,8 @@
                 ns.indicatorControllers[buttonId].speakingAnimation(spectrum);
             }
 
+
+
             // dispatch event
             document.dispatchEvent(new CustomEvent(ns.configs[buttonId].assistantAudioSignalEventName, {
                 detail: {
@@ -801,6 +803,22 @@
             //console.log(`[Quantz Button ${buttonId}] human spectrum size:`, spectrum.length, ' volume:', volume, ' fundamental freq:', fundamentalFreq, 'received')
             ns.interactionControllers[buttonId].appendHumanSignalData(volume, fundamentalFreq);
             //console.log('**** spectrum', spectrum);
+
+            if (ns.configs[buttonId].buttonType == ns.ButtonType.Default) {
+                // scale by volume
+                const $buttonContainer = document.getElementById(ns.configs[buttonId].buttonContainerId);
+                const minDb = -60;
+                const maxDb = -3;
+                let dB = Math.max(minDb, Math.min(maxDb, volume)); 
+                let normVolume = (dB - minDb) / (maxDb - minDb);
+                const minScale = 1.0;
+                const maxScale = 1.5;
+                const scale = minScale + (maxScale - minScale) * normVolume;
+                if ($buttonContainer) {
+                    $buttonContainer.style.transform = `scale(${scale})`;
+                }
+            }
+
             document.dispatchEvent(new CustomEvent(ns.configs[buttonId].humanAudioSignalEventName, {
                 detail: {
                     buttonId: buttonId,
@@ -894,6 +912,15 @@
             } else {
                 console.warn(`[Quantz Button ${buttonId}] no significant speech. skip.`)
             }
+
+            if (ns.configs[buttonId].buttonType == ns.ButtonType.Default) {
+                // reset volume scale
+                const $buttonContainer = document.getElementById(ns.configs[buttonId].buttonContainerId);
+                if ($buttonContainer) {
+                    $buttonContainer.style.transform = `scale(1.0)`;
+                }
+            }
+
             // **** [Experimental]
             // 人間が話し終えていないのに終了判定されることがあるのでそのまま話を拾いたい
             // しかしAssistantが発話しているとそれを拾ってしまうのでassistantの発話を止めることが必要

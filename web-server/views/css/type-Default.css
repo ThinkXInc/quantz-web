@@ -112,6 +112,7 @@ div.QBTN-button-container.QBTN-TYPE-Default {
     flex-direction: column;
     align-items: center;
     width: 80px;
+    transition: transform 0.1s cubic-bezier(.65, 0, .34, 1);
 }
 
 /* Button */
