@@ -403,6 +403,7 @@ def interaction_model_update(user, lang, lang_name, interaction_model_id):
                 # (or anything else not used by InteractionModelStep)
                 safe_step_data = {
                     # Use only the known InteractionModelStep fields
+                    "task_type": step_dict.get("task_type", ""),
                     "topic": step_dict.get("topic", ""),
                     "remark": step_dict.get("remark", ""),
                     "goal": step_dict.get("goal", ""),
