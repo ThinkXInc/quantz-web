@@ -564,12 +564,12 @@ class CustomizeView {
 
     updateQuantzButton() {
         const buttonKey = `QBTN-preview`;//`QBTN-${this.user._id}`;
-        console.log(`Find quantz button with key ${buttonKey}`);
+        console.log(`[updateQuantzButton] Find quantz button with key ${buttonKey}`);
 
         let $buttonLoader = document.querySelector(`[data-button-key='${buttonKey}']`);
 
         if (!$buttonLoader) {
-            console.log(`Create new button loader.`)
+            console.log(`[updateQuantzButton] Create new button loader.`)
             $buttonLoader = document.createElement('div');
             $buttonLoader.classList.add('QBTN-button-loader');
             $buttonLoader.setAttribute('data-button-key', buttonKey);
@@ -585,8 +585,9 @@ class CustomizeView {
 
         } else {
             // FIXME: response doubles if not removed
+            console.log(`[updateQuantzButton] remove old button loader.`, $buttonLoader)
             $buttonLoader.remove()
-            console.log(`Create new button loader.`)
+            console.log(`[updateQuantzButton] Create new button loader.`)
             $buttonLoader = document.createElement('div');
             $buttonLoader.classList.add('QBTN-button-loader');
             $buttonLoader.setAttribute('data-button-key', buttonKey);

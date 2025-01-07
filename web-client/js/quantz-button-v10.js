@@ -104,46 +104,6 @@
 
     ns.isConversationEnd = false;
 
-    ns.setupIndicator = function({buttonId, button, buttonWidth}) {
-        const indicator = button.querySelector(`.${ns.configs[buttonId].prefix}indicator`);
-        const icon = button.querySelector(`.${ns.configs[buttonId].prefix}button-icon`);
-        const diameter = parseFloat(buttonWidth) * ns.configs[buttonId].indicatorDiameterRate; // Diameter is 80% of the button size
-        const radius = diameter / 2;
-        const centerX = parseFloat(buttonWidth) / 2;
-        const centerY = parseFloat(buttonWidth) / 2;
-
-        // Scale the icon size relative to the button size (assumed 50px is for 144px button size)
-        //const iconSize = (buttonWidth / 144) * 50; // Scaling factor for the icon
-        const iconSize = buttonWidth * ns.configs[buttonId].iconSizeScaleFactor;
-        icon.style.width = `${iconSize}px`;
-        icon.style.height = `${iconSize}px`;
-
-        for (let i = 0; i < ns.configs[buttonId].N; i++) {
-            let dial = document.createElement('div');
-            dial.className = `${ns.configs[buttonId].prefix}dial ${ns.configs[buttonId].prefix}dial_${i}`;
-            dial.style.position = 'absolute';
-            dial.style.width = `${ns.configs[buttonId].dialLength}px`;
-            dial.style.height = ns.configs[buttonId].dialThickness;
-            dial.style.backgroundColor = ns.configs[buttonId].dialColorUp;
-            dial.style.borderRadius = '1px';
-
-            const angle = (i / ns.configs[buttonId].N) * 2 * Math.PI - Math.PI / 2;
-            const dialX = centerX + radius * Math.cos(angle) - (ns.configs[buttonId].dialLength / 2);
-            const dialY = centerY + radius * Math.sin(angle) - (parseFloat(ns.configs[buttonId].dialThickness) / 2);
-
-            dial.style.left = `${dialX}px`;
-            dial.style.top = `${dialY}px`;
-            dial.style.transform = `rotate(${i * (360 / ns.configs[buttonId].N) + 90}deg)`;
-            dial.style.transformOrigin = `${ns.configs[buttonId].dialLength / 2}px 1px`;
-
-            indicator.appendChild(dial);
-        }
-
-        // Now that all dials are created and added to the DOM, instantiate the IndicatorController
-        ns.indicatorControllers[buttonId] = new ns.IndicatorController({buttonId: buttonId, indicatorElement: indicator});
-
-    }
-
     ns.loadCSS = function({cssPath, callback}) {
         const link = document.createElement('link');
         link.rel = 'stylesheet';
@@ -240,35 +200,6 @@
         ns.applyDynamicStyles({buttonId: buttonId, config: config});
     }
 
-    //ns.insertIndicator = function({container, buttonId}) {
-    //    const indicator = document.createElement('div');
-    //    indicator.className = ns.configs[buttonId].prefix + ns.configs[buttonId].indicatorClassName;
-    //    container.appendChild(indicator);
-    //    return indicator;
-    //}
-
-    //ns.insertGlowlight = function({container, buttonId}) {
-    //    const svgHTML = `
-    //        <svg id="${ns.configs[buttonId].glowLightId}" class="${ns.configs[buttonId].prefix}glowlight" width="144px" height="144px" viewBox="0 0 144 144" xmlns="http://www.w3.org/2000/svg">
-    //            <defs>
-    //                <linearGradient id="gradient1" gradientUnits="objectBoundingBox" x1="1" y1="0.5" x2="0" y2="0.5">
-    //                    <stop offset="0%" stop-color="#33D6BB" />
-    //                    <stop offset="34%" stop-color="#33D6BB" />
-    //                    <stop offset="67%" stop-color="#316480" stop-opacity="1" />
-    //                    <stop offset="100%" stop-color="#316480" stop-opacity="0" />
-    //                </linearGradient>
-    //                <filter id="blur" x="-50%" y="-50%" width="200%" height="200%">
-    //                    <feGaussianBlur in="SourceGraphic" stdDeviation="3" />
-    //                </filter>
-    //            </defs>
-    //            <g filter="url(#blur)">
-    //                <path d="M 12,72 A 60,60 0 0 1 132,72" stroke="url(#gradient1)" stroke-width="8" fill="none" stroke-linecap="round"/>
-    //            </g>
-    //        </svg>`;
-
-    //    container.insertAdjacentHTML('afterbegin', svgHTML);
-    //}
-
     ns.insertIconWrapper = function({container, buttonId}) {
         const iconWrapper = document.createElement('div');
         iconWrapper.className = ns.configs[buttonId].prefix + ns.configs[buttonId].iconWrapperClassName;
@@ -335,17 +266,6 @@
                 balloonRectHeight: ns.configs[buttonId].balloonRectHeight
             });
         }
-        //if (ns.configs[buttonId].buttonType == ns.ButtonType.A) {
-        //    styleGenerator.generate({
-        //        // buttonWidth has already been applied
-        //        buttonWidth: ns.configs[buttonId].buttonWidth,
-        //        buttonHeight: ns.configs[buttonId].buttonHeight,
-        //        fontSize: ns.configs[buttonId].fontSize,
-        //        displayLocale: ns.configs[buttonId].displayLocale,
-        //        balloonRectWidth: ns.configs[buttonId].balloonRectWidth,
-        //        balloonRectHeight: ns.configs[buttonId].balloonRectHeight
-        //    })
-        //}
     }
 
     ns.setup = function() {
@@ -371,11 +291,11 @@
                     ns.initializeButton({$buttonLoader: node});
                 } else {
                     //console.log('[Quantz Button] Added node did not match expected selector');
-                    // Recursively check child nodes
-                    node.querySelectorAll(`.${ns.DefaultConfig.prefix}${ns.DefaultConfig.buttonLoaderClassName}`).forEach(innerNode => {
-                        console.log(`[Quantz Button] Found matching node ${innerNode.className} inside added parent ${node.className}`);
-                        ns.initializeButton({$buttonLoader: innerNode});
-                    });
+                    //// Recursively check child nodes
+                    //node.querySelectorAll(`.${ns.DefaultConfig.prefix}${ns.DefaultConfig.buttonLoaderClassName}`).forEach(innerNode => {
+                    //    console.log(`[Quantz Button] Found matching node ${innerNode.className} inside added parent ${node.className}`);
+                    //    ns.initializeButton({$buttonLoader: innerNode});
+                    //});
                 }
             }
         }
@@ -908,7 +828,7 @@
             console.log(`[Quantz Button ${buttonId}] human stop recording.`)
             if (ns.cores[buttonId].hasSignificantSpeech) {
                 console.warn(`[Quantz Button ${buttonId}] has significant speech. submit.`)
-                ns.cores[buttonId].submitHumanSpeach();
+                ns.cores[buttonId].submitHumanSpeech();
             } else {
                 console.warn(`[Quantz Button ${buttonId}] no significant speech. skip.`)
             }

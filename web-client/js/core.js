@@ -95,9 +95,10 @@
             }
         }
 
-        async submitHumanSpeach() {
+        async submitHumanSpeech() {
             const messageType = new Uint8Array([ns.MessageType.WAV_STREAM]);
             const langBytes = new TextEncoder().encode(this.lang); // 2 bytes, ensure lang is 2 characters
+            console.log(`[submitHumanSpeech] lang: ${this.lang}`)
             
             const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
             

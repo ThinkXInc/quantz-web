@@ -1,410 +1,411 @@
 {
     "metadata_top": {
-        "ja": {
-            "title": "Quantz",
-            "description": "Quantzは、あなたの代わりに顧客に応答する、最もシンプルなカスタム高速音声AI。プログラミング不要、30分で構築。あなたを大事な仕事に集中させる。",
-            "keywords": "Quantz, クオンツ, 音声AI, トップ, 高速, コールセンター, 問い合わせ, カスタマーサービス, ビジネス自動化, カスタマーサポート, ノーコード",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "en": {
-            "title": "Quantz",
-            "description": "Quantz—your lightning-fast voice AI 'alter ego'—responds to your customers on your behalf and frees you up for the really important things.",
-            "keywords": "Quantz, voice AI, lightning-fast, call center, inquiry, customer service, business automation, customer support, no code, no programming",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "zh": {
-            "title": "Quantz | 登录",
-            "description": "Quantz，为您的企业带来先进的语音AI技术。无需编程，30分钟即可部署，让AI成为您的语音'替身'，解放您的双手，专注于更重要的事务。",
-            "keywords": "Quantz, 语音AI, 闪电般的速度, 呼叫中心, 咨询, 客户服务, 企业自动化, 客户支持, 无代码",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "es": {
-            "title": "Quantz | Inicio",
-            "description": "Quantz democratiza la IA de voz de última generación. Los pequeños empresarios ahora pueden crear sus propios 'alter egos' de IA de voz rápidos por solo $10 al mes sin necesidad de programación.",
-            "keywords": "Quantz, IA de voz, ultrarrápido, centro de llamadas, consulta, servicio al cliente, automatización empresarial, soporte al cliente, sin código",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "fr": {
-            "title": "Quantz | Connexion",
-            "description": "Quantz, votre IA vocale ultra-rapide, répond à vos clients à votre place et vous libère pour les choses vraiment importantes. Aucune compétence en programmation requise, configuration en 30 minutes.",
-            "keywords": "Quantz, IA vocale, ultra-rapide, centre d'appel, demande, service client, automatisation des affaires, support client, sans code",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "ru": {
-            "title": "Quantz | Вход",
-            "description": "Quantz предоставляет передовую технологию голосового ИИ. Теперь малый бизнес может создать своих 'альтер эго' на базе голосового ИИ всего за $10 в месяц без навыков программирования.",
-            "keywords": "Quantz, голосовой ИИ, молниеносный, колл-центр, запрос, обслуживание клиентов, автоматизация бизнеса, поддержка клиентов, без программирования",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "ar": {
-            "title": "Quantz | تسجيل الدخول",
-            "description": "Quantz يديمقرط تقنية الذكاء الصناعي الصوتي. يمكن لأصحاب الأعمال الصغيرة الآن إنشاء بدائل الذكاء الصوتي الخاصة بهم بسرعة البرق مقابل $10 شهريًا فقط بدون مهارات برمجة.",
-            "keywords": "Quantz, الذكاء الصناعي الصوتي, سريع جداً, مركز الاتصال, استفسار, خدمة العملاء, أتمتة الأعمال, دعم العملاء, بدون برمجة",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        }
+      "ja": {
+        "title": "Quantz",
+        "description": "リアルタイム音声対話エージェントをプログラムなしで作成。自在にカスタマイズ。",
+        "keywords": "Quantz, クオンツ, 音声AI, トップ, 高速, コールセンター, 問い合わせ, カスタマーサービス, ビジネス自動化, カスタマーサポート, ノーコード",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "en": {
+        "title": "Quantz",
+        "description": "Create a real-time voice conversational AI agent without any programming. Fully customizable.",
+        "keywords": "Quantz, Quants, voice AI, top, high-speed, call center, inquiries, customer service, business automation, customer support, no code",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "zh": {
+        "title": "Quantz",
+        "description": "无需编程即可创建实时语音会话式AI代理，自由定制。",
+        "keywords": "Quantz, Quants, 语音AI, 顶级, 高速, 呼叫中心, 咨询, 客户服务, 业务自动化, 客户支持, 无代码",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "es": {
+        "title": "Quantz",
+        "description": "Cree un agente de IA conversacional de voz en tiempo real sin programación. Personalización total.",
+        "keywords": "Quantz, Quants, IA de voz, principal, alta velocidad, centro de llamadas, consultas, servicio al cliente, automatización empresarial, soporte al cliente, sin código",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "fr": {
+        "title": "Quantz",
+        "description": "Créez un agent d’IA vocale conversationnelle en temps réel sans programmation. Personnalisation totale.",
+        "keywords": "Quantz, Quants, IA vocale, top, haute vitesse, centre d'appels, demandes, service client, automatisation d'entreprise, support client, sans code",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "ru": {
+        "title": "Quantz",
+        "description": "Создайте голосового агента для разговорного ИИ в реальном времени без программирования. Полная персонализация.",
+        "keywords": "Quantz, Quants, голосовой ИИ, топ, высокоскоростной, колл-центр, запросы, обслуживание клиентов, бизнес-автоматизация, поддержка клиентов, без кода",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "ar": {
+        "title": "Quantz",
+        "description": "أنشئ وكيل ذكاء اصطناعي صوتي محادثي في الوقت الفعلي بدون برمجة. تخصيص كامل.",
+        "keywords": "Quantz, Quants, الذكاء الصوتي المحادثي, أعلى, عالي السرعة, مركز الاتصال, استفسارات, خدمة العملاء, أتمتة الأعمال, دعم العملاء, بدون كود",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      }
     },
     "metadata_interview_top": {
-        "ja": {
-            "title": "Quantz Interview",
-            "description": "ナンバーワンAI自動面接/ミーティングクラウドサービス。25倍のコスト効率を実現。",
-            "keywords": "Quantz Interview, クオンツインタビュー, 音声AI, 音声対話AI, トップ, 高速, AI面接, 面談, AIインタビュー, AI営業自動化, ノーコード",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
-            "link": "https://quantz.thinkxinc.com/interview"
-        },
-        "en": {
-            "title": "Quantz Interview",
-            "description": "The #1 AI Auto-Interview Cloud Service with 25x cost effective technology",
-            "keywords": "Quantz Interview, AI interview, AI meeting, meeting automation, no code, no programming",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
-            "link": "https://quantz.thinkxinc.com/interview"
-        },
-        "zh": {
-            "title": "Quantz Interview",
-            "description": "领先的AI自动面试和会议云服务，提供高达25倍成本效益的技术。",
-            "keywords": "Quantz Interview, AI面试, AI会议, 会议自动化, 高性价比, 无需编程, 无代码",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
-            "link": "https://quantz.thinkxinc.com/interview"
-        },
-        "es": {
-            "title": "Quantz Interview",
-            "description": "El servicio en la nube de entrevistas automáticas con IA líder, con una tecnología 25 veces más eficiente en costos.",
-            "keywords": "Quantz Entrevista, entrevista con IA, reunión con IA, automatización de reuniones, eficiente en costos, sin programación, sin código",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
-            "link": "https://quantz.thinkxinc.com/interview"
-        },
-        "fr": {
-            "title": "Quantz Interview",
-            "description": "Le service cloud d'entretiens automatiques IA numéro 1, avec une technologie 25 fois plus rentable.",
-            "keywords": "Quantz Entretien, entretien IA, réunion IA, automatisation des réunions, technologie économique, sans code, sans programmation",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
-            "link": "https://quantz.thinkxinc.com/interview"
-        },
-        "ru": {
-            "title": "Quantz Interview",
-            "description": "Лидирующий облачный сервис автоматических интервью на основе ИИ с 25-кратной эффективностью затрат.",
-            "keywords": "Quantz Интервью, интервью с ИИ, встречи с ИИ, автоматизация встреч, эффективная технология, без кода, без программирования",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
-            "link": "https://quantz.thinkxinc.com/interview"
-        },
-        "ar": {
-            "title": "Quantz Interview",
-            "description": "الخدمة السحابية الرائدة للمقابلات والاجتماعات الآلية بالذكاء الاصطناعي، توفر فعالية في التكلفة تصل إلى 25 ضعفًا.",
-            "keywords": "Quantz Interview, مقابلة بالذكاء الاصطناعي, اجتماع بالذكاء الاصطناعي, أتمتة الاجتماعات, تقنية فعالة, بدون كود, بدون برمجة",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
-            "link": "https://quantz.thinkxinc.com/interview"
-        }
+      "ja": {
+        "title": "Quantz Interview",
+        "description": "自在にカスタマイズできるAI面接クラウド。自社サーバーで動作し25倍のコスト効率を実現。",
+        "keywords": "Quantz Interview, クオンツインタビュー, 音声AI, 音声対話AI, トップ, 高速, AI面接, 面談, AIインタビュー, AI営業自動化, ノーコード",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
+        "link": "https://quantz.thinkxinc.com/interview"
+      },
+      "en": {
+        "title": "Quantz Interview",
+        "description": "An AI interview cloud that can be freely customized. Operates on your own servers for 25x cost efficiency.",
+        "keywords": "Quantz Interview, Quants Interview, voice AI, voice conversational AI, top, high-speed, AI interview, meeting, AI interview, AI sales automation, no code",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
+        "link": "https://quantz.thinkxinc.com/interview"
+      },
+      "zh": {
+        "title": "Quantz Interview",
+        "description": "可自由定制的AI面试云。可在自有服务器上运行，实现25倍的成本效益。",
+        "keywords": "Quantz Interview, Quants Interview, 语音AI, 语音会话式AI, 顶级, 高速, AI面试, 面谈, AI访谈, AI销售自动化, 无代码",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
+        "link": "https://quantz.thinkxinc.com/interview"
+      },
+      "es": {
+        "title": "Quantz Interview",
+        "description": "Un servicio en la nube para entrevistas con IA que se puede personalizar libremente. Funciona en sus propios servidores con una eficiencia de costos 25 veces mayor.",
+        "keywords": "Quantz Interview, Quants Interview, IA de voz, IA conversacional de voz, principal, alta velocidad, entrevista IA, reunión, entrevista de IA, automatización de ventas IA, sin código",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
+        "link": "https://quantz.thinkxinc.com/interview"
+      },
+      "fr": {
+        "title": "Quantz Interview",
+        "description": "Un service cloud d'entretiens IA entièrement personnalisable. Fonctionne sur vos propres serveurs pour une efficacité des coûts multipliée par 25.",
+        "keywords": "Quantz Interview, Quants Interview, IA vocale, IA vocale conversationnelle, top, haute vitesse, entretien IA, réunion, entretien IA, automatisation des ventes IA, sans code",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
+        "link": "https://quantz.thinkxinc.com/interview"
+      },
+      "ru": {
+        "title": "Quantz Interview",
+        "description": "Облачный сервис для AI-интервью с возможностью свободной кастомизации. Работает на собственных серверах и обеспечивает 25-кратную эффективность затрат.",
+        "keywords": "Quantz Interview, Quants Interview, голосовой ИИ, голосовой разговорный ИИ, топ, высокая скорость, AI-интервью, встреча, AI-собеседование, AI-автоматизация продаж, без кода",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
+        "link": "https://quantz.thinkxinc.com/interview"
+      },
+      "ar": {
+        "title": "Quantz Interview",
+        "description": "خدمة سحابية للمقابلات بالذكاء الاصطناعي قابلة للتخصيص بحرية. تعمل على خوادمك الخاصة لتوفير كفاءة تكلفة مضاعفة بـ25 مرة.",
+        "keywords": "Quantz Interview, Quants Interview, الذكاء الصوتي, الذكاء الصوتي المحادثي, أعلى, عالي السرعة, مقابلة بالذكاء الاصطناعي, اجتماع, مقابلة بالذكاء الاصطناعي, أتمتة المبيعات بالذكاء الاصطناعي, بدون كود",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
+        "link": "https://quantz.thinkxinc.com/interview"
+      }
     },
     "metadata_signup": {
-        "ja": {
-            "title": "Quantz | サインアップ",
-            "description": "世界で最もシンプルでクイックな音声AI Quantzにサインアップ。今すぐ無料で試す。1ヶ月無料で試せる50回分をプレゼント。",
-            "keywords": "Quantz, クオンツ, 音声AI, 登録, サインアップ, コールセンター, 問い合わせ, カスタマーサービス",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "en": {
-            "title": "Quantz | Sign up",
-            "description": "Start a free trial to see how Quantz can grow your business on your behalf.",
-            "keywords": "Quantz, Sign up, Register, voice AI, lightning-fast, call center, inquiry, customer service, business automation, customer support",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "zh": {
-            "title": "Quantz | 注册",
-            "description": "注册Quantz免费试用，探索如何轻松自动化您的客户服务。",
-            "keywords": "Quantz, 注册, 语音AI, 快速响应, 呼叫中心, 咨询, 客户服务, 企业自动化, 客户支持",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "es": {
-            "title": "Quantz | Registro",
-            "description": "Regístrate y prueba Quantz gratis para ver cómo puede transformar tu negocio.",
-            "keywords": "Quantz, Registro, Inscripción, IA de voz, respuesta rápida, centro de llamadas, consulta, servicio al cliente, automatización empresarial, soporte al cliente",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "fr": {
-            "title": "Quantz | Inscription",
-            "description": "Inscrivez-vous et essayez gratuitement Quantz pour découvrir comment il peut automatiser votre service clientèle.",
-            "keywords": "Quantz, Inscription, S'inscrire, IA vocale, ultra-rapide, centre d'appel, demande, service client, automatisation des affaires, support client",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "ru": {
-            "title": "Quantz | Регистрация",
-            "description": "Зарегистрируйтесь для бесплатной пробной версии Quantz и узнайте, как он может помочь вашему бизнесу.",
-            "keywords": "Quantz, Регистрация, Голосовой ИИ, молниеносный, колл-центр, запрос, обслуживание клиентов, автоматизация бизнеса, поддержка клиентов",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "ar": {
-            "title": "Quantz | التسجيل",
-            "description": "سجل لتجربة Quantz مجانًا واكتشف كيف يمكنه أتمتة خدمة العملاء لديك.",
-            "keywords": "Quantz, تسجيل, الذكاء الصناعي الصوتي, سريع الاستجابة, مركز الاتصال, استفسار, خدمة العملاء, أتمتة الأعمال, دعم العملاء",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
-            "link": "https://quantz.thinkxinc.com"
-        }
+      "ja": {
+        "title": "Quantz | サインアップ",
+        "description": "リアルタイム音声対話エージェントをプログラミングなしで作成。サインアップ。",
+        "keywords": "Quantz, クオンツ, 音声AI, 登録, サインアップ, コールセンター, 問い合わせ, カスタマーサービス",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "en": {
+        "title": "Quantz | Sign up",
+        "description": "Create a real-time voice conversational AI agent without programming. Sign up now.",
+        "keywords": "Quantz, Quants, voice AI, register, sign up, call center, inquiry, customer service",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "zh": {
+        "title": "Quantz | 注册",
+        "description": "无需编程即可创建实时语音会话式AI代理。立即注册。",
+        "keywords": "Quantz, Quants, 语音AI, 注册, 呼叫中心, 咨询, 客户服务",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "es": {
+        "title": "Quantz | Registro",
+        "description": "Cree un agente de IA conversacional de voz en tiempo real sin programación. Regístrese ahora.",
+        "keywords": "Quantz, Quants, IA de voz, registro, centro de llamadas, consulta, servicio al cliente",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "fr": {
+        "title": "Quantz | Inscription",
+        "description": "Créez un agent d’IA vocale conversationnelle en temps réel sans programmation. Inscrivez-vous dès maintenant.",
+        "keywords": "Quantz, Quants, IA vocale, inscription, centre d'appels, demande, service client",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "ru": {
+        "title": "Quantz | Регистрация",
+        "description": "Создайте голосового агента для разговорного ИИ в реальном времени без программирования. Зарегистрируйтесь сейчас.",
+        "keywords": "Quantz, Quants, голосовой ИИ, регистрация, колл-центр, запрос, обслуживание клиентов",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "ar": {
+        "title": "Quantz | التسجيل",
+        "description": "أنشئ وكيل ذكاء اصطناعي صوتي محادثي في الوقت الفعلي بدون برمجة. سجل الآن.",
+        "keywords": "Quantz, Quants, الذكاء الصوتي المحادثي, تسجيل, مركز الاتصال, استفسار, خدمة العملاء",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
+        "link": "https://quantz.thinkxinc.com"
+      }
     },
     "metadata_signin": {
-        "ja": {
-            "title": "Quantz | サインイン",
-            "description": "Quantzを使えば誰でも簡単に最先端の音声AIをプログラミングなしであなたのWebサイト上に構築できる。Quantzは最先端音声AIを民主化します。",
-            "keywords": "Quantz, クオンツ, 音声AI, ログイン, サインイン, コールセンター, 問い合わせ, カスタマーサービス",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "en": {
-            "title": "Quantz | Sign in",
-            "description": "Quantz democratizes state-of-the-art voice AI. Small business owners can now create their custom voice AI 'alter egos'—no programming or coding skills required.",
-            "keywords": "Quantz, Log in, Sign in, voice AI, lightning-fast, call center, inquiry, customer service, business automation, customer support",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "zh": {
-            "title": "Quantz | 登录",
-            "description": "Quantz使每个人都能在自己的网站上轻松构建先进的语音AI，无需编程。Quantz正在将先进的语音AI技术普及化。",
-            "keywords": "Quantz, 登录, 语音AI, 极速, 呼叫中心, 咨询, 客户服务, 企业自动化, 客户支持",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "es": {
-            "title": "Quantz | Inicio de sesión",
-            "description": "Quantz democratiza la inteligencia artificial de voz de última generación. Ahora, los pequeños empresarios pueden crear sus propios AI de voz 'alter egos' sin necesidad de programación.",
-            "keywords": "Quantz, Inicio de sesión, IA de voz, ultrarrápido, centro de llamadas, consulta, servicio al cliente, automatización empresarial, soporte al cliente",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "fr": {
-            "title": "Quantz | Connexion",
-            "description": "Quantz démocratise l'IA vocale de pointe. Les petits entrepreneurs peuvent maintenant créer leur propre IA vocale 'alter ego' sans compétences en programmation.",
-            "keywords": "Quantz, Connexion, IA vocale, ultra-rapide, centre d'appel, demande, service client, automatisation des affaires, support client",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "ru": {
-            "title": "Quantz | Вход",
-            "description": "Quantz делает доступным передовой голосовой ИИ для всех. Теперь малые предприятия могут создавать свои индивидуальные голосовые 'альтер эго' без навыков программирования.",
-            "keywords": "Quantz, Вход, голосовой ИИ, молниеносный, колл-центр, запрос, обслуживание клиентов, автоматизация бизнеса, поддержка клиентов",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "ar": {
-            "title": "Quantz | تسجيل الدخول",
-            "description": "Quantz يجعل تقنية الذكاء الصوتي المتقدمة متاحة للجميع. الآن، يمكن لأصحاب الأعمال الصغيرة إنشاء AI الصوتي 'الأنا البديل' الخاص بهم دون الحاجة إلى مهارات برمجة.",
-            "keywords": "Quantz, تسجيل الدخول, الذكاء الصوتي, سريع جداً, مركز الاتصال, استفسار, خدمة العملاء, أتمتة الأعمال, دعم العملاء",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
-            "link": "https://quantz.thinkxinc.com"
-        }
+      "ja": {
+        "title": "Quantz | サインイン",
+        "description": "カスタム音声対話エージェントを誰でも簡単にWebサイト上に構築できる。",
+        "keywords": "Quantz, クオンツ, 音声AI, ログイン, サインイン, コールセンター, 問い合わせ, カスタマーサービス",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "en": {
+        "title": "Quantz | Sign in",
+        "description": "Anyone can easily build a custom voice conversational AI agent on their website.",
+        "keywords": "Quantz, Quants, voice AI, log in, sign in, call center, inquiry, customer service",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "zh": {
+        "title": "Quantz | 登录",
+        "description": "任何人都能在自己的网站上轻松构建定制化的语音会话式AI代理。",
+        "keywords": "Quantz, Quants, 语音AI, 登录, 呼叫中心, 咨询, 客户服务",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "es": {
+        "title": "Quantz | Inicio de sesión",
+        "description": "Cualquiera puede crear fácilmente un agente de IA conversacional de voz personalizado en su sitio web.",
+        "keywords": "Quantz, Quants, IA de voz, iniciar sesión, centro de llamadas, consulta, servicio al cliente",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "fr": {
+        "title": "Quantz | Connexion",
+        "description": "N'importe qui peut facilement créer un agent d’IA vocale conversationnelle personnalisé sur son site Web.",
+        "keywords": "Quantz, Quants, IA vocale, connexion, centre d'appels, demande, service client",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "ru": {
+        "title": "Quantz | Вход",
+        "description": "Любой человек может легко создать на своем сайте кастомного голосового агента для разговорного ИИ.",
+        "keywords": "Quantz, Quants, голосовой ИИ, вход, колл-центр, запрос, обслуживание клиентов",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "ar": {
+        "title": "Quantz | تسجيل الدخول",
+        "description": "يمكن لأي شخص إنشاء وكيل ذكاء اصطناعي صوتي محادثي مخصص على موقعه بسهولة.",
+        "keywords": "Quantz, Quants, الذكاء الصوتي المحادثي, تسجيل الدخول, مركز الاتصال, استفسار, خدمة العملاء",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSInterview1.4.png",
+        "link": "https://quantz.thinkxinc.com"
+      }
     },
     "metadata_home": {
-        "ja": {
-            "title": "Quantz | ホーム",
-            "description": "コーディングなし、30分であなたのWebサイトにカスタム音声AIをセットアップ完了。",
-            "keywords": "Quantz, クオンツ, 音声AI, ホーム, 学習, 知識, コールセンター, 問い合わせ, カスタマーサービス",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "en": {
-            "title": "Quantz | Home",
-            "description": "Adds some business details and FAQs, adjusts the button design to fit your brand - and gets a custom-made AI voice clone in under 30 minutes.",
-            "keywords": "Quantz, Home, voice AI, lightning-fast, call center, inquiry, customer service, business automation, customer support",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "zh": {
-            "title": "Quantz | 首页",
-            "description": "在30分钟内，无需编程即可在您的网站上部署定制的语音AI。",
-            "keywords": "Quantz, 首页, 语音AI, 快速, 呼叫中心, 咨询, 客户服务, 企业自动化, 客户支持",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "es": {
-            "title": "Quantz | Inicio",
-            "description": "Añade detalles de tu negocio y preguntas frecuentes, ajusta el diseño de botones para que coincida con tu marca y obtén un clon de voz AI personalizado en menos de 30 minutos.",
-            "keywords": "Quantz, Inicio, IA de voz, ultrarrápido, centro de llamadas, consulta, servicio al cliente, automatización empresarial, soporte al cliente",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "fr": {
-            "title": "Quantz | Accueil",
-            "description": "Ajoutez des détails commerciaux et des FAQ, ajustez la conception des boutons pour qu'ils correspondent à votre marque et obtenez un clone vocal AI personnalisé en moins de 30 minutes.",
-            "keywords": "Quantz, Accueil, IA vocale, ultra-rapide, centre d'appel, demande, service client, automatisation des affaires, support client",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "ru": {
-            "title": "Quantz | Главная",
-            "description": "Добавьте информацию о вашем бизнесе и часто задаваемые вопросы, настройте дизайн кнопок под ваш бренд и получите персонализированный голосовой клон AI менее чем за 30 минут.",
-            "keywords": "Quantz, Главная, голосовой ИИ, молниеносный, колл-центр, запрос, обслуживание клиентов, автоматизация бизнеса, поддержка клиентов",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "ar": {
-            "title": "Quantz | الرئيسية",
-            "description": "أضف تفاصيل عملك وأسئلة متكررة، واضبط تصميم الأزرار ليتناسب مع علامتك التجارية واحصل على نسخة صوتية AI مخصصة في أقل من 30 دقيقة.",
-            "keywords": "Quantz, الرئيسية, AI الصوتي, سريع جداً, مركز الاتصال, استفسار, خدمة العملاء, أتمتة الأعمال, دعم العملاء",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        }
+      "ja": {
+        "title": "Quantz | ホーム",
+        "description": "音声対話AIエージェントを自由にカスタマイズ。",
+        "keywords": "Quantz, クオンツ, 音声AI, ホーム, 学習, 知識, コールセンター, 問い合わせ, カスタマーサービス",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "en": {
+        "title": "Quantz | Home",
+        "description": "Freely customize your AI voice conversational agent.",
+        "keywords": "Quantz, Quants, voice AI, home, learning, knowledge, call center, inquiry, customer service",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "zh": {
+        "title": "Quantz | 首页",
+        "description": "自由定制您的语音会话式AI代理。",
+        "keywords": "Quantz, Quants, 语音AI, 首页, 学习, 知识, 呼叫中心, 咨询, 客户服务",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "es": {
+        "title": "Quantz | Inicio",
+        "description": "Personalice libremente su agente de IA conversacional de voz.",
+        "keywords": "Quantz, Quants, IA de voz, inicio, aprendizaje, conocimiento, centro de llamadas, consulta, servicio al cliente",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "fr": {
+        "title": "Quantz | Accueil",
+        "description": "Personnalisez librement votre agent d’IA vocale conversationnelle.",
+        "keywords": "Quantz, Quants, IA vocale, accueil, apprentissage, connaissances, centre d'appels, demande, service client",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "ru": {
+        "title": "Quantz | Главная",
+        "description": "Свободно настраивайте вашего голосового агента на базе разговорного ИИ.",
+        "keywords": "Quantz, Quants, голосовой ИИ, главная, обучение, знания, колл-центр, запрос, обслуживание клиентов",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "ar": {
+        "title": "Quantz | الرئيسية",
+        "description": "خصص وكيل الذكاء الاصطناعي الصوتي المحادثي بحرية.",
+        "keywords": "Quantz, Quants, الذكاء الصوتي المحادثي, الرئيسية, تعلم, معرفة, مركز الاتصال, استفسار, خدمة العملاء",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      }
     },
     "metadata_privacy": {
-        "ja": {
-            "title": "Quantz | プライバシーポリシー",
-            "description": "独自の音声エンジン、全てのモデルが専用のスーパーコンピューター上で動作し、大事な会話データの第三者APIへの露出から守る、最高レベルのプライバシー。",
-            "keywords": "Quantz, クオンツ, 音声AI, プライバシーポリシー, コールセンター, 問い合わせ, カスタマーサービス",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "en": {
-            "title": "Quantz | Privacy Policy",
-            "description": "We use our proprietary voice engine technology where all models run inside our own supercomputers. This provides the highest level of data security as no conversation details will be shared with any third parties.",
-            "keywords": "Quantz, Privacy Policy, voice AI, lightning-fast, call center, inquiry, customer service, business automation, customer support",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "zh": {
-            "title": "Quantz | 隐私政策",
-            "description": "我们采用自主研发的语音引擎技术，所有模型均在我们自有的超级计算机内运行，确保不会与任何第三方分享对话数据，提供最高级别的数据安全保护。",
-            "keywords": "Quantz, 隐私政策, 语音AI, 高速, 呼叫中心, 咨询, 客户服务, 企业自动化, 客户支持",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "es": {
-            "title": "Quantz | Política de Privacidad",
-            "description": "Utilizamos nuestra propia tecnología de motor de voz, donde todos los modelos operan dentro de nuestros supercomputadores. Esto asegura el máximo nivel de seguridad de los datos, ya que no se compartirán detalles de las conversaciones con terceros.",
-            "keywords": "Quantz, Política de Privacidad, IA de voz, ultrarrápida, centro de llamadas, consulta, servicio al cliente, automatización empresarial, soporte al cliente",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "fr": {
-            "title": "Quantz | Politique de Confidentialité",
-            "description": "Nous utilisons notre propre technologie de moteur vocal, où tous les modèles fonctionnent au sein de nos superordinateurs. Cela garantit le plus haut niveau de sécurité des données, sans partage des détails des conversations avec des tiers.",
-            "keywords": "Quantz, Politique de Confidentialité, IA vocale, ultra-rapide, centre d'appel, demande, service client, automatisation des affaires, support client",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "ru": {
-            "title": "Quantz | Политика Конфиденциальности",
-            "description": "Мы используем собственные технологии голосового двигателя, все модели работают внутри наших суперкомпьютеров. Это обеспечивает высочайший уровень безопасности данных, поскольку детали разговоров не передаются третьим сторонам.",
-            "keywords": "Quantz, Политика Конфиденциальности, голосовой ИИ, молниеносный, колл-центр, запрос, обслуживание клиентов, автоматизация бизнеса, поддержка клиентов",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "ar": {
-            "title": "Quantz | سياسة الخصوصية",
-            "description": "نستخدم تكنولوجيا محرك الصوت الخاص بنا حيث تعمل جميع النماذج داخل أجهزة الكمبيوتر الخارقة الخاصة بنا. هذا يوفر أعلى مستوى من أمان البيانات حيث لا يتم مشاركة تفاصيل المحادثات مع أي أطراف ثالثة.",
-            "keywords": "Quantz, سياسة الخصوصية, الذكاء الصوتي السريع, مركز الاتصال, الاستفسار, خدمة العملاء, أتمتة الأعمال, دعم العملاء",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        }
+      "ja": {
+        "title": "Quantz | プライバシーポリシー",
+        "description": "独自の音声エンジン、全てのモデルが専用のスーパーコンピューター上で動作し、大事な会話データの第三者APIへの露出から守る、最高レベルのプライバシー。",
+        "keywords": "Quantz, クオンツ, 音声AI, プライバシーポリシー, コールセンター, 問い合わせ, カスタマーサービス",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "en": {
+        "title": "Quantz | Privacy Policy",
+        "description": "Our unique voice engine runs entirely on dedicated supercomputers, protecting your important conversation data from third-party API exposure and ensuring the highest level of privacy.",
+        "keywords": "Quantz, Quants, voice AI, privacy policy, call center, inquiry, customer service",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "zh": {
+        "title": "Quantz | 隐私政策",
+        "description": "独创的语音引擎在专用超级计算机上运行，保护重要对话数据免于暴露给第三方API，提供最高等级的隐私保障。",
+        "keywords": "Quantz, Quants, 语音AI, 隐私政策, 呼叫中心, 咨询, 客户服务",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "es": {
+        "title": "Quantz | Política de Privacidad",
+        "description": "Nuestro motor de voz único se ejecuta completamente en supercomputadoras dedicadas, protegiendo los datos de sus conversaciones de la exposición a API de terceros y garantizando el más alto nivel de privacidad.",
+        "keywords": "Quantz, Quants, IA de voz, política de privacidad, centro de llamadas, consulta, servicio al cliente",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "fr": {
+        "title": "Quantz | Politique de Confidentialité",
+        "description": "Notre moteur vocal unique fonctionne entièrement sur des superordinateurs dédiés, protégeant les données de vos conversations de toute exposition à des API tierces et garantissant le plus haut niveau de confidentialité.",
+        "keywords": "Quantz, Quants, IA vocale, politique de confidentialité, centre d'appels, demande, service client",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "ru": {
+        "title": "Quantz | Политика Конфиденциальности",
+        "description": "Наш уникальный голосовой движок работает исключительно на выделенных суперкомпьютерах, защищая важные данные разговоров от передачи сторонним API и обеспечивая самый высокий уровень конфиденциальности.",
+        "keywords": "Quantz, Quants, голосовой ИИ, политика конфиденциальности, колл-центр, запрос, обслуживание клиентов",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "ar": {
+        "title": "Quantz | سياسة الخصوصية",
+        "description": "يعمل محرك الصوت الفريد لدينا بشكل كامل على أجهزة كمبيوتر خارقة مخصصة، مما يحمي بيانات محادثاتك المهمة من التعرض لواجهات برمجة التطبيقات الخارجية ويضمن أعلى مستوى من الخصوصية.",
+        "keywords": "Quantz, Quants, الذكاء الصوتي المحادثي, سياسة الخصوصية, مركز الاتصال, استفسار, خدمة العملاء",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      }
     },
     "metadata_terms": {
-        "ja": {
-            "title": "Quantz | 利用規約",
-            "description": "Quantz利用規約",
-            "keywords": "Quantz, クオンツ, 音声AI, 利用規約, コールセンター, 問い合わせ, カスタマーサービス",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "en": {
-            "title": "Quantz | Terms of Service",
-            "description": "Business Users can embed the provided HTML code on their site to place the Quantz button at any location, enabling instant voice communication with End Users. ",
-            "keywords": "Quantz, Terms of Service, voice AI, lightning-fast, call center, inquiry, customer service, business automation, customer support",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "zh": {
-            "title": "Quantz | 服务条款",
-            "description": "商业用户可以将提供的HTML代码嵌入到自己的网站中，任意位置放置Quantz按钮，实现与终端用户的即时语音通讯。",
-            "keywords": "Quantz, 服务条款, 语音AI, 快速响应, 呼叫中心, 咨询, 客户服务, 企业自动化, 客户支持",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "es": {
-            "title": "Quantz | Términos de Servicio",
-            "description": "Los usuarios empresariales pueden incorporar el código HTML proporcionado en su sitio para colocar el botón de Quantz en cualquier lugar, permitiendo la comunicación de voz instantánea con los usuarios finales.",
-            "keywords": "Quantz, Términos de Servicio, IA de voz, ultrarrápida, centro de llamadas, consulta, servicio al cliente, automatización empresarial, soporte al cliente",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "fr": {
-            "title": "Quantz | Conditions d'Utilisation",
-            "description": "Les utilisateurs professionnels peuvent intégrer le code HTML fourni sur leur site pour placer le bouton Quantz où ils le souhaitent, permettant ainsi une communication vocale instantanée avec les utilisateurs finaux.",
-            "keywords": "Quantz, Conditions d'Utilisation, IA vocale, ultra-rapide, centre d'appel, demande, service client, automatisation des affaires, support client",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "ru": {
-            "title": "Quantz | Условия использования",
-            "description": "Бизнес-пользователи могут встроить предоставленный HTML-код на свой сайт, чтобы разместить кнопку Quantz в любом месте, что позволит осуществлять мгновенное голосовое общение с конечными пользователями.",
-            "keywords": "Quantz, Условия использования, голосовой ИИ, молниеносный, колл-центр, запрос, обслуживание клиентов, автоматизация бизнеса, поддержка клиентов",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        },
-        "ar": {
-            "title": "Quantz | شروط الخدمة",
-            "description": "يمكن للمستخدمين التجاريين تضمين الرمز البرمجي HTML المقدم في مواقعهم لوضع زر Quantz في أي مكان، مما يمكن من التواصل الصوتي الفوري مع المستخدمين النهائيين.",
-            "keywords": "Quantz, شروط الخدمة, الذكاء الصوتي, سريع جداً, مركز الاتصال, استفسار, خدمة العملاء, أتمتة الأعمال, دعم العملاء",
-            "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
-            "link": "https://quantz.thinkxinc.com"
-        }
+      "ja": {
+        "title": "Quantz | 利用規約",
+        "description": "Quantz利用規約",
+        "keywords": "Quantz, クオンツ, 音声AI, 利用規約, コールセンター, 問い合わせ, カスタマーサービス",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "en": {
+        "title": "Quantz | Terms of Service",
+        "description": "Quantz Terms of Service",
+        "keywords": "Quantz, Quants, voice AI, terms of service, call center, inquiry, customer service",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "zh": {
+        "title": "Quantz | 服务条款",
+        "description": "Quantz服务条款",
+        "keywords": "Quantz, Quants, 语音AI, 服务条款, 呼叫中心, 咨询, 客户服务",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "es": {
+        "title": "Quantz | Términos de Servicio",
+        "description": "Términos de servicio de Quantz",
+        "keywords": "Quantz, Quants, IA de voz, términos de servicio, centro de llamadas, consulta, servicio al cliente",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "fr": {
+        "title": "Quantz | Conditions d’Utilisation",
+        "description": "Conditions d’utilisation de Quantz",
+        "keywords": "Quantz, Quants, IA vocale, conditions d’utilisation, centre d'appels, demande, service client",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "ru": {
+        "title": "Quantz | Условия использования",
+        "description": "Условия использования Quantz",
+        "keywords": "Quantz, Quants, голосовой ИИ, условия использования, колл-центр, запрос, обслуживание клиентов",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      },
+      "ar": {
+        "title": "Quantz | شروط الخدمة",
+        "description": "شروط الخدمة الخاصة بـQuantz",
+        "keywords": "Quantz, Quants, الذكاء الصوتي المحادثي, شروط الخدمة, مركز الاتصال, استفسار, خدمة العملاء",
+        "image": "https://quantz.thinkxinc.com/img/base/SNSImage_E.png",
+        "link": "https://quantz.thinkxinc.com"
+      }
     },
     "metadata_jessicas": {
-        "ja": {
-            "title": "Jessica's",
-            "description": "",
-            "keywords": "",
-            "image": "",
-            "link": ""
-        },
-        "en": {
-            "title": "Jessica's",
-            "description": "",
-            "keywords": "",
-            "image": "",
-            "link": ""
-        },
-        "zh": {
-            "title": "",
-            "description": "",
-            "keywords": "",
-            "image": "",
-            "link": ""
-        },
-        "es": {
-            "title": "",
-            "description": "",
-            "keywords": "",
-            "image": "",
-            "link": ""
-        },
-        "fr": {
-            "title": "",
-            "description": "",
-            "keywords": "",
-            "image": "",
-            "link": ""
-        },
-        "ru": {
-            "title": "",
-            "description": "",
-            "keywords": "",
-            "image": "",
-            "link": ""
-        },
-        "ar": {
-            "title": "",
-            "description": "",
-            "keywords": "",
-            "image": "",
-            "link": ""
-        }
+      "ja": {
+        "title": "Jessica's",
+        "description": "",
+        "keywords": "",
+        "image": "",
+        "link": ""
+      },
+      "en": {
+        "title": "Jessica's",
+        "description": "",
+        "keywords": "",
+        "image": "",
+        "link": ""
+      },
+      "zh": {
+        "title": "Jessica's",
+        "description": "",
+        "keywords": "",
+        "image": "",
+        "link": ""
+      },
+      "es": {
+        "title": "Jessica's",
+        "description": "",
+        "keywords": "",
+        "image": "",
+        "link": ""
+      },
+      "fr": {
+        "title": "Jessica's",
+        "description": "",
+        "keywords": "",
+        "image": "",
+        "link": ""
+      },
+      "ru": {
+        "title": "Jessica's",
+        "description": "",
+        "keywords": "",
+        "image": "",
+        "link": ""
+      },
+      "ar": {
+        "title": "Jessica's",
+        "description": "",
+        "keywords": "",
+        "image": "",
+        "link": ""
+      }
     }
-}
+  }
+  

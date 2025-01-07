@@ -915,7 +915,7 @@
             console.log(`[Quantz Button ${buttonId}] human stop recording.`)
             if (ns.cores[buttonId].hasSignificantSpeech) {
                 console.warn(`[Quantz Button ${buttonId}] has significant speech. submit.`)
-                ns.cores[buttonId].submitHumanSpeach();
+                ns.cores[buttonId].submitHumanSpeech();
             } else {
                 console.warn(`[Quantz Button ${buttonId}] no significant speech. skip.`)
             }
