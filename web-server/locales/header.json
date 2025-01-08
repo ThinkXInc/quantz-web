@@ -1,7 +1,7 @@
 {
     "header_catchcopy": {
-        "en": "The simplest voice conversational AI builder for your website.",
-        "ja": "あなたが仕事をしている間に、あなたの”分身”が応答。最速クイックレスポンスの音声AIを10分で設置。",
+        "en": "A programable real-time voice conversational AI agent.",
+        "ja": "プログラム可能なカスタムリアルタイム音声対話エージェント。",
         "zh": "",
         "fr": "",
         "es": "",
@@ -9,7 +9,7 @@
         "ru": ""
     },
     "header_try_button": {
-        "en": "TRY NOW FOR FREE !",
+        "en": "Start Free Trial",
         "ja": "今すぐ無料で試す",
         "zh": "立即免费试用！",
         "fr": "ESSAYEZ MAINTENANT GRATUITEMENT !",

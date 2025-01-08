@@ -139,7 +139,7 @@
 #top div.main-container {
     position: relative; // This will be the anchor for absolute positioning
     width: 100%; // Adjust width as necessary
-    height: auto; // Adjust height as necessary or to auto to wrap content
+    //height: auto; // Adjust height as necessary or to auto to wrap content
 
     @keyframes fadeEffect {
         0%, 100% { opacity: 0.15; }  /* Start and end at the initial opacity */
@@ -167,9 +167,12 @@
         padding: 20px 0 24px 0;
 
         div.left {
-            width: 56%;
+            padding: 100px 20px 100px 20px;
+            width: 100%;
+            //width: 100%;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
+            //flex-direction: column;
             align-items: center;
 
             div.main-copy {
@@ -198,16 +201,20 @@
                     margin: 0 0 44px 0;
                 }
                 p.try-button-label {
+                    display: none;
                     color: #48658a;//#306687;
                     margin-top: 10px;
+                    margin-bottom: 20px;
                 }
                 button.try-button {
+                    display: none;
                     font-size: 1em;
                     padding: 15px 27px;
                 }
             }
 
             div.three-step {
+                display: none;
                 max-width: 485px;
                 background-color: #FFF; // Changed to white with shadow
                 box-shadow: 2px 8px 19px rgba(0, 0, 0, 0.2);
@@ -281,12 +288,15 @@
 
 // demo view
 #top .demo {
+    position: fixed;
+    right: 0px;
+    bottom: 10px;
+    //display: none;
     padding: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
     //justify-content: center;
-    height: 397px;
 
     div.demo-container {
         display: flex;
@@ -382,10 +392,10 @@
             }
             div.btn-main {
                 div.demo-button-container {
-                    min-width: 300px;
-                    min-height: 240px;
+                    min-width: max-content;
+                    min-height: max-content;
                     div.QBTN-button-loader {
-                        display: none;
+                        //display: none;
                     }
                     div.QBTN-button-loader.show {
                         display: block;
@@ -397,14 +407,15 @@
                         margin-top: 20px;
                     }
                     div.QBTN-locale-button {
-                        height: 12px;
+                        height: 15px;
                         width: 36px;
                     }
                 }
             }
         }
         div.demo-side {
-            display: block;
+            //display: block;
+            display: none;
             div.demo-side-container {
                 margin-top: 151px;
                 p.click-text {
@@ -427,8 +438,9 @@
 
 // features
 #top div.features-section {
+    display: none;
     //background-color: #f2f7fa;
-    background-color: #3a3a3a;//#000000;
+    background-color: #fff;// #f5f5f5;//#000000;
     border-top: 1px solid #e7eef2;
     border-bottom: 1px solid #e7eef2;
     display: flex;
@@ -437,7 +449,7 @@
     padding: 50px 73px 50px 73px;
 
     h3.features-title {
-        color: #7093a4;//#aeaeae;
+        color: #000000;//#7093a4;//#aeaeae;
         margin: 0 0 15px 0;
         font-size: 1.5em;
         margin-bottom: 20px;
@@ -461,13 +473,13 @@
 
             div {
                 h4 {
-                    color: #8cb0c3;// #495f6a;
+                    color:  #000000;//; #8cb0c3;// #495f6a;
                     margin: 0 0 5px 0;
                     font-size: 1.2em;
                 }
 
                 p {
-                    color: #c7c7c7;// #7c7c7c;
+                    color: #aaa;// #c7c7c7;// #7c7c7c;
                     font-size: 1em;
                     margin: 0;
                 }
@@ -525,7 +537,7 @@
     }
     video {
         width: 100%; // Makes the video responsive
-        max-width: 700px; // Maintains a reasonable maximum width
+        max-width: 900px;
         height: auto; // Keeps the aspect ratio intact
     }
     p.try-button-label {
@@ -566,7 +578,7 @@
 
 // promo
 #top div.promo-section {
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
 
@@ -633,7 +645,7 @@
 
 // interface 
 #top div.interface-section {
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
 
@@ -658,7 +670,6 @@
 
 // customize
 #top div.custom-section {
-    display: flex;
     flex-direction: column;
     align-items: center;
 
@@ -771,7 +782,6 @@
             div.main-content {
                 padding: 20px 20px 24px 20px;
                 div.left {
-                    width: 70%;
                     div.main-copy {
                         padding: 20px 20px 0 20px;
                     }
@@ -791,7 +801,8 @@
                             }
                         }
                         div.demo-side {
-                            display: block;
+                            display: none;
+                            //display: block;
                             div.demo-side-container {
 
                             }

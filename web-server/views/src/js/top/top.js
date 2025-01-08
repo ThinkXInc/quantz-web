@@ -20,7 +20,7 @@ class Top {
         this.locale = locale;
         this.lang = lang;
 
-        this.setupDemoView();
+        //this.setupDemoView();
         this.setupEvents();
     }
 
@@ -28,38 +28,37 @@ class Top {
         const $demoView = document.getElementById('demoViewInterface');
 
 
-        const buttonTypeSelector = new RadioButton({
-            id: "ButtonType",
-            fieldName: "button_type",
-            hasTitle: true,
-            defaultValue: "A",
-            title: this.locale.get("settings_customize_button_type_title", lang),
-            items: [
-                new RadioButtonItem({value: "A", name: this.locale.get("settings_customize_button_type_item_A", lang)}),
-                new RadioButtonItem({value: "B", name: this.locale.get("settings_customize_button_type_item_B", lang)}),
-            ]
-        })
+        //const buttonTypeSelector = new RadioButton({
+        //    id: "ButtonType",
+        //    fieldName: "button_type",
+        //    hasTitle: true,
+        //    defaultValue: "Default",
+        //    title: this.locale.get("settings_customize_button_type_title", lang),
+        //    items: [
+        //        new RadioButtonItem({value: "Default", name: this.locale.get("settings_customize_button_type_item_A", lang)}),
+        //    ]
+        //})
 
         $demoView.insertBefore(buttonTypeSelector.$view, $demoView.firstChild);
-        this.buttonTypeSelector = buttonTypeSelector;
+        //this.buttonTypeSelector = buttonTypeSelector;
     }
 
     setupEvents() {
-        this.buttonTypeSelector.$view.addEventListener('valuechanged', (e) => {
-            e.preventDefault();
-            const {newValue} = e.detail;
-            console.warn(`button type: ${newValue}`)
+        //this.buttonTypeSelector.$view.addEventListener('valuechanged', (e) => {
+        //    e.preventDefault();
+        //    const {newValue} = e.detail;
+        //    console.warn(`button type: ${newValue}`)
 
-            const buttonsA = document.querySelectorAll('.A');
-            const buttonsB = document.querySelectorAll('.B');
+        //    const buttonsA = document.querySelectorAll('.A');
+        //    const buttonsB = document.querySelectorAll('.B');
 
-            if (newValue === "A") {
-                buttonsB.forEach(button => button.classList.remove('show'));
-                buttonsA.forEach(button => button.classList.add('show'));
-            } else {
-                buttonsA.forEach(button => button.classList.remove('show'));
-                buttonsB.forEach(button => button.classList.add('show'));
-            }
-        })
+        //    if (newValue === "A") {
+        //        buttonsB.forEach(button => button.classList.remove('show'));
+        //        buttonsA.forEach(button => button.classList.add('show'));
+        //    } else {
+        //        buttonsA.forEach(button => button.classList.remove('show'));
+        //        buttonsB.forEach(button => button.classList.add('show'));
+        //    }
+        //})
     }
 }

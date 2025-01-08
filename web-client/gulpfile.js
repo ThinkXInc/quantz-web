@@ -24,7 +24,7 @@ gulp.task('scripts', function() {
       `./js/quantz-button-v${version}.js`
     ])
     //.pipe(concat('quantz-button.min.js')) // NOTE: should NOT be quantz-button.min.js
-    .pipe(concat('quantz-button-v9.min.js')) // NOTE: should NOT be quantz-button.min.js
+    .pipe(concat(`quantz-button-v${version}.min.js`)) // NOTE: should NOT be quantz-button.min.js
     .pipe(terser())
     .pipe(javascriptObfuscator({
       // Obfuscation options can be specified here
@@ -63,7 +63,7 @@ gulp.task('scripts-dev', function() {
       `./js/quantz-button-v${version}.js`
     ])
     .pipe(sourcemaps.init())  // Initializes sourcemaps
-    .pipe(concat('quantz-button-v9-dev.js')) // Concatenate without the 'min' suffix
+    .pipe(concat(`quantz-button-v${version}-dev.js`)) // Concatenate without the 'min' suffix
     .pipe(sourcemaps.write('./maps')) // Writes sourcemaps files to the './maps' directory
     .pipe(gulp.dest('../web-server/views/js/dist/'));
 });

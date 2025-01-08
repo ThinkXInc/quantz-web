@@ -3,7 +3,7 @@
 
 @alert-red: #8c1111;
 
-@header-bg: #1b1e42;
+@header-bg: #fff;//#1b1e42;
 @try-button: #0079ef;
 @try-button-hover: #0059b0;
 
@@ -14,9 +14,9 @@ div.quantz-basic-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: @header-bg;
+    background-color: #fff;//@header-bg;
     padding: 10px 20px;
-    color: @white;
+    color: #000;
 
     font-family: 'Helvetica', 'Arial', sans-serif;
 
@@ -45,12 +45,13 @@ div.quantz-basic-header {
         align-items: center;
 
         img.logo {
+            display: none;
             height: 50px; // Logo height
             margin-right: 10px;
         }
 
         h3.header-copy {
-            color: white;
+            color: #343434;
             margin: 0;
             font-size: 0.9em;
             font-weight: 200;
@@ -59,6 +60,9 @@ div.quantz-basic-header {
         }
     }
     div.right {
+        background-color: #ebebeb;
+        padding: 10px 11px;
+        border-radius: 2px;
         display: flex;
         flex-direction: row;
         align-items: center;
