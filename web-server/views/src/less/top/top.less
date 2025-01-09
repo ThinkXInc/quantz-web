@@ -165,6 +165,7 @@
         justify-content: start;
         align-items: flex-start;
         padding: 20px 0 24px 0;
+        min-height: 84vh;
 
         div.left {
             padding: 100px 20px 100px 20px;
@@ -196,7 +197,7 @@
                 }
                 h2.subtitle {
                     color: #323232;
-                    font-size: 1.5em;
+                    font-size: 20px;
                     font-weight: 400;
                     margin: 0 0 44px 0;
                 }
@@ -443,7 +444,7 @@
     background-color: #fff;// #f5f5f5;//#000000;
     border-top: 1px solid #e7eef2;
     border-bottom: 1px solid #e7eef2;
-    display: flex;
+    //display: flex;
     flex-direction: column;
     justify-content: center;
     padding: 50px 73px 50px 73px;
@@ -526,6 +527,7 @@
 
 // promo, interface, custom, response
 #top div.promo-section, div.interface-section, div.custom-section, div.response-section {
+    display: none !important;
     h2.heading {
         color: @black;
         font-size: 1.5em;
@@ -549,7 +551,8 @@
 
 // tutorial
 #top div.tutorial-section {
-    display: flex;
+    //display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     text-align: center;
@@ -724,7 +727,7 @@
     display: flex;
     justify-content: flex-end; // Aligns the footer content to the right
     align-items: center;
-    background-color: @footer-bg;
+    background-color: #fff;
     margin-top: 10px;
     padding: 17px 30px;
 
@@ -828,7 +831,6 @@
         div.header {
             div.left {
                 h3.header-copy {
-                    display: none;
                 }
                 h5.sales-catch {
                     display: none;
@@ -836,24 +838,24 @@
             }
             div.right {
                 button.try-button {
-                    display: none;
                 }
             }
         }
 
         div.main-container {
             div.main-content {
-                flex-direction: column;
-                padding: 0 25px;
 
                 div.left, div.demo {
-                    width: auto;
                 }
 
                 div.left {
-                    margin-bottom: 50px;
+                    padding: 0px 20px 0px 20px;
                     div.main-copy {
-                        padding: 26px 20px 0 20px;
+                        h1.title {
+                            font-size: 36px;
+
+                        }
+                        max-width: 100%;
                     }
                 }
 
@@ -862,39 +864,13 @@
                 }
 
                 div.demo {
-                    height: 551px;
-                    padding: 0;
                     div.demo-container {
-                        padding-top: 0;
-                        flex-direction: column;
-                        div.demo-top {
-                            display: block;
-                            div.demo-top-container {
-                                display: flex;
-                                flex-direction: column;
-                                align-items: center;
-                                p.click-text {
-                                    font-size: 1em;
-                                }
-                                div.chalk-arrow {
-                                    padding: 20px 0px 3px 0px;
-                                    img {
-                                        padding-left: 30px;
-                                        transform: scaleX(-1) scaleY(-1) rotate(151deg);
-                                        transform-origin: center;
-                                    }
-                                }
-                            }
-                        }
                         div.demo-view-interface {
                             div.RadioButton.ButtonType {
-                                padding: 0;
-                                margin-bottom: 24px;
                             }
                             div.btn-main {
                                 div.demo-button-container {
                                     div.B {
-                                        padding-left: 40px;
                                     }
                                 }
 
@@ -934,12 +910,9 @@
         }
 
         div.footer {
-            flex-direction: row; // Horizontal layout for the footer
-            align-items: center;
             padding: 17px 17px;
 
             div.footer-content {
-                justify-content: space-between; // Distribute content
                 div.footer-links {
                     a.footer-link {
                         font-size: 0.8em;
