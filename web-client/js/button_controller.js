@@ -153,15 +153,15 @@
             this.toggleButtonState(ns.ButtonState.leave);
             this.updateButtonText('leave');
             this.buttonControlElement.style.display = 'none';
-            if (this.buttonElement) {
-                this.buttonElement.style.setProperty('width', '145px', 'important');
-                this.buttonElement.style.setProperty('background-image', 'linear-gradient(to left, rgb(226, 54, 54), rgb(186, 51, 51))', 'important');
-                this.buttonElement.style.setProperty('border-radius', '50px', 'important');
-                this.buttonElement.style.setProperty('border', '1px solid rgb(60, 8, 8)', 'important');
-                this.iconWrapperElement.style.setProperty('width', '100%', 'important');
-            } else {
-                console.error('Button element not found for styling.');
-            }
+            //if (this.buttonElement) {
+            //    this.buttonElement.style.setProperty('width', '145px', 'important');
+            //    this.buttonElement.style.setProperty('background-image', 'linear-gradient(to left, rgb(226, 54, 54), rgb(186, 51, 51))', 'important');
+            //    this.buttonElement.style.setProperty('border-radius', '50px', 'important');
+            //    this.buttonElement.style.setProperty('border', '1px solid rgb(60, 8, 8)', 'important');
+            //    this.iconWrapperElement.style.setProperty('width', '100%', 'important');
+            //} else {
+            //    console.error('Button element not found for styling.');
+            //}
             this.setIcon(ns.IconType.LEAVE);
         }
 

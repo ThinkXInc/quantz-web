@@ -124,9 +124,25 @@
                 {#<script src="https://quantz.thinkxinc.com/js/dist/quantz-button-v8-dev.js"></script>#}
                 <div class="demo-button-container">
                   {#<script src="https://quantz.thinkxinc.com/js/dist/quantz-button.min.js"></script>#}
-                  <div class="QBTN-button-loader" data-publisher-id="6761336d842132052346a1bd" data-quantz-config='{"buttonType":"Default","iconSize":30,"fontSize":13,"buttonWidth":120,"buttonHeight":50,"buttonColor":"#930ea4","borderRadius":20,"displayLocale":true,"balloonRectWidth":"17vw","balloonRectHeight":"30vh","defaultLang":"ja","modelId":"6baad74e5402ef595fac91b9","responseMode":0}'></div>
+                  <div class="QBTN-button-loader" data-publisher-id="6761336d842132052346a1bd" data-quantz-config='{"buttonType":"Default","iconSize":30,"fontSize":13,"buttonWidth":120,"buttonHeight":50,"buttonColor":"#930ea4","borderRadius":20,"displayLocale":true,"balloonRectWidth":"17vw","balloonRectHeight":"30vh","defaultLang":"{{ lang }}","modelId":"6baad74e5402ef595fac91b9","responseMode":0}'></div>
                   {#<div class="QBTN-button-loader show" data-quantz-config='{"buttonType":"Default", "responseMode": 0,"iconSize":25,"fontSize":13,"buttonWidth":200,"buttonHeight":44,"buttonColor":"#b80613","borderRadius":20,"displayLocale":true,"balloonRectWidth":"30vw","balloonRectHeight":"20vh","defaultLang":"en"}'></div>#}
                 </div>
+                <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                  const pathSegments = window.location.pathname.split('/'); 
+                  const detectedLang = pathSegments[1]; // "en" in this example
+                  const qBtnLoader = document.querySelector('.QBTN-button-loader');
+                  if (qBtnLoader) {
+                    const oldConfig = JSON.parse(qBtnLoader.getAttribute('data-quantz-config') || '{}');
+                    if (['en', 'ja', 'fr', 'es'].includes(detectedLang)) {
+                      oldConfig.defaultLang = detectedLang;
+                    } else {
+                      oldConfig.defaultLang = 'en';
+                    }
+                    qBtnLoader.setAttribute('data-quantz-config', JSON.stringify(oldConfig));
+                  }
+                });
+              </script>
             </div>
           </div>
           <div class="demo-side">
