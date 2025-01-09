@@ -353,6 +353,7 @@ class ProgramView {
         setTimeout(() => {
             // NOTE: wait until $backgroundContainer is rendered. otherwise w,h becomes 0.
             this.setupMesh({n: 100, m: 100})
+            this.connectionsManager.drawAllArrows();
             //this.mesh.animate({type: MeshAnimation.perspective})
         }, 20)
 
