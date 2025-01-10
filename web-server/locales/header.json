@@ -9,13 +9,13 @@
         "ru": ""
     },
     "header_try_button": {
-        "en": "Start Free Trial",
-        "ja": "今すぐ無料で試す",
-        "zh": "立即免费试用！",
-        "fr": "ESSAYEZ MAINTENANT GRATUITEMENT !",
-        "es": "¡PRUÉBALO AHORA GRATIS!",
-        "ar": "جربه الآن مجانًا!",
-        "ru": "ПОПРОБУЙТЕ СЕЙЧАС БЕСПЛАТНО!"
+        "en": "Create your first voice AI agent",
+        "ja": "あなたの最初の音声対話AIを作成",
+        "zh": "创建你的第一个语音AI代理",
+        "fr": "Créez votre premier agent IA vocale",
+        "es": "Crea tu primer agente de IA de voz",
+        "ar": "أنشئ وكيلك الأول للذكاء الاصطناعي الصوتي",
+        "ru": "Создайте своего первого голосового ИИ-агента"
     },
     "header_signin_tooltip": {
         "en": "Sign In",

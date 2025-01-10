@@ -28,6 +28,8 @@ body.dark {
     --program-tools-bg: #484848;
     --program-tools-border: #5e5c5c;
     --program-step-bg: #2e2e2e;
+
+    --program-test-button-color: #32d6ff;
 }
 
 body {
@@ -587,6 +589,55 @@ div#ProgramView {
                 }
             }
         }
+    }
+}
+
+
+div#ProgramView div.ProgramViewContainer {
+    div.testView {
+        position: fixed;
+        right: 44px;
+        bottom: 28px;
+        width: 100px;       // For now, fixed width
+        height: 100px;      // For now, fixed height
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 999;       // Ensure it's above other elements
+        div.QBTN-button-container.QBTN-TYPE-Default div.QBTN-button-control div.QBTN-locale div.QBTN-selector {
+            top: -256px;
+            left: -10px;
+            border-color: var(--program-test-button-color);
+            color: var(--program-test-button-color)
+        }
+        div.QBTN-button-container.QBTN-TYPE-Default div.QBTN-button-component {
+            border-color: var(--program-test-button-color);
+        }
+        div.QBTN-button-container.QBTN-TYPE-Default button.QBTN-button.QBTN-start div#QBTN-button-component-0 {
+            border-color: var(--program-test-button-color);
+            background: var(--program-test-button-color);
+        }
+        div.QBTN-button-container.QBTN-TYPE-Default button.QBTN-button.QBTN-start div#QBTN-button-component-1 {
+            border-color: var(--program-test-button-color);
+        }
+        div.QBTN-button-container.QBTN-TYPE-Default button.QBTN-button.QBTN-start div#QBTN-button-component-2 {
+            border-color: var(--program-test-button-color);
+        }
+        div.QBTN-button-container.QBTN-TYPE-Default button.QBTN-button.QBTN-start div#QBTN-button-component-3 {
+            border-color: var(--program-test-button-color);
+        }
+        div.QBTN-button-container.QBTN-TYPE-Default div.QBTN-button-text-container div.QBTN-button-text {
+            color: var(--program-test-button-color);
+        }
+        div.QBTN-button-container.QBTN-TYPE-Default div.QBTN-button-control div.QBTN-locale-button {
+            height: 17px;
+            border-color: var(--program-test-button-color);
+        }
+        div.QBTN-button-container.QBTN-TYPE-Default div.QBTN-button-control div.QBTN-locale div.QBTN-selector p:hover {
+            background-color: var(--program-test-button-color);
+            opacity: 0.2;
+        }
+
     }
 }
 

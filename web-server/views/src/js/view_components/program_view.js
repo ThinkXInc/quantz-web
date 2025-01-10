@@ -116,9 +116,18 @@ class ProgramView {
         this.stepPositionInitY = 165;
         this.stepPositionMargin = 40;
 
-        this.scale = 1.0;
-        this.offsetX = 0;
-        this.offsetY = 0;
+        this.scale = (this.interactionModel.zoom !== undefined)
+            ? this.interactionModel.zoom
+            : 1.0;
+        this.offsetX = (this.interactionModel.offset_x !== undefined)
+            ? this.interactionModel.offset_x
+            : 0;
+        this.offsetY = (this.interactionModel.offset_y !== undefined)
+            ? this.interactionModel.offset_y
+            : 0;
+
+        //this.offsetX = 0;
+        //this.offsetY = 0;
         this.minScale = 0.2;
         this.maxScale = 5.0;
 
@@ -290,20 +299,27 @@ class ProgramView {
 
  
         //mesh.animate({ type: MeshAnimation.perspective });
+        const initX = (this.interactionModel.offset_x !== undefined)
+            ? this.interactionModel.offset_x 
+            : 0;
+        const initY = (this.interactionModel.offset_y !== undefined)
+            ? this.interactionModel.offset_y 
+            : 0;
 
         new Draggable({
             element: this.$backgroundContainer,
             onDrag: (pos) => {
                 // Continuously redraw to keep the arrows aligned with background movement
-                //this.offsetX += pos.deltaX;
-                //this.offsetY += pos.deltaY;
+                this.offsetX = pos.left;
+                this.offsetY = pos.top;
                 this.updateTransform();
                 this.connectionsManager.drawAllArrows();
             },
             onDragEnd: (pos) => {
                 // Final alignment
                 this.connectionsManager.drawAllArrows();
-            }
+            },
+            ignorewhenoverselector: '.TextField'
         });
         
         this.$backgroundContainer.addEventListener(
@@ -367,6 +383,7 @@ class ProgramView {
         });
 
         this.connectionsManager.drawAllArrows();
+        this.updateTransform();
 
         // Finally, append mainContainer inside the background
         $backgroundContainer.appendChild($mainContainer);
@@ -402,6 +419,7 @@ class ProgramView {
         console.log("BackgroundContainer rect:", this.$backgroundContainer.getBoundingClientRect());
         */
 
+        this.addTestView();
     }
 
     adjustContainersInitialPosition({w, h}) {
@@ -467,7 +485,8 @@ class ProgramView {
                 console.log(
                     `Step #${index + 1} position updated -> left=${step.left}, top=${step.top}`
                 );
-            }
+            },
+            ignoreWhenOverSelector: '.TextField'
         });
    
         // Step Title
@@ -1227,7 +1246,6 @@ class ProgramView {
 
         const zoomSpeed = 0.0003;  
         const delta = -evt.deltaY * zoomSpeed; // negative => zoom in
-
         const oldScale = this.scale;
         let newScale = oldScale + delta;
         if (newScale < this.minScale) newScale = this.minScale;
@@ -1256,8 +1274,10 @@ class ProgramView {
     }
 
     updateTransform() {
+        console.log('[updateTransform] apply transform.')
+        this.$backgroundContainer.style.top = this.offsetY + 'px';
+        this.$backgroundContainer.style.left = this.offsetX + 'px';
         this.$backgroundContainer.style.transform = `
-          translate(${this.offsetX}px, ${this.offsetY}px)
           scale(${this.scale})
         `;
 
@@ -1371,7 +1391,10 @@ class ProgramView {
 
         return {
             title,
-            steps
+            steps,
+            zoom: this.scale,
+            offset_x: this.offsetX ?? 0,
+            offset_y: this.offsetY ?? 0
         };
     }
 
@@ -1575,5 +1598,43 @@ class ProgramView {
             clearInterval(this.updateScheduler);
             this.updateScheduler = null;
         }
+    }
+
+    addTestView() {
+        // Create container
+        this.$testView = document.createElement('div');
+        this.$testView.classList.add('testView');
+    
+        //// If script is not loaded globally, inject the script
+        //const $scriptTag = document.createElement('script');
+        ////$scriptTag.src = 'https://quantz.thinkxinc.com/js/dist/quantz-button.min.js';
+        //$scriptTag.src = 'https://quantz.thinkxinc.com/js/dist/quantz-button-v10-dev.js';
+        //this.$testView.appendChild($scriptTag);
+    
+        // Create quantz-loader
+        const $loader = document.createElement('div');
+        $loader.classList.add('QBTN-button-loader');
+        $loader.setAttribute('data-publisher-id', '6761336d842132052346a1bd');
+    
+        const cfg = {
+            "buttonType": "Default",
+            "iconSize": 30,
+            "fontSize": 13,
+            "buttonWidth": 120,
+            "buttonHeight": 50,
+            "buttonColor": "#930ea4",
+            "borderRadius": 20,
+            "displayLocale": true,
+            "balloonRectWidth": "17vw",
+            "balloonRectHeight": "30vh",
+            "defaultLang": this.lang,
+            "modelId": this.interactionModelId,
+            "responseMode": 0
+        };
+        $loader.setAttribute('data-quantz-config', JSON.stringify(cfg));
+    
+    
+        this.$programViewContainer.appendChild(this.$testView);
+        this.$testView.appendChild($loader);
     }
 }

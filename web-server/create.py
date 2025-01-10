@@ -364,7 +364,7 @@ def interaction_model_update(user, lang, lang_name, interaction_model_id):
         return validation_error.http_response()
 
     # Possible fields allowed for updates
-    allowed_update_keys = ['title', 'steps', 'voiceset']
+    allowed_update_keys = ['title', 'steps', 'voiceset', 'zoom', 'offset_x', 'offset_y']
 
     # Filter out any unknown keys from request.json
     updates = {}
@@ -394,6 +394,18 @@ def interaction_model_update(user, lang, lang_name, interaction_model_id):
 
         if 'voiceset' in updates:
             existing_model.voiceset = updates['voiceset']
+
+        if 'zoom' in updates:
+            # Convert to float if needed
+            try:
+                existing_model.zoom = float(updates['zoom'])
+            except ValueError:
+                logger.warning(f"Invalid zoom value: {updates['zoom']}")
+                existing_model.zoom = 1.0
+        if 'offset_x' in updates:
+            existing_model.offset_x = float(updates['offset_x']) if updates['offset_x'] is not None else 0.0
+        if 'offset_y' in updates:
+            existing_model.offset_y = float(updates['offset_y']) if updates['offset_y'] is not None else 0.0
 
         # If steps are included in the update
         if 'steps' in updates:
