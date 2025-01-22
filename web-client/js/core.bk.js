@@ -14,7 +14,8 @@
     ns.SMOOTHING_TIME = 0.1;
     ns.MIN_DECIBELS = -70;
     ns.MAX_DECIBELS = -10;
-    ns.SILENT_DECIBEL = -60;
+    ns.SILENT_DECIBEL = -65;
+    ns.F0_THRESHOLD = 30; // 50 is too high and strict
 
     ns.Core = class {
 
@@ -94,9 +95,10 @@
             }
         }
 
-        async submitHumanSpeach() {
+        async submitHumanSpeech() {
             const messageType = new Uint8Array([ns.MessageType.WAV_STREAM]);
             const langBytes = new TextEncoder().encode(this.lang); // 2 bytes, ensure lang is 2 characters
+            console.log(`[submitHumanSpeech] lang: ${this.lang}`)
             
             const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
             
@@ -122,7 +124,7 @@
             try {
                 let pageURL = encodeURIComponent(window.location.href); 
                 let origin = encodeURIComponent(window.location.origin);
-                let url = `https://${ns.configs[this.buttonId].host}/stream/api/request-token?pageURL=${pageURL}&origin=${origin}`;
+                let url = `https://${ns.configs[this.buttonId].host}/stream/api/request-token?pageURL=${pageURL}&origin=${origin}&modelId=${ns.configs[this.buttonId].modelId}`;
                 let response = await fetch(url, {
                     method: 'POST',
                     credentials: 'include',
@@ -156,23 +158,62 @@
             }
         }
 
+        async getBasicConfig() {
+            try {
+                let url = `https://${ns.configs[this.buttonId].host}/stream/api/request-basic-config?token=${encodeURIComponent(this.token)}`;
+                let response = await fetch(url, {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+        
+                if (!response.ok) {
+                    console.error('[Core] Failed to get BasicConfig. Status:', response.status);
+                    return null;
+                }
+        
+                const data = await response.json();
+                console.log("[Core] BasicConfig retrieved:", data);
+                return data;
+            } catch (error) {
+                console.error("[Core] Error getting BasicConfig:", error);
+                return null;
+            }
+        }
+
         async connect(onConnected) {
             this.rateLimitExceeded = false;
             if(!this.token) {
                 console.log("[Core] No existing token, requesting new token...");
                 const result = await this.getToken();
-
                 if (result.error) {
                     console.error('[Core] Error obtaining token:', result.error);
                     this.dispatchFailedToGetTokenEvent(result.error, result.status);
                     return;
                 }
-
                 // Update the token on successful acquisition
                 this.token = result.token;
                 this.clientId = result.clientId;
                 console.log("[Core] Token obtained:", this.token);
                 this.dispatchTokenIssuedEvent(result.token, result.clientId);
+
+                // Get BasicConfig with token
+                if (result.token) {
+                    this.token = result.token;
+                    this.clientId = result.clientId;
+                    const basicConfig = await this.getBasicConfig();
+                    if (basicConfig.hostId) {
+                        this.basicConfig = basicConfig; 
+                        console.log("[Core] set BasicConfig:", this.basicConfig);
+                        this.dispatchBasicConfigFetchedEvent(this.basicConfig)
+                    } else {
+                        console.error('[Core] Wrong format basicConfig:', basicConfig);
+                        this.dispatchFailedToGetBasicConfigEvent(basicConfig.error, basicConfig.status);
+                        return
+                    }
+                }
             } else {
                 console.log("[Core] Use token :", this.token);
             }
@@ -221,7 +262,7 @@
         }
 
         sendStartMessage(data) {
-            console.log(`[Core] Prepare start message with data: ${data}`)
+            console.log(`[Core] Prepare start message with data: ${data}`);
             if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
                 console.error("Cannot send start message: WebSocket is not connected.");
                 return;
@@ -239,18 +280,29 @@
             } else {
                 console.warn("Data is not a valid object, sending START_MESSAGE without data.");
             }
-            
+        
             const messageType = new Uint8Array([ns.MessageType.WAV_STREAM]); // Adjust messageType if necessary
             const langBytes = new TextEncoder().encode(this.lang);
             const startMessageBytes = new TextEncoder().encode(startMessage);
             const endOfMessageBytes = new TextEncoder().encode(ns.END_OF_MESSAGE);
-            
+        
             // Combine all parts into a single Blob
             const messageBlob = new Blob([messageType, langBytes, startMessageBytes, endOfMessageBytes], { type: 'application/octet-stream' });
-            
+        
+            // Log messageBlob content as text
+            const reader = new FileReader();
+            reader.onload = function () {
+                console.log(`[Core] messageBlob content (as text): ${reader.result}`);
+            };
+            reader.onerror = function () {
+                console.error(`[Core] Failed to read messageBlob content: ${reader.error}`);
+            };
+            reader.readAsText(messageBlob);
+        
             this.socket.send(messageBlob);
-            console.log("Start message sent to server:", startMessage);
+            console.log("Start message sent to server.");
         }
+        
 
         startRecording() {
             if (!this.mediaRecorder) {
@@ -341,7 +393,7 @@
 
             // Combine all buffered audio into a single buffer
             let totalLength = this.audioBufferQueue.reduce((acc, buffer) => acc + buffer.length, 0);
-            let combinedBuffer = this.audioCtx.createBuffer(1, totalLength, ns.configs[this.buttonId].sampleRate); // Assuming mono audio
+            let combinedBuffer = this.audioCtx.createBuffer(1, totalLength, 44100);//ns.configs[this.buttonId].sampleRate); // Assuming mono audio
             let offset = 0;
             this.audioBufferQueue.forEach(buffer => {
                 combinedBuffer.getChannelData(0).set(buffer, offset);
@@ -405,19 +457,12 @@
             }
         }
 
-        base64ToArrayBuffer(base64) {
-            let binaryString = window.atob(base64); // Decode base64 to binary string
-            let len = binaryString.length;
-            let bytes = new Uint8Array(len);
-            for (let i = 0; i < len; i++) {
-                bytes[i] = binaryString.charCodeAt(i);
-            }
-            return bytes.buffer;
-        }
-
         bufferAudioChunk(audioData) {
             console.log('[Core] Buffer audio chunk of size:', audioData.byteLength);
-            this.audioBufferQueue.push(audioData);
+            // Convert ArrayBuffer to Float32Array
+            let float32Data = new Float32Array(audioData);
+            this.audioBufferQueue.push(float32Data);
+            //this.audioBufferQueue.push(audioData)
         }
 
         enforceStopAssistantSpeech() {
@@ -449,148 +494,66 @@
         handleWebSocketMessage(e) {
             //console.log(`Data received from server:`, e.data);
 
-            /*
-                MESSAGE_TYPE_USER = 'user'
-                MESSAGE_TYPE_SYSTEM = 'system'
-                MESSAGE_TYPE_AUDIO = 'audio'
-                MESSAGE_TYPE_AUDIO_COMPRESSED = 'audio_compressed'
-                MESSAGE_TYPE_LIMIT_EXCEEDED = 'limit_exceeded'
-                MESSAGE_TYPE_CLOSE = 'close'
-                MESSAGE_TYPE_START = 'start'
-                MESSAGE_TYPE_NEXT = 'next'
-                MESSAGE_TYPE_END = 'end'
-            */
             if (e.data instanceof Blob) {
-                e.data.text().then((messageText) => {
-                    try {
-                        let messageObj = JSON.parse(messageText);
-                        console.log('[Core] Received:', messageObj)
-                        console.log('[Core] Received:', messageText)
-                        let blobBase64 = messageObj.blob;
-                        let message = messageObj.message;
-                        let type = messageObj.type;
-                        let metadata = messageObj.metadata;
+                e.data.arrayBuffer().then(arrayBuffer => {
+                    // Convert ArrayBuffer to Uint8Array
+                    let uint8Array = new Uint8Array(arrayBuffer);
+                    // Convert Uint8Array to String to check for the message type
+                    let messageString = new TextDecoder().decode(uint8Array);
 
-                        if (type == "audio") {
-                            let audioData = base64ToArrayBuffer(blobBase64);
-                            console.log('[Core] audio data received', audioData);
-                            console.log('[Core] metadata', metadata);
-                            this.bufferAudioChunk(audioData);
-                            if (!this.isAudioPlaying) {
-                                this.playBufferedAudio();
-                            }
-                        } else if (type == "audio_compressed") {
-                            let opusData = base64ToArrayBuffer(blobBase64);
-                            this.decodeAndBufferAudioChunk(new Uint8Array(opusData));
-                            console.log('[Core] audio data (compressed) received', audioData);
-                            console.log('[Core] metadata', metadata);
-                            if (!this.isAudioPlaying) {
-                                this.playBufferedAudio();
-                            }
-                        } else if (type == "user") {
-                            console.log('[Core] User message received:', message);
-                            console.log('[Core] metadata', metadata);
-                            this.appendToHistory(ns.SenderType.USER, message);
-                        } else if (type == "system") {
-                            console.log('[Core] System message received:', message);
-                            console.log('[Core] metadata', metadata);
-                            this.appendToHistory(ns.SenderType.SYSTEM, message);
-                        } else if (type == "end" || type == "next") {
-                            console.log(`[Core] Marker received: ${message}, current audioBufferQueue length: ${this.audioBufferQueue.length}`);
-                            console.log('[Core] metadata', metadata);
-                            if (this.audioBufferQueue.length > 0) {
-                                //DEBUG: console.log("Adding current audioBufferQueue to playbackQueue");
-                                this.playbackQueue.push([...this.audioBufferQueue]);
-                                this.audioBufferQueue = [];
-                            }
-                            if (!this.isAudioPlaying) {
-                                //DEBUG: console.log("Triggering playback from marker");
-                                this.playBufferedAudio();
-                            }
-                            if (type === 'end') {
-                                this.dispatchAssistantEndTurnEvent();
-                            }
-                        } else if (type == 'close') {
-                            console.log(`[Core] Special message received => type: ${type} message: ${message}`);
-                            console.log('[Core] metadata', metadata);
-                            this.dispatchCloseMessageReceivedEvent();
-                        } else if (type == "limit_exceeded") {
-                            console.log('[Core] [Limit exceeded]:', message);
-                            console.log('[Core] metadata', metadata);
-                            this.appendToHistory(ns.SenderType.ANNOUNCE, message);
-                            this.dispatchReachToLimitEvent(message);
-                            this.rateLimitExceeded = true; 
+                    if (messageString.startsWith('\\USER')) {
+                        let userMessage = messageString.substring(5); // Remove '\\USER' (5 characters)
+                        console.log('[Core] User message received:', userMessage);
+                        this.appendToHistory(ns.SenderType.USER, userMessage);
+                    } else if (messageString.startsWith('\\SYSTEM')) {
+                        let systemMessage = messageString.substring(7); // Remove '\\SYSTEM' (7 characters)
+                        console.log('[Core] System message received:', systemMessage);
+                        if ((this.history.length > 0 && this.history[this.history.length - 1].type === ns.SenderType.USER) || (this.history.length == 0)) {
+                            this.dispatchAssistantResponseStartEvent(systemMessage);
                         }
-                    } catch (err) {
-                        console.error('Error parsing JSON message:', err);
+                        this.appendToHistory(ns.SenderType.SYSTEM, systemMessage); // Splitting for example, modify as needed
+                    } else if (messageString === '\\END' || messageString === '\\NEXT') {
+                        console.log(`[Core] Marker received: ${messageString}, current audioBufferQueue length: ${this.audioBufferQueue.length}`);
+                        if (this.audioBufferQueue.length > 0) {
+                            //DEBUG:
+                            console.log("Adding current audioBufferQueue to playbackQueue");
+                            this.playbackQueue.push([...this.audioBufferQueue]);
+                            this.audioBufferQueue = [];
+                        }
+                        if (!this.isAudioPlaying) {
+                            //DEBUG:
+                            console.log("Triggering playback from marker");
+                            this.playBufferedAudio();
+                        }
+                        if (messageString === '\\END') {
+                            this.dispatchAssistantEndTurnEvent();
+                        }
+                        // No immediate call to playBufferedAudio()
+                    } else if (messageString.startsWith('\\SKIP')) {
+                        console.log(`[Core] Skip message received: ${messageString}`);
+                        this.dispatchAssistantSkipTurnEvent();
+                    } else if (messageString == '\\CLOSE') {
+                        console.log(`[Core] Special message received: ${messageString}`);
+                        this.dispatchCloseMessageReceivedEvent();
+                    } else if (messageString.startsWith('\\LIMIT_EXCEEDED')) {
+                        // Here we log the detailed limit exceeded message
+                        const message = messageString.split(':')[1].trim()
+                        console.log('[Core] [Limit exceeded]:', message);
+                        this.appendToHistory(ns.SenderType.ANNOUNCE, message);
+                        this.dispatchReachToLimitEvent(message);
+                        this.rateLimitExceeded = true; 
+                    } else {
+                        // Normal data processing
+                        //console.log('[Core] byte data received', arrayBuffer);
+                        //this.decodeAndBufferAudioChunk(uint8Array);
+                        this.bufferAudioChunk(arrayBuffer);
                     }
-                })
+                });
             } else if (typeof e.data === 'string') {
-                console.error('data type string received. expected blob.:', e.data);
-                try {
-                    let messageObj = JSON.parse(e.data);
-
-                    let blobBase64 = messageObj.blob;
-                    let message = messageObj.message;
-                    let type = messageObj.type;
-                    let metadata = messageObj.metadata;
-                }
+                console.error('data type string received. byte is expected.:', e.data);
             } else {
                 console.error('Unknown data type received:', e.data);
             }
-
-            //if (e.data instanceof Blob) {
-            //    e.data.arrayBuffer().then(arrayBuffer => {
-            //        // Convert ArrayBuffer to Uint8Array
-            //        let uint8Array = new Uint8Array(arrayBuffer);
-            //        // Convert Uint8Array to String to check for the message type
-            //        let messageString = new TextDecoder().decode(uint8Array);
-            //    
-            //        if (messageString.startsWith('\\USER')) {
-            //            let userMessage = messageString.substring(5); // Remove '\\USER' (5 characters)
-            //            console.log('[Core] User message received:', userMessage);
-            //            this.appendToHistory(ns.SenderType.USER, userMessage);
-            //        } else if (messageString.startsWith('\\SYSTEM')) {
-            //            let systemMessage = messageString.substring(7); // Remove '\\SYSTEM' (7 characters)
-            //            console.log('[Core] System message received:', systemMessage);
-            //            if ((this.history.length > 0 && this.history[this.history.length - 1].type === ns.SenderType.USER) || (this.history.length == 0)) {
-            //                // dispatch "responseStartEvent" when it is the beggining
-            //                this.dispatchAssistantResponseStartEvent(systemMessage);
-            //            }
-            //            this.appendToHistory(ns.SenderType.SYSTEM, systemMessage); // Splitting for example, modify as needed
-            //        } else if (messageString === '\\END' || messageString === '\\NEXT') {
-            //            console.log(`[Core] Marker received: ${messageString}, current audioBufferQueue length: ${this.audioBufferQueue.length}`);
-            //            if (this.audioBufferQueue.length > 0) {
-            //                //DEBUG: console.log("Adding current audioBufferQueue to playbackQueue");
-            //                this.playbackQueue.push([...this.audioBufferQueue]);
-            //                this.audioBufferQueue = [];
-            //            }
-            //            if (!this.isAudioPlaying) {
-            //                //DEBUG: console.log("Triggering playback from marker");
-            //                this.playBufferedAudio();
-            //            }
-            //            if (messageString === '\\END') {
-            //                this.dispatchAssistantEndTurnEvent();
-            //            }
-            //            // No immediate call to playBufferedAudio()
-            //        } else if (messageString == '\\CLOSE') {
-            //            console.log(`[Core] Special message received: ${messageString}`);
-            //            this.dispatchCloseMessageReceivedEvent();
-            //        } else if (messageString.startsWith('\\LIMIT_EXCEEDED')) {
-            //            // Here we log the detailed limit exceeded message
-            //            const message = messageString.split(':')[1].trim()
-            //            console.log('[Core] [Limit exceeded]:', message);
-            //            this.appendToHistory(ns.SenderType.ANNOUNCE, message);
-            //            this.dispatchReachToLimitEvent(message);
-            //            this.rateLimitExceeded = true; 
-            //        } else {
-            //            // Normal data processing
-            //            console.log('[Core] byte data received', arrayBuffer);
-            //            //this.decodeAndBufferAudioChunk(uint8Array);
-            //            this.bufferAudioChunk(arrayBuffer);
-            //        }
-            //    });
-            //}
         }
 
         appendToHistory(type, message) {
@@ -694,6 +657,16 @@
             this.$buttonLoader.dispatchEvent(event);
         }
 
+        dispatchAssistantSkipTurnEvent() {
+            console.log(`[Core] Dispatching assistantSkipTurnEvent - buttonId: ${this.buttonId}`);
+            const event = new CustomEvent(ns.configs[this.buttonId].assistantSkipTurnEventName, {
+                detail: {
+                    buttonId: this.buttonId
+                }
+            });
+            this.$buttonLoader.dispatchEvent(event);
+        }
+
         dispatchAssistantSpeechEnforcedStopEvent() {
             console.log(`[Core] Dispatching assistantSpeechEnforcedStopEvent - buttonId: ${this.buttonId}`);
             const event = new CustomEvent(ns.configs[this.buttonId].assistantSpeechEnforcedStopEventName, {
@@ -733,7 +706,18 @@
                 const fftSize = this.humanAudioAnalyzer.fftSize;
                 const fundamentalFreq = this.estimateFundamentalFrequency(frequencyDataArray, sampleRate, fftSize);
 
-                const hasSignificantData = frequencyDataArray.some(value => value > 0);
+                const isFrequencySignificant = frequencyDataArray.some(value => value > ns.F0_THRESHOLD);
+                const isDecibelSignificant = decibels > ns.SILENT_DECIBEL;
+                let reason = '';
+                if (!isFrequencySignificant) {
+                    reason = `No frequency above threshold (${ns.F0_THRESHOLD})`;
+                } else if (!isDecibelSignificant) {
+                    reason = `Decibel level (${decibels.toFixed(2)} dB) is below silent threshold (${ns.SILENT_DECIBEL})`;
+                } else {
+                    reason = ''
+                }
+                //const hasSignificantData = frequencyDataArray.some(value => value > ns.F0_THRESHOLD) && decibels > ns.SILENT_DECIBEL;
+                const hasSignificantData = isFrequencySignificant && isDecibelSignificant;
                 if (hasSignificantData) {
                     this.hasSignificantSpeech = true;
                     const event = new CustomEvent(ns.configs[this.buttonId].humanAudioSignalEventName, {
@@ -746,6 +730,8 @@
                     });
                     this.$buttonLoader.dispatchEvent(event);
                     //console.log(`[Core] Dispatched humanAudioSignalEvent with spectrum and volume - buttonId: ${this.buttonId}, volume: ${decibels.toFixed(2)} dB`);
+                } else {
+                    console.warn('No significant data:', reason)
                 }
 
             }, ns.configs[this.buttonId].spectrumFrequencyMs);
@@ -863,6 +849,27 @@
                     buttonId: this.buttonId,
                     error: error,
                     status: status
+                }
+            });
+            this.$buttonLoader.dispatchEvent(event);
+        }
+
+        dispatchFailedToGetBasicConfigEvent(error, status) {
+            const event = new CustomEvent(ns.configs[this.buttonId].failedToGetBasicConfigEventName, {
+                detail: {
+                    buttonId: this.buttonId,
+                    error: error,
+                    status: status
+                }
+            });
+            this.$buttonLoader.dispatchEvent(event);
+        }
+
+        dispatchBasicConfigFetchedEvent(basicConfig) {
+            const event = new CustomEvent(ns.configs[this.buttonId].basicConfigFetchedEventName, {
+                detail: {
+                    buttonId: this.buttonId,
+                    basicConfig: basicConfig,
                 }
             });
             this.$buttonLoader.dispatchEvent(event);

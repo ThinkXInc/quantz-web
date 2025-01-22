@@ -360,6 +360,7 @@
 
 
         playBufferedAudio() {
+            console.error("♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪");
             //DEBUG: 
             console.log("playBufferedAudio called, audioBufferQueue length:", this.audioBufferQueue.length, "isAudioPlaying:", this.isAudioPlaying);
 
@@ -503,20 +504,20 @@
 
                     if (messageString.startsWith('\\USER')) {
                         let userMessage = messageString.substring(5); // Remove '\\USER' (5 characters)
-                        console.log('[Core] User message received:', userMessage);
+                        console.error('[Core] User message received:', userMessage);
                         this.appendToHistory(ns.SenderType.USER, userMessage);
                     } else if (messageString.startsWith('\\SYSTEM')) {
                         let systemMessage = messageString.substring(7); // Remove '\\SYSTEM' (7 characters)
-                        console.log('[Core] System message received:', systemMessage);
+                        console.error('[Core] System message received:', systemMessage);
                         if ((this.history.length > 0 && this.history[this.history.length - 1].type === ns.SenderType.USER) || (this.history.length == 0)) {
-                            // dispatch "responseStartEvent" when it is the beggining
                             this.dispatchAssistantResponseStartEvent(systemMessage);
                         }
                         this.appendToHistory(ns.SenderType.SYSTEM, systemMessage); // Splitting for example, modify as needed
                     } else if (messageString === '\\END' || messageString === '\\NEXT') {
-                        console.log(`[Core] Marker received: ${messageString}, current audioBufferQueue length: ${this.audioBufferQueue.length}`);
+                        console.error(`[Core] Marker received: ${messageString}, current audioBufferQueue length: ${this.audioBufferQueue.length}`);
                         if (this.audioBufferQueue.length > 0) {
                             //DEBUG:
+                            console.error("♪");
                             console.log("Adding current audioBufferQueue to playbackQueue");
                             this.playbackQueue.push([...this.audioBufferQueue]);
                             this.audioBufferQueue = [];
@@ -531,19 +532,21 @@
                         }
                         // No immediate call to playBufferedAudio()
                     } else if (messageString.startsWith('\\SKIP')) {
-                        console.log(`[Core] Skip message received: ${messageString}`);
+                        console.error(`[Core] Skip message received: ${messageString}`);
                         this.dispatchAssistantSkipTurnEvent();
                     } else if (messageString == '\\CLOSE') {
-                        console.log(`[Core] Special message received: ${messageString}`);
+                        console.error(`[Core] Special message received: ${messageString}`);
                         this.dispatchCloseMessageReceivedEvent();
                     } else if (messageString.startsWith('\\LIMIT_EXCEEDED')) {
+                        console.error(`[Core] Limit exceeded message received: ${messageString}`);
                         // Here we log the detailed limit exceeded message
                         const message = messageString.split(':')[1].trim()
-                        console.log('[Core] [Limit exceeded]:', message);
+                        console.error('[Core] [Limit exceeded]:', message);
                         this.appendToHistory(ns.SenderType.ANNOUNCE, message);
                         this.dispatchReachToLimitEvent(message);
                         this.rateLimitExceeded = true; 
                     } else {
+                        console.error(`[Core] audio chunk received`);
                         // Normal data processing
                         //console.log('[Core] byte data received', arrayBuffer);
                         //this.decodeAndBufferAudioChunk(uint8Array);
