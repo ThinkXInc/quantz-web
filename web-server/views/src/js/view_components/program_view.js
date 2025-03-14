@@ -67,12 +67,13 @@ const defaultStep = () => ({
     max_turns: 3,
     response_mode: 1,
     reference_type: "all",
+    references: [],
     guidelines: [
         "First, read the remark.",
         "When the answer looks done, ask 'Are you sure that's it?'"
     ],
-    left: undefined,
-    top: undefined
+    left: 0,
+    top: 0 
 });
 
 const defaults = {
@@ -155,6 +156,7 @@ class ProgramView {
         this._lastSnapshot = JSON.stringify(
             this.interactionModelObjectFromFormData() || {}
         );
+
         this.updateIntervalMs = updateIntervalMs; // adjust as needed
         this.updateScheduler = setInterval(() => {
             this.checkForUpdates();
@@ -1200,7 +1202,7 @@ class ProgramView {
         // 5) Re-index the steps & re-check
         this.updateStepIndices();
         this.updateRemoveButtonVisibility();
-        this.ensureEmptyStepAtEnd();
+        this.ensureEmptyStepAtEnd(); // <- NOTE: necessary?
 
         this.connectionsManager.drawAllArrows();
     }
@@ -1296,7 +1298,7 @@ class ProgramView {
             }
             const topicVal = lastStepData.topicForm.value.trim();
             const remarkVal = lastStepData.remarkForm.value.trim();
-            if (topicVal || remarkVal) {
+            if (topicVal) {
                 // if we have content => add empty
                 this.addFlow();
             }
@@ -1354,7 +1356,7 @@ class ProgramView {
             const remarkVal = stepData.remarkForm.value?.trim();
 
             // If user typed something, we consider it a valid step
-            if (topicVal || remarkVal) {
+            //if (topicVal || remarkVal) { 
                 hasAnyStepContent = true;
                 const referencesVal = stepData.referencesSelector
                     ? stepData.referencesSelector.value || []
@@ -1375,7 +1377,7 @@ class ProgramView {
                     top:  stepData.step.top
                 };
                 steps.push(stepObj);
-            }
+            //}
         });
 
         //if (!hasAnyStepContent) {

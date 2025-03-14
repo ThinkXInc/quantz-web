@@ -459,7 +459,7 @@
         }
 
         bufferAudioChunk(audioData) {
-            console.log('[Core] Buffer audio chunk of size:', audioData.byteLength);
+            //console.log('[Core] Buffer audio chunk of size:', audioData.byteLength); //DEBUG
             // Convert ArrayBuffer to Float32Array
             let float32Data = new Float32Array(audioData);
             this.audioBufferQueue.push(float32Data);
@@ -546,7 +546,7 @@
                         this.dispatchReachToLimitEvent(message);
                         this.rateLimitExceeded = true; 
                     } else {
-                        console.error(`[Core] audio chunk received`);
+                        //console.error(`[Core] audio chunk received`); // DEBUG
                         // Normal data processing
                         //console.log('[Core] byte data received', arrayBuffer);
                         //this.decodeAndBufferAudioChunk(uint8Array);

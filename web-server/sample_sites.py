@@ -39,6 +39,15 @@ basic_auth_users = {
 
 blueprint_sample_sites = Blueprint('sample_sites', __name__)
 
+@blueprint_sample_sites.route('/dubai/keynote')
+@language_wrapper
+def samples_dubai_handler(lang, lang_name):
+    return render_template(
+        'sample_sites/dubai.html',
+        lang=lang,
+        lang_name=lang_name,
+        metadata=locale.dict()["metadata_top"][lang])
+
 @blueprint_sample_sites.route('/samples/basicA')
 @language_wrapper
 def samples_basicA_handler(lang, lang_name):
