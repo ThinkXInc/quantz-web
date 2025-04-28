@@ -426,6 +426,7 @@ def interaction_model_update(user, lang, lang_name, interaction_model_id):
                     "references": step_dict.get("references", []),
                     "left": step_dict.get("left", 0.0),
                     "top": step_dict.get("top", 0.0),
+                    "expanded": step_dict.get("expanded", False),
                 }
                 # Construct each step as an InteractionModelStep
                 new_steps.append(InteractionModelStep(**safe_step_data))

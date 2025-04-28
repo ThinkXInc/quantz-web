@@ -73,7 +73,8 @@ const defaultStep = () => ({
         "When the answer looks done, ask 'Are you sure that's it?'"
     ],
     left: 0,
-    top: 0 
+    top: 0,
+    expanded: false 
 });
 
 const defaults = {
@@ -714,6 +715,11 @@ class ProgramView {
         $guidelinesLabel.textContent = this.locale.get('create_step_guidelines_label', this.lang) || 'Guidelines:';
         $guidelinesWrapper.appendChild($guidelinesLabel);
     
+        if (step.expanded) {
+            $hiddenContent.classList.add('expanded');
+            $moreDetail.classList.add('rotated');
+        }
+
         // Prepare guideline forms array
         const guidelineForms = [];
         step.guidelines.forEach((guideline, gIdx) => {
@@ -973,6 +979,7 @@ class ProgramView {
     
         // More detail toggle
         $moreDetail.addEventListener('click', () => {
+            step.expanded = !step.expanded;
             $hiddenContent.classList.toggle('expanded');
             $moreDetail.classList.toggle('rotated');
         });
@@ -1376,7 +1383,8 @@ class ProgramView {
                     reference_type: referenceTypeVal,
                     references: referenceTypeVal === 'select' ? referencesVal : [],
                     left: stepData.step.left,
-                    top:  stepData.step.top
+                    top:  stepData.step.top,
+                    expanded: stepData.step.expanded
                 };
                 steps.push(stepObj);
             //}
