@@ -611,13 +611,13 @@
         "ar": "مثال: صباح الخير! (إذا ترك فارغًا، سيتم استخدام التحية الافتراضية.)"
       },
       "create_remark_label_free": {
-        "en": "Free Conversation:",
-        "ja": "フリー会話",
-        "zh": "自由对话",
-        "es": "Conversación libre",
-        "fr": "Conversation libre",
-        "ru": "Свободная беседа",
-        "ar": "محادثة حرة"
+        "en": "Opening Remark",
+        "ja": "喋りだし",
+        "zh": "开场白",
+        "es": "Comentario Inicial",
+        "fr": "Remarque d'Ouverture",
+        "ru": "Вступительное Замечание",
+        "ar": "ملاحظة افتتاحية"
       },
       "create_input_remark_placeholder_free": {
         "en": "Example: How are you feeling today? (If left blank, it will be decided automatically.)",
@@ -629,13 +629,13 @@
         "ar": "مثال: كيف تشعر اليوم؟ (إذا ترك فارغًا، سيتم تحديده تلقائيًا.)"
       },
       "create_remark_label_explanation": {
-        "en": "Explanation:",
-        "ja": "説明時の喋りだし",
-        "zh": "说明内容",
-        "es": "Contenido de la explicación",
-        "fr": "Contenu de l'explication",
-        "ru": "Содержание объяснения",
-        "ar": "محتوى التوضيح"
+        "en": "Opening Remark",
+        "ja": "喋りだし",
+        "zh": "开场白",
+        "es": "Comentario Inicial",
+        "fr": "Remarque d'Ouverture",
+        "ru": "Вступительное Замечание",
+        "ar": "ملاحظة افتتاحية"
       },
       "create_input_remark_placeholder_explanation": {
         "en": "Example: I will now explain our XX service. (If left blank, it will be decided automatically.)",
@@ -647,13 +647,13 @@
         "ar": "مثال: سأشرح الآن خدمتنا XX. (إذا ترك فارغًا، سيتم تحديده تلقائيًا.)"
       },
       "create_remark_label_test": {
-        "en": "Test Content:",
-        "ja": "テスト時の喋りだし",
-        "zh": "测试内容",
-        "es": "Contenido de la prueba",
-        "fr": "Contenu du test",
-        "ru": "Содержание теста",
-        "ar": "محتوى الاختبار"
+        "en": "Opening Remark",
+        "ja": "喋りだし",
+        "zh": "开场白",
+        "es": "Comentario Inicial",
+        "fr": "Remarque d'Ouverture",
+        "ru": "Вступительное Замечание",
+        "ar": "ملاحظة افتتاحية"
       },
       "create_input_remark_placeholder_test": {
         "en": "Example: If a customer wants to reserve an item, what do you do first? (If left blank, it will be decided automatically.)",
@@ -665,13 +665,13 @@
         "ar": "مثال: إذا أراد العميل حجز منتج، ما الذي تفعله أولاً؟ (إذا ترك فارغًا، سيتم تحديده تلقائيًا.)"
       },
       "create_remark_label_consulting": {
-        "en": "Consultation Content:",
-        "ja": "コンサルティング・提案での喋りだし",
-        "zh": "咨询内容",
-        "es": "Contenido de la consulta",
-        "fr": "Contenu de la consultation",
-        "ru": "Содержание консультации",
-        "ar": "محتوى الاستشارة"
+        "en": "Opening Remark",
+        "ja": "喋りだし",
+        "zh": "开场白",
+        "es": "Comentario Inicial",
+        "fr": "Remarque d'Ouverture",
+        "ru": "Вступительное Замечание",
+        "ar": "ملاحظة افتتاحية"
       },
       "create_input_remark_placeholder_consulting": {
         "en": "Example: In your situation, I think the best way to use our service is as follows. (If left blank, it will be decided automatically.)",
