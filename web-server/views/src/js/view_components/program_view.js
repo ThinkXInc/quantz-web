@@ -873,7 +873,7 @@ class ProgramView {
               }),
             ],
         });
-        responseModeSelector.value = step.response_mode || defaultStep().response_mode;
+        responseModeSelector.value = step.response_mode; // response_mode 0 is tempo oriented // || defaultStep().response_mode;
     
         $responseModeWrapper.appendChild(responseModeSelector.$view);
         $hiddenContent.appendChild($responseModeWrapper);
@@ -914,6 +914,7 @@ class ProgramView {
                 errorMessage: this.locale.get(ValidationErrorType.required, this.lang)
             })]
         });
+        referenceTypeSelector.value = step.reference_type;
     
         $referenceTypeContainer.appendChild(referenceTypeSelector.$view);
         $referenceWrapper.appendChild($referenceTypeContainer);
@@ -938,6 +939,7 @@ class ProgramView {
     
             // Pre-populate
             if (step.references && Array.isArray(step.references)) {
+                console.warn("set references:", step.references)
                 referencesSelector.value = step.references;  
             }
     
