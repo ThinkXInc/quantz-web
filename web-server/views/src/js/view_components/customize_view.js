@@ -834,6 +834,10 @@ class CustomizeView {
             new ListItem({
                 title: this.locale.get('basic_configs_response_mode_careful_listening', this.lang),
                 value: 2
+            }),
+            new ListItem({
+                title: this.locale.get('basic_configs_response_mode_wait_manual_submit', this.lang),
+                value: 3
             })
         ];
     

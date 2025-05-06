@@ -2,7 +2,8 @@
     ns.ResponseMode = Object.freeze({
         TEMPO_ORIENTED: 0,
         NORMAL: 1,
-        CAREFUL_LISTENING: 2
+        CAREFUL_LISTENING: 2,
+        MANUAL_SUBMIT: 3,
     });
 
     ns.HumanState = Object.freeze({

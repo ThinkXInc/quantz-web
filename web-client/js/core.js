@@ -502,7 +502,18 @@
                     // Convert Uint8Array to String to check for the message type
                     let messageString = new TextDecoder().decode(uint8Array);
 
-                    if (messageString.startsWith('\\USER')) {
+                    if (messageString.startsWith('\\CONTROL')) {
+                        try {
+                            // strip the prefix and parse JSON
+                            const payload = JSON.parse(messageString.substring(8));
+                            if (payload.response_mode !== undefined) {
+                                const newMode = parseInt(payload.response_mode);
+                                this.dispatchUpdateResponseModeEvent(newMode);
+                            }
+                        } catch(e) { console.error('CONTROL parse error', e); }
+                        return; // handled
+                    }
+                    else if (messageString.startsWith('\\USER')) {
                         let userMessage = messageString.substring(5); // Remove '\\USER' (5 characters)
                         console.error('[Core] User message received:', userMessage);
                         this.appendToHistory(ns.SenderType.USER, userMessage);
@@ -579,6 +590,17 @@
             }
 
             //this.displayMessages();
+        }
+
+        isManualSubmit() {
+            return ns.interactionControllers[this.buttonId]?.responseMode === ns.ResponseMode.MANUAL_SUBMIT;
+        }
+
+        dispatchUpdateResponseModeEvent(newMode) {
+            const event = new CustomEvent(ns.configs[this.buttonId].responseModeUpdateEventName, {
+                detail: { buttonId: this.buttonId, responseMode: newMode }
+            });
+            this.$buttonLoader.dispatchEvent(event);
         }
 
         // ↓↓↓ assistant turn event

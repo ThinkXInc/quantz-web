@@ -37,6 +37,13 @@
             this.iconWrapperElement = this.buttonElement.querySelector(`.QBTN-icon-wrapper`);
             this.textElement = this.textContainer.querySelector(`.${ns.configs[buttonId].prefix + ns.configs[buttonId].buttonTextClassName}`);
 
+            this.manualSubmitIndicatorElement = document.createElement('div');
+            this.manualSubmitIndicatorElement.id = ns.configs[buttonId].manualSubmitIndicatorClassName;
+            this.manualSubmitIndicatorElement.classList.add(ns.configs[buttonId].manualSubmitIndicatorClassName);
+            this.manualSubmitIndicatorElement.textContent = 'Press Enter or Space to submit.';
+            this.manualSubmitIndicatorElement.style.display = 'none'; 
+            this.buttonControlElement.appendChild(this.manualSubmitIndicatorElement);
+
             if (!this.buttonContainerElement) {
                 console.error('Button element not found.');
                 return;
@@ -56,6 +63,18 @@
             }
             if (!this.buttonControlElement) {
                 console.error('ButtonControl element not found.');
+            }
+        }
+
+        showManualSubmitIndicator() {
+            if (this.manualSubmitIndicatorElement) {
+                this.manualSubmitIndicatorElement.style.display = 'block';
+            }
+        }
+        
+        hideManualSubmitIndicator() {
+            if (this.manualSubmitIndicatorElement) {
+                this.manualSubmitIndicatorElement.style.display = 'none';
             }
         }
 

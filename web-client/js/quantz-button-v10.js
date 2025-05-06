@@ -24,6 +24,7 @@
         defaultIconImgSrc: 'https://quantz.thinkxinc.com/img/quantz_button/standby-icon-white.svg',
         iconImageClassName: 'button-icon',
         spacerClassName: 'spacer',
+        manualSubmitIndicatorClassName: 'manual-submit-indicator',
         balloonId: '',
         balloonDialogueId: '',
         balloonPowerdByImageSrc: 'https://quantz.thinkxinc.com/img/quantz_button/powerdby.svg',
@@ -59,6 +60,7 @@
         failedToGetTokenEventName: 'quantz-failedToGetToken',
         basicConfigFetchedEventName: 'quantz-basicConfigFetched',
         failedToGetBasicConfigEventName: 'quantz-failedToGetBasicConfig',
+        responseModeUpdateEventName: 'quantz-responseModeUpdate',
         didClickStartEventName: 'quantz-didClickStart',
         didClickRestartEventName: 'quantz-didClickRestart',
         messageReceiveEventName: 'quantz-messageReceived',
@@ -553,6 +555,29 @@
             }
         };
 
+        const onKeyDown = (key) => {
+            console.log(`[Quantz Button ${buttonId}] Key released - key ${key} - responseMode ${ns.interactionControllers[buttonId].responseMode}`);
+            if (!ns.interactionControllers[buttonId]) return;
+            if (ns.interactionControllers[buttonId].responseMode !== ns.ResponseMode.MANUAL_SUBMIT) return;
+        
+            // If we are currently "listening" or at least have recorded data:
+            // you might also check `ns.cores[buttonId].isRecording`, or `hasSignificantSpeech`, etc.
+            if (ns.buttonControllers[buttonId].buttonState === ns.ButtonState.listening) {
+                console.log(`[Quantz Button ${buttonId}] (MANUAL_SUBMIT) Enter/Space pressed -> Submitting now`);
+        
+                // Stop recording first if still recording:
+                ns.cores[buttonId].stopRecording();
+        
+                // Now manually submit the user’s WAV data:
+                if (ns.cores[buttonId].hasSignificantSpeech) {
+                    ns.cores[buttonId].submitHumanSpeech();
+                }
+        
+                // Hide the indicator
+                ns.buttonControllers[buttonId].hideManualSubmitIndicator();
+            }
+        }
+
         // Attach mouse events
         $btn.addEventListener('mouseenter', onMouseEnter);
         $btn.addEventListener('mouseleave', onMouseLeave);
@@ -579,6 +604,19 @@
             onMouseUp(); // Handle it like a touchend or mouseup
         });
 
+        $btn.addEventListener('keydown', (event)=> {
+            event.preventDefault(); // Prevent mouse events
+            const isEnter = (event.key === 'Enter' || event.code === 'Enter');
+            const isSpace = (event.key === ' ' || event.key === 'Spacebar' || event.code === 'Space');
+            if (isEnter) {
+                key = "Enter"
+            } else if (isSpace) {
+                key = "Space"
+            }
+            if (!isEnter && !isSpace) return;
+            onKeyDown(key);
+        })
+
         $buttonLoader.addEventListener(ns.configs[buttonId].assistantResponseStartEventName, function(event) {
             const { buttonId, message } = event.detail;
             console.log(`[Quantz Button ${buttonId}] assistant response started:`, message);
@@ -588,6 +626,15 @@
                 ns.balloons[buttonId].show();
             }
         })
+
+        $buttonLoader.addEventListener(ns.configs[buttonId].responseModeUpdateEventName, (e) => {
+            const { responseMode } = e.detail;
+            console.log(`[Quantz Button ${buttonId}] responseMode changed to`, responseMode);
+            ns.interactionControllers[buttonId]?.setResponseMode(responseMode);
+            if (responseMode !== ns.ResponseMode.MANUAL_SUBMIT) {
+                ns.buttonControllers[buttonId].hideManualSubmitIndicator();
+            }
+        });
 
         // FIXME: prevent multiple events added even when called initializeButton to the same buttonloader
         function handleMessageReceive(event) {
@@ -826,11 +873,16 @@
         $buttonLoader.addEventListener(ns.configs[buttonId].humanStopRecordingEventName, function(event) {
             const { buttonId } = event.detail;
             console.log(`[Quantz Button ${buttonId}] human stop recording.`)
-            if (ns.cores[buttonId].hasSignificantSpeech) {
-                console.warn(`[Quantz Button ${buttonId}] has significant speech. submit.`)
-                ns.cores[buttonId].submitHumanSpeech();
+            if (ns.interactionControllers[buttonId].responseMode !== ns.ResponseMode.MANUAL_SUBMIT) {
+                if (ns.cores[buttonId].hasSignificantSpeech) {
+                    console.warn(`[Quantz Button ${buttonId}] has significant speech. submit.`)
+                    ns.cores[buttonId].submitHumanSpeech();
+                } else {
+                    console.warn(`[Quantz Button ${buttonId}] no significant speech. skip.`)
+                }
             } else {
-                console.warn(`[Quantz Button ${buttonId}] no significant speech. skip.`)
+                // MANUAL_SUBMIT mode -> do NOT auto-submit here
+                console.log(`[Quantz Button ${buttonId}] MANUAL_SUBMIT is active. Not auto-submitting.`);
             }
 
             if (ns.configs[buttonId].buttonType == ns.ButtonType.Default) {
