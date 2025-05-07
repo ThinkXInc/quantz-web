@@ -255,6 +255,22 @@ div.QBTN-button-container.QBTN-TYPE-Default button.QBTN-button.QBTN-listening di
     opacity: 0;
 }
 
+/* --- QBTN-start State --- */
+div.QBTN-button-container.QBTN-TYPE-Default div.manual-submit-indicator {
+    display: block;
+    position: absolute;
+    box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.3);
+    top: 33px;
+    left: -218px;
+    border-radius: 9px;
+    color: #fafafa;
+    font-size: 12px;
+    text-align: center;
+    background: linear-gradient(86deg, rgba(78, 51, 255, 1) 0%, rgba(0, 145, 255, 1) 100%);
+    padding: 11px 4px;
+    width: 200px;
+}
+
 /* --- QBTN-replying State --- */
 div.QBTN-button-container.QBTN-TYPE-Default button.QBTN-button.QBTN-replying div.QBTN-button-component {
     position: absolute;

@@ -558,23 +558,39 @@
         const onKeyDown = (key) => {
             console.log(`[Quantz Button ${buttonId}] Key released - key ${key} - responseMode ${ns.interactionControllers[buttonId].responseMode}`);
             if (!ns.interactionControllers[buttonId]) return;
-            if (ns.interactionControllers[buttonId].responseMode !== ns.ResponseMode.MANUAL_SUBMIT) return;
+            if (ns.interactionControllers[buttonId].responseMode !== ns.ResponseMode.MANUAL_SUBMIT) {
+                console.log(`[Quantz Button ${buttonId}] Not in MANUAL_SUBMIT mode, ignoring key press`);
+                return;
+            }
         
-            // If we are currently "listening" or at least have recorded data:
-            // you might also check `ns.cores[buttonId].isRecording`, or `hasSignificantSpeech`, etc.
-            if (ns.buttonControllers[buttonId].buttonState === ns.ButtonState.listening) {
-                console.log(`[Quantz Button ${buttonId}] (MANUAL_SUBMIT) Enter/Space pressed -> Submitting now`);
-        
-                // Stop recording first if still recording:
-                ns.cores[buttonId].stopRecording();
-        
-                // Now manually submit the user’s WAV data:
-                if (ns.cores[buttonId].hasSignificantSpeech) {
-                    ns.cores[buttonId].submitHumanSpeech();
+            // Check if recording is active or significant speech was detected
+            if (ns.cores[buttonId].isRecording || ns.cores[buttonId].hasSignificantSpeech) {
+                console.log(`[Quantz Button ${buttonId}] (MANUAL_SUBMIT) ${key} pressed -> Submitting now`);
+
+                // Stop recording if still active
+                if (ns.cores[buttonId].isRecording) {
+                    console.log(`[Quantz Button ${buttonId}] (MANUAL_SUBMIT) ${key} pressed -> Submitting now`);
+                    ns.cores[buttonId].stopRecording();
+                    ns.buttonControllers[buttonId].hideManualSubmitIndicator();
                 }
-        
-                // Hide the indicator
-                ns.buttonControllers[buttonId].hideManualSubmitIndicator();
+
+                //// Submit the audio if significant speech was detected
+                //if (ns.cores[buttonId].hasSignificantSpeech) {
+                //    console.log(`[Quantz Button ${buttonId}] Submitting human speech`);
+                //    ns.cores[buttonId].submitHumanSpeech();
+                //    // Clear audioChunks after submission in MANUAL_SUBMIT mode
+                //    //ns.cores[buttonId].audioChunks = [];
+                //} else {
+                //    console.warn(`[Quantz Button ${buttonId}] No significant speech detected, skipping submission`);
+                //}
+
+                // Hide the manual submit indicator
+                //ns.buttonControllers[buttonId].hideManualSubmitIndicator();
+
+                // Transition to replying state
+                //ns.buttonControllers[buttonId].switchToReplying();
+            } else {
+                console.warn(`[Quantz Button ${buttonId}] Not recording and no significant speech, ignoring ${key} press`);
             }
         }
 
@@ -604,7 +620,7 @@
             onMouseUp(); // Handle it like a touchend or mouseup
         });
 
-        $btn.addEventListener('keydown', (event)=> {
+        document.addEventListener('keydown', (event)=> {
             event.preventDefault(); // Prevent mouse events
             const isEnter = (event.key === 'Enter' || event.code === 'Enter');
             const isSpace = (event.key === ' ' || event.key === 'Spacebar' || event.code === 'Space');
@@ -633,6 +649,8 @@
             ns.interactionControllers[buttonId]?.setResponseMode(responseMode);
             if (responseMode !== ns.ResponseMode.MANUAL_SUBMIT) {
                 ns.buttonControllers[buttonId].hideManualSubmitIndicator();
+            } else {
+                ns.buttonControllers[buttonId].showManualSubmitIndicator();
             }
         });
 
@@ -773,7 +791,7 @@
 
             if (ns.configs[buttonId].buttonType == ns.ButtonType.Default) {
                 // scale by volume
-                const $buttonContainer = document.getElementById(ns.configs[buttonId].buttonContainerId);
+                const $buttonElement = document.getElementById(ns.configs[buttonId].buttonElementId);
                 const minDb = -60;
                 const maxDb = -3;
                 let dB = Math.max(minDb, Math.min(maxDb, volume)); 
@@ -781,8 +799,8 @@
                 const minScale = 1.0;
                 const maxScale = 1.5;
                 const scale = minScale + (maxScale - minScale) * normVolume;
-                if ($buttonContainer) {
-                    $buttonContainer.style.transform = `scale(${scale})`;
+                if ($buttonElement) {
+                    $buttonElement.style.transform = `scale(${scale})`;
                 }
             }
 
@@ -873,16 +891,11 @@
         $buttonLoader.addEventListener(ns.configs[buttonId].humanStopRecordingEventName, function(event) {
             const { buttonId } = event.detail;
             console.log(`[Quantz Button ${buttonId}] human stop recording.`)
-            if (ns.interactionControllers[buttonId].responseMode !== ns.ResponseMode.MANUAL_SUBMIT) {
-                if (ns.cores[buttonId].hasSignificantSpeech) {
-                    console.warn(`[Quantz Button ${buttonId}] has significant speech. submit.`)
-                    ns.cores[buttonId].submitHumanSpeech();
-                } else {
-                    console.warn(`[Quantz Button ${buttonId}] no significant speech. skip.`)
-                }
+            if (ns.cores[buttonId].hasSignificantSpeech) {
+                console.warn(`[Quantz Button ${buttonId}] has significant speech. submit.`)
+                ns.cores[buttonId].submitHumanSpeech();
             } else {
-                // MANUAL_SUBMIT mode -> do NOT auto-submit here
-                console.log(`[Quantz Button ${buttonId}] MANUAL_SUBMIT is active. Not auto-submitting.`);
+                console.warn(`[Quantz Button ${buttonId}] no significant speech. skip.`)
             }
 
             if (ns.configs[buttonId].buttonType == ns.ButtonType.Default) {

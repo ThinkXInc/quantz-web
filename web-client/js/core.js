@@ -117,6 +117,9 @@
                 type: blobWithHeader.type,
                 chunksCount: this.audioChunks.length
             });
+
+            // After sending successfully, now we can safely clear audioChunks
+            this.audioChunks = [];
         }
 
         async getToken() {
@@ -355,7 +358,6 @@
 
         handleMediaRecorderOnStop(e) {
             this.dispatchHumanStopRecordingEvent();
-            this.audioChunks = [];
         }
 
 
@@ -504,8 +506,8 @@
 
                     if (messageString.startsWith('\\CONTROL')) {
                         try {
-                            // strip the prefix and parse JSON
                             const payload = JSON.parse(messageString.substring(8));
+                            console.error('[Core] Control message received:', payload);
                             if (payload.response_mode !== undefined) {
                                 const newMode = parseInt(payload.response_mode);
                                 this.dispatchUpdateResponseModeEvent(newMode);
@@ -757,7 +759,7 @@
                     this.$buttonLoader.dispatchEvent(event);
                     //console.log(`[Core] Dispatched humanAudioSignalEvent with spectrum and volume - buttonId: ${this.buttonId}, volume: ${decibels.toFixed(2)} dB`);
                 } else {
-                    console.warn('No significant data:', reason)
+                    //console.warn('No significant data:', reason)
                 }
 
             }, ns.configs[this.buttonId].spectrumFrequencyMs);

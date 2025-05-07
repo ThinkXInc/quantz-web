@@ -11,7 +11,7 @@ const ResponseMode = {
     TEMPO_ORIENTED: 0,
     NORMAL: 1,
     CAREFUL_LISTENING: 2,
-    WAIT_MANUAL_SUBMIT: 3
+    MANUAL_SUBMIT: 3
 };
 
 const ReferenceType = {
@@ -47,7 +47,7 @@ const taskTypeConfigs = {
     },
     [TaskType.TEST]: {
         maxTurns: 3,
-        responseMode: ResponseMode.WAIT_MANUAL_SUBMIT, // 3
+        responseMode: ResponseMode.MANUAL_SUBMIT, // 3
         referenceType: ReferenceType.ALL,              // 'all'
         showRemark: true
     },
@@ -1411,7 +1411,7 @@ class ProgramView {
     }
 
     checkForUpdates() {
-        console.log("[checkForUpdates] Checking for changes in interaction model...");
+        ////console.log("[checkForUpdates] Checking for changes in interaction model...");
 
         // If there's no interactionModelId, skip
         if (!this.interactionModelId) {
@@ -1421,7 +1421,7 @@ class ProgramView {
 
         // Build the current data object from the form
         const currentData = this.interactionModelObjectFromFormData();
-        console.log("[checkForUpdates] currentData:", currentData);
+        ////console.log("[checkForUpdates] currentData:", currentData);
 
         if (!currentData) {
             // Possibly invalid or empty => skip
@@ -1446,7 +1446,7 @@ class ProgramView {
                     console.error("[checkForUpdates] Update failed:", err);
                 });
         } else {
-            console.log("[checkForUpdates] No changes detected in interaction model. No update needed.");
+            ////console.log("[checkForUpdates] No changes detected in interaction model. No update needed.");
         }
     }
 

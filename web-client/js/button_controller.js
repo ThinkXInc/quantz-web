@@ -22,6 +22,30 @@
         leave: 'leave'
     }
 
+    ns.buttonControllerLocales = {
+        en: {
+            manualSubmitIndicatorText: 'End Response to press Space ␣',// Enter ↵'
+        },
+        es: {
+            manualSubmitIndicatorText: 'Finaliza la respuesta y presiona Enter ↵'
+        },
+        fr: {
+            manualSubmitIndicatorText: 'Terminer la réponse, puis appuyez sur Entrée ↵'
+        },
+        ja: {
+            manualSubmitIndicatorText: 'エンターキーで回答を終了 ↵'
+        },
+        zh: {
+            manualSubmitIndicatorText: '结束回答请按 Enter ↵'
+        },
+        ru: {
+            manualSubmitIndicatorText: 'Чтобы завершить ответ, нажмите Enter ↵'
+        },
+        ar: {
+            manualSubmitIndicatorText: 'لإنهاء الرد اضغط Enter ↵'
+        }
+    };
+
     ns.ButtonController = class {
         constructor({buttonId, buttonType, animationController, indicatorController, lang, defaultState = ns.ButtonState.standby}) {
             this.buttonId = buttonId;
@@ -29,6 +53,7 @@
             this.buttonState = defaultState;
             this.lang = lang;
             this.animationController = animationController;
+            this.buttonLoaderElement = document.getElementById(`${ns.configs[buttonId].prefix}button-loader-${buttonId}`)
             this.buttonContainerElement = document.getElementById(ns.configs[buttonId].buttonContainerId);
             this.buttonElement = document.getElementById(ns.configs[buttonId].buttonElementId);
             this.textContainer = document.getElementById(ns.configs[buttonId].buttonTextContainerId);
@@ -40,9 +65,11 @@
             this.manualSubmitIndicatorElement = document.createElement('div');
             this.manualSubmitIndicatorElement.id = ns.configs[buttonId].manualSubmitIndicatorClassName;
             this.manualSubmitIndicatorElement.classList.add(ns.configs[buttonId].manualSubmitIndicatorClassName);
-            this.manualSubmitIndicatorElement.textContent = 'Press Enter or Space to submit.';
+            this.manualSubmitIndicatorElement.textContent =
+            (ns.buttonControllerLocales[this.lang] && ns.buttonControllerLocales[this.lang].manualSubmitIndicatorText)
+            || ns.buttonControllerLocales.en.manualSubmitIndicatorText;
             this.manualSubmitIndicatorElement.style.display = 'none'; 
-            this.buttonControlElement.appendChild(this.manualSubmitIndicatorElement);
+            this.buttonContainerElement.appendChild(this.manualSubmitIndicatorElement);
 
             if (!this.buttonContainerElement) {
                 console.error('Button element not found.');
