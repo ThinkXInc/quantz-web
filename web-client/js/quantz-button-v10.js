@@ -573,22 +573,6 @@
                     ns.cores[buttonId].stopRecording();
                     ns.buttonControllers[buttonId].hideManualSubmitIndicator();
                 }
-
-                //// Submit the audio if significant speech was detected
-                //if (ns.cores[buttonId].hasSignificantSpeech) {
-                //    console.log(`[Quantz Button ${buttonId}] Submitting human speech`);
-                //    ns.cores[buttonId].submitHumanSpeech();
-                //    // Clear audioChunks after submission in MANUAL_SUBMIT mode
-                //    //ns.cores[buttonId].audioChunks = [];
-                //} else {
-                //    console.warn(`[Quantz Button ${buttonId}] No significant speech detected, skipping submission`);
-                //}
-
-                // Hide the manual submit indicator
-                //ns.buttonControllers[buttonId].hideManualSubmitIndicator();
-
-                // Transition to replying state
-                //ns.buttonControllers[buttonId].switchToReplying();
             } else {
                 console.warn(`[Quantz Button ${buttonId}] Not recording and no significant speech, ignoring ${key} press`);
             }
@@ -621,7 +605,7 @@
         });
 
         document.addEventListener('keydown', (event)=> {
-            event.preventDefault(); // Prevent mouse events
+            //event.preventDefault(); // Prevent mouse events
             const isEnter = (event.key === 'Enter' || event.code === 'Enter');
             const isSpace = (event.key === ' ' || event.key === 'Spacebar' || event.code === 'Space');
             if (isEnter) {
