@@ -1368,7 +1368,7 @@ class ProgramView {
             //if (topicVal || remarkVal) { 
                 hasAnyStepContent = true;
                 const referencesVal = stepData.referencesSelector
-                    ? stepData.referencesSelector.value || []
+                    ? stepData.referencesSelector.value.filter(id => !!id) || []
                     : [];
                 const referenceTypeVal = stepData.referenceTypeSelector.value;
 
@@ -1377,7 +1377,7 @@ class ProgramView {
                     topic: topicVal,
                     remark: remarkVal,
                     goal: stepData.goalForm.value || '',
-                    guidelines: stepData.guidelineForms.map(g => g.value || ''),
+                    guidelines: stepData.guidelineForms.map(g => g.value || '').filter(v => !!v),
                     max_turns: parseInt(stepData.maxTurnsForm.value, 10),
                     response_mode: parseInt(stepData.responseModeSelector.value, 10),
                     reference_type: referenceTypeVal,
