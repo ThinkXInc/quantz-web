@@ -61,19 +61,18 @@ const taskTypeConfigs = {
 
 const defaultStep = () => ({
     task_type: TaskType.CONSULTING,
-    topic: "Recruiting Interview",
+    topic: "",
     remark: "",
-    goal: "Interviewee answered it's done.",
+    goal: "",
     max_turns: 3,
     response_mode: 1,
     reference_type: "all",
     references: [],
     guidelines: [
         "First, read the remark.",
-        "When the answer looks done, ask 'Are you sure that's it?'"
     ],
-    left: 0,
-    top: 0,
+    left: -2215, // 本来は backgroundContainer.left (-2500px) + stepContainer.width/2 として計算したい. backgroundContainerは作業領域中央に表示するように2500px右下にずらしてある(see adjustContainerInitialPosition).つまりleft=0だとかなり外れたところに表示されてしまう. 
+    top: -2215, // 同上
     expanded: false 
 });
 
@@ -1288,6 +1287,7 @@ class ProgramView {
         console.log('[updateTransform] apply transform.')
         this.$backgroundContainer.style.top = this.offsetY + 'px';
         this.$backgroundContainer.style.left = this.offsetX + 'px';
+        this.$backgroundContainer.style.transformOrigin = '0 0';
         this.$backgroundContainer.style.transform = `
           scale(${this.scale})
         `;
