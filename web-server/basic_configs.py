@@ -53,7 +53,8 @@ from libcommon.web.http_errors import InvalidContentTypeAPIErrorFormat, \
     BadRequestAPIErrorFormat, UnauthorizedAPIErrorFormat, RateLimitExceededAPIErrorFormat
 from libcommon.web.validation_errors import RequiredFieldsNotSatisfiedFormat
 from libcommon.web.flask_helpers import language_wrapper, content_type_check_json, \
-    required_fields_check, validate_request, handle_error, session_helper
+    required_fields_check, validate_request, handle_error
+from app_session import session_helper  # Q-4: 依存注入版
 
 # Language
 from libcommon.language import Language

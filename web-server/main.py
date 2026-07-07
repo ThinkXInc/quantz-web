@@ -40,7 +40,8 @@ from libcommon.web.http_errors import InvalidContentTypeAPIErrorFormat, \
 from libcommon.web.http_successes import OKAPISuccessFormat, CreatedAPISuccessFormat, \
     AcceptedAPISuccessFormat
 from libcommon.web.flask_helpers import language_wrapper, content_type_check_json, \
-    required_fields_check, validate_request, handle_error, session_helper
+    required_fields_check, validate_request, handle_error
+from app_session import session_helper  # Q-4: 依存注入版
 
 # Local files
 COMMON_LOCALES_ROOT = join(abspath(__file__), 'libcommon/locales')

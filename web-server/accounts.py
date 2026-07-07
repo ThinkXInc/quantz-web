@@ -51,7 +51,8 @@ from libcommon.web.http_errors import InvalidContentTypeAPIErrorFormat, \
 from libcommon.web.flask_helpers import language_wrapper, content_type_check_json, \
     required_fields_check, required_query_params, validate_request, \
     format_check, length_check, regex_check, \
-    handle_error, session_helper, google_oauth_token_check, requires_auth
+    handle_error, google_oauth_token_check, requires_auth
+from app_session import session_helper  # Q-4: 依存注入版
 from libcommon.web.regex_patterns import EMAIL_REGEX, PASSWORD_AT_LEAST_ONE_UPPER_AND_NUMERIC_REGEX
 
 # Locale
