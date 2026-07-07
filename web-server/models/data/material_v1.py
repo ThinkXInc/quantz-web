@@ -6,7 +6,7 @@
  
 import datetime
 from libcommon.mongomodel import MongoModel
-from libcommon.response.errors import ProcessingError, ResourceNotFoundError
+from libcommon.web.http_errors import BadRequestAPIErrorFormat, ResourceNotFoundAPIErrorFormat  # Q-3(F-1): 存在しない response.errors モジュールからフォーマット族へ寄せた
 from libcommon.color import yellow, bold, red, cyan, green, light_green
 from mongoengine import (
     Document, StringField, IntField, ObjectIdField, ListField,
@@ -66,7 +66,7 @@ class Material(MongoModel):
             return material
         except Exception as e:
             logger.error(e)
-            return ProcessingError(lang, locale, 'material_save_error')
+            return BadRequestAPIErrorFormat(lang=lang, message=locale.get('material_save_error', lang))
 
     @classmethod
     def update(cls, user, material_id, updates: dict, lang, locale):
@@ -74,7 +74,7 @@ class Material(MongoModel):
             material = Material.objects(user=user, id=material_id).first()
             if not material:
                 logger.error(red(f"No Material found with id: {material_id} user: {user.email}"))
-                return ResourceNotFoundError(lang, locale, 'material_not_found', 'material', locale_args=[material_id])
+                return ResourceNotFoundAPIErrorFormat(lang=lang, field_name='material', message=locale.get('material_not_found', lang, locale_args=[material_id]))
 
             for key, value in updates:
                 material[key] = value
@@ -83,7 +83,7 @@ class Material(MongoModel):
         
         except Exception as e:
             logger.error(red(f"Error updating Material with id: {material_id}. Error: {e}"))
-            return ProcessingError(lang, locale, 'material_update_error')
+            return BadRequestAPIErrorFormat(lang=lang, message=locale.get('material_update_error', lang))
 
     @classmethod
     def delete_by_id(cls, material_id, lang, locale):
@@ -92,7 +92,7 @@ class Material(MongoModel):
             print('XXX')
             if not material:
                 logger.error(red(f"No Material found with id: {material_id}"))
-                return ResourceNotFoundError(lang, locale, 'material_not_found', 'material', locale_args=[material_id])
+                return ResourceNotFoundAPIErrorFormat(lang=lang, field_name='material', message=locale.get('material_not_found', lang, locale_args=[material_id]))
 
             print('YYYY')
             material.delete()
@@ -101,7 +101,7 @@ class Material(MongoModel):
         except Exception as e:
             print('ZZZZ')
             logger.error(red(f"Error deleting Material with id: {material_id}. Error: {e}"))
-            return ProcessingError(lang, locale, 'material_delete_error')
+            return BadRequestAPIErrorFormat(lang=lang, message=locale.get('material_delete_error', lang))
 
 
     @classmethod
@@ -119,7 +119,7 @@ class Material(MongoModel):
         # Check if there are no fields to update in the result
         if not any([key in result for key in fields_to_update]):
             logger.error(red(f"No field to update in result: {result}. This will never happen."))
-            return ProcessingError(lang, locale, 'material_update_error')
+            return BadRequestAPIErrorFormat(lang=lang, message=locale.get('material_update_error', lang))
 
         # Logging the updates
         updated_fields = [f"{key}: {', '.join(result[key])}" if key == 'keywords' else f"{key}: {result[key]}" for key in fields_to_update if key in result]
@@ -161,7 +161,7 @@ class Material(MongoModel):
             
             # Return error if not found
             if not material:
-                return ResourceNotFoundError(lang, locale, 'material_not_found', 'material', material_id).http_response()
+                return ResourceNotFoundAPIErrorFormat(lang=lang, field_name='material', message=locale.get('material_not_found', lang, locale_args=[material_id])).http_response()
 
             # Convert to JSON if required
             print(cyan(material.response_json()))
