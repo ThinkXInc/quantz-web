@@ -57,38 +57,42 @@ mail = Mail(
 # ])
 # then, proj_root/mails/templates/html/page.html can be specified as 'html/page.html'
 
-# Basic test
-try:
-    response = mail.send(
-        sender=SENDER,
-        reply_to=REPLY_TO,
-        recipient='quantzdev@gmail.com',
-        subject='Mail Client Test 1',
-        text='This is a SES mail client test.',
-        html='<body>This is a SES mail client test.</body>',
-    )
-    logger.info(f"Send Mail Test: success - {response}")
-except Exception as e:
-    logger.error(red(f"Send Mail Test: An error occurred: {e}"))
-
-
-# Test outside flask (celery worker)
-try:
-    flask_app = Flask(__name__, template_folder='templates')
-    with flask_app.app_context(): # celery worker process needs context
-        html = render_template(
-            'html/notify_card_issue.html',
-            body1="Test", url=f"https://quantz.thinkxinc.com", click="Click", body2="Test", team="Quantz Team")
+# N-13: 旧コードはこの2ブロックを **モジュールレベル**で実行し、import のたびに本番 SES で
+# 実メール2通を送信していた(本番 creds で起動のたび送信 + boto3 リトライで import ハング)。
+# import 副作用を除くため関数化し、手動テスト用途は __main__ の --smoke_test で保存する。
+def _smoke_test_mail_client():
+    """SES メールクライアントの手動スモーク(テストメール2通を送る)。__main__ からのみ呼ぶ。"""
+    # Basic test
+    try:
         response = mail.send(
             sender=SENDER,
             reply_to=REPLY_TO,
             recipient='quantzdev@gmail.com',
-            subject='Mail Client Test 2',
+            subject='Mail Client Test 1',
             text='This is a SES mail client test.',
-            html=html
+            html='<body>This is a SES mail client test.</body>',
         )
-except Exception as e:
-    logger.error(red(f"Send Mail Test: An error occurred: {e}"))
+        logger.info(f"Send Mail Test: success - {response}")
+    except Exception as e:
+        logger.error(red(f"Send Mail Test: An error occurred: {e}"))
+
+    # Test outside flask (celery worker)
+    try:
+        flask_app = Flask(__name__, template_folder='templates')
+        with flask_app.app_context(): # celery worker process needs context
+            html = render_template(
+                'html/notify_card_issue.html',
+                body1="Test", url=f"https://quantz.thinkxinc.com", click="Click", body2="Test", team="Quantz Team")
+            response = mail.send(
+                sender=SENDER,
+                reply_to=REPLY_TO,
+                recipient='quantzdev@gmail.com',
+                subject='Mail Client Test 2',
+                text='This is a SES mail client test.',
+                html=html
+            )
+    except Exception as e:
+        logger.error(red(f"Send Mail Test: An error occurred: {e}"))
 
 # send mails
 def send_welcome_email(
@@ -564,10 +568,14 @@ if __name__ == "__main__":
     parser.add_argument('--welcome', action='store_true', help="Send a welcome email.")
     parser.add_argument('--invitation', action='store_true', help="Send an invitation email to a user on the wait list.")
     parser.add_argument('--added_to_wait_list', action='store_true', help="Send email notifying a user they are added to wait list.")
+    parser.add_argument('--smoke_test', action='store_true', help="Run the SES mail client smoke test (sends 2 test emails).")
     parser.add_argument('--email', type=str, required=True, help="Email of the user to send the email to.")
     parser.add_argument('--verification_code', type=str, default='123456', help="Verification code for the email, if applicable.")
     
     args = parser.parse_args()
+
+    if args.smoke_test:
+        _smoke_test_mail_client()
 
     # MongoDB
     from init_mongodb import connect
