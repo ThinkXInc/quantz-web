@@ -19,6 +19,10 @@ for _p in (_HERE, _WEBSERVER):
     if _p not in sys.path:
         sys.path.insert(0, _p)
 
+# 本番は web-server/ を cwd に起動する(jinja loader が 'views/templates' の相対パス)。
+# テストをどこから起動しても本番同等にテンプレ解決できるよう cwd を web-server に固定する。
+os.chdir(_WEBSERVER)
+
 # 1) config 注入(最初に。以降の `from config import ...` は全てこれを掴む)
 import config_test
 sys.modules['config'] = config_test
