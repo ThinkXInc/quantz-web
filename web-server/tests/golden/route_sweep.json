@@ -64,11 +64,11 @@
   "/v1/<lang>/terms": 200,
   "/v1/<lang>/user": 401,
   "/v1/<lang>/users/verification/resend": 302,
-  "/v1/<lang>/users/verify_link": 500,
+  "/v1/<lang>/users/verify_link": 400,
   "/v1/logout": 302,
   "/v1/signin": 200,
   "/v1/signup": 200,
   "/v1/terms": 200,
   "/v1/users/verification/resend": 302,
-  "/v1/users/verify_link": 500
+  "/v1/users/verify_link": 400
 }
