@@ -333,7 +333,7 @@ def users_create(lang, lang_name):
     logger.info(magenta(f'[POST] users/create => \n'+'-'*100+f'\nemail: {email} password: **** '+'-'*100))
 
     # Determine if debug user
-    is_debug = email in ["dev1@thinkxinc.com", "dev2@thinkxinc.com", "dev3@thinkxinc.com", "dev4@thinkxinc.com"]
+    is_debug = email in Config.DEBUG_USER_EMAILS  # Q-5a: ハードコードを Config へ移動
 
     # Use the helper function
     return create_user_and_finalize(

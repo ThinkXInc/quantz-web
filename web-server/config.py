@@ -74,6 +74,9 @@ class Config:
 
     DOTENV_PATH = join(PRJ_ROOT, '.env')
 
+    # Q-5a: デバッグユーザーのメールアドレス(旧 accounts.py ハードコードから移動)
+    DEBUG_USER_EMAILS = ['dev1@thinkxinc.com', 'dev2@thinkxinc.com', 'dev3@thinkxinc.com', 'dev4@thinkxinc.com']
+
     REQUIRED_KEYS_IN_DOTENV = [
         'ENV',
         "LLM_CHECKPOINT",

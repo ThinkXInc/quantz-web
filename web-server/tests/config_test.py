@@ -54,6 +54,9 @@ class Config:
     SES_AWS_REGION = 'us-east-1'
     MAIL_NOREPLY = 'noreply@example.com'
     MAIL_SYSTEM = 'system@example.com'
+
+    # Q-5a: デバッグユーザー(旧 accounts.py ハードコードと同値)
+    DEBUG_USER_EMAILS = ['dev1@thinkxinc.com', 'dev2@thinkxinc.com', 'dev3@thinkxinc.com', 'dev4@thinkxinc.com']
     NEXT_BILLING_SCHEDULE = BillingSchedule.MONTHLY
     VERIFICATION_CODE_EXPIRED_HOUR = 24
     LLM_CHECKPOINT = 'test-llm-checkpoint'
