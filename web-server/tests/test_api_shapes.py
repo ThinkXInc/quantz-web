@@ -41,6 +41,16 @@ def test_validation_errors_shape(flask_app):
     assert_golden('api_shape_validation_errors', shape)
 
 
+def test_validation_errors_empty_json_shape(flask_app):
+    # N-14 (P3-Q1): email キー無し(空 JSON)でも検証前アクセスで 500 にならず、
+    # 400 バリデーション形状(型3)を返す(旧挙動: L329 の request.json["email"] が KeyError -> 500)。
+    resp = flask_app.test_client().post('/v1/en/users/create', json={})
+    shape = _shape(resp)
+    assert shape['status'] == 400
+    assert shape['keys'] == ['code', 'errors', 'message', 'reason']
+    assert_golden('api_shape_validation_errors_empty_json', shape)
+
+
 def test_single_error_shape(flask_app):
     # 非 JSON Content-Type -> 単体 APIError(415)
     resp = flask_app.test_client().post('/v1/en/users/create', data='x', content_type='text/plain')

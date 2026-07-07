@@ -326,7 +326,7 @@ def create_user_and_finalize(
 @regex_check('email', EMAIL_REGEX, 'email_format')
 @regex_check('password', PASSWORD_AT_LEAST_ONE_UPPER_AND_NUMERIC_REGEX, 'invalid_password_format')
 def users_create(lang, lang_name):
-    logger.info(cyan(f'request: {request.url} => {request.json["email"]}'))
+    logger.info(cyan(f'request: {request.url} => {request.json.get("email")}'))  # N-14: 検証前の直接アクセスを回避
     validation_error = validate_request(lang, locale)
     if validation_error:
         return validation_error.http_response()
