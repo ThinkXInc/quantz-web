@@ -50,6 +50,14 @@ def test_single_error_shape(flask_app):
     assert_golden('api_shape_single_error', shape)
 
 
+def test_signup_page_data_single_injection(flask_app):
+    # Q-5c: GET /signup は 200 のまま、かつ PAGE_DATA 単一注入がテンプレに存在する。
+    resp = flask_app.test_client().get('/v1/en/signup')
+    assert resp.status_code == 200
+    body = resp.get_data(as_text=True)
+    assert 'PAGE_DATA' in body
+
+
 def test_success_shape(flask_app):
     # 成功系の契約形状(エンドポイントが返すのと同一クラス)。
     with flask_app.test_request_context():

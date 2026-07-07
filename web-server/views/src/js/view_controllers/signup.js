@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', ()=>{
-    const lang = window.lang;
+    // Q-5c: PAGE_DATA 単一注入規約へ追随(locale は依然 window.locale=new Locale(...) を使う)
+    const lang = window.PAGE_DATA.lang;
     const locale = window.locale;
-    const unitPrice = window.unitPrice;
-    const freeCall = window.freeCall;
+    const unitPrice = window.PAGE_DATA.unitPrice;
+    const freeCall = window.PAGE_DATA.freeCall;
 
     console.log(`set up signup view.\nlang:${lang}`);
 

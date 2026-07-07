@@ -4,30 +4,27 @@
 </section>
 <script>
 {
-    const lang = "{{ lang }}"
-    const langName = "{{ lang_name }}"
+    // Q-5c: PAGE_DATA 単一注入規約。個別スカラ注入を1つの dict に集約する。
+    const PAGE_DATA = {{ page_data | tojson }};
+    window.PAGE_DATA = PAGE_DATA;
 
-    const freeCall = "{{ free_call }}"
-    const unitPrice = "{{ unit_price }}"
-    const generalCreditPerResponse = "{{ general_credit_per_response }}"
-    const interviewCreditPerResponse = "{{ interview_credit_per_response }}"
-
-    const localeDict = {{ locale_json | safe }};
+    const localeDict = PAGE_DATA.localeDict;
     if (!localeDict) {
-        console.error('locale_json not received.');
+        console.error('localeDict not received.');
     }
     const locale = new Locale(localeDict);
 
     console.log(locale);
 
+    // 既存の window.* 参照(他ビュー含む)を壊さないためブリッジを維持。値は PAGE_DATA 由来。
     window.locale = locale;
-    window.lang = lang;
-    window.langName = langName;
+    window.lang = PAGE_DATA.lang;
+    window.langName = PAGE_DATA.langName;
 
-    window.freeCall = parseInt(freeCall);
-    window.unitPrice = parseFloat(unitPrice);
-    window.generalCreditPerResponse = parseInt(generalCreditPerResponse);
-    window.interviewCreditPerResponse = parseInt(interviewCreditPerResponse);
+    window.freeCall = parseInt(PAGE_DATA.freeCall);
+    window.unitPrice = parseFloat(PAGE_DATA.unitPrice);
+    window.generalCreditPerResponse = parseInt(PAGE_DATA.generalCreditPerResponse);
+    window.interviewCreditPerResponse = parseInt(PAGE_DATA.interviewCreditPerResponse);
 }
 </script>
 <script src="https://js.stripe.com/v3/"></script>

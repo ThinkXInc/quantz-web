@@ -126,15 +126,21 @@ ENABLE_INITIALIZE_ALL_USERS = (ENV == 'develop' and False)
 @language_wrapper
 def signup(lang, lang_name):
     logger.info(magenta(f'[GET] signup'))
+    # Q-5c: PAGE_DATA 単一注入規約(このテンプレのみ)。個別スカラ注入を1つの dict に集約する。
+    page_data = {
+        'lang': lang,
+        'langName': lang_name,
+        'freeCall': FIRST_MONTH_FREE_CREDIT,
+        'unitPrice': UNIT_PRICE_USD,
+        'generalCreditPerResponse': GENERAL_CREDIT_PER_RESPONSE,
+        'interviewCreditPerResponse': INTERVIEW_CREDIT_PER_RESPONSE,
+        'localeDict': locale.dict(),
+    }
     return render_template(
         'main/signup.html',
         lang=lang,
         lang_name=lang_name,
-        free_call=FIRST_MONTH_FREE_CREDIT,
-        unit_price=UNIT_PRICE_USD,
-        general_credit_per_response=GENERAL_CREDIT_PER_RESPONSE,
-        interview_credit_per_response=INTERVIEW_CREDIT_PER_RESPONSE,
-        locale_json=locale.to_json_string(),
+        page_data=page_data,
         metadata=locale.dict()["metadata_signup"][lang])
 
 @route_with_lang(blueprint_accounts, '/signin', methods=['GET'])  # Q-5b: 二重 route 登録を集約
