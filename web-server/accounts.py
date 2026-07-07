@@ -53,6 +53,7 @@ from libcommon.web.flask_helpers import language_wrapper, content_type_check_jso
     format_check, length_check, regex_check, \
     handle_error, google_oauth_token_check, requires_auth
 from app_session import session_helper  # Q-4: 依存注入版
+from route_helpers import route_with_lang  # Q-5b
 from libcommon.web.regex_patterns import EMAIL_REGEX, PASSWORD_AT_LEAST_ONE_UPPER_AND_NUMERIC_REGEX
 
 # Locale
@@ -121,8 +122,7 @@ blueprint_accounts = Blueprint('accounts', __name__)
 
 ENABLE_INITIALIZE_ALL_USERS = (ENV == 'develop' and False)
 
-@blueprint_accounts.route('/v1/signup', methods=['GET'])
-@blueprint_accounts.route('/v1/<lang>/signup', methods=['GET'])
+@route_with_lang(blueprint_accounts, '/signup', methods=['GET'])  # Q-5b: 二重 route 登録を集約
 @language_wrapper
 def signup(lang, lang_name):
     logger.info(magenta(f'[GET] signup'))
@@ -137,8 +137,7 @@ def signup(lang, lang_name):
         locale_json=locale.to_json_string(),
         metadata=locale.dict()["metadata_signup"][lang])
 
-@blueprint_accounts.route('/v1/signin', methods=['GET'])
-@blueprint_accounts.route('/v1/<lang>/signin', methods=['GET'])
+@route_with_lang(blueprint_accounts, '/signin', methods=['GET'])  # Q-5b: 二重 route 登録を集約
 @language_wrapper
 def signin(lang, lang_name):
     logger.info(magenta(f'[GET] signin'))
